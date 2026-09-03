@@ -1,74 +1,101 @@
 # IoT Systems in Smart Farming — Course Design
 
-Two-part training: a **pre-workshop online course** (~55 min of narrated slide decks, six sections) followed by a **3-hour hands-on workshop**. Materials in Thai (technical terms kept in English). Audience: ปวส. or higher, broad backgrounds. Teams of 3–4 in the workshop.
+Three hands-on sessions (150 min each, ~7.5 h) delivered inside the CMU Lifelong Education program **“นวัตกรเกษตรอัจฉริยะ AIoT สำหรับเกษตรแม่นยำ” รุ่นที่ 1, 25–29 September 2026**, Empress International Convention Centre, Chiang Mai. Our slots: **Day 1 afternoon (Fri 25 Sep), Day 2 morning and afternoon (Sat 26 Sep)**. Each slot is followed by a 15-min post-test run by the organizers. Materials in Thai (technical terms kept in English). Audience: ปวส. or higher, farmer-innovators with broad backgrounds. Teams of 3–4.
 
-**Tool stack:** Home Assistant (logic, dashboards, logging, remote control) on participants' laptops · ESPHome custom ESP32-C3 board with built-in sensors (input) · ESPHome relay board driving 12V loads such as a water pump (output). No soldering anywhere.
+A set of narrated decks (see *Online materials* below) remains as **optional pre-reading and take-home reference**. Nothing in the room depends on it.
+
+**Tool stack:** Home Assistant (logic, dashboards, logging, remote control) on a per-team host · ESPHome custom ESP32-C3 board with built-in sensors (input) · ESPHome relay board driving 12V loads such as a water pump (output). Every device on our own WiFi router. No soldering anywhere.
+
+> **Open decision — HASS host.** Recommended: one pre-flashed Raspberry Pi / Home Assistant Green per team, so laptops only need a browser and the host keeps logging overnight between Day 1 and Day 2. Alternative: HASS on participants' laptops, which needs an install step the program gives us no channel to gate before Day 1.
+
+---
+
+## Program context
+
+| When | Session | Who | Relevance to us |
+|------|---------|-----|-----------------|
+| Day 1, 09:00–09:30 | Program intro, assessment, **pre-test** | รศ.ดร.นัทธี สุรีย์ | Offer Goal 1 labeling items for the pre-test so pre/post comparison works |
+| Day 1, 09:30–12:15 | เทคโนโลยีเซนเซอร์วัดค่าสภาพแวดล้อมและชีวภาพ | รศ.ดร.สงวนศักดิ์ | **Demonstration only, no hands-on.** Goal 2 stays fully ours; Session 1 opens with "you saw these this morning, now measure with them yourself" |
+| Day 1, 13:00–16:00 | **Session 1** (ours) | อานันท์ | |
+| Day 2, 09:00–12:00 | **Session 2** (ours; drafted under กำพล และคณะ) | to agree with กำพล | |
+| Day 2, 13:00–16:00 | **Session 3** (ours; drafted under กำพล และคณะ) | กำพล leads comms/cloud, อานันท์ the rest | |
+| Days 3–5 | AI / computer vision / capstone (agenda not yet seen) | others | We are the foundation of the program, not its closing session |
 
 ---
 
 ## Learning goals → where each is taught
 
-| # | Learning goal | Online course | Workshop |
-|---|---------------|---------------|----------|
-| 1 | Input / Logic / Output model of autonomous systems | Section 1 (core) | Reinforced in every activity; recap at wrap-up |
-| 2 | Choose sensors & actuators (specs, form factor, price) | Sections 2–3 (core) | Activity 5 design challenge (applied) |
-| 3 | Create & implement logic for smart farm tasks | Section 5 (preview) | Activities 3–4 (core) |
-| 4 | Choose IoT infrastructure, communication & protocols | Section 4 (core) | Activity 5 design challenge (applied) |
-| 5 | Practical factors: redundancy, fail-safe, safety, maintenance | Mentioned in Section 4 | Activity 4 failure lab (core) + design challenge rubric |
-| 6 | Create dashboards to visualize inputs and control outputs | Section 5 (demo shows entity → card) | Activities 1–2 (core) |
+| # | Learning goal | Core | Applied / introduced |
+|---|---------------|------|----------------------|
+| 1 | Input / Logic / Output model of autonomous systems | Session 1 | Reinforced in every activity; recap in Session 3 wrap-up |
+| 2 | Choose sensors & actuators (specs, form factor, price) | Session 1 | Session 3 design challenge |
+| 3 | Create & implement logic for smart farm tasks | Session 2 | Session 1 ends with a manual sense → act loop that motivates automation |
+| 4 | Choose IoT infrastructure, communication & protocols | Session 3 | Seeded by the Session 2 failure lab (the link that died) |
+| 5 | Practical factors: redundancy, fail-safe, safety, maintenance | Session 2 | Session 3 design challenge rubric |
+| 6 | Create dashboards to visualize inputs and control outputs | Session 3 | Introduced in Session 1 (cards, toggle); control panel in Session 2 |
 
-Design principle: **concepts and vocabulary online, integration and judgment in the room.** Nothing in the workshop requires content that wasn't covered online, and nothing online is repeated as lecture in the workshop.
+Each post-test targets the two goals that are core in its session.
 
----
-
-## Part 1 — Online course (narrated slide decks, ~55 min total)
-
-Each section: one narrated deck ≤10 min + a 3–5 question self-check quiz. Host decks + quizzes on your LMS or a simple web page; short links/QR for each section.
-
-### Section 1 — ระบบอัตโนมัติทำงานอย่างไร: Input → Logic → Output (8 min) — Goal 1
-- Open with familiar examples: air conditioner, ตู้ฟักไข่, automatic street lights — each decomposed into input/logic/output.
-- The same three boxes drawn for a smart farm: soil sensor → "if dry" → pump.
-- Key vocabulary established here and reused verbatim everywhere: **Input (เซนเซอร์), Logic (ตัวตัดสินใจ), Output (ตัวกระทำ/actuator)**.
-- Self-check: given 3 scenarios, label the input, logic, and output.
-
-### Section 2 — เลือกเซนเซอร์ให้ฟาร์ม (10 min) — Goal 2
-- Survey of farm-relevant sensors: soil moisture (capacitive vs resistive — why resistive corrodes), temperature/humidity, light, water level, water flow, pH/EC (mention only).
-- **How to read a spec sheet:** measurement range, accuracy, interface (analog / I2C / one-wire), operating voltage, IP rating.
-- **Form factor & price:** bare module (฿30–150) vs industrial probe (฿1,000+); when each is appropriate. Real listings from Thai marketplaces as examples.
-- Self-check: pick the right sensor for 3 scenarios and justify from the spec.
-
-### Section 3 — เลือก actuator และการขับโหลด (8 min) — Goal 2
-- Pumps, solenoid valves, fans, grow lights; DC (12/24V) vs AC (220V) loads.
-- Why a microcontroller can't drive a pump directly → relay and SSR; reading relay ratings (10A @ 250VAC / 10A @ 30VDC), inductive-load derating in one sentence.
-- Sizing a pump: head, flow rate, and matching the power supply.
-- Safety framing that Activity 2 will echo: 12V is our classroom voltage; 220V needs an electrician.
-- Self-check: match loads to relays/supplies; spot the unsafe pairing.
-
-### Section 4 — โครงสร้างระบบ IoT: การสื่อสารและโปรโตคอล (10 min) — Goal 4
-- The decision axes: **distance, power source, data rate, cost**.
-- Communication types on those axes: WiFi (our choice — cheap, short range, mains-powered), ESP-NOW, LoRa/LoRaWAN (km-range, battery, tiny data), cellular/NB-IoT, wired RS-485.
-- Protocols in one slide each: MQTT (publish/subscribe, the farm workhorse), HTTP, ESPHome native API.
-- **Local-first vs cloud:** what happens to each when the internet fails — first seed of Goal 5.
-- Self-check: choose comms for 3 farms (backyard greenhouse / 10-rai orchard / remote field with no mains power).
-
-### Section 5 — รู้จักเครื่องมือของเรา: Home Assistant + ESPHome (7 min) — Goals 1, 3, 6 preview
-- Map the tools onto Section 1's boxes: ESP32 sensor board = input node, relay board = output node, Home Assistant = logic + dashboard + logging.
-- 2-minute screen-recorded demo of the exact finished system they will build: sensor graph, pump toggle, automation firing. This is the motivation hook.
-- Show the HASS automation editor: **trigger / condition / action** — vocabulary the workshop uses constantly.
-- No quiz; instead a prompt: "list two automations you'd want on a farm you know."
-
-### Section 6 — ติดตั้ง Home Assistant (10 min video + install time) — prerequisite gate
-- Step-by-step guided install for participants' own laptops. Recommend **one blessed path per OS** (e.g. HASS OS in VirtualBox for Windows; Docker for those who already have it) — do not present a menu of options.
-- Ends with a **verification task**: onboard HASS, create a user, submit a screenshot of the dashboard via a form **at least 3 days before workshop day**.
-- Follow-up plan for non-submitters: a reminder + an offer of a 15-min online help slot. Bring 3–4 USB sticks with the VM image as day-of rescue.
-
-**Total runtime: ~53 min.** Suggested release: all sections at once, 2 weeks before the workshop, with Section 6's deadline driving the schedule.
+### Design principles
+- **Experience first, vocabulary second.** Participants run a working networked system from Session 1 and only open the network in Session 3. ESPHome + HASS hide it completely: nobody types an SSID, an IP or a topic name before Session 3. One sentence of orientation at setup — *"your board and your Home Assistant talk over the workshop WiFi, not the hotel WiFi; we open that box on Saturday afternoon"* — and no more.
+- **Goal 5 is taught by experiencing failure**, not slides. The sabotage round is the emotional peak and the thing participants will retell.
+- **One kit through all three sessions.** Boards and hosts keep logging overnight; the Day 2 opener is the overnight graph.
+- **Sessions 1–2 run fully offline on our router.** Only Session 3 (cloud push) needs venue internet.
 
 ---
 
-## Part 2 — Hands-on workshop (3 hours, teams of 3–4)
+## Session 1 — Day 1 PM (13:00–15:45, post-test 15:45–16:00)
 
-### Anti-passenger structure for teams of 3–4
+**ระบบสมองกลฝังตัวในฟาร์ม: จากเซนเซอร์ถึงปั๊มน้ำ (Input → Logic → Output)** — Goals **1, 2** core; 6 introduced
+
+| Time | Block | Goals |
+|------|-------|-------|
+| 13:00–13:20 | **Live:** Input → Logic → Output with familiar examples (air conditioner, ตู้ฟักไข่, street light), then the same three boxes for a smart farm, mapped onto the kit: sensor board = input node, relay board = output node, HASS = logic + dashboard + logging. 2-min demo of the finished system as the hook. Vocabulary fixed here and reused verbatim: **Input (เซนเซอร์), Logic (ตัวตัดสินใจ), Output (ตัวกระทำ/actuator)**. | 1, 6 |
+| 13:20–13:30 | Kit handout, role cards, teams open their team HASS in a browser. WiFi orientation sentence (see principles). | — |
+| 13:30–14:05 | **Activity 1 — Sense.** Adopt the sensor board (add-by-IP), add dashboard cards, watch live values and the history graph. Mini-challenge: *which entity changes when you breathe on the board? cover it?* 5 min on the ESPHome YAML: which pin, ADC, I2C — this is the "embedded" in the title. Compare the soil sensor's spec sheet (range, accuracy, interface, IP rating; capacitive vs resistive) with what they see. | 1, 2, 6 |
+| 14:05–14:30 | **Live:** actuators and driving loads. Pumps, valves, fans, lights; DC vs AC; why a microcontroller can't drive a pump → relay / SSR; reading relay ratings; inductive derating in one sentence; sizing a pump (head, flow, supply). Safety framing: **12V is our classroom voltage; 220V needs an electrician.** | 2 |
+| 14:30–14:45 | Break | |
+| 14:45–15:25 | **Activity 2 — Act.** Adopt the relay board; toggle from dashboard and phone; connect the 12V pump (pre-made connectors); pump water between two containers on a drip tray. Recorder question: *what would change to run a 220V pump?* | 1, 2, 6 |
+| 15:25–15:45 | **Manual loop.** Irrigate by hand from the dashboard while watching the moisture graph — sets up "why automate" for tomorrow. Recap the three boxes. (This block is the timing buffer for Session 1.) | 1, 3 |
+
+**Post-test 1 (Goals 1, 2):** label input/logic/output in 3 scenarios; pick the right sensor from a spec for 3 scenarios; match loads to relays/supplies; spot the unsafe pairing.
+
+---
+
+## Session 2 — Day 2 AM (09:00–11:45, post-test 11:45–12:00)
+
+**ตรรกะควบคุมอัตโนมัติและการออกแบบ Fail-safe สำหรับฟาร์ม** — Goals **3, 5** core; 6 extended
+
+| Time | Block | Goals |
+|------|-------|-------|
+| 09:00–09:15 | **Overnight data.** Open the history graph: what happened while we were away? Motivates both automation and logging. | 3 |
+| 09:15–09:30 | **Live:** the HASS automation editor — **trigger / condition / action**. Hysteresis explained on yesterday's own graph. | 3 |
+| 09:30–10:30 | **Activity 3 — Think.** Ladder: (a) threshold: sensor value → pump ON; (b) hysteresis/deadband so it doesn't chatter; (c) time-window condition; (d) phone notification. Fast teams: templated automation or a second condition. Add a dashboard **control panel**: automation on/off switch + manual override. (a) and (b) are the required core; (c) and (d) are stretch. | 3, 6 |
+| 10:30–10:45 | Break | |
+| 10:45–11:30 | **Activity 4 — Failure lab.** Instructor sabotage round *while the pump automation is live*: WiFi router unplugged / sensor disconnected / HASS stopped. Teams observe, diagnose, then implement fail-safes: **max pump run-time cutoff** and **sensor-unavailable → safe state**. Keep the network explanation light: "the link died, the entities went unavailable, the pump was on its own." The *why* waits for Session 3. | 5 |
+| 11:30–11:45 | **Debrief:** redundancy, watchdogs, maintenance expectations (who checks the system weekly? what corrodes first?). | 5 |
+
+**Post-test 2 (Goals 3, 5):** predict what a given automation does; fix a chattering automation with hysteresis; choose the fail-safe for a scenario; maintenance items.
+
+---
+
+## Session 3 — Day 2 PM (13:00–15:45, post-test 15:45–16:00)
+
+**โครงสร้างระบบ IoT: การสื่อสาร คลาวด์ แดชบอร์ด และการออกแบบระบบฟาร์มของคุณ** — Goals **4, 6** core; 2, 5 applied
+
+| Time | Block | Goals |
+|------|-------|-------|
+| 13:00–13:30 | **Live (กำพล):** open the box — the `wifi:` and `api:` blocks in the ESPHome YAML, the device IP on the integration page, the live ESPHome log. Then the decision axes **distance, power source, data rate, cost**; WiFi (our choice), ESP-NOW, LoRa/LoRaWAN, cellular/NB-IoT, wired RS-485; MQTT (publish/subscribe), HTTP, ESPHome native API in one slide each. **Local-first vs cloud:** what happens to each when the internet fails — link back to yesterday's router failure. | 4 |
+| 13:30–14:30 | **Dashboard build** for a real user: gauges, history, controls, automation status, mobile view. Then push kit data to a cloud dashboard / broker for remote access (tool per กำพล). | 6, 4 |
+| 14:30–14:45 | Break | |
+| 14:45–15:30 | **Activity 5 — Design challenge.** Each team draws a scenario card (greenhouse / 10-rai orchard / hydroponics / remote plot, no mains) and produces a one-page system spec on a printed canvas: sensors + actuators **with real prices**, comms/protocol choice **with reasoning**, and at least **one fail-safe**. 1-minute pitch per team. | 2, 4, 5 |
+| 15:30–15:45 | **Wrap-up.** The three boxes across three sessions; where-to-go-next sheet (incl. take-home install guide); feedback form. | 1 |
+
+**Post-test 3 (Goals 4, 6):** choose comms for 3 farms (backyard greenhouse / 10-rai orchard / remote field with no mains power); dashboard and local-vs-cloud items. The design canvas is scored separately on the rubric.
+
+---
+
+## Anti-passenger structure for teams of 3–4
 Each team gets a **role card** with three rotating roles, swapped at every activity boundary:
 - **Driver** — hands on the laptop/HASS
 - **Hardware** — boards, wiring, pump
@@ -76,62 +103,91 @@ Each team gets a **role card** with three rotating roles, swapped at every activ
 
 The worksheet has one short written question per activity that the Recorder must fill in — this forces the team to verbalize what they did.
 
-### Agenda (180 min)
+---
 
-| Time | Activity | Goal focus |
-|------|----------|-----------|
-| 0:00–0:15 | **Setup & check-in.** Join dedicated workshop WiFi, confirm HASS runs, kit handout, role cards. | — |
-| 0:15–0:40 | **Activity 1 — Sense.** HASS discovers the pre-flashed ESP32-C3 sensor board; add dashboard cards; watch live values and history graphs. Mini-challenge: *"which entity changes when you breathe on the board? cover it?"* | 1, 2, 6 |
-| 0:40–1:05 | **Activity 2 — Act.** Adopt the relay board; toggle from dashboard and phone; connect the 12V pump (pre-made connectors); pump water between two containers on a drip tray. | 1, 2, 6 |
-| 1:05–1:15 | **Break** (boards keep logging — a talking point after) | — |
-| 1:15–1:55 | **Activity 3 — Think.** Build automations in the HASS editor, as a ladder: (a) threshold: sensor value → pump ON; (b) add hysteresis/deadband so it doesn't chatter; (c) add a time-window condition; (d) send a phone notification. Fast teams: templated automation or a second condition. | 3 |
-| 1:55–2:20 | **Activity 4 — Failure lab.** Instructor sabotage round: WiFi router unplugged / sensor disconnected / HASS stopped — *while the pump automation is live*. Teams observe, diagnose, then implement fail-safes: **max pump run-time cutoff** and **sensor-unavailable → safe state** automations. Debrief: redundancy, watchdogs, maintenance expectations (who checks the system weekly? what corrodes first?). | 5 |
-| 2:20–2:50 | **Activity 5 — Design challenge.** Each team draws a scenario card (greenhouse / 10-rai orchard / hydroponics / remote plot, no mains) and produces a one-page system spec on a printed canvas: sensors + actuators **with real prices**, comms/protocol choice **with reasoning**, and at least **one fail-safe**. 1-minute pitch per team. | 2, 4, 5 |
-| 2:50–3:00 | **Wrap-up.** Recap the three boxes; post-quiz (same items as online self-checks, shuffled); where-to-go-next sheet; feedback form. | 1 |
+## Online materials — optional pre-reading and take-home reference
 
-### Why this shape works
-- Activities 1→2→3 physically walk the Input → Output → Logic model — the workshop *is* Goal 1.
-- Goal 5 is taught by **experiencing failure**, not slides: the sabotage round is the emotional peak and the thing participants will retell.
-- Activity 5 makes goals 2 and 4 assessable: the canvas + pitch is your evidence they can choose components and infrastructure, and it must include what they learned in Activity 4.
+These narrated decks (each ≤10 min + a 3–5 question self-check) were designed as a pre-workshop course. In the program they are **optional** pre-reading, released with the enrollment pack if the organizers can distribute it, and the reference participants take home. Their content is delivered live where marked; the self-check items feed the three post-tests.
+
+### Section 1 — ระบบอัตโนมัติทำงานอย่างไร: Input → Logic → Output (8 min) — Goal 1 · *delivered live in Session 1*
+- Familiar examples decomposed into input/logic/output; the same boxes for a smart farm; the fixed vocabulary.
+- Self-check: given 3 scenarios, label the input, logic, and output.
+
+### Section 2 — เลือกเซนเซอร์ให้ฟาร์ม (10 min) — Goal 2 · *background to สงวนศักดิ์'s morning; hands-on in Session 1*
+- Survey of farm-relevant sensors: soil moisture (capacitive vs resistive — why resistive corrodes), temperature/humidity, light, water level, water flow, pH/EC (mention only).
+- **How to read a spec sheet:** measurement range, accuracy, interface (analog / I2C / one-wire), operating voltage, IP rating.
+- **Form factor & price:** bare module (฿30–150) vs industrial probe (฿1,000+); when each is appropriate. Real listings from Thai marketplaces as examples.
+- Self-check: pick the right sensor for 3 scenarios and justify from the spec.
+
+### Section 3 — เลือก actuator และการขับโหลด (8 min) — Goal 2 · *delivered live in Session 1*
+- Pumps, solenoid valves, fans, grow lights; DC (12/24V) vs AC (220V) loads; relay and SSR; reading relay ratings; inductive-load derating; sizing a pump.
+- Self-check: match loads to relays/supplies; spot the unsafe pairing.
+
+### Section 4 — โครงสร้างระบบ IoT: การสื่อสารและโปรโตคอล (10 min) — Goal 4 · *delivered live in Session 3*
+- Decision axes; communication types; MQTT / HTTP / ESPHome API; local-first vs cloud.
+- Self-check: choose comms for 3 farms.
+
+### Section 5 — รู้จักเครื่องมือของเรา: Home Assistant + ESPHome (7 min) — Goals 1, 3, 6 · *delivered live in Session 1*
+- Map the tools onto Section 1's boxes; 2-min screen-recorded demo of the finished system; the automation editor's trigger / condition / action.
+- Prompt instead of quiz: "list two automations you'd want on a farm you know."
+
+### Section 6 — ติดตั้ง Home Assistant (10 min video) — *take-home install guide*
+- Step-by-step guided install for participants' own machines, **one blessed path per OS** (e.g. HASS OS in VirtualBox for Windows; Docker for those who already have it) — do not present a menu of options.
+- If the laptop-host option is chosen instead of per-team hosts, this section becomes a prerequisite gate again: verification screenshot via a form **at least 3 days before Day 1**, reminder + 15-min online help slot for non-submitters, 3–4 USB sticks with the VM image as day-of rescue.
 
 ---
 
 ## Kit list (per team) and room logistics
 
 **Per team (plan for N teams + 2 spare kits):**
+- 1 × HASS host (Raspberry Pi / Home Assistant Green, pre-flashed, labeled with team number, on our router) — *pending the open decision above*
 - 1 × ESP32-C3 sensor board (pre-flashed, labeled with team number)
 - 1 × ESPHome relay board (pre-flashed, labeled)
 - 1 × 12V pump + tubing + 2 water containers + drip tray + towel
-- 1 × 12V power supply, USB cables, printed role cards + worksheet + design canvas
+- 1 × 12V power supply, USB cables, power strip, printed role cards + worksheets (3 sessions) + design canvas
 
-**Room:**
-- **Dedicated WiFi router** (your own, no captive portal, 2.4 GHz on, printed SSID/password per table). Do not rely on venue WiFi.
-- Firmware pre-provisioned with the workshop SSID; **assign static IPs** in ESPHome — mDNS discovery is flaky from inside VMs, so worksheets should include the "add ESPHome device by IP" path as the primary route.
-- Instructor station: HASS on a spare laptop mirroring a team kit, projected — plus it's the rescue instance if a team's laptop dies.
-- Water discipline: pumps and containers stay on trays at the end of the table, boards and laptops at the other end.
+**Room (convention-centre ballroom, not a lab):**
+- **Dedicated WiFi router** (our own, no captive portal, 2.4 GHz on, printed SSID/password per table). Do not rely on venue WiFi. Sessions 1–2 need no internet at all.
+- Firmware pre-provisioned with the workshop SSID; **assign static IPs** in ESPHome — mDNS discovery is flaky, so worksheets use "add ESPHome device by IP" as the primary route.
+- **Overnight:** hosts and boards stay powered in the room between Day 1 and Day 2. Confirm with the venue that power stays on and the room is not cleared. Fallback: the instructor kit goes to the hotel room overnight and its data is the Day 2 opener.
+- Instructor station: HASS on a spare laptop mirroring a team kit, projected — also the rescue instance if a team's host dies.
+- Venue internet (or an instructor phone hotspot) is needed only for the Session 3 cloud push.
+- Water discipline: pumps and containers stay on trays at the end of the table, boards and laptops at the other end. Confirm the venue allows water on tables.
 
 ## Risk register
 
 | Risk | Mitigation |
 |------|-----------|
-| Participants arrive without working HASS | Section 6 verification gate + reminder; VM-image USB sticks; rescue = pair with the instructor instance |
+| HASS host decision slips → host images and worksheets blocked | Decide first; it gates the whole production list |
+| Venue cuts power or clears the room overnight | Confirm in writing; instructor-kit fallback for the Day 2 opener |
+| Venue internet flaky during the Session 3 cloud push | Phone hotspot for the instructor; pre-recorded backup of the cloud demo |
+| Day 2 shape not agreed with กำพล | Agree the "30-min lecture + hands-on on the same kit" split and the cloud tool early, so firmware can be pre-provisioned for it |
 | Venue network blocks device-to-device traffic | Own router, always |
-| mDNS/discovery fails in VMs | Static IPs + add-by-IP as the documented default path |
+| mDNS/discovery fails | Static IPs + add-by-IP as the documented default path |
 | Teams of 4 → passengers | Role cards with forced rotation + Recorder's written questions |
-| A board bricks / a pump leaks | 2 spare kits; drip trays; pumps only run during Activities 2–4 |
-| Activity 3 overruns (it's the deep one) | Ladder design — (a) and (b) are the required core; (c) and (d) are stretch |
+| A board bricks / a pump leaks | 2 spare kits; drip trays; pumps only run during Activities 2–4 and the dashboard build |
+| Session 1 runs long now that sensor hands-on is ours too | The 15:25 manual-loop block is the buffer; Activity 1's YAML/spec segment is the first thing to trim |
 
 ## Assessment & evidence per goal
-- **Goal 1:** post-quiz labeling items (compare against online self-check scores)
-- **Goals 2, 4:** design-challenge canvas scored on a simple rubric (spec justified? price realistic? comms reasoning sound?)
-- **Goal 3:** working automation demonstrated in Activity 3 (facilitator checklist per team)
+- **Pre-test (Day 1 AM, run by นัทธี):** contribute the Goal 1 labeling items and one comms-choice item so there is a baseline.
+- **Post-test 1:** Goals 1, 2 · **Post-test 2:** Goals 3, 5 · **Post-test 3:** Goals 4, 6 — items reuse the online self-checks, shuffled.
+- **Goal 3:** working automation with hysteresis demonstrated in Activity 3 (facilitator checklist per team)
 - **Goal 5:** fail-safe implemented in Activity 4 + at least one fail-safe on the canvas
-- **Goal 6:** facilitator checklist item in Activities 1–2 — team dashboard shows a live sensor graph and a working pump toggle
+- **Goal 6:** facilitator checklist in Sessions 1 and 3 — team dashboard shows a live sensor graph and a working pump toggle (S1); a complete farm dashboard with controls and automation status (S3)
+- **Goals 2, 4, 5 applied:** design-challenge canvas scored on a simple rubric (spec justified? price realistic? comms reasoning sound? fail-safe present?)
 
 ## Production task list (suggested order)
-1. Section 6 install guide + verification form — longest lead time, gates everything
-2. Firmware: ESPHome YAML for both boards (workshop SSID, static IPs, friendly entity names in Thai)
-3. Workshop worksheet + role cards + design canvas + scenario cards
-4. Slide decks for Sections 1–5, then record narration (Thai)
-5. Facilitator run-sheet with the sabotage-round script and timing checkpoints
-6. Full dress rehearsal with one team of colleagues — timing Activity 3 especially
+1. **Decide the HASS host**, then build the host image + firmware: ESPHome YAML for both boards (workshop SSID, static IPs, friendly entity names in Thai). Rehearse overnight logging. Longest lead time, gates everything.
+2. Agree the Day 2 shape and cloud tool with กำพล; agree pre-test items and post-test logistics with นัทธี.
+3. Worksheets for 3 sessions + role cards + design canvas + scenario cards.
+4. Three post-tests (+ pre-test items).
+5. Live slide decks for Sessions 1–3, reusing the online-deck content.
+6. Facilitator run-sheet: sabotage-round script, timing checkpoints, overnight procedure.
+7. Full dress rehearsal with one team of colleagues — time Session 1 (sensor hands-on is now ours) and the failure lab.
+8. Online decks: record only if time remains; they are off the critical path.
+
+## Open decisions
+- HASS host: per-team Pi / HA Green (recommended) vs participants' laptops
+- Who leads Session 2, and กำพล's cloud tool for Session 3
+- Whether the organizers can distribute optional pre-reading before Day 1
+- Venue confirmations: overnight power, water on tables, internet for Session 3

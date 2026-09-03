@@ -15,6 +15,7 @@ Two-part training: a **pre-workshop online course** (~55 min of narrated slide d
 | 3 | Create & implement logic for smart farm tasks | Section 5 (preview) | Activities 3–4 (core) |
 | 4 | Choose IoT infrastructure, communication & protocols | Section 4 (core) | Activity 5 design challenge (applied) |
 | 5 | Practical factors: redundancy, fail-safe, safety, maintenance | Mentioned in Section 4 | Activity 4 failure lab (core) + design challenge rubric |
+| 6 | Create dashboards to visualize inputs and control outputs | Section 5 (demo shows entity → card) | Activities 1–2 (core) |
 
 Design principle: **concepts and vocabulary online, integration and judgment in the room.** Nothing in the workshop requires content that wasn't covered online, and nothing online is repeated as lecture in the workshop.
 
@@ -50,7 +51,7 @@ Each section: one narrated deck ≤10 min + a 3–5 question self-check quiz. Ho
 - **Local-first vs cloud:** what happens to each when the internet fails — first seed of Goal 5.
 - Self-check: choose comms for 3 farms (backyard greenhouse / 10-rai orchard / remote field with no mains power).
 
-### Section 5 — รู้จักเครื่องมือของเรา: Home Assistant + ESPHome (7 min) — Goals 1, 3 preview
+### Section 5 — รู้จักเครื่องมือของเรา: Home Assistant + ESPHome (7 min) — Goals 1, 3, 6 preview
 - Map the tools onto Section 1's boxes: ESP32 sensor board = input node, relay board = output node, Home Assistant = logic + dashboard + logging.
 - 2-minute screen-recorded demo of the exact finished system they will build: sensor graph, pump toggle, automation firing. This is the motivation hook.
 - Show the HASS automation editor: **trigger / condition / action** — vocabulary the workshop uses constantly.
@@ -80,8 +81,8 @@ The worksheet has one short written question per activity that the Recorder must
 | Time | Activity | Goal focus |
 |------|----------|-----------|
 | 0:00–0:15 | **Setup & check-in.** Join dedicated workshop WiFi, confirm HASS runs, kit handout, role cards. | — |
-| 0:15–0:40 | **Activity 1 — Sense.** HASS discovers the pre-flashed ESP32-C3 sensor board; add dashboard cards; watch live values and history graphs. Mini-challenge: *"which entity changes when you breathe on the board? cover it?"* | 1, 2 |
-| 0:40–1:05 | **Activity 2 — Act.** Adopt the relay board; toggle from dashboard and phone; connect the 12V pump (pre-made connectors); pump water between two containers on a drip tray. | 1, 2 |
+| 0:15–0:40 | **Activity 1 — Sense.** HASS discovers the pre-flashed ESP32-C3 sensor board; add dashboard cards; watch live values and history graphs. Mini-challenge: *"which entity changes when you breathe on the board? cover it?"* | 1, 2, 6 |
+| 0:40–1:05 | **Activity 2 — Act.** Adopt the relay board; toggle from dashboard and phone; connect the 12V pump (pre-made connectors); pump water between two containers on a drip tray. | 1, 2, 6 |
 | 1:05–1:15 | **Break** (boards keep logging — a talking point after) | — |
 | 1:15–1:55 | **Activity 3 — Think.** Build automations in the HASS editor, as a ladder: (a) threshold: sensor value → pump ON; (b) add hysteresis/deadband so it doesn't chatter; (c) add a time-window condition; (d) send a phone notification. Fast teams: templated automation or a second condition. | 3 |
 | 1:55–2:20 | **Activity 4 — Failure lab.** Instructor sabotage round: WiFi router unplugged / sensor disconnected / HASS stopped — *while the pump automation is live*. Teams observe, diagnose, then implement fail-safes: **max pump run-time cutoff** and **sensor-unavailable → safe state** automations. Debrief: redundancy, watchdogs, maintenance expectations (who checks the system weekly? what corrodes first?). | 5 |
@@ -125,6 +126,7 @@ The worksheet has one short written question per activity that the Recorder must
 - **Goals 2, 4:** design-challenge canvas scored on a simple rubric (spec justified? price realistic? comms reasoning sound?)
 - **Goal 3:** working automation demonstrated in Activity 3 (facilitator checklist per team)
 - **Goal 5:** fail-safe implemented in Activity 4 + at least one fail-safe on the canvas
+- **Goal 6:** facilitator checklist item in Activities 1–2 — team dashboard shows a live sensor graph and a working pump toggle
 
 ## Production task list (suggested order)
 1. Section 6 install guide + verification form — longest lead time, gates everything

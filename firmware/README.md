@@ -59,6 +59,11 @@ Do not change these without reading the reasoning:
 - **`restore_mode: ALWAYS_OFF`** on the relay — a pump must not restart itself after a
   power cut.
 - **No `friendly_name`** — so teams can tell 60 boards apart in Home Assistant.
+- **Every entity name carries an ASCII tag**, e.g. `ความชื้นอากาศ (humidity)`. ESPHome builds the
+  Home Assistant `entity_id` by transliterating the name to ASCII, so a Thai-only name becomes a
+  row of underscores — and two Thai names of the same character length collide outright and fail
+  to compile. The Thai stays first because that is what the worksheet refers to; the English tag
+  makes the entity_id unique and greppable. **Do not remove the tags.**
 
 ## Unconfirmed
 
@@ -68,6 +73,21 @@ Do not change these without reading the reasoning:
 
 Relay board pins were unconfirmed until the vendor datasheet arrived; they are now
 GPIO19 (relay), GPIO2 (LED), GPIO9 (button), recorded in `ESP32-C6-RELAY-X1.md`.
+
+## Vibration reporter
+
+`gogo-iot-workshop.yaml` includes a vibration reporter: it samples the accelerometer at 40 Hz,
+takes the magnitude, subtracts a slow baseline (removing gravity and tilt), RMS-es the remainder
+over 1 s, and applies hysteresis plus persistence. It publishes two entities —
+`ความสั่นสะเทือน (vibration)` in milli-g and the verdict `ปั๊มกำลังทำงาน (pump running)`.
+
+The point is **commanded state versus actual state**: a relay can be closed while the pump is
+seized, unprimed or unplugged. Raw acceleration is never streamed to Home Assistant; the three
+axis sensors are `internal`.
+
+Thresholds in the `substitutions:` block are **guesses** and must be calibrated against the real
+pump — TEST-PLAN test I. The 40 Hz poll rate aliases vibration above 20 Hz, which is harmless
+for a yes/no verdict but means the milli-g figure is not a calibrated measurement.
 
 ## Hazard worth knowing
 

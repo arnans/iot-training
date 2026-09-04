@@ -75,10 +75,13 @@ Where the two differ, the worksheet wins; COURSE-DESIGN still needs updating to 
   towel. Worksheet says the instructor provides them at the table.
 - **Handouts referenced but not written**: ESPHome YAML printout for both boards; humidity sensor
   and float switch spec excerpts; equipment price sheet for the design challenge.
-- **Worksheet adoption steps still say "IP from the team card"** in `session-1.md` (both boards),
-  `session-3.md` (the "open the box" network section reads `static_ip`), `reference.md`, and the
-  team-card description in `index.md` and `record-sheet.md`. These need rewriting to the USB
-  name-lookup flow above once the firmware is confirmed.
+- ~~**Worksheet adoption steps still say "IP from the team card"**~~ **Done.** Rewritten across
+  `session-1.md` (new "อ่านชื่อบอร์ด" block plus both adoption steps), `session-3.md` (the network
+  section now teaches that the config contains no IP at all), `reference.md` (menu path plus a
+  `.local`-fails fallback row), `index.md` and `record-sheet.md` (team card no longer carries IPs;
+  the record sheet has fields for the two board names). Safe to do before the bench test because
+  both possible outcomes of test B end in typing `<name>.local` — only *where the name comes from*
+  is still open (USB log vs a printed sticker), and that is four lines in one block.
 
 ## Network and device provisioning
 
@@ -112,34 +115,35 @@ Also still to verify: the ESPHome `api:` and `mqtt:` `reboot_timeout` default of
 be set to `0s` on both boards, or they will reboot every 15 minutes overnight when no Home
 Assistant is connected.
 
-## Deferred: vibration reporter (accelerometer)
+## Built: vibration reporter (accelerometer)
 
-Idea: the board infers "the pump is **actually** running" from the LSM6DS3 accelerometer,
-instead of trusting that the relay was commanded on. The algorithm is already specified in
-`gogo-iot-node/docs/ESPHOME_PLAN.md` (104 Hz sampling, magnitude, remove gravity baseline, RMS
-over ~1 s, hysteresis + persistence), and `HANDOFF.md` says to add it only after raw IMU
-operation is proven and to calibrate on a real pump.
+**Built and compiling**, in `gogo-iot-workshop.yaml`. Roger's correction settled it: the design
+model is **one board, one purpose** — a board that can do many things is used for one job at a
+time, and if you need several functions you use several boards. The physical conflict I had
+raised (the board cannot simultaneously see ambient light, sit in open air, hold the float
+switch, and be strapped to a pump) is therefore not a blocker. All sensors were previously
+bench-tested and work.
 
-**Deliberately not in the firmware being bench-tested.** Three reasons:
+It follows the algorithm in `gogo-iot-node/docs/ESPHOME_PLAN.md`: 40 Hz sampling, magnitude,
+slow-baseline subtraction, 1 s RMS, hysteresis and persistence. Publishes
+`ความสั่นสะเทือน (vibration)` in milli-g and the verdict `ปั๊มกำลังทำงาน (pump running)`.
+Raw axes stay `internal`.
 
-1. It is a lambda plus a template sensor with its own debugging loop, not a config tweak. Putting
-   it in the image under test would confound TEST-PLAN test A — a compile failure would be
-   ambiguous between the new code and the base config.
-2. Thresholds must be calibrated against the real pump; there is nothing to calibrate against yet.
-3. **The physical conflict may be fatal.** The sensor board already needs ambient light (session 2
-   lighting scenario), open air (humidity), and carries the float switch. If vibration is only
-   detectable with the board taped to a submerged pump, it cannot coexist with the rest of
-   session 1 on a single board.
+**Still open:**
 
-TEST-PLAN test I answers (3) in 15 minutes **with no new firmware** — just watch the existing
-acceleration entities with the pump toggling. If there is no signal, the feature dies cheaply.
-
-**Worth pursuing if the signal exists.** Pedagogically this is the strongest unused idea in the
-kit: commanded state versus actual state is precisely session 2's fail-safe theme, and the
-current design has no way to notice a relay that is ON while the pump is seized, unprimed, or
-unplugged. It would slot into session 2 as a fourth fail-safe, or into session 3's design canvas
-as a "how do you know it worked?" prompt. Fallback if the board cannot do both jobs: a second
-board on the instructor kit, demo only.
+- **Thresholds are guesses** (`vib_on_threshold: 25`, `vib_off_threshold: 12` milli-g). TEST-PLAN
+  test I calibrates them. If the pump-off and pump-on readings turn out indistinguishable, pull
+  the two entities rather than ship something that reports noise.
+- **Not yet in the worksheets.** Session 2's failure lab already runs three fail-safes and the
+  sabotage rounds in 45 minutes; a fourth hands-on item would overflow it. Two cheaper options,
+  both pending calibration:
+  - *Instructor demo* in the session 2 debrief, next to the Auto/Off/Manual control box — both
+    are about the layer that does not trust the controller. Roughly 3 minutes.
+  - *Design-canvas prompt* in session 3: "how does your system know the actuator actually did
+    something?" Pure text, no hardware time. **Added** — see the Output table in `record-sheet.md`.
+- **Cost when unused**: 40 Hz I2C polling runs on every board whether or not anyone looks at the
+  vibration entity. Watch during the bench test for any effect on the other sensors' stability or
+  on WiFi; if it bites, the answer is a separate image variant rather than a slower poll.
 
 ## Reuse across deliveries
 

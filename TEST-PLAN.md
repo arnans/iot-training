@@ -158,8 +158,8 @@ The session 2 opener reads a multi-hour graph. This test proves it exists.
 3. Come back the next morning.
 
 - [ ] Sensor board: history graph is continuous, no gaps
-- [ ] Relay board: check its uptime sensor or log — **it must not have rebooted**. A board
-      rebooting every 15 minutes means `reboot_timeout: 0s` did not take effect
+- [ ] Relay board: check the `เวลาทำงาน (uptime)` entity — **it must read the full elapsed
+      time**. If it keeps resetting to near zero, `reboot_timeout: 0s` did not take effect
 - [ ] Light trace shows the room lights going off and on — that is the session 2 hook
 
 **Question this answers:** does the between-session history actually materialise?
@@ -203,39 +203,38 @@ pump attached, and does it fail safe on power restore?
 
 ---
 
-## I. Can the board feel the pump? *(optional, 15 min, do last)*
+## I. Calibrate the vibration reporter *(20 min, do last)*
 
-Groundwork for a possible **vibration reporter** — the board inferring "the pump is actually
-running" from the accelerometer, rather than trusting that the relay was commanded on.
-Pedagogically this is the strongest unused idea in the kit: it is the difference between
-**commanded state and actual state**, which is exactly session 2's fail-safe theme. A relay can
-be ON while the pump is seized, unprimed, or unplugged, and nothing in the current design would
-notice.
+**The reporter is built and in the image.** It answers "is the pump *actually* running?" from
+the accelerometer, rather than trusting that the relay was commanded on — a relay can be closed
+while the pump is seized, unprimed or unplugged. Two entities appear in Home Assistant:
 
-**This test needs no new firmware.** The config already publishes accelerometer values. The
-question is purely physical, and it decides whether writing the RMS code is worth anything.
+| Entity | What it is |
+|---|---|
+| `ความสั่นสะเทือน (vibration)` | RMS deviation from the slow baseline, in milli-g, published every 1 s |
+| `ปั๊มกำลังทำงาน (pump running)` | The verdict, with hysteresis and persistence |
 
-1. Put the sensor board where it would actually live during the workshop, then also try it
-   resting against the tubing and on the drip tray beside the container.
-2. In Home Assistant, watch the raw acceleration entities. Toggle the pump on and off a few times.
+What needs your bench time is the **thresholds**, which are guesses right now:
+`vib_on_threshold: 25` and `vib_off_threshold: 12` milli-g, both in the `substitutions:` block
+at the top of `gogo-iot-workshop.yaml`.
 
-- [ ] Is there **any** visible difference in the acceleration trace between pump on and pump off?
-- [ ] If yes, roughly how big, and in which position? Note the best mounting spot
-- [ ] Does the difference survive someone bumping the table?
+1. Board sitting where it would normally live. Pump **off**. Read the vibration figure for a
+   minute — this is your noise floor.
+2. Pump **on**. Read it again.
+3. Try the board resting against the tubing, and on the drip tray beside the container.
 
-> **The catch to watch for.** The board has a job already: it needs ambient light for the
-> flower-farm lighting scenario, open air for humidity, and it carries the float switch. Strapping
-> it to a submerged pump conflicts with all three. If vibration is only detectable when the board
-> is taped to the pump body, the feature cannot coexist with the rest of session 1 on one board —
-> and the honest answer is to drop it, or give the instructor kit a second board for a demo.
+- [ ] Noise floor with pump off: ______ mg
+- [ ] Reading with pump on: ______ mg, best position: ______
+- [ ] Set `vib_on_threshold` roughly two-thirds of the way from floor to running, and
+      `vib_off_threshold` roughly one-third. Re-flash and confirm the verdict flips cleanly
+- [ ] Knock the table — does the verdict falsely trip? The 2 s `delayed_on` should absorb it
+- [ ] Pump off — does the verdict clear within the 5 s `delayed_off`?
 
-**Question this answers:** is there a signal at all, before anyone writes signal processing?
+> **If the two readings are indistinguishable**, the pump is too quiet or too decoupled to
+> detect at any threshold. That is a real result, not a failure — say so and I will pull the
+> two entities from the image rather than ship something that reads noise.
 
-If there is a usable signal, tell me and I will write the vibration component against the
-algorithm already specified in `gogo-iot-node/docs/ESPHOME_PLAN.md` — sample at 104 Hz, take
-magnitude, remove the gravity baseline, RMS over ~1 s, then hysteresis and persistence. That is
-a lambda plus a template sensor, and it needs its own debugging loop, which is why it is not in
-tomorrow's image.
+**Question this answers:** what are the real thresholds, and is the signal separable at all?
 
 ---
 
@@ -251,7 +250,7 @@ tomorrow's image.
 | F overnight | | relay board reboots overnight: |
 | G float switch | | pin: GPIO___ · ON = water present? |
 | H relay board | | 12V-only boot OK? · restore_mode OK? |
-| I pump vibration | | signal visible? best position: |
+| I vibration calibration | | floor: ___mg  running: ___mg  thresholds set: |
 
 ## After the test
 

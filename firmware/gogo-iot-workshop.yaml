@@ -13,6 +13,17 @@
 substitutions:
   device_base_name: gogo-iot
 
+  # --- Vibration reporter tuning (see "Vibration" at the bottom of this file) ---
+  # Sampling period for the accelerometer. 25ms = 40Hz.
+  vib_sample_interval: 25ms
+  # How often the RMS figure is published to Home Assistant.
+  vib_report_interval: 1s
+  # Hysteresis thresholds in milli-g, CALIBRATE THESE against the real pump.
+  # Same idea the workshop teaches in session 2: separate on and off thresholds
+  # so the reading does not flap when it sits near the line.
+  vib_on_threshold: "25"
+  vib_off_threshold: "12"
+
 esphome:
   name: ${device_base_name}
   # WORKSHOP: unique hostname per board from one image. This is the whole
@@ -81,7 +92,7 @@ i2c:
 # 0x77 SPA06-003      pressure + temperature
 sensor:
   - platform: bh1750
-    name: "ความสว่าง"
+    name: "ความสว่าง (light)"
     address: 0x23
     # WORKSHOP: 1s, not the 5s used by the others. Session 2 teaches hysteresis by
     # making the relay chatter while a hand hovers at the threshold. At 5s the
@@ -92,17 +103,17 @@ sensor:
     address: 0x44
     update_interval: 5s
     temperature:
-      name: "อุณหภูมิ"
+      name: "อุณหภูมิ (temperature)"
     humidity:
-      name: "ความชื้นอากาศ"
+      name: "ความชื้นอากาศ (humidity)"
 
   - platform: spa06_i2c
     address: 0x77
     update_interval: 5s
     pressure:
-      name: "ความกดอากาศ"
+      name: "ความกดอากาศ (pressure)"
     temperature:
-      name: "อุณหภูมิ (เซนเซอร์ความกดอากาศ)"
+      name: "อุณหภูมิ (pressure sensor)"
       # WORKSHOP: a second temperature entity confuses teams reading the entity
       # list. Kept but hidden from the default dashboard.
       internal: true
@@ -111,26 +122,164 @@ sensor:
     name: "อุณหภูมิ (IMU)"
     internal: true
 
+  # Raw axes. Internal: they exist only to drive the accumulator below.
+  # Declaration order matters — the accumulator hangs off the last one, by which
+  # point x and y have already been updated in the same listener pass.
+  - platform: motion
+    type: acceleration_x
+    id: accel_x
+    internal: true
+  - platform: motion
+    type: acceleration_y
+    id: accel_y
+    internal: true
+  - platform: motion
+    type: acceleration_z
+    id: accel_z
+    internal: true
+    on_value:
+      then:
+        - lambda: |-
+            // The lambda parameter `x` is this sensor's new value, i.e. the z
+            // axis. Do not name locals x/y/z here — they would shadow it.
+            const float ax = id(accel_x).state;
+            const float ay = id(accel_y).state;
+            const float az = x;
+            if (!(ax == ax && ay == ay && az == az)) return;   // NaN guard
+
+            const float mag = sqrtf(ax*ax + ay*ay + az*az);
+
+            // Slow baseline: ~2s time constant at 40Hz. Tracks gravity and any
+            // re-orientation, but not the vibration we are trying to measure.
+            id(vib_baseline) += 0.0125f * (mag - id(vib_baseline));
+
+            const float dev = mag - id(vib_baseline);
+            id(vib_sumsq) += (double) dev * dev;
+            id(vib_count) += 1;
+
+  # WORKSHOP: diagnostics. Uptime is how TEST-PLAN test F proves the board did
+  # not reboot overnight — without it there is nothing to check. WiFi signal is
+  # the first thing to look at when a board keeps going unavailable in the room.
+  - platform: uptime
+    name: "เวลาทำงาน (uptime)"
+    id: uptime_s
+    update_interval: 60s
+    entity_category: diagnostic
+  - platform: wifi_signal
+    name: "ความแรงสัญญาณ WiFi"
+    update_interval: 60s
+    entity_category: diagnostic
+
+  # Published metric: RMS deviation over the report window, in milli-g.
+  - platform: template
+    name: "ความสั่นสะเทือน (vibration)"
+    id: vibration_rms
+    unit_of_measurement: "mg"
+    accuracy_decimals: 1
+    state_class: measurement
+    icon: "mdi:vibrate"
+    update_interval: ${vib_report_interval}
+    lambda: |-
+      if (id(vib_count) < 2) return {};
+      const double rms = sqrt(id(vib_sumsq) / id(vib_count));
+      id(vib_sumsq) = 0;
+      id(vib_count) = 0;
+      return (float) (rms * 1000.0f);   // g -> milli-g
+
 motion:
   - platform: lsm6ds
     address: 0x6A
-    update_interval: 5s
+    # WORKSHOP: was 5s. The vibration reporter below needs a fast sample stream;
+    # this is the poll rate that feeds it. The chip's own ODR stays at 104Hz.
+    update_interval: ${vib_sample_interval}
     accelerometer_range: 4G
     accelerometer_odr: 104HZ
     gyroscope_range: 2000DPS
+    # WORKSHOP: gyro unused; save the bus and the power.
+    # Quoted, or YAML reads bare OFF as boolean false.
+    gyroscope_odr: "OFF"
 
-# WORKSHOP: float switch on configurable port 1.
-# Netlist (docs/SCHEMATIC_REFERENCE.md): SPECIALPORT1-A = CN2.1 = U1.12[IO0]
-#                                        SPECIALPORT1-B = CN2.2 = U1.13[IO1]
-# Neither is a strapping pin on the ESP32-C3 (those are IO2, IO8, IO9), so a
-# switch to ground here is safe at boot.
+# ============================================================================
+# Vibration reporter
+# ----------------------------------------------------------------------------
+# Answers "is the pump ACTUALLY running?" rather than "did we command it on?".
+# A relay can be closed while the pump is seized, unprimed or unplugged, and
+# nothing else in the kit would notice. This is the commanded-state versus
+# actual-state distinction that session 2's fail-safe block is built around.
 #
-# CONFIRM ON THE BENCH: which Grove pin the float-switch adapter uses, and whether
-# the switch closes when the float RISES or FALLS. Set `inverted` so that the
-# entity reads ON = water present. See TEST-PLAN.md test G.
+# Algorithm follows gogo-iot-node/docs/ESPHOME_PLAN.md:
+#   1. sample acceleration fast (40Hz here; chip ODR is 104Hz)
+#   2. take the magnitude, so mounting orientation does not matter
+#   3. subtract a slow baseline, which removes gravity and any tilt
+#   4. RMS the remainder over a 1s window
+#   5. threshold with hysteresis and persistence
+#
+# Deliberately NOT streaming raw acceleration to Home Assistant: the three axis
+# sensors below are internal, and only the 1s RMS figure and the binary verdict
+# are published.
+#
+# Note on sampling: vibration above 20Hz aliases down at a 40Hz poll rate. For a
+# yes/no "is it running" verdict that is harmless — aliased energy still shows up
+# as variance. Do not read the RMS figure as a calibrated vibration measurement.
+# ============================================================================
+
+# WORKSHOP: the board's own IP, visible in Home Assistant. Useful to the
+# instructor when a team's `.local` lookup fails and they need the fallback.
+text_sensor:
+  - platform: wifi_info
+    ip_address:
+      name: "หมายเลข IP"
+      entity_category: diagnostic
+
+globals:
+  - id: vib_baseline          # slow-moving magnitude, i.e. gravity + tilt
+    type: float
+    restore_value: false
+    initial_value: '1.0'      # acceleration is in g, so at rest magnitude is ~1
+  - id: vib_sumsq
+    type: double
+    restore_value: false
+    initial_value: '0'
+  - id: vib_count
+    type: int
+    restore_value: false
+    initial_value: '0'
+  - id: vib_running           # holds the hysteresis state
+    type: bool
+    restore_value: false
+    initial_value: 'false'
+
 binary_sensor:
+  # The verdict. Hysteresis in the lambda, persistence in the filters — the same
+  # two ideas teams apply by hand in session 2, here done in firmware.
+  - platform: template
+    name: "ปั๊มกำลังทำงาน (pump running)"
+    id: pump_running
+    icon: "mdi:water-pump"
+    lambda: |-
+      const float v = id(vibration_rms).state;
+      if (!(v == v)) return {};                 // no reading yet
+      if (id(vib_running)) {
+        if (v < ${vib_off_threshold}) id(vib_running) = false;
+      } else {
+        if (v > ${vib_on_threshold}) id(vib_running) = true;
+      }
+      return id(vib_running);
+    filters:
+      - delayed_on: 2s        # ignore a knock on the table
+      - delayed_off: 5s       # ride through a brief dip
+
+  # WORKSHOP: float switch on configurable port 1.
+  # Netlist (docs/SCHEMATIC_REFERENCE.md): SPECIALPORT1-A = CN2.1 = U1.12[IO0]
+  #                                        SPECIALPORT1-B = CN2.2 = U1.13[IO1]
+  # Neither is a strapping pin on the ESP32-C3 (those are IO2, IO8, IO9), so a
+  # switch to ground here is safe at boot.
+  #
+  # CONFIRM ON THE BENCH: which Grove pin the float-switch adapter uses, and
+  # whether the switch closes when the float RISES or FALLS. Set `inverted` so
+  # the entity reads ON = water present. See TEST-PLAN.md test G.
   - platform: gpio
-    name: "สวิตช์ลูกลอย"
+    name: "สวิตช์ลูกลอย (float switch)"
     pin:
       number: GPIO0
       mode:

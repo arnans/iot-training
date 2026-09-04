@@ -53,9 +53,29 @@ wifi:
 captive_portal:
 improv_serial:
 
+# WORKSHOP: diagnostics. Uptime matters most on this board — it sits on the 12V
+# rail overnight with no Home Assistant connected, which is exactly the case
+# reboot_timeout: 0s exists to handle. TEST-PLAN test F checks it here.
+sensor:
+  - platform: uptime
+    name: "เวลาทำงาน (uptime)"
+    id: uptime_s
+    update_interval: 60s
+    entity_category: diagnostic
+  - platform: wifi_signal
+    name: "ความแรงสัญญาณ WiFi"
+    update_interval: 60s
+    entity_category: diagnostic
+
+text_sensor:
+  - platform: wifi_info
+    ip_address:
+      name: "หมายเลข IP"
+      entity_category: diagnostic
+
 switch:
   - platform: gpio
-    name: "รีเลย์"
+    name: "รีเลย์ (relay)"
     pin: ${relay_pin}
     id: relay
     # Safety: after a power cut or reboot the pump must not come back on by itself.
@@ -81,7 +101,7 @@ output:
 # are harmless; only holding it while power is applied enters download mode.
 binary_sensor:
   - platform: gpio
-    name: "ปุ่มบนบอร์ด"
+    name: "ปุ่มบนบอร์ด (button)"
     pin:
       number: ${button_pin}
       mode:

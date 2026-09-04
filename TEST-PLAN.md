@@ -175,6 +175,42 @@ pump attached, and does it fail safe on power restore?
 
 ---
 
+## I. Can the board feel the pump? *(optional, 15 min, do last)*
+
+Groundwork for a possible **vibration reporter** — the board inferring "the pump is actually
+running" from the accelerometer, rather than trusting that the relay was commanded on.
+Pedagogically this is the strongest unused idea in the kit: it is the difference between
+**commanded state and actual state**, which is exactly session 2's fail-safe theme. A relay can
+be ON while the pump is seized, unprimed, or unplugged, and nothing in the current design would
+notice.
+
+**This test needs no new firmware.** The config already publishes accelerometer values. The
+question is purely physical, and it decides whether writing the RMS code is worth anything.
+
+1. Put the sensor board where it would actually live during the workshop, then also try it
+   resting against the tubing and on the drip tray beside the container.
+2. In Home Assistant, watch the raw acceleration entities. Toggle the pump on and off a few times.
+
+- [ ] Is there **any** visible difference in the acceleration trace between pump on and pump off?
+- [ ] If yes, roughly how big, and in which position? Note the best mounting spot
+- [ ] Does the difference survive someone bumping the table?
+
+> **The catch to watch for.** The board has a job already: it needs ambient light for the
+> flower-farm lighting scenario, open air for humidity, and it carries the float switch. Strapping
+> it to a submerged pump conflicts with all three. If vibration is only detectable when the board
+> is taped to the pump body, the feature cannot coexist with the rest of session 1 on one board —
+> and the honest answer is to drop it, or give the instructor kit a second board for a demo.
+
+**Question this answers:** is there a signal at all, before anyone writes signal processing?
+
+If there is a usable signal, tell me and I will write the vibration component against the
+algorithm already specified in `gogo-iot-node/docs/ESPHOME_PLAN.md` — sample at 104 Hz, take
+magnitude, remove the gravity baseline, RMS over ~1 s, then hysteresis and persistence. That is
+a lambda plus a template sensor, and it needs its own debugging loop, which is why it is not in
+tomorrow's image.
+
+---
+
 ## Results
 
 | Test | Pass | Notes / values to keep |
@@ -186,7 +222,8 @@ pump attached, and does it fail safe on power restore?
 | E chattering visible | | clicks/min before hysteresis: |
 | F overnight | | relay board reboots overnight: |
 | G float switch | | pin: GPIO___ · ON = water present? |
-| H relay pins | | relay GPIO: ___ LED GPIO: ___ button GPIO: ___ |
+| H relay board | | 12V-only boot OK? · restore_mode OK? |
+| I pump vibration | | signal visible? best position: |
 
 ## After the test
 

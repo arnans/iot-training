@@ -112,6 +112,35 @@ Also still to verify: the ESPHome `api:` and `mqtt:` `reboot_timeout` default of
 be set to `0s` on both boards, or they will reboot every 15 minutes overnight when no Home
 Assistant is connected.
 
+## Deferred: vibration reporter (accelerometer)
+
+Idea: the board infers "the pump is **actually** running" from the LSM6DS3 accelerometer,
+instead of trusting that the relay was commanded on. The algorithm is already specified in
+`gogo-iot-node/docs/ESPHOME_PLAN.md` (104 Hz sampling, magnitude, remove gravity baseline, RMS
+over ~1 s, hysteresis + persistence), and `HANDOFF.md` says to add it only after raw IMU
+operation is proven and to calibrate on a real pump.
+
+**Deliberately not in the firmware being bench-tested.** Three reasons:
+
+1. It is a lambda plus a template sensor with its own debugging loop, not a config tweak. Putting
+   it in the image under test would confound TEST-PLAN test A — a compile failure would be
+   ambiguous between the new code and the base config.
+2. Thresholds must be calibrated against the real pump; there is nothing to calibrate against yet.
+3. **The physical conflict may be fatal.** The sensor board already needs ambient light (session 2
+   lighting scenario), open air (humidity), and carries the float switch. If vibration is only
+   detectable with the board taped to a submerged pump, it cannot coexist with the rest of
+   session 1 on a single board.
+
+TEST-PLAN test I answers (3) in 15 minutes **with no new firmware** — just watch the existing
+acceleration entities with the pump toggling. If there is no signal, the feature dies cheaply.
+
+**Worth pursuing if the signal exists.** Pedagogically this is the strongest unused idea in the
+kit: commanded state versus actual state is precisely session 2's fail-safe theme, and the
+current design has no way to notice a relay that is ON while the pump is seized, unprimed, or
+unplugged. It would slot into session 2 as a fourth fail-safe, or into session 3's design canvas
+as a "how do you know it worked?" prompt. Fallback if the board cannot do both jobs: a second
+board on the instructor kit, demo only.
+
 ## Reuse across deliveries
 
 The worksheets carry no dates, venue names, or weekday references. Session pages refer to each other
@@ -120,6 +149,19 @@ have gone off and on (the light trace is the opener's hook) and for humidity to 
 overnight gap is ideal, a lunch break still shows something.
 
 ## Images
+
+`docs/images/relay-board-terminals.png` is the labelled board diagram cropped from the vendor
+datasheet (page 7) — NO/COM/NC, the 7–60 V input, USB, button, and both LEDs, all called out.
+It is the one image in the worksheet that is not a placeholder, and it directly serves "students
+must see clearly where to connect the wires." `relay-board.jpg` is the clean unlabelled photo
+from the same PDF, kept as the source for a Thai-annotated version if you want one later.
+
+These are vendor product images of hardware we bought, used in our own training material. Fine
+for the workshop; if the worksheets are ever published more widely, retake them ourselves.
+
+The earlier `relay-board-generic-x1.webp` was **deleted** — it was the WROOM variant from
+devices.esphome.io, a different board.
+
 
 `docs/images/relay-board-generic-x1.webp` is the ESP32 Relay X1 product photo from
 [devices.esphome.io](https://devices.esphome.io/devices/esp32-relay-x1/) — the WROOM variant, same

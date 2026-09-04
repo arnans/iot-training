@@ -25,7 +25,10 @@ Where the two differ, the worksheet wins; COURSE-DESIGN still needs updating to 
 2. **Float switch on port 1 as `binary_sensor`.** Worksheet asks teams to note which state appears
    when the float is lifted and use that as the fail-safe trigger, so either polarity works.
 3. **Relay node exposes one `switch`.** Its onboard LED must follow the relay so the "lamp" is visible.
-4. **Static IPs, add-by-IP**, encryption key on the team card if enabled. Unchanged.
+4. **`name_add_mac_suffix: true`, WiFi baked in, shared API encryption key**, `reboot_timeout: 0s`.
+   No static IPs — see "Network and device provisioning" below. The light sensor's
+   `update_interval` overrides the 5s used by the other sensors in the current
+   `gogo-iot-node.yaml`.
 5. **Instructor HA adopts all GoGo-IoT nodes** before the end of session 1. Confirm the ESPHome
    `api:` max-connections setting allows the team laptop plus the instructor instance plus a
    dashboard log stream.
@@ -66,6 +69,42 @@ Where the two differ, the worksheet wins; COURSE-DESIGN still needs updating to 
   towel. Worksheet says the instructor provides them at the table.
 - **Handouts referenced but not written**: ESPHome YAML printout for both boards; humidity sensor
   and float switch spec excerpts; equipment price sheet for the design challenge.
+- **Worksheet adoption steps still say "IP from the team card"** in `session-1.md` (both boards),
+  `session-3.md` (the "open the box" network section reads `static_ip`), `reference.md`, and the
+  team-card description in `index.md` and `record-sheet.md`. These need rewriting to the USB
+  name-lookup flow above once the firmware is confirmed.
+
+## Network and device provisioning
+
+Resolved: **no static IPs, no MAC reservations, no per-board configuration.** One identical
+firmware image for all boards, with `name_add_mac_suffix: true` so each advertises a unique
+mDNS hostname. Workshop SSID baked in; `improv_serial:` and `captive_portal:` included so WiFi
+can be set over USB or from a phone at a future delivery.
+
+Adoption flow per board: plug into the laptop over USB → web.esphome.io → Connect → read the
+board's name from the log → in HA, **Add integration → ESPHome → Host:** `<name>.local` →
+shared encryption key → rename the device to the team's name. Typing the name avoids the
+discovered-device list, which would show every board in the room.
+
+Requirements this places on the network are written up in
+[NETWORK-REQUIREMENTS.md](NETWORK-REQUIREMENTS.md) for the provider. The two that most often
+fail by default: **mDNS forwarded between wireless clients**, and **two MAC addresses allowed
+per laptop** (the Home Assistant VM is bridged, so it has its own MAC and IP).
+
+Consequences for the install guide, still to be written:
+
+- **VirtualBox network adapter must be Bridged, not NAT.** With NAT the VM cannot receive
+  multicast, `.local` will not resolve, and phones cannot reach it. This is the single decision
+  the whole addressing scheme rests on.
+- **Docker Desktop on Windows cannot be offered as a path** — no host networking, so no mDNS.
+- The phone step reads the address from **HA Settings → System → Network** (the VM's IP), not
+  the laptop's IP.
+- Fallback if a laptop cannot resolve `.local`: use the IP shown in the USB log. Week-long DHCP
+  leases keep it valid for the workshop.
+
+Also still to verify: the ESPHome `api:` and `mqtt:` `reboot_timeout` default of 15 minutes must
+be set to `0s` on both boards, or they will reboot every 15 minutes overnight when no Home
+Assistant is connected.
 
 ## Reuse across deliveries
 

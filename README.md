@@ -14,6 +14,7 @@ specific to that first delivery.
 | [COURSE-DESIGN.md](COURSE-DESIGN.md) | Full course design: session plans, goals, kit list, risks, production tasks |
 | [PART1-RECORDING-PREP.md](PART1-RECORDING-PREP.md) | Readiness notes for the optional narrated online decks |
 | [WORKSHEET-TODO.md](WORKSHEET-TODO.md) | Open items and assumptions in the worksheets |
+| [NETWORK-REQUIREMENTS.md](NETWORK-REQUIREMENTS.md) | Wireless network spec to hand to the venue's network provider |
 | `docs/` | **Participant worksheets** — the website source (Thai) |
 
 ## Participant worksheet site

@@ -24,7 +24,7 @@ Every `[DEMO]` is its own segment ID, never embedded inside a `[TALK]`.
 | Outline | Not ready | COURSE-DESIGN.md has syllabus bullets, not speaking key points; no segment IDs, no TALK/DEMO split, no per-segment budgets |
 | Outcomes | Partial | Goals mapped to sections; no per-section outcome statements; self-check quiz items not written |
 | DEMO captures | Not ready | Section 5 needs a working HASS + both boards (sensor graph, pump toggle, automation firing); Section 6 needs the install screencast → blessed install path + HASS version decided. Prerequisite: firmware for both boards (COURSE-DESIGN production task #2) |
-| V2 media | Not ready | Sensor/actuator photos, spec-sheet excerpts, marketplace price listings, relay rating plate, comms-comparison diagram, Input/Logic/Output card. No asset inventory (`analysis/asset-sources.json` pattern). Cards are generated after recording — not needed now |
+| V2 media | Not ready | Sensor/actuator photos, spec-sheet excerpts, marketplace price listings, relay rating plate, pump control box photo (Auto/Off/Manual selector), comms-comparison diagram, Input/Logic/Output card. No asset inventory (`analysis/asset-sources.json` pattern). Cards are generated after recording — not needed now |
 | ASR term glossary | Not written | Thai/English mixed terms for Whisper `initial_prompt`: Home Assistant, ESPHome, relay, MQTT, LoRa, hysteresis, capacitive, actuator… |
 | Tooling on this machine | Missing | Local book-cs1 clone is 5 commits behind origin (`promo-video/` only on origin); `video-pipeline` not cloned here (searched C: and E:); Whisper env needed |
 

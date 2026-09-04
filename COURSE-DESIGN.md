@@ -31,7 +31,7 @@ A set of narrated decks (see *Online materials* below) remains as **optional pre
 | 2 | Choose sensors & actuators (specs, form factor, price) | Session 1 | Session 3 design challenge |
 | 3 | Create & implement logic for smart farm tasks | Session 2 | Session 1 ends with a manual sense → act loop that motivates automation |
 | 4 | Choose IoT infrastructure, communication & protocols | Session 3 | Seeded by the Session 2 failure lab (the link that died) |
-| 5 | Practical factors: redundancy, fail-safe, safety, maintenance | Session 2 | Session 3 design challenge rubric |
+| 5 | Practical factors: redundancy, fail-safe, safety, maintenance | Session 2 | Introduced in Session 1 (manual override / Auto-Off-Manual control box); Session 3 design challenge rubric |
 | 6 | Create dashboards to visualize inputs and control outputs | Session 3 | Introduced in Session 1 (cards, toggle); control panel in Session 2 |
 
 Each post-test targets the two goals that are core in its session.
@@ -46,19 +46,19 @@ Each post-test targets the two goals that are core in its session.
 
 ## Session 1 — Day 1 PM (13:00–15:45, post-test 15:45–16:00)
 
-**ระบบสมองกลฝังตัวในฟาร์ม: จากเซนเซอร์ถึงปั๊มน้ำ (Input → Logic → Output)** — Goals **1, 2** core; 6 introduced
+**ระบบสมองกลฝังตัวในฟาร์ม: รับรู้ ตัดสินใจ สั่งการ (Input → Logic → Output)** — Goals **1, 2** core; 6 introduced
 
 | Time | Block | Goals |
 |------|-------|-------|
-| 13:00–13:20 | **Live:** Input → Logic → Output with familiar examples (air conditioner, ตู้ฟักไข่, street light), then the same three boxes for a smart farm, mapped onto the kit: sensor board = input node, relay board = output node, HASS = logic + dashboard + logging. 2-min demo of the finished system as the hook. Vocabulary fixed here and reused verbatim: **Input (เซนเซอร์), Logic (ตัวตัดสินใจ), Output (ตัวกระทำ/actuator)**. | 1, 6 |
+| 13:00–13:20 | **Live:** Input → Logic → Output with familiar examples — **air conditioner / fridge** (thermostat → "if too warm" → compressor), **automatic street light** (light sensor → "if dark" → lamp), **automatic water tank** (float switch → "if level low" → pump; the bridge example: already a sensor-controlled pump, with a mechanical switch as the logic) — then the same three boxes for a smart farm (the water tank with a different sensor and the logic moved into software), mapped onto the kit: sensor board = input node, relay board = output node, HASS = logic + dashboard + logging. 2-min demo of the finished system as the hook. Vocabulary fixed here and reused verbatim: **Input (เซนเซอร์), Logic (ตัวตัดสินใจ), Output (ตัวกระทำ/actuator)**. | 1, 6 |
 | 13:20–13:30 | Kit handout, role cards, teams open their team HASS in a browser. WiFi orientation sentence (see principles). | — |
 | 13:30–14:05 | **Activity 1 — Sense.** Adopt the sensor board (add-by-IP), add dashboard cards, watch live values and the history graph. Mini-challenge: *which entity changes when you breathe on the board? cover it?* 5 min on the ESPHome YAML: which pin, ADC, I2C — this is the "embedded" in the title. Compare the soil sensor's spec sheet (range, accuracy, interface, IP rating; capacitive vs resistive) with what they see. | 1, 2, 6 |
-| 14:05–14:30 | **Live:** actuators and driving loads. Pumps, valves, fans, lights; DC vs AC; why a microcontroller can't drive a pump → relay / SSR; reading relay ratings; inductive derating in one sentence; sizing a pump (head, flow, supply). Safety framing: **12V is our classroom voltage; 220V needs an electrician.** | 2 |
+| 14:05–14:30 | **Live:** actuators and driving loads. Pumps, valves, fans, lights; DC vs AC; why a microcontroller can't drive a pump → relay / SSR; reading relay ratings; inductive derating in one sentence; sizing a pump (head, flow, supply). **Manual override — never let the logic be the only way to control an actuator:** show a typical pump control box with its **Auto / Off / Manual** selector. Auto = the controller drives the pump; Off = pump cannot run (maintenance, leak found); Manual = pump runs regardless of the controller (sensor faulty, network down, crop still needs water). Standard practice, not an add-on: the person on the farm must be able to stop or start the pump without a laptop. First seed of Goal 5. Safety framing: **12V is our classroom voltage; 220V needs an electrician.** | 2, 5 |
 | 14:30–14:45 | Break | |
 | 14:45–15:25 | **Activity 2 — Act.** Adopt the relay board; toggle from dashboard and phone; connect the 12V pump (pre-made connectors); pump water between two containers on a drip tray. Recorder question: *what would change to run a 220V pump?* | 1, 2, 6 |
 | 15:25–15:45 | **Manual loop.** Irrigate by hand from the dashboard while watching the moisture graph — sets up "why automate" for tomorrow. Recap the three boxes. (This block is the timing buffer for Session 1.) | 1, 3 |
 
-**Post-test 1 (Goals 1, 2):** label input/logic/output in 3 scenarios; pick the right sensor from a spec for 3 scenarios; match loads to relays/supplies; spot the unsafe pairing.
+**Post-test 1 (Goals 1, 2):** label input/logic/output in 3 scenarios (see Section 1 self-check below); pick the right sensor from a spec for 3 scenarios; match loads to relays/supplies; spot the unsafe pairing; given a scenario (sensor broken / leak found), pick the Auto/Off/Manual position.
 
 ---
 
@@ -73,7 +73,7 @@ Each post-test targets the two goals that are core in its session.
 | 09:30–10:30 | **Activity 3 — Think.** Ladder: (a) threshold: sensor value → pump ON; (b) hysteresis/deadband so it doesn't chatter; (c) time-window condition; (d) phone notification. Fast teams: templated automation or a second condition. Add a dashboard **control panel**: automation on/off switch + manual override. (a) and (b) are the required core; (c) and (d) are stretch. | 3, 6 |
 | 10:30–10:45 | Break | |
 | 10:45–11:30 | **Activity 4 — Failure lab.** Instructor sabotage round *while the pump automation is live*: WiFi router unplugged / sensor disconnected / HASS stopped. Teams observe, diagnose, then implement fail-safes: **max pump run-time cutoff** and **sensor-unavailable → safe state**. Keep the network explanation light: "the link died, the entities went unavailable, the pump was on its own." The *why* waits for Session 3. | 5 |
-| 11:30–11:45 | **Debrief:** redundancy, watchdogs, maintenance expectations (who checks the system weekly? what corrodes first?). | 5 |
+| 11:30–11:45 | **Debrief:** redundancy, watchdogs, maintenance expectations (who checks the system weekly? what corrodes first?). **Instructor demo (not a team task):** a real pump control box wired to the instructor kit — flip **Auto / Off / Manual** while the automation runs and show the pump obey the switch, not HASS. Links back to Session 1. | 5 |
 
 **Post-test 2 (Goals 3, 5):** predict what a given automation does; fix a chattering automation with hysteresis; choose the fail-safe for a scenario; maintenance items.
 
@@ -81,7 +81,7 @@ Each post-test targets the two goals that are core in its session.
 
 ## Session 3 — Day 2 PM (13:00–15:45, post-test 15:45–16:00)
 
-**โครงสร้างระบบ IoT: การสื่อสาร คลาวด์ แดชบอร์ด และการออกแบบระบบฟาร์มของคุณ** — Goals **4, 6** core; 2, 5 applied
+**โครงสร้างระบบ IoT: การสื่อสาร คลาวด์ แดชบอร์ด และการออกแบบระบบ** — Goals **4, 6** core; 2, 5 applied
 
 | Time | Block | Goals |
 |------|-------|-------|
@@ -110,18 +110,24 @@ The worksheet has one short written question per activity that the Recorder must
 These narrated decks (each ≤10 min + a 3–5 question self-check) were designed as a pre-workshop course. In the program they are **optional** pre-reading, released with the enrollment pack if the organizers can distribute it, and the reference participants take home. Their content is delivered live where marked; the self-check items feed the three post-tests.
 
 ### Section 1 — ระบบอัตโนมัติทำงานอย่างไร: Input → Logic → Output (8 min) — Goal 1 · *delivered live in Session 1*
-- Familiar examples decomposed into input/logic/output; the same boxes for a smart farm; the fixed vocabulary.
-- Self-check: given 3 scenarios, label the input, logic, and output.
+- Familiar examples decomposed into input/logic/output — air conditioner / fridge, automatic street light, automatic water tank (float switch → pump) as the bridge example; the same boxes for a smart farm; the fixed vocabulary.
+- Self-check: label the input, logic, and output in 3 scenarios, chosen to be different from the taught examples so learners generalize rather than recall:
+  1. **Greenhouse exhaust fan** — a temperature sensor turns the fan on when the greenhouse exceeds 35 °C. *(Straightforward; a different actuator than a pump.)*
+  2. **Fish / shrimp pond aerator** — a dissolved-oxygen (DO) sensor switches the paddle-wheel aerator on when oxygen in the pond drops, typically before dawn. *(An unfamiliar sensor and a large motor as the actuator; the three boxes still apply.)*
+  3. **Sprinkler with a rain sensor** — a timer starts the sprinkler every morning at 6:00, but not if the rain sensor is wet. *(Two inputs, one of which is a clock; the logic combines them. Previews the conditions they add in Activity 3.)*
 
 ### Section 2 — เลือกเซนเซอร์ให้ฟาร์ม (10 min) — Goal 2 · *background to สงวนศักดิ์'s morning; hands-on in Session 1*
-- Survey of farm-relevant sensors: soil moisture (capacitive vs resistive — why resistive corrodes), temperature/humidity, light, water level, water flow, pH/EC (mention only).
+- Survey of farm-relevant sensors in two tiers, so learners know what to buy first and what to treat with caution:
+  - **Commonly available** — cheap modules on any Thai marketplace, plug straight into an ESP32, good enough for most farm logic: soil moisture (capacitive vs resistive — why resistive corrodes), air temperature/humidity, light, water level (float switch, ultrasonic), water flow, rain. This is the tier the workshop uses.
+  - **Specific or technically complex** — know they exist and why they are harder: pH/EC and dissolved oxygen (probes drift, need regular calibration, consumable electrodes), soil NPK probes (RS-485/Modbus interface, accuracy claims often unreliable), CO₂, leaf wetness, weather stations (wind/rain gauges), cameras. What makes them complex is one of three things: **calibration**, **interface** (industrial RS-485 rather than a simple pin), or **price** (฿2,000–20,000+). Rule of thumb: start with tier 1; move to tier 2 only when the logic genuinely needs that measurement.
 - **How to read a spec sheet:** measurement range, accuracy, interface (analog / I2C / one-wire), operating voltage, IP rating.
 - **Form factor & price:** bare module (฿30–150) vs industrial probe (฿1,000+); when each is appropriate. Real listings from Thai marketplaces as examples.
 - Self-check: pick the right sensor for 3 scenarios and justify from the spec.
 
 ### Section 3 — เลือก actuator และการขับโหลด (8 min) — Goal 2 · *delivered live in Session 1*
 - Pumps, solenoid valves, fans, grow lights; DC (12/24V) vs AC (220V) loads; relay and SSR; reading relay ratings; inductive-load derating; sizing a pump.
-- Self-check: match loads to relays/supplies; spot the unsafe pairing.
+- **Manual override:** the Auto / Off / Manual pump control box — why every actuator needs a way to be stopped (maintenance) or run (sensor fault) without the controller. First seed of Goal 5.
+- Self-check: match loads to relays/supplies; spot the unsafe pairing; given a scenario, pick the selector position.
 
 ### Section 4 — โครงสร้างระบบ IoT: การสื่อสารและโปรโตคอล (10 min) — Goal 4 · *delivered live in Session 3*
 - Decision axes; communication types; MQTT / HTTP / ESPHome API; local-first vs cloud.
@@ -150,7 +156,7 @@ These narrated decks (each ≤10 min + a 3–5 question self-check) were designe
 - **Dedicated WiFi router** (our own, no captive portal, 2.4 GHz on, printed SSID/password per table). Do not rely on venue WiFi. Sessions 1–2 need no internet at all.
 - Firmware pre-provisioned with the workshop SSID; **assign static IPs** in ESPHome — mDNS discovery is flaky, so worksheets use "add ESPHome device by IP" as the primary route.
 - **Overnight:** hosts and boards stay powered in the room between Day 1 and Day 2. Confirm with the venue that power stays on and the room is not cleared. Fallback: the instructor kit goes to the hotel room overnight and its data is the Day 2 opener.
-- Instructor station: HASS on a spare laptop mirroring a team kit, projected — also the rescue instance if a team's host dies.
+- Instructor station: HASS on a spare laptop mirroring a team kit, projected — also the rescue instance if a team's host dies. Also **one pump control box (Auto/Off/Manual)** wired between the instructor relay board and pump, for the Session 2 debrief demo only — teams do not get or build one.
 - Venue internet (or an instructor phone hotspot) is needed only for the Session 3 cloud push.
 - Water discipline: pumps and containers stay on trays at the end of the table, boards and laptops at the other end. Confirm the venue allows water on tables.
 
@@ -182,7 +188,7 @@ These narrated decks (each ≤10 min + a 3–5 question self-check) were designe
 3. Worksheets for 3 sessions + role cards + design canvas + scenario cards.
 4. Three post-tests (+ pre-test items).
 5. Live slide decks for Sessions 1–3, reusing the online-deck content.
-6. Facilitator run-sheet: sabotage-round script, timing checkpoints, overnight procedure.
+6. Facilitator run-sheet: sabotage-round script, control-box demo script, timing checkpoints, overnight procedure.
 7. Full dress rehearsal with one team of colleagues — time Session 1 (sensor hands-on is now ours) and the failure lab.
 8. Online decks: record only if time remains; they are off the critical path.
 

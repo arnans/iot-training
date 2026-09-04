@@ -1,0 +1,43 @@
+site_name: IoT ในฟาร์มอัจฉริยะ
+site_description: ใบงานสำหรับผู้เข้าร่วม - IoT Systems in Smart Farming
+
+docs_dir: docs
+site_dir: site
+
+theme:
+  name: material
+  language: th
+  features:
+    - navigation.top
+    - navigation.sections
+    - content.code.copy
+    - toc.integrate
+  palette:
+    - scheme: default
+      primary: teal
+      accent: teal
+      toggle:
+        icon: material/weather-night
+        name: โหมดมืด
+    - scheme: slate
+      primary: teal
+      accent: teal
+      toggle:
+        icon: material/weather-sunny
+        name: โหมดสว่าง
+
+nav:
+  - เริ่มต้นที่นี่: index.md
+  - "ช่วงที่ 1 — ระบบสมองกลฝังตัวในฟาร์ม: รับรู้ ตัดสินใจ สั่งการ": session-1.md
+  - "ช่วงที่ 2 — ตรรกะควบคุมอัตโนมัติและการออกแบบ Fail-safe สำหรับฟาร์ม": session-2.md
+  - "ช่วงที่ 3 — โครงสร้างระบบ IoT: การสื่อสาร คลาวด์ แดชบอร์ด และการออกแบบระบบ": session-3.md
+  - ใบบันทึก (พิมพ์): record-sheet.md
+  - อ้างอิงเมนู: reference.md
+
+markdown_extensions:
+  - admonition
+  - attr_list
+  - md_in_html
+  - tables
+  - toc:
+      permalink: true

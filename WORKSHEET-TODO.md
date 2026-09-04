@@ -145,6 +145,19 @@ Raw axes stay `internal`.
   vibration entity. Watch during the bench test for any effect on the other sensors' stability or
   on WiFi; if it bites, the answer is a separate image variant rather than a slower poll.
 
+## Found in review, fixed
+
+- **Thai-only entity names collide.** ESPHome builds the Home Assistant `entity_id` by
+  transliterating the name to ASCII; a Thai-only name becomes a row of underscores, and two of
+  equal character length fail to compile outright. Every entity name now carries a lowercase
+  ASCII tag. Would have produced unusable entity_ids on all 120 boards.
+- **Activity 2 had teams power the relay board twice at once.** The step order read: connect the
+  12 V adapter, *then* read the board name over USB — precisely the "choose one" violation the
+  datasheet warns about. The name lookup is now its own block before any wiring, ending with
+  "unplug the USB cable".
+- **TEST-PLAN test F checked an uptime sensor that did not exist.** Both boards now publish
+  uptime, WiFi signal and IP as diagnostic entities.
+
 ## Reuse across deliveries
 
 The worksheets carry no dates, venue names, or weekday references. Session pages refer to each other

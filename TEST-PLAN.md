@@ -7,39 +7,67 @@ worksheets currently assume without evidence.
 **Time:** about 2 hours if nothing surprises you. Tests A–D are the critical path; E–H can
 follow later if time runs short.
 
+## Already done for you
+
+- **ESPHome 2026.6.5 is installed** on this machine.
+- **Both images compile clean**, verified end to end:
+  `gogo-iot-workshop.yaml` → 992 KB factory image (~4 min), `relay-workshop.yaml` → 1.1 MB.
+  The ESP-IDF toolchains for both C3 and C6 are downloaded and the build cache is warm, so
+  rebuilds are far quicker than the first run.
+- **One expected warning**, not a problem: `GPIO9 is a strapping PIN and should only be used
+  for I/O with care`. GPIO9 is the relay board's onboard button, per the vendor datasheet.
+  A momentary press while running is harmless; only holding it during power-up enters the
+  bootloader.
+- **`firmware/secrets.yaml` exists** with a real generated API encryption key, OTA password and
+  fallback AP password. It is gitignored.
+
+> **The one thing to do before flashing:** the two WiFi lines in `firmware/secrets.yaml` are
+> placeholders (`CHANGE_ME_SSID` / `CHANGE_ME_PASSWORD`). Put in the network you are testing
+> against, then `esphome run <file>.yaml`. The rebuild is incremental, not another 4 minutes.
+>
+> Keep the generated `api_encryption_key` — it is the one shared key that goes on every board and
+> onto the team card. Regenerate it only if you want to.
+
 ## Before you start
 
 - [ ] GoGo-IoT sensor board, USB-C cable
 - [ ] ESP32-C6 relay board, USB-C cable
 - [ ] Float switch with its Grove adapter, a glass of water
 - [ ] Laptop with Chrome or Edge (Web Serial needs one of those; Firefox will not work)
-- [ ] Python with `pip install esphome`
+- [ ] Edit the two WiFi lines in `firmware/secrets.yaml`
 - [ ] A WiFi network you control. **Not** a corporate/university SSID — those usually block
       client-to-client traffic and mDNS, which would make tests C and D fail for the wrong reason
 - [ ] Home Assistant reachable from the laptop. If it is a VM, **bridged adapter, not NAT**
-- [ ] `firmware/secrets.yaml` filled in from `secrets.example.yaml`
 
 Record results in the table at the bottom.
 
+```bash
+cd firmware
+esphome run gogo-iot-workshop.yaml     # sensor board
+esphome run relay-workshop.yaml        # relay board
+```
+
 ---
 
-## A. Build and flash the workshop image
+## A. Flash the workshop image
+
+Compilation is already proven — both images built clean on ESPHome 2026.6.5, including
+`spa06_i2c` and `lsm6ds`, so no external components or version pins are needed. This step is
+now about flashing and first boot.
 
 ```bash
 cd firmware
 esphome run gogo-iot-workshop.yaml
 ```
 
-- [ ] Compiles without error
-- [ ] Flashes over USB
+- [ ] Flashes over USB without holding any button (native USB should reset it automatically)
 - [ ] Log shows the device name **with a MAC suffix**: `gogo-iot-xxxxxx`
 - [ ] All four I2C sensors report values, no `Communication failed` lines
+- [ ] Board joins WiFi
 
-> **If `spa06_i2c` or `lsm6ds` fail to compile**, the bring-up config may depend on an
-> ESPHome version or an external component not pinned here. Check the version that worked
-> upstream and pin it in `esphome:` before debugging anything else.
+> If the board will not enter the bootloader on its own, hold BOOT while plugging in.
 
-**Question this answers:** does one image build clean and produce a unique name?
+**Question this answers:** does the image run on real hardware and see all four sensors?
 
 ---
 

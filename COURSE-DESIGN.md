@@ -4,9 +4,11 @@ Three hands-on sessions (150 min each, ~7.5 h) delivered inside the CMU Lifelong
 
 A set of narrated decks (see *Online materials* below) remains as **optional pre-reading and take-home reference**. Nothing in the room depends on it.
 
-**Tool stack:** Home Assistant (logic, dashboards, logging, remote control) on a per-team host · ESPHome custom ESP32-C3 board with built-in sensors (input) · ESPHome relay board driving 12V loads such as a water pump (output). Every device on our own WiFi router. No soldering anywhere.
+**Tool stack:** Home Assistant (logic, dashboards, logging, remote control) **on each team's own laptop** · GoGo-IoT board (ESP32-C3, onboard temperature/humidity/light/pressure/IMU, float switch on port 1) as input · ESP32-C6 relay board driving a 12V pump as output · PWM solar charge controller as the kit's 12V source. Every device on the workshop WiFi. Teams wire the 12V circuit by hand once; no soldering anywhere.
 
-> **Open decision — HASS host.** Recommended: one pre-flashed Raspberry Pi / Home Assistant Green per team, so laptops only need a browser and the host keeps logging overnight between Day 1 and Day 2. Alternative: HASS on participants' laptops, which needs an install step the program gives us no channel to gate before Day 1.
+> **Decided — HASS host: participants' laptops.** Home Assistant runs in a VM on each team's laptop (VirtualBox, **bridged** adapter — NAT breaks mDNS and phone access). Consequence: laptops go home, so the between-session history comes from an **instructor Home Assistant** that adopts every team's sensor node alongside their laptop. ESPHome's API accepts multiple simultaneous clients, so this needs no extra hardware on the tables. A pre-workshop install guide becomes a hard prerequisite.
+
+> **Decided — device addressing: DHCP, no static IPs, no per-board setup.** One identical firmware image per board type, with `name_add_mac_suffix` giving each board a unique mDNS hostname. Teams read that name over USB at web.esphome.io, then add the device in Home Assistant as `<name>.local`. See [firmware/](firmware/) and [TEST-PLAN.md](TEST-PLAN.md). This moves the burden onto the network — see [NETWORK-REQUIREMENTS.md](NETWORK-REQUIREMENTS.md).
 
 ---
 
@@ -139,22 +141,30 @@ These narrated decks (each ≤10 min + a 3–5 question self-check) were designe
 
 ### Section 6 — ติดตั้ง Home Assistant (10 min video) — *take-home install guide*
 - Step-by-step guided install for participants' own machines, **one blessed path per OS** (e.g. HASS OS in VirtualBox for Windows; Docker for those who already have it) — do not present a menu of options.
-- If the laptop-host option is chosen instead of per-team hosts, this section becomes a prerequisite gate again: verification screenshot via a form **at least 3 days before Day 1**, reminder + 15-min online help slot for non-submitters, 3–4 USB sticks with the VM image as day-of rescue.
+- **Now a hard prerequisite, not optional pre-reading**, since Home Assistant runs on participants' laptops. One blessed path per OS, **VirtualBox with a bridged adapter** (NAT breaks mDNS and phone access; Docker Desktop on Windows cannot work). Verification screenshot via a form **at least 3 days before Day 1**, reminder + 15-min online help slot for non-submitters, 3–4 laptops with the VM pre-imaged as day-of rescue.
 
 ---
 
 ## Kit list (per team) and room logistics
 
 **Per team (plan for N teams + 2 spare kits):**
-- 1 × HASS host (Raspberry Pi / Home Assistant Green, pre-flashed, labeled with team number, on our router) — *pending the open decision above*
-- 1 × ESP32-C3 sensor board (pre-flashed, labeled with team number)
-- 1 × ESPHome relay board (pre-flashed, labeled)
-- 1 × 12V pump + tubing + 2 water containers + drip tray + towel
-- 1 × 12V power supply, USB cables, power strip, printed role cards + worksheets (3 sessions) + design canvas
+- Team's **own laptop** running Home Assistant in a bridged VM (installed before Day 1)
+- 1 × GoGo-IoT sensor board (ESP32-C3; temperature, humidity, light, pressure, IMU; 18650 cell)
+- 1 × float switch with Grove adapter → board port 1, as the reservoir-low guard
+- 1 × ESP32-C6 single-channel relay board
+- 1 × 12V aquarium pump + tubing + 2 water containers + drip tray + towel
+- 1 × PWM charge controller (12V 10A, USB out) + 12V adapter standing in for the battery
+  + terminal block + hook-up wire — the kit's 12V distribution, wired by the team in Activity 2
+- 1 × 12V 15W solar panel, added to the controller in Session 3
+- USB-C cables, power strip, printed role cards + record sheet + design canvas
+- Team card: shared API encryption key, workshop SSID, instructor HA address
+
+**Not in the kit any more:** soil moisture sensor (air humidity stands in for it), per-team
+Raspberry Pi, per-board IP labels.
 
 **Room (convention-centre ballroom, not a lab):**
 - **Dedicated WiFi router** (our own, no captive portal, 2.4 GHz on, printed SSID/password per table). Do not rely on venue WiFi. Sessions 1–2 need no internet at all.
-- Firmware pre-provisioned with the workshop SSID; **assign static IPs** in ESPHome — mDNS discovery is flaky, so worksheets use "add ESPHome device by IP" as the primary route.
+- Firmware pre-provisioned with the workshop SSID; **DHCP with week-long leases**, boards addressed by mDNS hostname. Full network spec for the provider in [NETWORK-REQUIREMENTS.md](NETWORK-REQUIREMENTS.md); the two requirements most likely to be missed are mDNS forwarding between wireless clients and allowing two MAC addresses per laptop (bridged VM).
 - **Overnight:** hosts and boards stay powered in the room between Day 1 and Day 2. Confirm with the venue that power stays on and the room is not cleared. Fallback: the instructor kit goes to the hotel room overnight and its data is the Day 2 opener.
 - Instructor station: HASS on a spare laptop mirroring a team kit, projected — also the rescue instance if a team's host dies. Also **one pump control box (Auto/Off/Manual)** wired between the instructor relay board and pump, for the Session 2 debrief demo only — teams do not get or build one.
 - Venue internet (or an instructor phone hotspot) is needed only for the Session 3 cloud push.
@@ -169,7 +179,10 @@ These narrated decks (each ≤10 min + a 3–5 question self-check) were designe
 | Venue internet flaky during the Session 3 cloud push | Phone hotspot for the instructor; pre-recorded backup of the cloud demo |
 | Day 2 shape not agreed with กำพล | Agree the "30-min lecture + hands-on on the same kit" split and the cloud tool early, so firmware can be pre-provisioned for it |
 | Venue network blocks device-to-device traffic | Own router, always |
-| mDNS/discovery fails | Static IPs + add-by-IP as the documented default path |
+| mDNS fails on a laptop | Fall back to the IP shown in the board's USB log; week-long DHCP leases keep it valid for the workshop |
+| Network provider leaves client isolation or multicast filtering on | Acceptance test in NETWORK-REQUIREMENTS.md, run during the setup window with someone who can change controller settings |
+| Participant laptop arrives without Home Assistant installed | Install guide sent ahead + verification form; spare laptops with the VM pre-imaged |
+| Relay chattering demo does not show at 1s sampling | TEST-PLAN.md test E settles this before firmware is committed |
 | Teams of 4 → passengers | Role cards with forced rotation + Recorder's written questions |
 | A board bricks / a pump leaks | 2 spare kits; drip trays; pumps only run during Activities 2–4 and the dashboard build |
 | Session 1 runs long now that sensor hands-on is ours too | The 15:25 manual-loop block is the buffer; Activity 1's YAML/spec segment is the first thing to trim |
@@ -183,7 +196,9 @@ These narrated decks (each ≤10 min + a 3–5 question self-check) were designe
 - **Goals 2, 4, 5 applied:** design-challenge canvas scored on a simple rubric (spec justified? price realistic? comms reasoning sound? fail-safe present?)
 
 ## Production task list (suggested order)
-1. **Decide the HASS host**, then build the host image + firmware: ESPHome YAML for both boards (workshop SSID, static IPs, friendly entity names in Thai). Rehearse overnight logging. Longest lead time, gates everything.
+1. **Bench-test the provisioning flow** ([TEST-PLAN.md](TEST-PLAN.md)), then finalise the two firmware images in [firmware/](firmware/) and flash the production run. Rehearse overnight logging on the instructor instance. Longest lead time, gates everything.
+1b. **Write the pre-workshop Home Assistant install guide** (VirtualBox bridged, one blessed path per OS, opening port 8123 for phones) and get it to participants with a verification step. This is now a hard prerequisite, not optional pre-reading.
+1c. **Send [NETWORK-REQUIREMENTS.md](NETWORK-REQUIREMENTS.md) to the network provider** and book the setup-window acceptance test.
 2. Agree the Day 2 shape and cloud tool with กำพล; agree pre-test items and post-test logistics with นัทธี.
 3. Worksheets for 3 sessions + role cards + design canvas + scenario cards.
 4. Three post-tests (+ pre-test items).
@@ -193,7 +208,6 @@ These narrated decks (each ≤10 min + a 3–5 question self-check) were designe
 8. Online decks: record only if time remains; they are off the critical path.
 
 ## Open decisions
-- HASS host: per-team Pi / HA Green (recommended) vs participants' laptops
 - Who leads Session 2, and กำพล's cloud tool for Session 3
 - Whether the organizers can distribute optional pre-reading before Day 1
 - Venue confirmations: overnight power, water on tables, internet for Session 3

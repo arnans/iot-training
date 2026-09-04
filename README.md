@@ -15,6 +15,8 @@ specific to that first delivery.
 | [PART1-RECORDING-PREP.md](PART1-RECORDING-PREP.md) | Readiness notes for the optional narrated online decks |
 | [WORKSHEET-TODO.md](WORKSHEET-TODO.md) | Open items and assumptions in the worksheets |
 | [NETWORK-REQUIREMENTS.md](NETWORK-REQUIREMENTS.md) | Wireless network spec to hand to the venue's network provider |
+| [TEST-PLAN.md](TEST-PLAN.md) | Bench test for the ESPHome provisioning flow, before committing the firmware image |
+| `firmware/` | The two workshop ESPHome images (sensor node, relay board) |
 | `docs/` | **Participant worksheets** — the website source (Thai) |
 
 ## Participant worksheet site

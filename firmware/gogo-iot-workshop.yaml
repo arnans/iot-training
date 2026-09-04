@@ -1,0 +1,142 @@
+# GoGo-IoT sensor node — WORKSHOP image
+#
+# One identical image for every board. Uniqueness comes from name_add_mac_suffix,
+# which appends the last 3 bytes of the MAC to the hostname:
+#     gogo-iot  ->  gogo-iot-a1b2c3
+#
+# Participants read that name over USB at web.esphome.io, then add the device in
+# Home Assistant as  <name>.local  — no static IPs, no MAC reservations, no stickers.
+#
+# Derived from gogo-iot-node.github/gogo-iot-node/firmware/gogo-iot-node.yaml
+# (bring-up config). Differences from that file are marked  # WORKSHOP:
+
+substitutions:
+  device_base_name: gogo-iot
+
+esphome:
+  name: ${device_base_name}
+  # WORKSHOP: unique hostname per board from one image. This is the whole
+  # provisioning strategy — do not remove.
+  name_add_mac_suffix: true
+  # WORKSHOP: friendly_name deliberately omitted. With it set, all 60 boards would
+  # appear in Home Assistant as the same human-readable name and teams could not
+  # tell them apart. Without it, HA shows the unique hostname, and teams rename
+  # the device to their own team name after adding it.
+
+esp32:
+  board: esp32-c3-devkitm-1
+  framework:
+    type: esp-idf
+
+# ESP32-C3 native USB Serial/JTAG (IO18/IO19 -> USB-C D-/D+); this board has no
+# USB-UART bridge. This is also the port improv_serial and web.esphome.io use.
+logger:
+  hardware_uart: USB_SERIAL_JTAG
+  # WORKSHOP: bring-up used VERBOSE, which floods once illuminance runs at 1s.
+  # INFO keeps the boot banner and the device name visible at web.esphome.io,
+  # which is all participants need to read.
+  level: INFO
+
+api:
+  encryption:
+    key: !secret api_encryption_key
+  # WORKSHOP: default is 15min — with no Home Assistant connected overnight the
+  # board would reboot every 15 minutes, punching gaps in the session-2 history.
+  reboot_timeout: 0s
+
+ota:
+  - platform: esphome
+    password: !secret ota_password
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+  # WORKSHOP: default is 15min; same reasoning as api.reboot_timeout. If the AP
+  # blips at 03:00 we want a retry, not a reboot loop.
+  reboot_timeout: 0s
+  # WORKSHOP: fallback hotspot if the baked-in SSID is not found. Together with
+  # captive_portal this lets a board be re-provisioned from a phone at a future
+  # workshop or at a participant's home, without reflashing.
+  ap:
+    ssid: ${device_base_name}-setup
+    password: !secret fallback_ap_password
+
+captive_portal:
+
+# WORKSHOP: set WiFi over the USB cable from a browser (web.esphome.io, Chrome
+# or Edge). Not needed when the SSID is baked in, but it is the escape hatch and
+# costs nothing.
+improv_serial:
+
+# Verified from PCB connectivity review: SDA -> GPIO8, SCL -> GPIO2
+i2c:
+  sda: GPIO8
+  scl: GPIO2
+  scan: true
+  frequency: 100kHz
+
+# 0x23 BH1750FVI-TR   illuminance
+# 0x44 GXHT30C        temperature + humidity (SHT3x-compatible)
+# 0x6A LSM6DS3TR-C    6-axis IMU
+# 0x77 SPA06-003      pressure + temperature
+sensor:
+  - platform: bh1750
+    name: "ความสว่าง"
+    address: 0x23
+    # WORKSHOP: 1s, not the 5s used by the others. Session 2 teaches hysteresis by
+    # making the relay chatter while a hand hovers at the threshold. At 5s the
+    # chattering is invisible and the lesson fails. See TEST-PLAN.md test E.
+    update_interval: 1s
+
+  - platform: sht3xd
+    address: 0x44
+    update_interval: 5s
+    temperature:
+      name: "อุณหภูมิ"
+    humidity:
+      name: "ความชื้นอากาศ"
+
+  - platform: spa06_i2c
+    address: 0x77
+    update_interval: 5s
+    pressure:
+      name: "ความกดอากาศ"
+    temperature:
+      name: "อุณหภูมิ (เซนเซอร์ความกดอากาศ)"
+      # WORKSHOP: a second temperature entity confuses teams reading the entity
+      # list. Kept but hidden from the default dashboard.
+      internal: true
+
+  - platform: lsm6ds
+    name: "อุณหภูมิ (IMU)"
+    internal: true
+
+motion:
+  - platform: lsm6ds
+    address: 0x6A
+    update_interval: 5s
+    accelerometer_range: 4G
+    accelerometer_odr: 104HZ
+    gyroscope_range: 2000DPS
+
+# WORKSHOP: float switch on configurable port 1.
+# Netlist (docs/SCHEMATIC_REFERENCE.md): SPECIALPORT1-A = CN2.1 = U1.12[IO0]
+#                                        SPECIALPORT1-B = CN2.2 = U1.13[IO1]
+# Neither is a strapping pin on the ESP32-C3 (those are IO2, IO8, IO9), so a
+# switch to ground here is safe at boot.
+#
+# CONFIRM ON THE BENCH: which Grove pin the float-switch adapter uses, and whether
+# the switch closes when the float RISES or FALLS. Set `inverted` so that the
+# entity reads ON = water present. See TEST-PLAN.md test G.
+binary_sensor:
+  - platform: gpio
+    name: "สวิตช์ลูกลอย"
+    pin:
+      number: GPIO0
+      mode:
+        input: true
+        pullup: true
+      inverted: true      # switch pulls to GND when closed -> ON
+    filters:
+      - delayed_on: 500ms
+      - delayed_off: 500ms   # mechanical float bounces on a moving water surface

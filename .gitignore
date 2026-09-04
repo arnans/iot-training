@@ -3,3 +3,7 @@ site/
 __pycache__/
 .DS_Store
 Thumbs.db
+
+# ESPHome secrets (workshop SSID, shared API key)
+firmware/secrets.yaml
+firmware/.esphome/

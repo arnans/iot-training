@@ -6,7 +6,8 @@ identity comes from `name_add_mac_suffix`, not from per-board configuration.
 | File | Board | Notes |
 |---|---|---|
 | `gogo-iot-workshop.yaml` | GoGo-IoT sensor node (ESP32-C3) | Derived from `gogo-iot-node` repo bring-up config |
-| `relay-workshop.yaml` | ESP32-C6 single relay | Relay GPIO **not yet confirmed** |
+| `relay-workshop.yaml` | ESP32-C6-Relay_X1 v1.1 | Pins confirmed — see `ESP32-C6-RELAY-X1.md` |
+| `ESP32-C6-RELAY-X1.md` | — | Hardware reference extracted from the vendor PDF |
 | `secrets.example.yaml` | — | Copy to `secrets.yaml` (gitignored) |
 
 The sensor node's authoritative hardware source stays in the
@@ -61,8 +62,15 @@ Do not change these without reading the reasoning:
 
 ## Unconfirmed
 
-- **Relay GPIO on the ESP32-C6 v1.1 board.** Placeholder is GPIO16 from the WROOM
-  variant of the same family. See TEST-PLAN.md test H.
 - **Float switch pin and polarity.** Port 1 is CN2 → GPIO0 / GPIO1 per the schematic
   netlist; the config uses GPIO0 with a pullup and `inverted: true` so that
   ON = water present. Confirm which way the switch closes. See TEST-PLAN.md test G.
+
+Relay board pins were unconfirmed until the vendor datasheet arrived; they are now
+GPIO19 (relay), GPIO2 (LED), GPIO9 (button), recorded in `ESP32-C6-RELAY-X1.md`.
+
+## Hazard worth knowing
+
+The relay board accepts **either** USB 5 V **or** 7–60 V on the screw terminal, **not both**.
+Teams plug in USB once to read the device name, then unplug it before wiring 12 V. The
+worksheet says so at that step.

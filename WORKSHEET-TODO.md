@@ -45,9 +45,15 @@ Where the two differ, the worksheet wins; COURSE-DESIGN still needs updating to 
 
 ## Needs verification against the real kit
 
-- **Relay board terminals.** Worksheet wires the pump through **COM** and **NO**, the standard
-  labels on the ESP32 Relay X1 family. Confirm the C6 v1.1 board prints the same, and that the
-  supplied harness (item 10) has two bare wires for the relay side.
+- ~~**Relay board terminals.**~~ **Confirmed from the vendor datasheet**, extracted to
+  `firmware/ESP32-C6-RELAY-X1.md`: terminals are **NO / COM / NC** as the worksheet assumed,
+  power input is a separate 2-way block (7–60 V), relay is **GPIO19**, programmable LED
+  **GPIO2**, button **GPIO9**, relay rating `10A 250VAC / 10A 30VDC`. Still confirm the
+  supplied harness has two bare wires for the relay side.
+- **Relay board takes USB *or* 12 V, not both** (datasheet: "choose one"). Teams read the
+  device name over USB, then must unplug before wiring 12 V. Now stated in `session-1.md` and
+  in `reference.md` troubleshooting. Worth verifying on the bench how bad the mistake is if
+  someone forgets — see TEST-PLAN test H.
 - **Humidity test in class.** Breathing raises humidity fast; decay back is slow. Session 2's
   watering test relies on that decay to cross the "on" threshold. Rehearse the timing; if decay is
   too slow, teams lower the threshold temporarily (the worksheet says so).

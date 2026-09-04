@@ -1,27 +1,26 @@
-# ESP32-C6 single-channel relay board — WORKSHOP image
+# ESP32-C6-Relay_X1 v1.1 — WORKSHOP image
 #
 # Same provisioning strategy as the sensor node: one image, unique hostname from
 # name_add_mac_suffix, adopted in Home Assistant as <name>.local.
 #
-# Powered from the charge controller's LOAD pair (7-60V DC input), NOT from a
-# laptop USB port. USB is only used once, to read the board's name.
+# Pin assignments confirmed from the vendor datasheet — see ESP32-C6-RELAY-X1.md.
+#
+# POWER: the board takes 7-60V DC on the screw terminal OR 5V over USB-C,
+# "choose one" per the datasheet. In the workshop it runs from the charge
+# controller's LOAD pair; USB is used once, to read the device name, and must be
+# unplugged before the 12V is connected.
 
 substitutions:
   device_base_name: gogo-relay
-  # CONFIRM ON THE BENCH — see TEST-PLAN.md test H.
-  # The ESP32 Relay X1 family (WROOM) uses GPIO16 for the relay and GPIO23 for the
-  # status LED, but this is the ESP32-C6 v1.1 board and the C6 has a different pin
-  # map. Find the real pins before the workshop:
-  #   1. Vendor listing / wiki for esp32-c6-relay-x1-v1.1
-  #   2. Or flash with the relay pin commented out, then toggle candidate GPIOs
-  #      from the ESPHome web console and listen for the click.
-  relay_pin: GPIO16
-  led_pin: GPIO23
-  button_pin: GPIO9        # C6 boot strapping pin, usually the onboard button
+  relay_pin: GPIO19        # confirmed: relay control, active high
+  led_pin: GPIO2           # confirmed: programmable LED, active high
+  button_pin: GPIO9        # confirmed: programmable button, also the BOOT key
 
 esphome:
   name: ${device_base_name}
   name_add_mac_suffix: true
+  # No friendly_name: with ~60 identical boards, the unique hostname is what lets
+  # a team find theirs in Home Assistant.
 
 esp32:
   board: esp32-c6-devkitc-1
@@ -61,10 +60,25 @@ switch:
     id: relay
     # Safety: after a power cut or reboot the pump must not come back on by itself.
     restore_mode: ALWAYS_OFF
+    # The board's own relay indicator LED is hard-wired to the coil and lights on
+    # its own. We drive the programmable LED in step with it as well, so the
+    # "lamp" in the session 2 flower-farm scenario is visible across the room.
+    on_turn_on:
+      - output.turn_on: led_output
+    on_turn_off:
+      - output.turn_off: led_output
 
-# Onboard button toggles the relay — a hardware manual override that works even if
-# Home Assistant is unreachable. Worth demonstrating in session 2 alongside the
-# Auto/Off/Manual control box.
+output:
+  - platform: gpio
+    pin: ${led_pin}
+    id: led_output
+
+# Onboard button toggles the relay: a hardware manual override that works even when
+# Home Assistant is unreachable. Worth demonstrating in session 2 next to the
+# Auto/Off/Manual control box, as the same idea one layer down.
+#
+# GPIO9 is the ESP32-C6 boot strapping pin. Momentary presses during normal running
+# are harmless; only holding it while power is applied enters download mode.
 binary_sensor:
   - platform: gpio
     name: "ปุ่มบนบอร์ด"
@@ -78,16 +92,3 @@ binary_sensor:
       - delayed_on: 50ms
     on_press:
       - switch.toggle: relay
-
-# Status LED follows the relay so the "lamp" in the session 2 flower-farm scenario
-# is visible. If the board's LED is hard-wired to the relay coil, delete this block.
-output:
-  - platform: gpio
-    pin: ${led_pin}
-    id: led_output
-
-light:
-  - platform: binary
-    name: "ไฟแสดงสถานะ"
-    output: led_output
-    internal: true

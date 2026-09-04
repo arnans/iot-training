@@ -152,21 +152,26 @@ trigger in session 2 pointing at the correct state?
 
 ---
 
-## H. Relay board pins
+## H. Relay board
 
-The relay and LED GPIOs in `relay-workshop.yaml` are placeholders taken from the WROOM
-variant of the same product family. The C6 board's pin map is different.
+Pins are now **confirmed from the vendor datasheet** (see `firmware/ESP32-C6-RELAY-X1.md`):
+relay **GPIO19**, programmable LED **GPIO2**, button **GPIO9**, all active high. This test is
+confirmation, not discovery.
 
-- [ ] Find the real relay GPIO — vendor listing, wiki, or by toggling candidates from the
-      ESPHome console and listening for the click
-- [ ] Confirm the onboard button's GPIO and that it toggles the relay
-- [ ] Confirm the status LED follows the relay. If the LED is hard-wired to the relay coil,
-      delete the `output:`/`light:` blocks
-- [ ] Power the board from **12 V into the DC input** (not USB) and confirm it still connects
-- [ ] Verify `restore_mode: ALWAYS_OFF` — cut power with the relay on, restore, relay stays off
+- [ ] Relay clicks when the switch entity is toggled from Home Assistant
+- [ ] Both LEDs light: the hard-wired relay indicator **and** the GPIO2 programmable LED
+- [ ] Onboard button toggles the relay, and works with Home Assistant closed
+- [ ] Power from **12 V into the screw terminal with USB unplugged** — board still connects
+- [ ] `restore_mode: ALWAYS_OFF` — cut the 12 V with the relay on, restore, relay stays off
+- [ ] Read the markings on the relay body and confirm they match what the worksheet tells
+      teams to expect: `10A 250VAC` / `10A 30VDC`
 
-**Question this answers:** can the relay board be driven from the charge controller's LOAD
-pair with the pump attached, and does it fail safe on power restore?
+> **Do not power USB and the 12 V terminal at the same time** — the datasheet says choose one.
+> The worksheet now tells teams to unplug USB before wiring 12 V; verify nothing bad happens
+> if someone forgets, so you know how bad the mistake is on the day.
+
+**Question this answers:** does the board run from the charge controller's LOAD pair with the
+pump attached, and does it fail safe on power restore?
 
 ---
 

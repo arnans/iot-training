@@ -147,7 +147,7 @@ bridged VM with its own MAC and IP:
 > so a board may change IP freely. Shorter leases relieve pool pressure, which matters more.
 
 > **A /22 is not exotic** — large flat wireless subnets are routine at conference scale. But the
-> prefix length is not what carries risk here; the size of the **broadcast domain** is. See §9.
+> prefix length is not what carries risk here; the size of the **broadcast domain** is. See §8.
 
 ### 8. Multicast load in a 500-client broadcast domain
 

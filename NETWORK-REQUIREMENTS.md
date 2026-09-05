@@ -5,112 +5,147 @@ wireless network beyond raw client capacity.
 
 ## Context
 
-A hands-on IoT workshop. On the network at the same time:
+A hands-on IoT workshop for **400 participants in 100 teams of four**, all in one room, all
+working at the same time.
 
 | Device | Count | Band | Notes |
 |---|---|---|---|
-| ESP32 sensor boards | ~60 | **2.4 GHz only** | Battery/USB powered, always on, incl. overnight |
-| ESP32 relay boards | ~60 | **2.4 GHz only** | Always on, incl. overnight |
-| Participant laptops | ~30 | 2.4 or 5 GHz | Each runs a Home Assistant server in a VM |
-| Participant phones | ~40 | 2.4 or 5 GHz | Browser access to their own laptop's server |
-| Instructor equipment | 2–3 | Wired preferred | Server + spare kit |
+| ESP32 sensor boards | **100** | **2.4 GHz only** | Always on, including overnight between session days |
+| ESP32 relay boards | **100** | **2.4 GHz only** | Always on, including overnight |
+| Participant laptops | **100 minimum** | 5 GHz preferred | One per team runs a Home Assistant server in a VM. Individual members may bring their own, so plan for more |
+| Participant phones | **up to 100** | mobile data preferred, 5 GHz fallback | Used to open the team's own dashboard |
+| Instructor equipment | 2–3 | **wired** | Presentation laptop + a Home Assistant server |
 
-Peak: roughly **190 concurrent clients**, of which ~120 are 2.4 GHz-only microcontrollers.
+**Plan for 500 concurrent clients, and size headroom to 600.** Note that 500 is the *expected*
+peak, not a comfortable ceiling: 200 microcontrollers plus at least 100 laptops plus phones
+already reaches 400, before any participant connects a second device.
 
-**The essential behaviour:** each laptop must discover and hold a persistent connection to
-*its own* boards, by hostname, over the wireless LAN. This is device-to-device traffic within
-the LAN. Internet access is secondary — sessions 1 and 2 need none at all.
+**The essential behaviour:** each laptop must discover and hold a persistent connection to *its
+own two boards*, by hostname, over the wireless LAN — and the boards are on a different SSID and
+band from the laptops. This is device-to-device traffic **across two SSIDs**. Internet access is
+secondary; sessions 1 and 2 need none at all.
+
+---
+
+## Proposed design
+
+This is the design we would like built. Please confirm it is achievable on your equipment, or
+propose an equivalent.
+
+| SSID | Band | Clients | Notes |
+|---|---|---|---|
+| `farm-iot` | **2.4 GHz only** | 200 ESP32 boards | Must not be broadcast on 5 GHz at all |
+| `farm-laptop` | **5 GHz** | 100+ laptops, phones that need it | WiFi 6 strongly preferred for device density |
+
+Phones are asked to use their own mobile data, and fall back to `farm-laptop` only if capacity
+allows. The instructor's presentation laptop takes **wired Ethernet**.
+
+Separating the microcontrollers onto their own 2.4 GHz SSID is deliberate: it lets that SSID be
+tuned conservatively for simple clients (see §4) without holding the laptops back.
+
+### Access points
+
+- **2.4 GHz: 3 to 6 APs.** Note that 2.4 GHz has **only three non-overlapping channels (1, 6 and
+  11)** — six APs cannot each be on a different frequency. Six is workable only as *two* cells per
+  channel, spatially well separated with **reduced transmit power** so the co-channel cells do not
+  hear each other. If that separation is not achievable in this room, **three APs on 1/6/11 is
+  better than six**, because co-channel interference in a single room reduces capacity rather than
+  adding it. We would rather have three well-planned APs than six fighting each other.
+- **5 GHz: 6 APs or as many as coverage needs.** Plenty of non-overlapping channels here, and
+  802.11ax/WiFi 6 OFDMA genuinely helps at this device density. Use it if available.
+- Even coverage at **table height**. Boards sit among people, laptops and water containers, not in
+  clear line of sight.
 
 ---
 
 ## Hard requirements
 
-These are deal-breakers. If any one is not met, the workshop cannot run as designed.
+Deal-breakers. If any one is not met, the workshop cannot run as designed.
 
-### 1. Single layer-2 broadcast domain
+### 1. Both SSIDs on one layer-2 broadcast domain
 
-All clients — boards, laptops, phones, instructor — on **one SSID, one VLAN, one IP subnet**.
-No guest network, no per-SSID segmentation, no separate VLAN per band.
+`farm-iot` and `farm-laptop` must bridge to the **same VLAN and the same IP subnet**. A laptop on
+5 GHz must reach a board on 2.4 GHz as if they were on the same wire.
 
-### 2. Client-to-client traffic permitted
+If your architecture requires separate VLANs per SSID, then an **mDNS gateway / Bonjour
+forwarding service must relay between them**, and unicast routing between the subnets must be
+open. Please tell us which of the two approaches you are using.
 
-**Client isolation / AP isolation / "guest mode" must be OFF.** Laptops must be able to open
-TCP connections to boards and receive connections from phones. This is the most common default
-that breaks this kind of workshop.
+### 2. Client-to-client traffic permitted, including between SSIDs
 
-### 3. mDNS / multicast forwarded between wireless clients
+**Client isolation / AP isolation / "guest mode" must be OFF on both SSIDs, and traffic must be
+allowed between them.** This is the single most common default that breaks this kind of event.
+Every sensor reading crosses from the 2.4 GHz SSID to the 5 GHz SSID.
+
+### 3. mDNS forwarded between wireless clients and across both SSIDs
 
 Devices are addressed by hostname (`devicename.local`), which uses multicast DNS on
-**224.0.0.251 / UDP 5353**. This must reach all clients on the subnet, including
-**wireless-to-wireless**.
+**224.0.0.251 / UDP 5353**. This must reach all clients on the subnet, **wireless-to-wireless and
+across the two SSIDs**.
 
-Depending on the platform this means enabling an **mDNS gateway / Bonjour forwarding /
-multicast repeater**, or simply permitting multicast between clients. Please confirm which
-applies and that it is enabled.
-
-Specifically ensure these are **not** silently dropping mDNS:
+Ensure none of these silently drops it:
 
 - Broadcast/multicast filtering or suppression
-- "Multicast enhancement" / multicast-to-unicast conversion, if it does not handle mDNS
+- "Multicast enhancement" / multicast-to-unicast conversion that does not handle mDNS
 - IGMP snooping without a querier on the segment
 - Proxy ARP / ARP suppression
 
-### 4. 2.4 GHz enabled, WPA2-PSK
+> With ~500 clients in one broadcast domain, we accept that broadcast load needs managing. Please
+> suppress what you must, **but mDNS on 5353 has to survive.** If you need to rate-limit
+> multicast, tell us the limit so we can check it is above what 200 announcing devices generate.
 
-- **2.4 GHz must be available.** The microcontrollers have no 5 GHz radio.
-- **WPA2-PSK (AES/CCMP)**, one shared password. **Not** WPA3-only, **not** WPA2/WPA3 mixed with
-  PMF required, **not** WPA-Enterprise / 802.1X.
-- Protected Management Frames (PMF/802.11w) must be **optional or disabled**, not required.
-- If 2.4 and 5 GHz share an SSID, both must bridge to the same VLAN and subnet.
+### 4. `farm-iot` tuned for simple clients
 
-### 5. No captive portal, no splash page, no periodic re-authentication
+The ESP32 has one 2.4 GHz radio and a basic supplicant. On that SSID specifically:
 
-Microcontrollers cannot accept terms or click a button. Association plus the WPA2 password must
-be sufficient for full LAN access, permanently. No time-based session expiry, no daily
-re-login.
+- **WPA2-PSK (AES/CCMP)**, one shared password. Not WPA3-only, not WPA2/WPA3 mixed with PMF
+  required, not WPA-Enterprise.
+- **PMF / 802.11w must be optional or disabled**, not required.
+- **No 802.11r / k / v fast roaming.** These confuse simple clients; the boards do not move.
+- **No band steering** (there is nothing to steer to) and no minimum-data-rate setting that
+  excludes low 802.11n rates.
+- **No captive portal, no splash page, no periodic re-authentication.** A microcontroller cannot
+  accept terms. Association plus the password must grant full LAN access, permanently.
 
-### 6. Long-lived TCP connections must not be torn down
+### 5. Long-lived TCP connections must survive
 
-Each laptop holds a persistent TCP session to each of its boards for hours. Please disable any
-**client idle timeout, session timeout, or inactivity disconnect** that would drop an
-associated-but-quiet client. Boards must stay associated overnight with no server connected.
+Each laptop holds a persistent TCP session to each of its two boards for hours. Disable any
+**client idle timeout, session timeout or inactivity disconnect**. Boards must stay associated
+overnight with no server connected to them.
 
-### 7. Multiple MAC addresses behind one wireless client
+### 6. Multiple MAC addresses behind one wireless client
 
-Participant laptops run Home Assistant in a virtual machine with a **bridged network adapter**,
-so one laptop may present **two MAC addresses / two IP addresses** over a single wireless
-association. Any feature that blocks this as MAC spoofing — client integrity checking, MAC
-address limit per station, WDS restrictions — must be disabled.
+Participant laptops run Home Assistant in a VM with a **bridged network adapter**, so one laptop
+presents **two MAC addresses and two IP addresses** over a single association. Any feature that
+treats this as MAC spoofing — client integrity checking, a MAC-per-station limit, WDS
+restrictions — must be disabled.
 
-*This is the requirement most likely to be missed. Please confirm explicitly.*
+*Easy to miss. Please confirm explicitly.*
 
-### 8. DHCP sized and long-leased
+### 7. DHCP scope large enough — a /24 will not do
 
-- Pool of **at least 300 usable addresses**
-- **Lease time 7 days** (or the longest available, minimum 48 hours)
-- Reserve a small static range outside the pool for instructor equipment
+- **At least 600 usable addresses.** A single /24 gives 254 and **will run out**. We need a **/23
+  (510) at minimum, and would prefer a /22**.
+- **Lease time 7 days**, or the longest available; minimum 48 hours.
+- Reserve a small static range outside the pool for instructor equipment.
+
+### 8. Association surge
+
+If an AP or controller restarts, **200 ESP32s will attempt to reassociate at once**. Please
+confirm there is no association rate limit or client-count-per-radio cap that would leave some
+boards unable to rejoin, and that the DHCP server can absorb a burst of 200 requests.
 
 ---
 
-## Capacity and coverage
-
-- Sustained **190+ concurrent clients**, with ~120 on 2.4 GHz. Please confirm the 2.4 GHz radio
-  budget specifically, not just the total; band steering cannot help devices with no 5 GHz radio.
-- Even coverage across the room at table height. Boards sit on tables among people and water
-  containers, not in clear line of sight.
-- Traffic per device is tiny (a few hundred bytes every few seconds). **Client count and
-  multicast behaviour matter; bandwidth does not.** No per-client rate limiting needed, but
-  nothing should throttle or deprioritise chatty small-packet clients.
-
 ## Physical and operational
 
-- **Powered and running the day before** the first session, for a setup and test window.
-- **Left running continuously overnight** between session days. Boards log data overnight; the
-  network must stay up. Please confirm no scheduled nightly reboot or maintenance window.
-- **One wired Ethernet drop** on the same subnet for the instructor server.
+- **Powered and running the day before**, for a setup and test window.
+- **Left running continuously overnight** between session days. Boards log data overnight. Please
+  confirm no scheduled nightly reboot or maintenance window.
+- **One wired Ethernet drop** on the same subnet for the instructor position.
 - On-site or on-call support during the setup window and the first session.
-- SSID and password fixed and known **one week in advance** — they are compiled into the device
-  firmware and cannot be changed on the day.
+- **SSID names and passwords fixed and known one week in advance** — they are compiled into the
+  firmware of 200 boards and cannot be changed on the day.
 
 ## Internet access
 
@@ -122,24 +157,32 @@ address limit per station, WDS restrictions — must be disabled.
 
 ## Acceptance test
 
-We will run this with the provider during the setup window. All five must pass before the
-network is accepted.
+To be run with the provider during the setup window. All six must pass.
 
 | # | Test | Pass criterion |
 |---|---|---|
-| 1 | Two boards and one laptop associated. From the laptop, `ping <boardname>.local` | Resolves and replies |
-| 2 | From the laptop's VM (bridged), same ping | Resolves and replies — **this is the multicast + multi-MAC test** |
-| 3 | Phone on WiFi opens `http://<VM-ip>:8123` | Page loads — client-to-client test |
+| 1 | Two boards on `farm-iot`, one laptop on `farm-laptop`. From the laptop, `ping <boardname>.local` | Resolves and replies — **this is the cross-SSID mDNS test** |
+| 2 | Same ping from inside the laptop's bridged VM | Resolves and replies — **multicast + multi-MAC test** |
+| 3 | Phone on `farm-laptop` opens `http://<VM-ip>:8123` | Page loads — client-to-client test |
 | 4 | Laptop connected to a board, left idle 30 minutes | Connection still live, no reconnect in logs |
-| 5 | All boards powered simultaneously | All obtain DHCP leases; none drop over 30 minutes |
+| 5 | **20–30 boards powered simultaneously** | All associate and obtain leases; none drop over 30 minutes |
+| 6 | Power-cycle one AP with those boards associated | All rejoin without manual intervention |
 
-Test 2 is the one that fails on default enterprise configurations. Please have someone
-authorised to change controller settings present when we run it.
+Tests 1 and 2 are the ones that fail on default enterprise configurations. Please have someone
+authorised to change controller settings present.
+
+> **On the untestable part.** We can bring 20–30 boards to the setup window, which is 10–15 % of
+> the final load. That validates the channel plan, mDNS across SSIDs, association and DHCP — it
+> catches configuration errors, which are the likely failure mode. It does **not** validate
+> behaviour at 200 boards. For that we are relying on your capacity planning, which is why §8 and
+> the 2.4 GHz AP question above matter.
 
 ---
 
 ## Summary for a quick read
 
-Everything on **one flat subnet**. **Client isolation off.** **mDNS forwarded between wireless
-clients.** **2.4 GHz with WPA2-PSK, no captive portal.** **No idle timeouts.** **Allow two MACs
-per laptop.** **DHCP 300+, week-long leases.** **Runs overnight.**
+Two SSIDs, **one flat subnet**. `farm-iot` 2.4 GHz for 200 microcontrollers, WPA2-PSK, no fast
+roaming, no PMF requirement. `farm-laptop` 5 GHz WiFi 6 for 100+ laptops. **Client isolation off,
+including between the two SSIDs.** **mDNS forwarded across both.** **No idle timeouts.** **Two
+MACs per laptop.** **DHCP /23 minimum with week-long leases.** **Runs overnight.** Plan for 500
+clients, size for 600.

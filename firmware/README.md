@@ -23,7 +23,7 @@ esphome run gogo-iot-workshop.yaml       # first board, over USB
 esphome run relay-workshop.yaml
 ```
 
-For the production run of ~120 boards, build the binary once and flash it repeatedly
+For the production run of **200 boards** (100 sensor + 100 relay), build each binary once and flash it repeatedly
 rather than invoking `esphome run` each time:
 
 ```bash
@@ -58,7 +58,7 @@ Do not change these without reading the reasoning:
   making the relay chatter. At the default 5s nothing visible happens.
 - **`restore_mode: ALWAYS_OFF`** on the relay — a pump must not restart itself after a
   power cut.
-- **No `friendly_name`** — so teams can tell 60 boards apart in Home Assistant.
+- **No `friendly_name`** — so teams can tell 100 identical boards apart in Home Assistant.
 - **Every entity name carries an ASCII tag**, e.g. `ความชื้นอากาศ (humidity)`. ESPHome builds the
   Home Assistant `entity_id` by transliterating the name to ASCII, so a Thai-only name becomes a
   row of underscores — and two Thai names of the same character length collide outright and fail

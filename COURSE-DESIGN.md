@@ -1,6 +1,6 @@
 # IoT Systems in Smart Farming — Course Design
 
-Three hands-on sessions (150 min each, ~7.5 h) delivered inside the CMU Lifelong Education program **“นวัตกรเกษตรอัจฉริยะ AIoT สำหรับเกษตรแม่นยำ” รุ่นที่ 1, 25–29 September 2026**, Empress International Convention Centre, Chiang Mai. Our slots: **Day 1 afternoon (Fri 25 Sep), Day 2 morning and afternoon (Sat 26 Sep)**. Each slot is followed by a 15-min post-test run by the organizers. Materials in Thai (technical terms kept in English). Audience: ปวส. or higher, farmer-innovators with broad backgrounds. Teams of 3–4.
+Three hands-on sessions (150 min each, ~7.5 h) delivered inside the CMU Lifelong Education program **“นวัตกรเกษตรอัจฉริยะ AIoT สำหรับเกษตรแม่นยำ” รุ่นที่ 1, 25–29 September 2026**, Empress International Convention Centre, Chiang Mai. Our slots: **Day 1 afternoon (Fri 25 Sep), Day 2 morning and afternoon (Sat 26 Sep)**. Each slot is followed by a 15-min post-test run by the organizers. Materials in Thai (technical terms kept in English). Audience: ปวส. or higher, farmer-innovators with broad backgrounds. **400 participants in 100 teams of four**, all in one room.
 
 A set of narrated decks (see *Online materials* below) remains as **optional pre-reading and take-home reference**. Nothing in the room depends on it.
 
@@ -97,7 +97,7 @@ Each post-test targets the two goals that are core in its session.
 
 ---
 
-## Anti-passenger structure for teams of 3–4
+## Anti-passenger structure for teams of four
 Each team gets a **role card** with three rotating roles, swapped at every activity boundary:
 - **Driver** — hands on the laptop/HASS
 - **Hardware** — boards, wiring, pump
@@ -147,7 +147,7 @@ These narrated decks (each ≤10 min + a 3–5 question self-check) were designe
 
 ## Kit list (per team) and room logistics
 
-**Per team (plan for N teams + 2 spare kits):**
+**Per team. 100 teams of four, 400 participants. Plan 100 kits + 5 spares:**
 - Team's **own laptop** running Home Assistant in a bridged VM (installed before Day 1)
 - 1 × GoGo-IoT sensor board (ESP32-C3; temperature, humidity, light, pressure, IMU; 18650 cell)
 - 1 × float switch with Grove adapter → board port 1, as the reservoir-low guard

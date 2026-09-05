@@ -150,13 +150,63 @@ Raw axes stay `internal`.
 - **Thai-only entity names collide.** ESPHome builds the Home Assistant `entity_id` by
   transliterating the name to ASCII; a Thai-only name becomes a row of underscores, and two of
   equal character length fail to compile outright. Every entity name now carries a lowercase
-  ASCII tag. Would have produced unusable entity_ids on all 120 boards.
+  ASCII tag. Would have produced unusable entity_ids on all 200 boards.
 - **Activity 2 had teams power the relay board twice at once.** The step order read: connect the
   12 V adapter, *then* read the board name over USB — precisely the "choose one" violation the
   datasheet warns about. The name lookup is now its own block before any wiring, ending with
   "unplug the USB cable".
 - **TEST-PLAN test F checked an uptime sensor that did not exist.** Both boards now publish
   uptime, WiFi signal and IP as diagnostic entities.
+
+## Scale: 400 participants in 100 teams
+
+The count correction (100 sensor boards, 100 relay boards, 100+ laptops, 100 phones, 400
+participants) is roughly triple what the materials were written against. Three consequences,
+two already fixed and one still open.
+
+**Fixed — instructor-check gates.** Three activities gated on "ผู้สอนตรวจแล้ว". One instructor
+cannot verify 100 teams. They are now objective self-checks with a stated pass criterion (e.g.
+"fewer than 2 relay clicks in a minute of hand-waving"), except the dashboard one, which became
+a **peer check** by the neighbouring team — better than the original, because being handed an
+unfamiliar dashboard is exactly the test that activity is trying to run.
+
+**Fixed — the sabotage round.** The failure lab had the instructor walking to each team and
+breaking their rig unannounced. Impossible across 100 teams in 15 minutes. It is now **paired
+teams sabotaging each other** from sealed cards: one team observes their dashboard while a member
+of the paired team performs a sabotage, then they swap, three rounds, cards revealed at the end.
+This scales flat, and it is arguably better teaching — each team both diagnoses and causes a
+failure. The three cards are:
+
+1. Unplug the sensor board's power → entities go `unavailable`
+2. Turn off WiFi on the laptop → Home Assistant loses both boards
+3. **Unscrew the pump's positive lead from the relay's NO terminal** → the relay still clicks,
+   the LED still lights, Home Assistant still says the pump is on, and no water moves
+
+Card 3 is new and deliberate: it is the only sabotage the dashboard cannot reveal, which is
+precisely the case the vibration reporter exists to catch. The record sheet now asks which round
+looked normal but was not.
+
+**Still open — facilitator ratio.** 100 teams doing hands-on 12 V wiring needs roving help.
+Session 1's "ยกมือ" instruction assumes someone can come. At a plausible 1:10, that is ten
+facilitators, and they need briefing on the failure modes in `reference.md`. Not a materials
+problem, but it gates the run-sheet.
+
+**Still open — instructor Home Assistant capacity.** The session 2 opener has every team read
+their own board's overnight trace on one instructor instance. Adopting 100 ESPHome nodes means
+roughly 1,000 entities, and the state-write rate into the recorder is the concern: light at 1 s
+across 100 boards is ~100 writes/second on its own, plus vibration at 1 s and the 5 s sensors —
+call it 250/second, or on the order of 10 million rows across an overnight run. Default SQLite
+will not enjoy that. Options, in increasing order of effort:
+
+- Configure `recorder:` on the instructor instance to include only what session 2 needs
+  (humidity, temperature) and record light from a **sample of ~10 boards** for the lights-off
+  trace. Cheapest, and the light story survives.
+- Move that instance to MariaDB/PostgreSQL on decent hardware.
+- Adopt only a sample of boards and make the opener a projected walkthrough rather than
+  per-team lookup.
+
+Worth deciding before the firmware is flashed at scale, because it may argue for a slower light
+`update_interval` on some boards.
 
 ## Reuse across deliveries
 

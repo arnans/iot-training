@@ -1,7 +1,7 @@
 # Bench test plan — ESPHome provisioning
 
 One session at a desk, two boards, one laptop. Purpose: prove the participant flow works
-before committing to a firmware image for ~120 boards, and settle the four things the
+before committing to a firmware image for **200 boards**, and settle the four things the
 worksheets currently assume without evidence.
 
 **Time:** about 2 hours if nothing surprises you. Tests A–D are the critical path; E–H can

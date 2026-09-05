@@ -124,12 +124,62 @@ restrictions — must be disabled.
 
 ### 7. DHCP scope large enough — a /24 will not do
 
-- **At least 600 usable addresses.** A single /24 gives 254 and **will run out**. We need a **/23
-  (510) at minimum, and would prefer a /22**.
-- **Lease time 7 days**, or the longest available; minimum 48 hours.
+Count the leases, not the devices. **Each laptop takes two**, because Home Assistant runs in a
+bridged VM with its own MAC and IP:
+
+| | Leases |
+|---|---|
+| 200 ESP32 boards | 200 |
+| 100 laptops × 2 (host + VM) | 200 |
+| extra laptops members bring | up to 100 |
+| phones that fall back to WiFi | up to 100 |
+| **Total** | **500–600** |
+
+- **A /23 (510 usable) is the practical minimum and is tight. A /22 (1022) is the comfortable
+  choice** and leaves room for lease churn over a two-day event.
+- **Lease time 12–24 hours.** *(Revised down from the 7 days requested earlier — see the note
+  below.)* Devices are addressed by hostname, not IP, so a changed lease costs nothing, and
+  shorter leases stop departed devices holding addresses.
 - Reserve a small static range outside the pool for instructor equipment.
 
-### 8. Association surge
+> **Why the lease time changed.** An earlier draft asked for week-long leases so board addresses
+> would stay stable. That is no longer needed: Home Assistant stores `<name>.local` and re-resolves,
+> so a board may change IP freely. Shorter leases relieve pool pressure, which matters more.
+
+> **A /22 is not exotic** — large flat wireless subnets are routine at conference scale. But the
+> prefix length is not what carries risk here; the size of the **broadcast domain** is. See §9.
+
+### 8. Multicast load in a 500-client broadcast domain
+
+This is the part of the design we are least able to predict, and where we most want your advice.
+
+Putting every client in one broadcast domain is what makes `<name>.local` work across the two
+SSIDs. The cost is that **every broadcast and multicast frame reaches every client**, and at
+2.4 GHz multicast is sent at a low basic rate, so it consumes disproportionate airtime.
+
+The mDNS talkers are not just our boards:
+
+- 200 ESP32s announcing their own service records — modest, and mostly at boot
+- **100 Home Assistant instances**, which actively probe for many integrations over mDNS — chatty
+- **phones**, if any fall back to WiFi; iOS in particular is very chatty with Bonjour
+
+What we are asking for:
+
+- **Keep mDNS on UDP 5353 working**, but suppress other broadcast/multicast you judge unnecessary
+- If your APs support **multicast-to-unicast conversion that correctly handles mDNS**, please
+  enable it — it converts the flood to per-client unicast at proper data rates and is the single
+  biggest win available here
+- If you apply a **multicast rate limit**, tell us the threshold so we can sanity-check it against
+  what ~400 announcing devices generate
+- Tell us if you would rather **split into several VLANs with an mDNS gateway** between them. We
+  will accept that if you prefer it, but only if the gateway is proven, because a flaky mDNS
+  reflector fails in ways that look exactly like our own bugs
+
+> **On our side:** the boards are configured with WiFi power save **disabled**, so they stay awake
+> and do not depend on DTIM timing to collect buffered multicast. That removes the most common
+> reason an ESP32 misses mDNS traffic in a dense room.
+
+### 9. Association surge
 
 If an AP or controller restarts, **200 ESP32s will attempt to reassociate at once**. Please
 confirm there is no association rate limit or client-count-per-radio cap that would leave some

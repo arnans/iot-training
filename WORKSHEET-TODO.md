@@ -208,6 +208,18 @@ will not enjoy that. Options, in increasing order of effort:
 Worth deciding before the firmware is flashed at scale, because it may argue for a slower light
 `update_interval` on some boards.
 
+## WiFi power save disabled on both boards
+
+ESPHome defaults ESP32 to `power_save_mode: light`: the radio sleeps between beacons and wakes
+only at DTIM to collect buffered broadcast and multicast. **mDNS is multicast.** In a room with
+200 boards, 100 chatty Home Assistant instances and heavy broadcast, that is precisely the
+traffic most likely to be dropped — and the symptom is `<name>.local` resolving intermittently,
+which looks like a network fault rather than a client power-save setting.
+
+Both images now set `power_save_mode: none`. The boards run on mains power through the charge
+controller, so there is nothing to save. Confirm during the bench test that this does not raise
+board temperature noticeably.
+
 ## Reuse across deliveries
 
 The worksheets carry no dates, venue names, or weekday references. Session pages refer to each other

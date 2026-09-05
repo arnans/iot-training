@@ -45,6 +45,13 @@ ota:
 wifi:
   ssid: !secret wifi_ssid
   password: !secret wifi_password
+  # WORKSHOP: ESPHome defaults ESP32 to power_save_mode: light, where the radio
+  # sleeps between beacons and only wakes on DTIM to collect buffered broadcast
+  # and multicast. mDNS is multicast, so in a room with 200 boards and heavy
+  # broadcast that is exactly the traffic most likely to be missed — and missing
+  # it means `<name>.local` intermittently fails to resolve. These boards run on
+  # mains power via the charge controller, so there is nothing to save.
+  power_save_mode: none
   reboot_timeout: 0s
   ap:
     ssid: ${device_base_name}-setup

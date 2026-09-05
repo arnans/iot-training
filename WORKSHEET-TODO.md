@@ -8,7 +8,9 @@ Where the two differ, the worksheet wins; COURSE-DESIGN still needs updating to 
 
 | Decision | Resolution | Consequence in the worksheet |
 |---|---|---|
-| Home Assistant host | Participants' own laptops | Session 1 opens with an install-verification checklist; the pre-workshop install guide (COURSE-DESIGN Section 6) becomes a hard prerequisite |
+| Home Assistant host | Participants' own laptops, as a **pre-built VirtualBox OVA** (`hass/`) | Session 1 opens with "start the VM, open homeassistant.local:8123"; the install guide shrinks to "install VirtualBox, import, Start" |
+| Network zoning | **Three logical zones** (red/green/blue), each a VLAN with a 2.4 GHz board SSID and a 5 GHz laptop SSID; all SSIDs on every AP; zones isolated from each other | Team card carries the zone colour; kits are colour-coded; the zone is in every board's hostname. Session 1 adds a "colour in the name matches your kit" check at the name-reading step |
+| Firmware per zone | **One source file per board, built three times** by `firmware/build-zones.py` (`esphome -s zone …`) | Six binaries in `firmware/dist/`. The only cross-zone risk is a wrong-coloured board at a table, and the board's own name reveals it |
 | Sensed input for watering | **Air humidity** (onboard) as a stand-in for soil moisture; **float switch** on GoGo-IoT port 1 as the reservoir-low guard | Worksheet says so explicitly ("จำลองสถานการณ์") rather than pretending humidity means soil |
 | Hysteresis teaching | **Light sensor → relay**, framed as night lighting for a flower farm (เบญจมาศ). Relay's own LED and click are the output | Session 2 runs two scenarios in sequence on the single relay: lighting first (ladder), then watering (apply the lesson) |
 | Between-session data | **Instructor HA adopts every team's sensor node** via ESPHome's multi-client API, stays on in the room | Session 2 opener reads the team's own trace on the instructor instance. Relay nodes are *not* adopted there (no double-driving) |
@@ -226,13 +228,17 @@ Three levers, in order of leverage:
 
 1. **Phones on mobile data.** Removes the chattiest client class (iOS Bonjour) entirely. Already
    in the network design.
-2. **Network zoning.** mDNS load scales with queriers × responders per broadcast domain. Three
-   zones, each with its own 2.4 + 5 GHz SSID pair on one VLAN, cut the per-domain product ~9×
-   with no mDNS gateway anywhere. Written up as "Alternative: three zones" in
-   NETWORK-REQUIREMENTS for the provider to quote. **Its failure mode is boards joining the wrong
-   zone at RF boundaries**, so it suits a room that partitions physically, not one open ballroom.
-   Firmware supports it without variants: list all three SSIDs under `wifi: networks:` and let
-   per-AP SSID assignment decide which one a board hears. Decision waits on the site survey.
+2. **Network zoning — adopted.** mDNS load scales with queriers × responders per broadcast domain.
+   Three zones, each with its own 2.4 + 5 GHz SSID pair on one VLAN, cut the per-domain product
+   ~9× with no mDNS gateway anywhere. **Zones are logical, not spatial:** the zone SSID is baked
+   into each board, every AP broadcasts all six SSIDs, and teams sit anywhere. That removes the RF-
+   boundary failure mode entirely; the remaining risk is a wrong-coloured board at a table, which
+   the board's own hostname (`gogo-iot-red-…`) exposes at the name-reading step. Alternatives
+   considered and rejected: one image with all three networks listed and per-AP SSID broadcast (RF
+   decides the zone — boundary spillover); MAC→VLAN on the controller (200-row table, vendor
+   feature dependency); participants provisioning the zone SSID over USB via Improv (one image,
+   but 200 password entries by participants — kept as the re-provisioning fallback, since
+   `improv_serial` is in the image anyway).
 3. **Home Assistant diet.** `hass/configuration.yaml` drops `default_config` and with it `ssdp`
    (periodic UPnP multicast), `dhcp`, bluetooth, usb, cloud and the integration tail. Real, but
    smaller than it looks: HA's zeroconf browses its entire generated service-type list regardless,

@@ -10,10 +10,11 @@ follow later if time runs short.
 ## Already done for you
 
 - **ESPHome 2026.6.5 is installed** on this machine.
-- **Both images compile clean**, verified end to end:
-  `gogo-iot-workshop.yaml` → 992 KB factory image (~4 min), `relay-workshop.yaml` → 1.1 MB.
-  The ESP-IDF toolchains for both C3 and C6 are downloaded and the build cache is warm, so
-  rebuilds are far quicker than the first run.
+- **Both sources compile clean, including through the zone pipeline.** `esphome -s zone green …`
+  produced `gogo-iot-green` as a 1.0 MB factory image; the relay source validates the same way.
+  ESP-IDF toolchains for both C3 and C6 are downloaded and the build cache is warm, so rebuilds
+  are quick. `build-zones.py` is the production path (six binaries into `dist/`); it refuses to
+  run until `zones.yaml` has real passwords.
 - **One expected warning**, not a problem: `GPIO9 is a strapping PIN and should only be used
   for I/O with care`. GPIO9 is the relay board's onboard button, per the vendor datasheet.
   A momentary press while running is harmless; only holding it during power-up enters the
@@ -21,12 +22,13 @@ follow later if time runs short.
 - **`firmware/secrets.yaml` exists** with a real generated API encryption key, OTA password and
   fallback AP password. It is gitignored.
 
-> **The one thing to do before flashing:** the two WiFi lines in `firmware/secrets.yaml` are
-> placeholders (`CHANGE_ME_SSID` / `CHANGE_ME_PASSWORD`). Put in the network you are testing
-> against, then `esphome run <file>.yaml`. The rebuild is incremental, not another 4 minutes.
+> **The one thing to do before flashing:** `cp zones.example.yaml zones.yaml` and put your bench
+> network's SSID/password under the `red:` zone (the other two can stay as placeholders for
+> tomorrow — pass `--zone red`). Then `python build-zones.py --zone red` and flash from `dist/`.
+> The rebuild is incremental, not another 4 minutes.
 >
-> Keep the generated `api_encryption_key` — it is the one shared key that goes on every board and
-> onto the team card. Regenerate it only if you want to.
+> `firmware/secrets.yaml` already has a real generated `api_encryption_key` — the one shared key
+> that goes on every board and onto the team card. Its two old WiFi lines are now ignored.
 
 ## Before you start
 
@@ -43,8 +45,11 @@ Record results in the table at the bottom.
 
 ```bash
 cd firmware
-esphome run gogo-iot-workshop.yaml     # sensor board
-esphome run relay-workshop.yaml        # relay board
+cp zones.example.yaml zones.yaml       # fill in the three SSIDs/passwords (for the bench, any
+                                       # zone may point at your test network)
+python build-zones.py --zone red       # builds sensor + relay for one zone
+python build-zones.py --flash red sensor COM7
+python build-zones.py --flash red relay  COM8
 ```
 
 ---
@@ -61,7 +66,7 @@ esphome run gogo-iot-workshop.yaml
 ```
 
 - [ ] Flashes over USB without holding any button (native USB should reset it automatically)
-- [ ] Log shows the device name **with a MAC suffix**: `gogo-iot-xxxxxx`
+- [ ] Log shows the device name **with zone and MAC suffix**: `gogo-iot-red-xxxxxx`
 - [ ] All four I2C sensors report values, no `Communication failed` lines
 - [ ] Board joins WiFi
 
@@ -95,7 +100,7 @@ two minutes, with no software installed?
 
 ## C. Adopt in Home Assistant by name
 
-**Settings → Devices & services → + Add integration → ESPHome**, Host: `gogo-iot-xxxxxx.local`,
+**Settings → Devices & services → + Add integration → ESPHome**, Host: `gogo-iot-red-xxxxxx.local`,
 port 6053, then the shared encryption key.
 
 - [ ] `.local` name resolves — **this is the mDNS test**
@@ -124,6 +129,11 @@ board is not ready, flash the sensor image to any second ESP32 you have.
 
 **Question this answers:** is the MAC suffix genuinely unique, and is typing the name really
 necessary rather than clicking the discovered card?
+
+> **If you have two networks on the bench**, also build `--zone green` pointed at the second
+> network and confirm a green board does **not** appear on a laptop joined to the red network.
+> That is the zone-isolation property the whole network design rests on. Not required tomorrow;
+> the venue acceptance test covers it.
 
 ---
 

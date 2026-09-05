@@ -1,17 +1,29 @@
 # GoGo-IoT sensor node — WORKSHOP image
 #
-# One identical image for every board. Uniqueness comes from name_add_mac_suffix,
-# which appends the last 3 bytes of the MAC to the hostname:
-#     gogo-iot  ->  gogo-iot-a1b2c3
+# ONE source file, THREE builds. The room is split into three logical zones (red,
+# green, blue), each its own WiFi SSID and VLAN. build-zones.py compiles this file
+# once per zone with `esphome -s zone red -s wifi_ssid ... -s wifi_password ...`,
+# so the zone and its credentials are baked in without maintaining three YAMLs.
 #
-# Participants read that name over USB at web.esphome.io, then add the device in
-# Home Assistant as  <name>.local  — no static IPs, no MAC reservations, no stickers.
+# Within a zone, uniqueness comes from name_add_mac_suffix, and the zone is part
+# of the hostname so a board announces where it belongs:
+#     gogo-iot-red  ->  gogo-iot-red-a1b2c3
+#
+# Participants read that name over USB at web.esphome.io, check the colour matches
+# their table, then add the device in Home Assistant as <name>.local — no static
+# IPs, no MAC reservations, no stickers.
 #
 # Derived from gogo-iot-node.github/gogo-iot-node/firmware/gogo-iot-node.yaml
 # (bring-up config). Differences from that file are marked  # WORKSHOP:
 
 substitutions:
   device_base_name: gogo-iot
+
+  # --- Zone. These three are OVERRIDDEN per build by build-zones.py. ---
+  # The defaults exist only so `esphome config` validates standalone.
+  zone: red
+  wifi_ssid: farm-iot-red
+  wifi_password: SET_BY_BUILD_SCRIPT
 
   # --- Vibration reporter tuning (see "Vibration" at the bottom of this file) ---
   # Sampling period for the accelerometer. 25ms = 40Hz.
@@ -25,9 +37,9 @@ substitutions:
   vib_off_threshold: "12"
 
 esphome:
-  name: ${device_base_name}
-  # WORKSHOP: unique hostname per board from one image. This is the whole
-  # provisioning strategy — do not remove.
+  name: ${device_base_name}-${zone}
+  # WORKSHOP: unique hostname per board. The zone colour sits in the name on
+  # purpose — it is the cross-zone check at the name-reading step. Do not remove.
   name_add_mac_suffix: true
   # WORKSHOP: friendly_name deliberately omitted. With it set, all 60 boards would
   # appear in Home Assistant as the same human-readable name and teams could not
@@ -60,8 +72,10 @@ ota:
     password: !secret ota_password
 
 wifi:
-  ssid: !secret wifi_ssid
-  password: !secret wifi_password
+  # WORKSHOP: from substitutions, not !secret, so build-zones.py can set them per
+  # zone on the command line. Credentials live in zones.yaml (gitignored).
+  ssid: ${wifi_ssid}
+  password: ${wifi_password}
   # WORKSHOP: ESPHome defaults ESP32 to power_save_mode: light, where the radio
   # sleeps between beacons and only wakes on DTIM to collect buffered broadcast
   # and multicast. mDNS is multicast, so in a room with 200 boards and heavy
@@ -76,7 +90,7 @@ wifi:
   # captive_portal this lets a board be re-provisioned from a phone at a future
   # workshop or at a participant's home, without reflashing.
   ap:
-    ssid: ${device_base_name}-setup
+    ssid: ${device_base_name}-${zone}-setup
     password: !secret fallback_ap_password
 
 captive_portal:

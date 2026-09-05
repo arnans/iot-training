@@ -1,7 +1,8 @@
 # ESP32-C6-Relay_X1 v1.1 — WORKSHOP image
 #
-# Same provisioning strategy as the sensor node: one image, unique hostname from
-# name_add_mac_suffix, adopted in Home Assistant as <name>.local.
+# Same provisioning strategy as the sensor node: one source file built once per
+# zone by build-zones.py, zone colour in the hostname (gogo-relay-red-a1b2c3),
+# adopted in Home Assistant as <name>.local.
 #
 # Pin assignments confirmed from the vendor datasheet — see ESP32-C6-RELAY-X1.md.
 #
@@ -12,12 +13,16 @@
 
 substitutions:
   device_base_name: gogo-relay
+  # Overridden per build by build-zones.py; defaults only so `esphome config` validates.
+  zone: red
+  wifi_ssid: farm-iot-red
+  wifi_password: SET_BY_BUILD_SCRIPT
   relay_pin: GPIO19        # confirmed: relay control, active high
   led_pin: GPIO2           # confirmed: programmable LED, active high
   button_pin: GPIO9        # confirmed: programmable button, also the BOOT key
 
 esphome:
-  name: ${device_base_name}
+  name: ${device_base_name}-${zone}
   name_add_mac_suffix: true
   # No friendly_name: with ~60 identical boards, the unique hostname is what lets
   # a team find theirs in Home Assistant.
@@ -43,8 +48,8 @@ ota:
     password: !secret ota_password
 
 wifi:
-  ssid: !secret wifi_ssid
-  password: !secret wifi_password
+  ssid: ${wifi_ssid}
+  password: ${wifi_password}
   # WORKSHOP: ESPHome defaults ESP32 to power_save_mode: light, where the radio
   # sleeps between beacons and only wakes on DTIM to collect buffered broadcast
   # and multicast. mDNS is multicast, so in a room with 200 boards and heavy
@@ -54,7 +59,7 @@ wifi:
   power_save_mode: none
   reboot_timeout: 0s
   ap:
-    ssid: ${device_base_name}-setup
+    ssid: ${device_base_name}-${zone}-setup
     password: !secret fallback_ap_password
 
 captive_portal:

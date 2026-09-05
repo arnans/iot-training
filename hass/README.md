@@ -7,14 +7,24 @@ Two `configuration.yaml` files, one per role. Neither is something a participant
 | `configuration.yaml` | each team's laptop VM | Minimal install: no `default_config`, no ssdp/dhcp/bluetooth/usb/cloud |
 | `configuration-instructor.yaml` | instructor server | Same diet plus **recorder limits** for 100 adopted boards |
 
-## Ship a VM image, not an install guide
+## Decided: ship a pre-built VirtualBox OVA
 
-The team config only has value if it is actually on 100 laptops. Asking 100 teams to install
-Home Assistant and then hand-edit YAML will not produce that. The reliable path is a
-**pre-built VirtualBox appliance (OVA)** with this configuration inside, a bridged adapter
-preconfigured, and onboarding already done to a known user. The install guide then reduces to
-"install VirtualBox, import this file, press Start" — which is also far more likely to survive
-contact with 100 heterogeneous laptops than a from-scratch install.
+Participants receive a **VirtualBox appliance (OVA)** with this configuration inside, a bridged
+adapter preconfigured, and onboarding already done to a known user. The install guide reduces to
+"install VirtualBox, import this file, press Start". This replaces the from-scratch install guide
+entirely.
+
+Build checklist for the image:
+
+- [ ] HA OS in VirtualBox, **bridged adapter** (not NAT)
+- [ ] `configuration.yaml` from this directory in place; boot clean; click through Settings,
+      Automations, Dashboards to catch any panel that quietly needs a dropped component
+- [ ] Onboarding completed with a known workshop user and password (printed on the team card)
+- [ ] UI language English (menu names in the worksheet are English)
+- [ ] Port 8123 reachable from another device on the LAN (the phone step in session 1)
+- [ ] Export as OVA; test import on a fresh Windows laptop **and** a Mac
+- [ ] Write the participant's team card: VM user/password, zone colour, laptop SSID and password,
+      the shared ESPHome encryption key
 
 This also closes the two install-guide risks already in WORKSHEET-TODO: the bridged-vs-NAT
 adapter choice (baked in) and port 8123 reachability from phones (the VM's firewall is ours).

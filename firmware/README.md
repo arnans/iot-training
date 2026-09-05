@@ -1,14 +1,19 @@
 # Workshop firmware
 
-Two ESPHome images, one per board type, flashed identically to every unit. Board
-identity comes from `name_add_mac_suffix`, not from per-board configuration.
+Two ESPHome source files, one per board type, each **built three times** — once per network
+zone (red, green, blue) with that zone's SSID and password injected as substitutions. Six
+binaries, two YAMLs to maintain. Within a zone, board identity comes from `name_add_mac_suffix`;
+the zone colour is part of the hostname (`gogo-iot-red-a1b2c3`) so a board announces where it
+belongs.
 
 | File | Board | Notes |
 |---|---|---|
 | `gogo-iot-workshop.yaml` | GoGo-IoT sensor node (ESP32-C3) | Derived from `gogo-iot-node` repo bring-up config |
 | `relay-workshop.yaml` | ESP32-C6-Relay_X1 v1.1 | Pins confirmed — see `ESP32-C6-RELAY-X1.md` |
 | `ESP32-C6-RELAY-X1.md` | — | Hardware reference extracted from the vendor PDF |
-| `secrets.example.yaml` | — | Copy to `secrets.yaml` (gitignored) |
+| `secrets.example.yaml` | — | Copy to `secrets.yaml` (gitignored): API key, OTA, fallback AP |
+| `zones.example.yaml` | — | Copy to `zones.yaml` (gitignored): per-zone SSID + password |
+| `build-zones.py` | — | Builds all six binaries into `dist/`; can also flash one |
 
 The sensor node's authoritative hardware source stays in the
 [`gogo-iot-node`](https://github.com/arnans/gogo-iot-node) repo. This directory holds
@@ -17,22 +22,24 @@ only the workshop variant; changes to pin assignments or sensor drivers belong u
 ## Build and flash
 
 ```bash
-pip install esphome
-cp secrets.example.yaml secrets.yaml     # then edit
-esphome run gogo-iot-workshop.yaml       # first board, over USB
-esphome run relay-workshop.yaml
+pip install esphome esptool pyyaml
+cp secrets.example.yaml secrets.yaml     # API key etc.
+cp zones.example.yaml zones.yaml         # three SSIDs + passwords
+python build-zones.py                    # -> dist/gogo-iot-{red,green,blue}.factory.bin
+                                         #    dist/gogo-relay-{red,green,blue}.factory.bin
+python build-zones.py --flash red sensor COM7
 ```
 
-For the production run of **200 boards** (100 sensor + 100 relay), build each binary once and flash it repeatedly
-rather than invoking `esphome run` each time:
+For a single bench board without the script:
 
 ```bash
-esphome compile gogo-iot-workshop.yaml
-# binary lands in .esphome/build/gogo-iot/.pioenvs/gogo-iot/firmware.bin
+esphome -s zone red -s wifi_ssid farm-iot-red -s wifi_password <pw> run gogo-iot-workshop.yaml
 ```
 
-Then flash from https://web.esphome.io (Chrome/Edge, no install) or with `esptool`.
-Every board gets the same binary; each derives its own hostname from its MAC at boot.
+**Production run:** flash ~34 sensor + ~34 relay boards per zone from `dist/`, and colour-code
+each board (tape or sticker) as you go. **The colour on the board must match the colour on the
+kit and the team's laptop SSID.** That is the only cross-zone risk, and the board's own hostname
+reveals it at the name-reading step.
 
 ## What participants do
 

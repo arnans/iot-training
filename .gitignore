@@ -7,3 +7,5 @@ Thumbs.db
 # ESPHome secrets (workshop SSID, shared API key)
 firmware/secrets.yaml
 firmware/.esphome/
+firmware/zones.yaml
+firmware/dist/

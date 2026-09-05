@@ -187,6 +187,56 @@ boards unable to rejoin, and that the DHCP server can absorb a burst of 200 requ
 
 ---
 
+## Alternative: three zones instead of one flat subnet
+
+We are weighing this against the flat design above and would value your view. Please quote
+for it as an option.
+
+**The problem it addresses.** mDNS load in a broadcast domain scales roughly with *queriers ×
+responders*. In the flat design that is 100 Home Assistant instances × 200 boards. The burst when
+100 laptops come up at the start of a session, each querying and 200 boards each answering, is
+the load we can least predict.
+
+**The design.** Split the room into **three zones**. Each zone is its own VLAN and /24, carrying
+**both** a 2.4 GHz SSID for that zone's boards and a 5 GHz SSID for that zone's laptops:
+
+| Zone | VLAN | 2.4 GHz SSID | 5 GHz SSID | Clients |
+|---|---|---|---|---|
+| 1 | 10 | `farm-iot-1` | `farm-laptop-1` | ~67 boards, ~34 laptops |
+| 2 | 20 | `farm-iot-2` | `farm-laptop-2` | ~67 boards, ~33 laptops |
+| 3 | 30 | `farm-iot-3` | `farm-laptop-3` | ~66 boards, ~33 laptops |
+
+A team's laptop and its two boards are always in the **same** zone, so `<name>.local` works
+natively — **no mDNS gateway or reflector anywhere**. Each domain is a third the size, and the
+querier × responder product per domain falls by roughly **nine times**. Every requirement in
+§1–§6 still applies, per zone.
+
+**What we need from you for this variant:**
+
+- **Per-AP SSID assignment**: an AP in zone 1 broadcasts only zone 1's two SSIDs, and so on. This
+  is what lets a board join the right zone automatically — it only hears its own zone. Please
+  confirm your controller supports AP groups with distinct SSID sets.
+- **Reduced transmit power and deliberate placement** so zone boundaries are sharp. A board at a
+  boundary that hears the neighbouring zone's SSID may join it, and then its team's laptop cannot
+  see it. This is the failure mode of the zoned design and it is a radio-planning problem, not a
+  configuration one — so we want your judgement on whether this room can be zoned cleanly.
+- **Three SSIDs per radio** — right at the practical limit for beacon overhead on 2.4 GHz.
+  Acceptable, but please do not add a fourth.
+- Three /24 DHCP scopes, same lease guidance as §7.
+
+**Trade-off, plainly.** The flat design has one failure mode (multicast load, mitigated by
+multicast-to-unicast conversion and by our own traffic diet). The zoned design has a different
+one (boards joining the wrong zone at boundaries) and more configuration surface. Which is the
+smaller risk depends on the room: if it partitions naturally into three areas with real physical
+separation, zoning is attractive; if it is one open ballroom, boundaries will be fuzzy and we lean
+toward the flat design with aggressive multicast handling. Your site survey should decide this.
+
+**What we will NOT do:** split by device type — all boards in one VLAN, all laptops in another.
+That forces every sensor reading and every name lookup through an mDNS gateway on the critical
+path, and a gateway that drops packets fails in ways indistinguishable from our own bugs.
+
+---
+
 ## Physical and operational
 
 - **Powered and running the day before**, for a setup and test window.

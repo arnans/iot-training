@@ -1,0 +1,67 @@
+# Home Assistant — TEAM instance (participant laptop VM)
+#
+# Ships inside the pre-built VM image. Participants never edit this.
+#
+# The point of this file is what it LEAVES OUT. A stock install uses
+# `default_config:`, which pulls in ssdp, dhcp, bluetooth, usb, cloud, stream and
+# a long tail of integrations. Each discovery integration adds service types that
+# Home Assistant browses for over mDNS, and `ssdp` adds periodic UPnP M-SEARCH
+# multicast on top. With 100 instances in one room that is the dominant source of
+# multicast noise — far more than the 200 ESP32 boards, which are quiet.
+#
+# Be precise about what this buys. Home Assistant's zeroconf component browses
+# EVERY service type in its generated discovery list (so it can offer "Discovered"
+# cards), regardless of which integrations are configured -- the diet does NOT
+# shrink that browse list. What it does remove: ssdp's periodic UPnP M-SEARCH
+# multicast, the dhcp sniffer, and the long tail of integrations that each add
+# their own startup traffic. Real, but the biggest lever on mDNS load is
+# elsewhere: keep phones on mobile data, and consider zoning the network -- see
+# NETWORK-REQUIREMENTS.md, "Alternative: three zones".
+
+homeassistant:
+  name: Farm Workshop
+  temperature_unit: C
+  time_zone: Asia/Bangkok
+  country: TH
+
+# --- UI and API. The minimum for a usable Home Assistant. ---
+frontend:
+config:
+http:
+api:
+websocket_api:
+lovelace:
+  mode: storage        # dashboards edited in the UI, as the worksheet assumes
+
+# --- Zeroconf: KEEP THIS. ---
+# The ESPHome integration depends on it to resolve `<name>.local`, which is the
+# whole provisioning strategy. It loads automatically as a dependency even if
+# removed from here, so removing it gains nothing.
+zeroconf:
+
+# --- What the worksheet actually uses ---
+automation: !include automations.yaml
+script: !include scripts.yaml
+scene: !include scenes.yaml
+history:
+logbook:
+sun:
+mobile_app:            # session 2 step (ง), notifications to a phone
+system_health:
+
+recorder:
+  # A team instance only ever holds its own two boards, so the write rate is a
+  # few states per second. These settings are about keeping the VM small.
+  purge_keep_days: 3
+  commit_interval: 5
+
+# --- Deliberately ABSENT (do not add) ---
+#   default_config  — would undo everything above
+#   ssdp            — periodic UPnP multicast to 239.255.255.250; pure noise here
+#   dhcp            — passive DHCP sniffing for device discovery; nothing to find
+#   bluetooth, usb  — no such hardware in the VM
+#   cloud           — Nabu Casa; needs internet, unused
+#   stream, go2rtc, media_source, assist_pipeline, conversation, energy
+#                   — unused, and each pulls dependencies
+#   backup, my, homeassistant_alerts
+#                   — outbound internet at startup, unwanted on a closed network

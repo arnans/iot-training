@@ -220,6 +220,34 @@ Both images now set `power_save_mode: none`. The boards run on mains power throu
 controller, so there is nothing to save. Confirm during the bench test that this does not raise
 board temperature noticeably.
 
+## Multicast noise: what we control and what the network must
+
+Three levers, in order of leverage:
+
+1. **Phones on mobile data.** Removes the chattiest client class (iOS Bonjour) entirely. Already
+   in the network design.
+2. **Network zoning.** mDNS load scales with queriers × responders per broadcast domain. Three
+   zones, each with its own 2.4 + 5 GHz SSID pair on one VLAN, cut the per-domain product ~9×
+   with no mDNS gateway anywhere. Written up as "Alternative: three zones" in
+   NETWORK-REQUIREMENTS for the provider to quote. **Its failure mode is boards joining the wrong
+   zone at RF boundaries**, so it suits a room that partitions physically, not one open ballroom.
+   Firmware supports it without variants: list all three SSIDs under `wifi: networks:` and let
+   per-AP SSID assignment decide which one a board hears. Decision waits on the site survey.
+3. **Home Assistant diet.** `hass/configuration.yaml` drops `default_config` and with it `ssdp`
+   (periodic UPnP multicast), `dhcp`, bluetooth, usb, cloud and the integration tail. Real, but
+   smaller than it looks: HA's zeroconf browses its entire generated service-type list regardless,
+   for "Discovered" cards, and the ESPHome integration needs zeroconf anyway. The residual cost is
+   the startup burst when 100 instances query and 200 boards answer — which is what zoning
+   addresses.
+
+**Delivery recommendation that falls out of (3): ship a pre-built VirtualBox OVA**, not an
+install guide. The config only helps if it is on 100 laptops; a from-scratch install by 100
+teams will not put it there. An appliance image also bakes in the bridged adapter and the VM
+firewall for port 8123, closing two install-guide risks already listed above. See `hass/README.md`.
+
+**Instructor recorder** — `hass/configuration-instructor.yaml` excludes vibration and diagnostics
+and leaves the illuminance decision open (all boards vs a sample of ten; sample recommended).
+
 ## Reuse across deliveries
 
 The worksheets carry no dates, venue names, or weekday references. Session pages refer to each other

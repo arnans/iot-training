@@ -1,0 +1,83 @@
+# Home Assistant — INSTRUCTOR instance
+#
+# Adopts every team's sensor node so the session 2 opener can show what happened
+# overnight. Same discovery diet as the team config, plus recorder limits that
+# matter enormously at this scale.
+#
+# The problem this file solves: 100 sensor boards, each publishing illuminance
+# every 1 s and vibration every 1 s, plus 5 s sensors. That is roughly 250 state
+# writes per second, on the order of 10 million rows across an overnight run.
+# Default SQLite will not cope, and the instance will be unusable exactly when
+# session 2 needs it.
+#
+# Strategy: record humidity and temperature from ALL boards (5 s, ~40 writes/s),
+# but illuminance from only a SAMPLE of boards. The lights-off trace is the
+# session 2 hook and one board's trace tells that story as well as a hundred.
+
+homeassistant:
+  name: Farm Workshop Instructor
+  temperature_unit: C
+  time_zone: Asia/Bangkok
+  country: TH
+
+frontend:
+config:
+http:
+api:
+websocket_api:
+lovelace:
+  mode: storage
+zeroconf:
+
+automation: !include automations.yaml
+script: !include scripts.yaml
+scene: !include scenes.yaml
+history:
+logbook:
+sun:
+system_health:
+
+recorder:
+  # Consider MariaDB or PostgreSQL here rather than the default SQLite. If
+  # staying on SQLite, the excludes below are not optional.
+  purge_keep_days: 3
+  commit_interval: 10
+
+  exclude:
+    entities:
+      # Vibration is 1 s across every board and is never read historically on
+      # this instance. Biggest single saving.
+      - sensor.*vibration*
+    entity_globs:
+      - sensor.*vibration*
+      - sensor.*wifi*          # diagnostics: current value is enough, no history
+      - sensor.*uptime*
+      - sensor.*pressure*
+      - binary_sensor.*button*
+
+  include:
+    # Everything not excluded is still recorded; these globs document intent.
+    entity_globs:
+      - sensor.*humidity*
+      - sensor.*temperature*
+
+# ---------------------------------------------------------------------------
+# ILLUMINANCE: the one that needs a decision before the event.
+#
+# 100 boards x 1 s = ~100 writes/second for a trace that only needs to show the
+# room lights going off and on. Pick ONE of:
+#
+#   (a) SAMPLE — record light from ~10 named boards only. Add their entity_ids
+#       to the include list above and add `sensor.*light*` to the excludes.
+#       Session 2 shows a sample trace on the projector. RECOMMENDED.
+#
+#   (b) ALL — accept ~100 writes/s and run MariaDB on decent hardware. Only if
+#       every team must read their own board's light trace.
+#
+#   (c) SLOW — flash a separate firmware variant for boards whose light does not
+#       need to be fast. Costs a second image and defeats one-image-for-all;
+#       mentioned only for completeness. NOT recommended.
+#
+# Option (a) needs the ten board names, which are not known until flashing. Fill
+# them in during kit prep.
+# ---------------------------------------------------------------------------

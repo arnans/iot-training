@@ -17,6 +17,7 @@ specific to that first delivery.
 | [NETWORK-REQUIREMENTS.md](NETWORK-REQUIREMENTS.md) | Wireless network spec to hand to the venue's network provider |
 | [TEST-PLAN.md](TEST-PLAN.md) | Bench test for the ESPHome provisioning flow, before committing the firmware image |
 | `firmware/` | The two workshop ESPHome images (sensor node, relay board) |
+| `hass/` | Home Assistant configurations for the team VM image and the instructor instance |
 | `docs/` | **Participant worksheets** — the website source (Thai) |
 
 ## Participant worksheet site

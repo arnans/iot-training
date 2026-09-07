@@ -31,11 +31,19 @@ The room is divided into three zones. Each zone is its own VLAN and carries one 
   sit anywhere.
 - **Do not add a seventh SSID** on these radios (no guest network). Three per radio is the
   practical beacon-overhead limit on 2.4 GHz.
-- **Zones must not reach each other.** The only device that sees all three is the instructor
-  server (item 8).
-- **Why three zones:** mDNS load in a broadcast domain scales with queriers × responders, so
-  three zones cut it roughly ninefold. Because a team's laptop and boards always share a VLAN,
-  **no mDNS gateway or reflector is needed anywhere.**
+
+### The two rules the whole design rests on
+
+| | |
+|---|---|
+| **Within one zone's SSID pair** | Devices **must all see each other**, unicast and mDNS alike, across bands (items 1–3) |
+| **Across different zones' SSID pairs** | Devices **must not see each other at all** — no unicast, no broadcast, no multicast (item 10) |
+
+The second rule is not about security, it is about **multicast volume**. mDNS load in a broadcast
+domain scales with queriers × responders, so genuinely separating three zones cuts it roughly
+ninefold. If any two zones can see each other, the load returns to that of one flat 500-client
+network, which is the single thing the zoning exists to avoid. And because a team's laptop and
+boards always share a VLAN, **no mDNS gateway or reflector is needed anywhere.**
 
 ---
 
@@ -57,7 +65,7 @@ by hostname, `name.local`, and hold a TCP connection to each for hours.
 
 ---
 
-## 3. Configuration requirements (apply within every zone)
+## 3. Configuration requirements
 
 These numbers are referenced from our other documents; please keep them in replies.
 
@@ -105,12 +113,27 @@ so a changed IP costs nothing. Reserve a small static range per zone for instruc
 **8. Instructor server present in all three zones.** It resolves and connects to every sensor
 board by name, in every zone, overnight. Provide its wired port as an **802.1Q trunk carrying
 VLANs 10, 20 and 30** and the server will configure its own sub-interfaces; three access ports,
-one per zone, is an acceptable alternative. **Not an mDNS reflector between zones** — the
-participant zones must stay isolated.
+one per zone, is an acceptable alternative. **Never by way of an mDNS reflector between
+zones** (item 10).
 
 **9. Association surge.** If an AP or controller restarts, up to 200 boards reassociate at once.
 Confirm that no association rate limit or client-per-radio cap strands some, and that DHCP
 absorbs the burst.
+
+**10. Zones fully isolated from each other, multicast above all.** Devices in different SSID pairs
+must not see each other at all. Three things specifically:
+
+- **No mDNS reflector, Bonjour gateway, AirGroup or mDNS repeater between VLANs.** Several
+  vendors' controllers enable this by themselves once they see multiple VLANs, and it is the most
+  common trap for this design. We want none of it, because a team's laptop and boards already
+  share a VLAN.
+- **One zone's broadcast and multicast must never appear in another**, mDNS on 5353 included.
+  Item 3 asks for it to be forwarded **within a zone only**.
+- **No routing between the three zone subnets.** If your topology has to route them, block it with
+  an ACL at the gateway.
+
+The one exception is the instructor server, which reaches all three zones through the trunk on its
+own port (item 8), not by letting the zones talk to each other.
 
 ---
 
@@ -135,14 +158,15 @@ SSIDs need none, and no inbound access is required anywhere.
 ## 5. Acceptance test
 
 Run during the setup window before the event, with someone able to change controller settings.
-All eight must pass. We also ask for on-site or on-call support through the setup window and the
+All of them must pass. We also ask for on-site or on-call support through the setup window and the
 first hour of the workshop.
 
 | # | Test | Pass criterion |
 |---|---|---|
 | 1 | Board on `farm-iot-red`, laptop on `farm-laptop-red`: `ping <boardname>.local` | Resolves and replies — **cross-band mDNS within a zone** (items 1–3) |
 | 2 | Same ping from inside the laptop's bridged VM | Resolves and replies — **multicast + two MACs** (item 6) |
-| 3 | Laptop on `farm-laptop-green` pings the **red** board by name | **Must fail** — zones are isolated |
+| 3 | Laptop on `farm-laptop-green` pings the **red** board by name | **Must fail** — zones are isolated (item 10) |
+| 3b | Same laptop runs an mDNS browser (`dns-sd -B _esphome._tcp`, or a Discovery app on a phone) | **Only green boards appear.** No name containing `red` or `blue` shows up, proving no mDNS reflector is running (item 10) |
 | 4 | Instructor server on the trunk pings a red, a green and a blue board by name | All three resolve (item 8) |
 | 5 | Phone on `farm-laptop-red` opens `http://<VM-ip>` | Dashboard loads — client-to-client, port 80 |
 | 6 | Laptop connected to a board, idle 30 minutes | Connection still live (item 5) |

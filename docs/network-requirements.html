@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ข้อกำหนดเครือข่ายสำหรับการอบรม</title>
+<meta name="description" content="เอกสารข้อกำหนดทางเทคนิค">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;600;700&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink: #14181d;
+  --ink-soft: #4a545f;
+  --rule: #d9dee4;
+  --rule-soft: #eaeef2;
+  --paper: #ffffff;
+  --wash: #f5f7f9;
+  --accent: #0f6b63;
+  --accent-wash: #e8f3f1;
+  --flag: #8a5a00;
+  --flag-wash: #fdf4e3;
+  --mono: "IBM Plex Mono", ui-monospace, "Cascadia Mono", Consolas, monospace;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  padding: 3.5rem 1.25rem 5rem;
+  background: var(--wash);
+  color: var(--ink);
+  font-family: Sarabun, "Leelawadee UI", "Noto Sans Thai", -apple-system,
+               BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  font-size: 16px;
+  line-height: 1.85;
+}
+
+.doc {
+  max-width: 54rem;
+  margin: 0 auto;
+  padding: 3.5rem clamp(1.5rem, 5vw, 4rem) 3rem;
+  background: var(--paper);
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  box-shadow: 0 1px 2px rgba(20, 24, 29, .04), 0 12px 32px rgba(20, 24, 29, .06);
+}
+
+/* ---- masthead ---------------------------------------------------------- */
+
+.doc-head { border-bottom: 3px solid var(--accent); padding-bottom: 1.5rem; margin-bottom: 2.5rem; }
+
+.kicker {
+  margin: 0 0 .6rem;
+  font-size: .78rem;
+  font-weight: 600;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.doc-head h1 { margin: 0; font-size: clamp(1.7rem, 4vw, 2.3rem); line-height: 1.3; font-weight: 700; }
+
+.meta { margin: .75rem 0 0; font-size: .9rem; color: var(--ink-soft); }
+
+/* ---- headings ---------------------------------------------------------- */
+
+h2 {
+  margin: 3rem 0 1rem;
+  padding-bottom: .5rem;
+  border-bottom: 1px solid var(--rule);
+  font-size: 1.4rem;
+  line-height: 1.4;
+  font-weight: 700;
+}
+
+h3 {
+  margin: 2rem 0 .75rem;
+  font-size: 1.12rem;
+  line-height: 1.5;
+  font-weight: 700;
+  color: var(--accent);
+}
+
+h2 + h3 { margin-top: 1.25rem; }
+
+p { margin: 0 0 1.15rem; }
+
+a { color: var(--accent); text-underline-offset: 2px; }
+
+strong { font-weight: 700; }
+
+hr { height: 0; margin: 3rem 0; border: 0; border-top: 1px solid var(--rule-soft); }
+
+/* ---- lists ------------------------------------------------------------- */
+
+ul, ol { margin: 0 0 1.15rem; padding-left: 1.35rem; }
+li { margin-bottom: .5rem; }
+li > ul, li > ol { margin-top: .5rem; margin-bottom: .25rem; }
+
+/* ---- tables ------------------------------------------------------------ */
+
+.table-scroll { overflow-x: auto; margin: 0 0 1.6rem; -webkit-overflow-scrolling: touch; }
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: .92rem;
+  line-height: 1.65;
+}
+
+th, td {
+  padding: .6rem .8rem;
+  border: 1px solid var(--rule);
+  text-align: left;
+  vertical-align: top;
+}
+
+thead th {
+  background: var(--wash);
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+tbody tr:nth-child(even) { background: #fbfcfd; }
+
+/* ---- callouts (blockquotes carry the load-bearing asks) ---------------- */
+
+blockquote {
+  margin: 0 0 1.6rem;
+  padding: 1.1rem 1.35rem .35rem;
+  background: var(--flag-wash);
+  border: 1px solid #f0dfba;
+  border-left: 4px solid var(--flag);
+  border-radius: 3px;
+}
+
+blockquote p { margin-bottom: .8rem; }
+
+/* ---- code -------------------------------------------------------------- */
+
+code {
+  padding: .12em .38em;
+  background: var(--accent-wash);
+  border-radius: 3px;
+  font-family: var(--mono);
+  font-size: .88em;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+blockquote code { background: #fff; border: 1px solid #ecdcb8; }
+
+/* ---- footer ------------------------------------------------------------ */
+
+.doc-foot {
+  margin-top: 3.5rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--rule);
+  font-size: .82rem;
+  color: var(--ink-soft);
+}
+
+.doc-foot p { margin: 0; }
+
+/* ---- print ------------------------------------------------------------- */
+
+@media print {
+  @page { size: A4; margin: 16mm 14mm; }
+  body { padding: 0; background: #fff; font-size: 10.5pt; line-height: 1.6; }
+  .doc { max-width: none; padding: 0; border: 0; border-radius: 0; box-shadow: none; }
+  a { color: inherit; text-decoration: none; }
+  h2 { break-after: avoid; page-break-after: avoid; }
+  h3 { break-after: avoid; page-break-after: avoid; }
+  table, blockquote, .table-scroll { break-inside: avoid; page-break-inside: avoid; }
+  tr, li { break-inside: avoid; page-break-inside: avoid; }
+  thead { display: table-header-group; }
+  .doc-foot { break-before: avoid; }
+}
+</style>
+</head>
+<body>
+<article class="doc">
+  <header class="doc-head">
+    <p class="kicker">เอกสารข้อกำหนดทางเทคนิค</p>
+    <h1>ข้อกำหนดเครือข่ายสำหรับการอบรม</h1>
+    <p class="meta">โครงการอบรม IoT ในฟาร์มอัจฉริยะ · ปรับปรุงล่าสุด 2026-09-07</p>
+  </header>
+  <h2>1. ชื่อ SSID และรหัสผ่าน</h2>
+  <p>ห้องอบรมแบ่งเป็นสามโซน แต่ละโซนเป็น VLAN ของตัวเอง และมี SSID หนึ่งคู่ คือ 2.4 GHz สำหรับบอร์ด
+  และ 5 GHz สำหรับแล็ปท็อปกับโทรศัพท์</p>
+  <div class="table-scroll"><table>
+  <thead>
+  <tr>
+  <th>โซน</th>
+  <th>VLAN (เสนอแนะ)</th>
+  <th>SSID 2.4 GHz (บอร์ด)</th>
+  <th>SSID 5 GHz (แล็ปท็อป โทรศัพท์)</th>
+  <th>รหัสผ่าน</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr>
+  <td>แดง</td>
+  <td>10</td>
+  <td><code>farm-iot-red</code></td>
+  <td><code>farm-laptop-red</code></td>
+  <td><code>iotfarmer</code></td>
+  </tr>
+  <tr>
+  <td>เขียว</td>
+  <td>20</td>
+  <td><code>farm-iot-green</code></td>
+  <td><code>farm-laptop-green</code></td>
+  <td><code>iotfarmer</code></td>
+  </tr>
+  <tr>
+  <td>น้ำเงิน</td>
+  <td>30</td>
+  <td><code>farm-iot-blue</code></td>
+  <td><code>farm-laptop-blue</code></td>
+  <td><code>iotfarmer</code></td>
+  </tr>
+  </tbody>
+  </table></div>
+  <p><strong>ใช้รหัสผ่าน <code>iotfarmer</code> ชุดเดียวกันทั้งหกชื่อ ระบบความปลอดภัย WPA2-PSK (AES/CCMP)</strong></p>
+  <blockquote>
+  <p><strong>ต้องใช้ชื่อและรหัสผ่านตามนี้เท่านั้น</strong> เพราะผู้จัดคอมไพล์ค่าเหล่านี้ลงในเฟิร์มแวร์ของบอร์ด 200 ตัว
+  ล่วงหน้า และแก้ที่หน้างานไม่ได้ หากมีข้อใดตั้งตามนี้ไม่ได้ ขอให้แจ้งทันที</p>
+  </blockquote>
+  <p>ทุก AP ต้องกระจาย SSID ทั้งหกชื่อ (วิทยุละสามชื่อ) เพราะโซนเป็นเรื่องเชิงตรรกะ ไม่ใช่พื้นที่ในห้อง
+  เฟิร์มแวร์ของบอร์ดแต่ละตัวฝัง SSID ของโซนไว้ ชุดอุปกรณ์ติดสีไว้ตรงกัน และทีมจะนั่งตรงไหนก็ได้
+  ขอให้ไม่เพิ่ม SSID ชื่อที่เจ็ดบนวิทยุเหล่านี้</p>
+  <h3>แนวทางการออกแบบสำคัญ</h3>
+  <p><strong>แนวทางที่ 1 ภายในคู่ SSID ของโซนเดียวกัน อุปกรณ์ต้องเห็นกันทั้งหมด</strong> ทั้ง unicast และ mDNS
+  ข้ามย่านความถี่ ดังนั้น SSID ทั้งสองของโซนต้องอยู่บน <strong>VLAN และ subnet เดียวกัน</strong> และต้อง <strong>ปิด client isolation /
+  AP isolation / guest mode บน SSID ทั้งหกชื่อ</strong> ส่วนฝั่ง mDNS อยู่ในข้อ 1</p>
+  <p><strong>แนวทางที่ 2 ข้ามคู่ SSID ต่างโซน อุปกรณ์ต้องไม่เห็นกันเลย</strong> ทั้ง unicast, broadcast
+  และ multicast ดังนั้น</p>
+  <ul>
+  <li><strong>ห้ามเปิด mDNS reflector / Bonjour gateway / AirGroup / mDNS repeater ระหว่าง VLAN</strong>
+    ฟีเจอร์นี้เป็นสิ่งที่ controller หลายยี่ห้อเปิดให้เองเมื่อเห็นว่ามีหลาย VLAN และเป็นกับดักที่พบบ่อยที่สุด
+    ของการออกแบบนี้ เราไม่ต้องการฟีเจอร์นี้เลย เพราะแล็ปท็อปกับบอร์ดของทีมเดียวกันอยู่ VLAN เดียวกันอยู่แล้ว</li>
+  <li><strong>ไม่ route ระหว่าง subnet ของสามโซน</strong> หากโครงสร้างจำเป็นต้อง route ขอให้ปิดกั้นด้วย ACL ที่ gateway</li>
+  </ul>
+  <p>แนวทางที่ 2 ไม่ใช่เรื่องความปลอดภัย แต่เป็นเรื่อง <strong>ปริมาณ multicast</strong> ภาระ mDNS ใน broadcast domain
+  หนึ่งแปรตามจำนวนผู้ถามคูณจำนวนผู้ตอบ การแยกสามโซนออกจากกันจริงจึงลดภาระลงราว 9 เท่า แต่ถ้าโซนใด
+  มองเห็นกันได้ ภาระจะกลับไปเท่ากับเครือข่ายแบนที่มี client 500 ตัว ซึ่งเป็นสิ่งเดียวที่การแบ่งโซนมีไว้
+  เพื่อหลีกเลี่ยง</p>
+  <p>ไม่มีอุปกรณ์ใดบนเครือข่ายนี้ที่ต้องข้ามโซน จึงไม่มีข้อยกเว้นที่ต้องเผื่อไว้</p>
+  <hr>
+  <h2>2. คาดการณ์ชนิดและจำนวนอุปกรณ์บนเครือข่าย</h2>
+  <div class="table-scroll"><table>
+  <thead>
+  <tr>
+  <th>อุปกรณ์</th>
+  <th>จำนวน</th>
+  <th>ต่อผ่าน</th>
+  <th>หมายเหตุ</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr>
+  <td>บอร์ดเซนเซอร์ (ESP32-C3) และบอร์ดรีเลย์ (ESP32-C6)</td>
+  <td>อย่างละ 100</td>
+  <td>SSID 2.4 GHz <strong>เท่านั้น</strong> ช่องกว้าง 20 MHz</td>
+  <td>โซนละ ~67 ตัว เปิดตลอดงาน รวมช่วงกลางคืน</td>
+  </tr>
+  <tr>
+  <td>แล็ปท็อปของทีม</td>
+  <td>100 (+ สำรอง และของผู้สอนอีก 1)</td>
+  <td>SSID 5 GHz</td>
+  <td>รัน Home Assistant ใน <strong>VM แบบ bridged</strong> แล็ปท็อปหนึ่งเครื่องจึงมี MAC และ IP อย่างละสองหมายเลข (ข้อ 2)</td>
+  </tr>
+  <tr>
+  <td>โทรศัพท์</td>
+  <td>100–400</td>
+  <td>SSID 5 GHz</td>
+  <td>ใช้เปิดแดชบอร์ดของทีม ซึ่งอยู่ใน VM บนแล็ปท็อป ไม่ได้อยู่บนอินเทอร์เน็ต จึงต้องเข้า SSID ของโซนตัวเอง</td>
+  </tr>
+  <tr>
+  <td>แล็ปท็อปนำเสนอ</td>
+  <td>1</td>
+  <td><strong>สาย LAN</strong> พอร์ต access</td>
+  <td>ใช้ฉายสไลด์ ต้องออกอินเทอร์เน็ตได้</td>
+  </tr>
+  </tbody>
+  </table></div>
+  <p><strong>จำนวน client ที่เชื่อมต่อพร้อมกัน คาดว่าประมาณ 500 และอาจถึง 800</strong> หากผู้เข้าอบรมทุกคนต่อโทรศัพท์
+  ขอให้วางขนาดฝั่ง 5 GHz ตามตัวเลขสูงสุด ส่วนฝั่ง 2.4 GHz มีเฉพาะบอร์ด 200 ตัวเท่านั้น ไม่มีอุปกรณ์อื่น</p>
+  <blockquote>
+  <p><strong>ขอ private /16 ให้แต่ละโซน</strong> เช่น <code>10.10.0.0/16</code> โซนแดง <code>10.20.0.0/16</code> โซนเขียว
+  <code>10.30.0.0/16</code> โซนน้ำเงิน เพราะต้องนับจำนวน lease ไม่ใช่จำนวนอุปกรณ์ ตกราว <strong>โซนละ 170–270 lease</strong>
+  (บอร์ด ~67 ตัว + แล็ปท็อป ~34 เครื่อง × 2 จาก VM แบบ bridged + โทรศัพท์ + สำรอง) ส่วน /24 ไม่เหลือ
+  ที่ว่างเลยเมื่อรวมโทรศัพท์ และไม่พอสำหรับ lease ยาวตามข้อ 4 <strong>หากแผนการจัดสรร IP ให้ /16 ไม่ได้
+  ขั้นต่ำที่ใช้ได้คือโซนละหนึ่ง /23</strong></p>
+  <p>subnet ที่ใหญ่ขึ้นไม่ได้ทำให้เปลือง airtime เพิ่ม เพราะปริมาณ broadcast และ multicast แปรตาม
+  จำนวนอุปกรณ์ ซึ่งเท่าเดิม ไม่ได้แปรตามขนาดของ subnet</p>
+  </blockquote>
+  <p><strong>พฤติกรรมหลักที่ต้องได้</strong> แล็ปท็อปของแต่ละทีมบน 5 GHz ต้องค้นหาบอร์ดสองตัวของทีมตัวเองบน 2.4 GHz
+  เจอด้วยชื่อ <code>name.local</code> และรักษาการเชื่อมต่อ TCP กับบอร์ดแต่ละตัวไว้ได้ต่อเนื่องหลายชั่วโมง</p>
+  <hr>
+  <h2>3. การตั้งค่าที่สำคัญ</h2>
+  <p>ข้อเหล่านี้คือข้อที่ชี้ขาดว่าการอบรมจะสำเร็จหรือไม่ ส่วนเรื่องอื่นย้ายไปอยู่ในส่วนที่ 5</p>
+  <p><strong>1. ส่งต่อ mDNS ระหว่างอุปกรณ์ไร้สายด้วยกัน และข้าม SSID ทั้งสองของโซน</strong> การแปลงชื่อเป็น IP ใช้
+  multicast DNS ที่ <strong>224.0.0.251 / UDP 5353</strong> ซึ่งต้องไปถึง client ทุกตัวในโซน และไปไกลกว่านั้นไม่ได้
+  ตามแนวทางที่ 2 ขอให้ตรวจว่าไม่มีสิ่งเหล่านี้ทิ้งแพ็กเก็ต: การกรองหรือระงับ broadcast/multicast ·
+  การแปลง multicast เป็น unicast ที่จัดการ mDNS ไม่ถูกต้อง · IGMP snooping โดยไม่มี querier
+  บน segment · proxy ARP / ARP suppression</p>
+  <blockquote>
+  <p>multicast อื่นจะระงับอย่างไรก็ได้ตามที่เห็นสมควร <strong>แต่พอร์ต 5353 ต้องผ่านเสมอ</strong> หาก AP ของท่าน
+  แปลง multicast เป็น unicast โดยจัดการ mDNS ได้ถูกต้อง ขอให้เปิดใช้ เพราะเป็นวิธีประหยัด airtime
+  ที่ได้ผลที่สุดที่ความหนาแน่นระดับนี้ หากมีการจำกัดอัตรา multicast ขอทราบค่าที่ตั้งไว้</p>
+  </blockquote>
+  <p><strong>2. MAC address สองหมายเลขหลัง client ไร้สายหนึ่งตัว</strong> Home Assistant รันใน VM แบบ bridged
+  แล็ปท็อปหนึ่งเครื่องจึงแสดง MAC และ IP อย่างละสองหมายเลขผ่านการเชื่อมต่อเดียว ขอให้ปิดทุกอย่างที่
+  มองว่านี่คือการปลอม MAC เช่น client integrity check การจำกัดจำนวน MAC ของแต่ละ station และ
+  ข้อจำกัดเรื่อง WDS <em>ข้อนี้มักหลุด ขอให้ยืนยันเป็นการเฉพาะ</em></p>
+  <p><strong>3. การเชื่อมต่อพร้อมกันจำนวนมาก</strong> หาก AP หรือ controller รีสตาร์ต บอร์ดมากถึง 200 ตัวจะเชื่อมต่อ
+  ใหม่พร้อมกัน ขอให้ยืนยันว่าไม่มีการจำกัดอัตรา association หรือเพดานจำนวน client ของแต่ละวิทยุที่จะ
+  ทำให้บอร์ดบางส่วนต่อไม่ได้ และ DHCP รองรับการขอ IP พร้อมกันครั้งนี้ได้</p>
+  <p><strong>4. เวลา lease ยาวพอให้ IP ไม่เปลี่ยนตลอดงาน</strong> ขอให้ตั้งเวลา lease ให้ครอบคลุมการอบรมทั้งหมด
+  เช่น 7 วัน หรือใช้ reservation <strong>ข้อนี้เป็นสิ่งที่ดีถ้าทำได้ ไม่ใช่ข้อบังคับ</strong> เพราะทุกอย่างอ้างอิงกันด้วยชื่อ
+  IP ที่เปลี่ยนไปจึงไม่ทำให้ระบบพัง แต่ที่ขอเพราะทีมที่จด IP ของบอร์ดไว้เป็นทางสำรองในวันแรก ควรใช้
+  เลขเดิมนั้นได้อีกในวันที่สอง และช่วง IP ในส่วนที่ 2 คือสิ่งที่ทำให้ lease ยาวเป็นไปได้</p>
+  <hr>
+  <h2>4. การทดสอบตรวจรับ</h2>
+  <p>ทำในช่วงติดตั้งก่อนวันงาน โดยมีผู้ที่แก้ค่าบน controller ได้อยู่ด้วย ต้องผ่านทุกข้อ และขอเจ้าหน้าที่
+  ประจำหน้างานหรือติดต่อได้ทันที ตลอดช่วงติดตั้งและชั่วโมงแรกของการอบรม</p>
+  <div class="table-scroll"><table>
+  <thead>
+  <tr>
+  <th>#</th>
+  <th>การทดสอบ</th>
+  <th>เกณฑ์ผ่าน</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr>
+  <td>1</td>
+  <td>บอร์ดบน <code>farm-iot-red</code> แล็ปท็อปบน <code>farm-laptop-red</code> แล้ว <code>ping &lt;boardname&gt;.local</code></td>
+  <td>หาชื่อเจอและตอบกลับ ยืนยัน <strong>mDNS ข้ามย่านความถี่ภายในโซน</strong> (ข้อ 1)</td>
+  </tr>
+  <tr>
+  <td>2</td>
+  <td>ping เดิมจากภายใน VM แบบ bridged บนแล็ปท็อป</td>
+  <td>หาชื่อเจอและตอบกลับ ยืนยัน <strong>multicast + สอง MAC</strong> (ข้อ 2)</td>
+  </tr>
+  <tr>
+  <td>3</td>
+  <td>แล็ปท็อปบน <code>farm-laptop-green</code> ping บอร์ด<strong>โซนแดง</strong>ด้วยชื่อ</td>
+  <td><strong>ต้องไม่สำเร็จ</strong> ยืนยันว่าโซนแยกจากกัน (แนวทางที่ 2)</td>
+  </tr>
+  <tr>
+  <td>3ข</td>
+  <td>แล็ปท็อปเครื่องเดิม เปิดโปรแกรมค้นหาอุปกรณ์ mDNS (เช่น <code>dns-sd -B _esphome._tcp</code> หรือ Discovery บนมือถือ)</td>
+  <td><strong>เห็นเฉพาะบอร์ดโซนเขียว</strong> ไม่มีชื่อที่มี <code>red</code> หรือ <code>blue</code> โผล่มาเลย ยืนยันว่าไม่มี mDNS reflector ทำงานอยู่ (แนวทางที่ 2)</td>
+  </tr>
+  <tr>
+  <td>4</td>
+  <td>โทรศัพท์บน <code>farm-laptop-red</code> เปิด <code>http://&lt;VM-ip&gt;</code></td>
+  <td>แดชบอร์ดขึ้น ยืนยันว่า client คุยกันเองได้ พอร์ต 80</td>
+  </tr>
+  <tr>
+  <td>5</td>
+  <td>แล็ปท็อปเชื่อมต่อบอร์ดค้างไว้เฉย ๆ 30 นาที</td>
+  <td>การเชื่อมต่อยังอยู่ (ส่วนที่ 5)</td>
+  </tr>
+  <tr>
+  <td>6</td>
+  <td>เปิด<strong>บอร์ด 20–30 ตัว</strong>กระจายทุกโซนพร้อมกัน แล้วปิด-เปิด AP หนึ่งตัว</td>
+  <td>ทุกตัวเชื่อมต่อและได้ lease ครบ และกลับมาต่อได้ทั้งหมดหลัง AP รีสตาร์ต (ข้อ 3)</td>
+  </tr>
+  <tr>
+  <td>7</td>
+  <td>แล็ปท็อปบน <code>farm-laptop-red</code> เปิด <a href="https://web.esphome.io">https://web.esphome.io</a></td>
+  <td>หน้าเว็บโหลดได้ ยืนยันว่า SSID ฝั่งแล็ปท็อปออกอินเทอร์เน็ตได้</td>
+  </tr>
+  </tbody>
+  </table></div>
+  <p>การทดสอบข้อ 1, 2 และ 3ข คือข้อที่มักไม่ผ่านบนค่าตั้งต้นของระบบเครือข่ายองค์กร</p>
+  <blockquote>
+  <p><strong>สิ่งที่การทดสอบนี้พิสูจน์ไม่ได้</strong> บอร์ด 20–30 ตัวคิดเป็นเพียง 10–15 % ของโหลดจริง จึงพิสูจน์ได้เฉพาะ
+  เรื่องการตั้งค่า (SSID, VLAN, mDNS, DHCP) ซึ่งเป็นจุดที่มักผิดพลาด แต่พิสูจน์ไม่ได้ว่าบอร์ด
+  200 ตัวบนย่าน 2.4 GHz จะทำงานได้ ส่วนนั้นเราพึ่งการวางแผนความจุของท่าน (ข้อ 3 และหมายเหตุ
+  เรื่องคลื่นความถี่ในส่วนที่ 5)</p>
+  </blockquote>
+  <hr>
+  <h2>5. หมายเหตุรอง</h2>
+  <p>ทั้งหมดนี้เป็นแนวปฏิบัติปกติของเครือข่ายลักษณะนี้ ที่เขียนไว้เพราะหากข้อใดถูกตั้งไว้ตามค่าตั้งต้น
+  เราจะเสียเวลาหน้างาน ไม่ใช่เพราะคาดว่าจะเป็นประเด็น</p>
+  <ul>
+  <li><strong>SSID ฝั่ง 2.4 GHz เหมาะกับอุปกรณ์อย่างง่าย</strong> ไม่ใช่ WPA3 อย่างเดียวและไม่ใช่ WPA-Enterprise ·
+    PMF / 802.11w ตั้งเป็น optional หรือปิด · ไม่ใช้ 802.11r / k / v ไม่ใช้ band steering และ
+    ไม่ตั้งอัตราขั้นต่ำที่ตัดอัตราต่ำของ 802.11n ออก เพราะบอร์ดไม่มีการเคลื่อนย้าย · ไม่มี captive portal
+    หน้า splash หรือการยืนยันตัวตนซ้ำเป็นระยะ เพราะไมโครคอนโทรลเลอร์กดยอมรับเงื่อนไขไม่ได้</li>
+  <li><strong>การเชื่อมต่อระยะยาวต้องคงอยู่</strong> แล็ปท็อปแต่ละเครื่องเปิด TCP session ค้างไว้กับบอร์ดของตนนาน
+    หลายชั่วโมง และบอร์ดต้องคงการเชื่อมต่อไว้ข้ามคืนโดยไม่มี client ต่ออยู่ ขอให้ปิด idle timeout,
+    session timeout และ inactivity timeout ของ client ทั้งหมด และไม่มีการรีบูตประจำคืนหรือ
+    ช่วงบำรุงรักษาตลอดงาน</li>
+  <li><strong>ปิด rogue-AP containment</strong> เพราะบอร์ดแต่ละตัวจะเปิด hotspot เล็ก ๆ สำหรับตั้งค่าขึ้นมาเอง
+    หาก SSID ของโซนหายไป และ hotspot จากโทรศัพท์ของผู้สอนคืออินเทอร์เน็ตสำรองของเรา</li>
+  <li><strong>การวางแผนคลื่นความถี่</strong> ย่าน 2.4 GHz มีช่องสัญญาณที่ไม่ทับซ้อนกันเพียงสามช่อง (1/6/11)
+    AP สามตัวที่วางตำแหน่งดีจึงดีกว่า AP หกตัวที่แย่งช่องกัน หากต้องใช้มากกว่าสามตัว ขอให้เป็น cell
+    ช่องเดียวกันที่แยกพื้นที่กันชัดเจนและลดกำลังส่งลง ส่วนย่าน 5 GHz ใช้ AP ได้เท่าที่ความครอบคลุม
+    ต้องการ WiFi 6 / OFDMA ช่วยได้มากที่ความหนาแน่นระดับนี้ ขอสัญญาณสม่ำเสมอที่ <strong>ระดับความสูง
+    ของโต๊ะ</strong> เพราะบอร์ดวางอยู่ท่ามกลางคน แล็ปท็อป และภาชนะใส่น้ำ</li>
+  <li><strong>อินเทอร์เน็ต</strong> ต้องการเฉพาะ SSID ฝั่งแล็ปท็อปและพอร์ตของแล็ปท็อปนำเสนอ ขอพอร์ตขาออก 443
+    ตลอดงาน และพอร์ตขาออก <strong>8883 (MQTT/TLS)</strong> ราวหนึ่งชั่วโมงในช่วงที่ 3 จากทั้งสามโซน ส่วน SSID
+    ฝั่งบอร์ดไม่ต้องออกอินเทอร์เน็ต และไม่ต้องเปิดการเข้าถึงขาเข้าที่ใดทั้งสิ้น</li>
+  </ul>
+  <hr>
+  <h2>6. ทางสำรองหากแยก VLAN ตาม SSID ไม่ได้</h2>
+  <p>ใช้ subnet เดียว (/22) กับ SSID สองชื่อ คือ <code>farm-iot</code> บน 2.4 GHz และ <code>farm-laptop</code> บน 5 GHz
+  รหัสผ่าน <code>iotfarmer</code> เหมือนเดิม ข้อกำหนดอื่นคงเดิมทั้งหมด และต้องพึ่งการแปลง multicast เป็น unicast
+  อย่างมาก <strong>ขอให้แจ้งล่วงหน้าโดยเร็ว</strong> เพราะเฟิร์มแวร์ต้องสร้างต่างจากเดิม</p>
+  <footer class="doc-foot">
+    <p>เอกสารนี้สร้างจากไฟล์ต้นทาง NETWORK-REQUIREMENTS-th.md ในคลัง iot-training หากต้องการแก้ไข ขอให้แก้ที่ไฟล์ต้นทางแล้วสร้างใหม่</p>
+  </footer>
+</article>
+</body>
+</html>

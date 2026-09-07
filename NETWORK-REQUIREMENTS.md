@@ -1,6 +1,6 @@
 # Workshop Network Requirements
 
-*ฉบับภาษาไทย: [docs/network-requirements.md](docs/network-requirements.md)*
+*ฉบับภาษาไทย: [NETWORK-REQUIREMENTS-th.md](NETWORK-REQUIREMENTS-th.md)*
 
 For the network provider. A hands-on IoT workshop needs one thing from the wireless network
 that default enterprise configurations do not give: **devices must find and talk to each other

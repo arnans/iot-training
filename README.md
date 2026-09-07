@@ -14,11 +14,12 @@ specific to that first delivery.
 | [COURSE-DESIGN.md](COURSE-DESIGN.md) | Full course design: session plans, goals, kit list, risks, production tasks |
 | [PART1-RECORDING-PREP.md](PART1-RECORDING-PREP.md) | Readiness notes for the optional narrated online decks |
 | [WORKSHEET-TODO.md](WORKSHEET-TODO.md) | Open items and assumptions in the worksheets |
-| [NETWORK-REQUIREMENTS.md](NETWORK-REQUIREMENTS.md) | Wireless network spec to hand to the venue's network provider ([Thai version](docs/network-requirements.md), published on the worksheet site) |
+| [NETWORK-REQUIREMENTS.md](NETWORK-REQUIREMENTS.md) | Wireless network spec for the venue's network provider. Thai edition: [NETWORK-REQUIREMENTS-th.md](NETWORK-REQUIREMENTS-th.md). Both render to standalone HTML in `docs/` — see below |
+| `scripts/` | [render-network-doc.py](scripts/render-network-doc.py) turns the two network Markdown files into print-ready HTML |
 | [TEST-PLAN.md](TEST-PLAN.md) | Bench test for the ESPHome provisioning flow, before committing the firmware image |
 | `firmware/` | The two workshop ESPHome images (sensor node, relay board) |
 | `hass/` | Home Assistant configuration for the team VM image (plus a now-unused instructor-server config) |
-| `docs/` | **Participant worksheets** — the website source (Thai) |
+| `docs/` | **Participant worksheets** — the website source (Thai), plus the two generated network-spec pages |
 
 ## Participant worksheet site
 
@@ -37,6 +38,8 @@ docs/
 ├── session-3.md      Networking, dashboards, and the design challenge
 ├── record-sheet.md   Printed team record sheet + design canvas
 ├── reference.md      Home Assistant menu paths and troubleshooting
+├── network-requirements.html      generated — Thai network spec
+├── network-requirements-en.html   generated — English network spec
 └── images/
 ```
 
@@ -44,11 +47,22 @@ docs/
 
 ```bash
 pip install -r requirements.txt
-mkdocs serve      # preview at http://127.0.0.1:8000
-mkdocs build      # static site into site/
+python scripts/render-network-doc.py   # regenerate the two network-spec pages
+mkdocs serve                           # preview at http://127.0.0.1:8000
+mkdocs build                           # static site into site/
 ```
 
-Deployment config for Netlify is in `netlify.toml`. `site/` is generated and not tracked.
+Deployment config for Netlify is in `netlify.toml`, which runs the render step before the
+build so the published spec always matches its Markdown. `site/` is generated and not tracked.
+
+### The network spec pages
+
+The two `network-requirements*.html` files in `docs/` are **generated, not edited**. The
+Markdown at the repo root is the source; `scripts/render-network-doc.py` wraps it in a
+standalone print-ready page and writes it into `docs/`. MkDocs copies non-Markdown files
+through untouched, so these publish at `/network-requirements.html` and
+`/network-requirements-en.html` without the worksheet theme — a plain document to send to the
+network provider, and a clean A4 print. Edit the Markdown, re-run the script, commit both.
 
 ### Conventions
 

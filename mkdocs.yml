@@ -33,7 +33,6 @@ nav:
   - "ช่วงที่ 3 — โครงสร้างระบบ IoT: การสื่อสาร คลาวด์ แดชบอร์ด และการออกแบบระบบ": session-3.md
   - ใบบันทึก (พิมพ์): record-sheet.md
   - อ้างอิงเมนู: reference.md
-  - ข้อกำหนดเครือข่าย (สำหรับผู้ให้บริการ): network-requirements.md
 
 markdown_extensions:
   - admonition

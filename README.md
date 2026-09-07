@@ -41,6 +41,7 @@ docs/
 ├── network-requirements.html      generated — Thai network spec
 ├── network-requirements-en.html   generated — English network spec
 └── images/
+    └── network-*.svg              generated — the two spec diagrams, per language
 ```
 
 ### Build and preview
@@ -59,7 +60,10 @@ build so the published spec always matches its Markdown. `site/` is generated an
 
 The two `network-requirements*.html` files in `docs/` are **generated, not edited**. The
 Markdown at the repo root is the source; `scripts/render-network-doc.py` wraps it in a
-standalone print-ready page and writes it into `docs/`. MkDocs copies non-Markdown files
+standalone print-ready page and writes it into `docs/`. It also draws the two diagrams
+(`scripts/network_figures.py`) as SVG, one pair per language, and inlines them so the page
+stays self-contained; the Markdown keeps a plain image link so the diagrams also show on
+GitHub. MkDocs copies non-Markdown files
 through untouched, so these publish at `/network-requirements.html` and
 `/network-requirements-en.html` without the worksheet theme — a plain document to send to the
 network provider, and a clean A4 print. Edit the Markdown, re-run the script, commit both.

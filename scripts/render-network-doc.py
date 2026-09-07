@@ -21,13 +21,18 @@ import pathlib
 import re
 import sys
 
+
 try:
     import markdown
 except ImportError:  # pragma: no cover
     sys.exit("markdown is not installed. Run: pip install -r requirements.txt")
 
+sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
+from network_figures import FIGURES  # noqa: E402
+
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 OUT_DIR = ROOT / "docs"
+IMG_DIR = OUT_DIR / "images"
 
 # source markdown -> (output file, <html lang>, document kicker)
 DOCUMENTS = [
@@ -226,6 +231,26 @@ code {
 
 blockquote code { background: #fff; border: 1px solid #ecdcb8; }
 
+figure {
+  margin: 0 0 1.9rem;
+  padding: 1.25rem 1.25rem .9rem;
+  background: #fcfdfd;
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+}
+
+figure svg { display: block; width: 100%; height: auto; }
+
+figcaption {
+  margin-top: .9rem;
+  padding-top: .7rem;
+  border-top: 1px solid var(--rule-soft);
+  font-size: .82rem;
+  line-height: 1.6;
+  color: var(--ink-soft);
+  text-align: center;
+}
+
 /* ---- footer ------------------------------------------------------------ */
 
 .doc-foot {
@@ -247,7 +272,7 @@ blockquote code { background: #fff; border: 1px solid #ecdcb8; }
   a { color: inherit; text-decoration: none; }
   h2 { break-after: avoid; page-break-after: avoid; }
   h3 { break-after: avoid; page-break-after: avoid; }
-  table, blockquote, .table-scroll { break-inside: avoid; page-break-inside: avoid; }
+  table, blockquote, .table-scroll, figure { break-inside: avoid; page-break-inside: avoid; }
   tr, li { break-inside: avoid; page-break-inside: avoid; }
   thead { display: table-header-group; }
   .doc-foot { break-before: avoid; }
@@ -299,6 +324,19 @@ def render(md_name: str, out_name: str, lang: str, kicker: str) -> pathlib.Path:
 
     html = markdown.markdown(text, extensions=EXTENSIONS, output_format="html5")
 
+    # Inline each figure so the page stays self-contained and prints as one
+    # piece. The Markdown keeps a plain image link, which renders on GitHub.
+    def _inline(match: re.Match) -> str:
+        alt, name = match.group(1), match.group(2)
+        svg = (IMG_DIR / f"{name}-{lang}.svg").read_text(encoding="utf-8")
+        svg = "\n".join("    " + ln for ln in svg.splitlines())
+        return ("<figure>\n" + svg + "\n    <figcaption>" + alt
+                + "</figcaption>\n  </figure>")
+
+    html = re.sub(
+        r'<p><img alt="([^"]*)" src="docs/images/([a-z-]+)-' + lang + r'\.svg"\s*/?></p>',
+        _inline, html)
+
     # Wrap tables so wide ones scroll instead of breaking the page.
     html = html.replace("<table>", '<div class="table-scroll"><table>')
     html = html.replace("</table>", "</table></div>")
@@ -323,8 +361,19 @@ def render(md_name: str, out_name: str, lang: str, kicker: str) -> pathlib.Path:
     return out
 
 
+def build_figures() -> None:
+    """Write one SVG per figure per language into docs/images/."""
+    IMG_DIR.mkdir(parents=True, exist_ok=True)
+    for name, build in FIGURES.items():
+        for lang in ("th", "en"):
+            path = IMG_DIR / f"{name}-{lang}.svg"
+            path.write_text(build(lang) + "\n", encoding="utf-8", newline="\n")
+            print(f"figure -> {path.relative_to(ROOT)}")
+
+
 def main() -> int:
     OUT_DIR.mkdir(parents=True, exist_ok=True)
+    build_figures()
     for md_name, out_name, lang, kicker in DOCUMENTS:
         out = render(md_name, out_name, lang, kicker)
         print(f"{md_name} -> {out.relative_to(ROOT)}  ({out.stat().st_size:,} bytes)")

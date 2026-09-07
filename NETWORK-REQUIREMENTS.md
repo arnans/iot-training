@@ -32,6 +32,8 @@ anywhere. Please do not add a seventh SSID on these radios.
 
 ### Key design guidelines
 
+![The three zones. Each holds one pair of SSIDs, 2.4 GHz and 5 GHz, on a single VLAN. Devices inside a zone all see each other; devices in different zones see nothing of each other.](docs/images/network-zones-en.svg)
+
 **1. Within one zone's SSID pair, devices must all see each other**, unicast and mDNS alike, across
 bands. So both of a zone's SSIDs bridge to the **same VLAN and subnet**, and **client isolation /
 AP isolation / guest mode is OFF on all six SSIDs.** Requirement 1 covers the mDNS half.
@@ -95,6 +97,8 @@ querier on the segment; proxy ARP or ARP suppression.
 > Suppress other multicast as you see fit, **but 5353 must survive.** If your APs do
 > multicast-to-unicast conversion that handles mDNS correctly, please enable it — it is the
 > biggest airtime win at this density. If you rate-limit multicast, tell us the threshold.
+
+![What mDNS must be allowed to do inside a zone, what must never cross between zones, and the settings that silently drop it.](docs/images/network-multicast-en.svg)
 
 **2. Two MAC addresses behind one wireless client.** Home Assistant runs in a bridged VM, so one
 laptop presents two MACs and two IPs over a single association. Disable anything that treats this

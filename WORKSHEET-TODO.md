@@ -31,7 +31,8 @@ bench session (adoption flow, overnight, sabotage cards, instructor machines, in
    the worksheet as fact, not as something teams discover.**
    - **Wet = มีน้ำ (water present)** · **Dry = น้ำหมด**. The entity carries `device_class: moisture`,
      so HA shows Wet / Dry, never On / Off. Float cylinder flipped on its rod at kit prep (8 Sep
-     2026); re-verification on flashed firmware pending — TEST-PLAN test G, second pass.
+     2026); re-verified on flashed firmware the same day, including a pulled wire and no switch at all
+     reading Dry — TEST-PLAN test G, second pass, complete.
    - Wiring for the kit list / session 1: two bare wires from the float switch onto the **outer
      two positions** (Signal, Ground) of the adapter's **4-way terminal block**, then a Grove
      cable from the adapter to **special port 1**.

@@ -296,8 +296,8 @@ performed for this response**; items that need the bench are listed as open belo
 8 Sep 2026 (`ea4f7e2`, `4a3a511`, `c05bccb`): firmware is `inverted: true` with
 `device_class: moisture`, HA shows Wet/Dry, and an unplugged switch reads Dry on the bench. The
 worksheet's claim is now accurate: a cut wire reads Dry, a dead board reads unavailable, neither
-is Wet. Remaining: the re-flash checks in TEST-PLAN test G second pass, and "flip every float" on
-the kit-prep list (COURSE-DESIGN open decisions).
+is Wet. Test G second pass is complete (all checks passed on the running firmware, 8 Sep 2026).
+Remaining: "flip every float" on the kit-prep list (COURSE-DESIGN open decisions).
 
 **18650 cell** was a "smaller fix" in the review; it is bigger. The GoGo-IoT has a battery
 path with source selection, so a charged cell keeps the board running when USB is pulled, and
@@ -316,7 +316,6 @@ surviving on its cell, which is scenario D's night-time node.
 
 ### Still open, needs the bench or a decision
 
-- TEST-PLAN test G second-pass re-flash checks.
 - Bench check that switching the GoGo-IoT off makes its entities `unavailable` within seconds and that switching it back on needs no re-adoption.
 - Adapter-out demo with the panel connected: one bench check of the LOAD pair and USB when the
   controller is to hand (not available on 8 Sep), before it is shown on the projector.

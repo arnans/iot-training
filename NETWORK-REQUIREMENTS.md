@@ -34,7 +34,7 @@ anywhere. Please do not add a seventh SSID on these radios.
 
 **1. Within one zone's SSID pair, devices must all see each other**, unicast and mDNS alike, across
 bands. So both of a zone's SSIDs bridge to the **same VLAN and subnet**, and **client isolation /
-AP isolation / guest mode is OFF on all six SSIDs.** Requirement 3 covers the mDNS half.
+AP isolation / guest mode is OFF on all six SSIDs.** Requirement 1 covers the mDNS half.
 
 **2. Across different zones' SSID pairs, devices must not see each other at all**: no unicast, no
 broadcast, no multicast. So:
@@ -52,7 +52,7 @@ ninefold. If any two zones can see each other, the load returns to that of one f
 network, which is the single thing the zoning exists to avoid.
 
 The one exception is the instructor server, which reaches all three zones through the trunk on its
-own port (requirement 8), not by letting the zones talk to each other.
+own port (requirement 4), not by letting the zones talk to each other.
 
 ---
 
@@ -61,9 +61,9 @@ own port (requirement 8), not by letting the zones talk to each other.
 | Device | Count | Connects via | Notes |
 |---|---|---|---|
 | Sensor boards (ESP32-C3) and relay boards (ESP32-C6) | 100 each | 2.4 GHz SSID **only**, 20 MHz | ~67 per zone. Powered on for the whole event, including overnight |
-| Team laptops | 100 (+ spares, + 1 instructor kit) | 5 GHz SSID | Each runs Home Assistant in a **bridged VM**, so one laptop has two MACs and two IPs (requirement 6) |
+| Team laptops | 100 (+ spares, + 1 instructor kit) | 5 GHz SSID | Each runs Home Assistant in a **bridged VM**, so one laptop has two MACs and two IPs (requirement 2) |
 | Phones | 100–400 | 5 GHz SSID | Open the team dashboard, which lives in the VM on the laptop rather than on the internet, so they must join their own zone's SSID |
-| Instructor server | 1 | **Wired, 802.1Q trunk** | Records every sensor board overnight; must see all three zones (requirement 8) |
+| Instructor server | 1 | **Wired, 802.1Q trunk** | Records every sensor board overnight; must see all three zones (requirement 4) |
 | Presentation laptop | 1 | **Wired**, access port | Slides; needs internet |
 
 **Concurrent clients: ~500 expected, up to ~800** if every participant joins a phone. Size the
@@ -76,11 +76,10 @@ by hostname, `name.local`, and hold a TCP connection to each for hours.
 
 ## 3. Requirements
 
-These are the ones that decide whether the workshop works. The numbers are stable identifiers
-referenced from our other documents, so the gaps are deliberate. Everything else has moved to
+These are the ones that decide whether the workshop works. Everything else has moved to
 section 5.
 
-**3. mDNS forwarded wireless-to-wireless and across a zone's two SSIDs.** Hostname resolution is
+**1. mDNS forwarded wireless-to-wireless and across a zone's two SSIDs.** Hostname resolution is
 multicast DNS on **224.0.0.251 / UDP 5353**. It must reach every client in the zone and, per
 guideline 2, no further. Check that none of these drop it: broadcast/multicast filtering or
 suppression; multicast-to-unicast conversion that mishandles mDNS; IGMP snooping without a
@@ -90,31 +89,31 @@ querier on the segment; proxy ARP or ARP suppression.
 > multicast-to-unicast conversion that handles mDNS correctly, please enable it — it is the
 > biggest airtime win at this density. If you rate-limit multicast, tell us the threshold.
 
-**6. Two MAC addresses behind one wireless client.** Home Assistant runs in a bridged VM, so one
+**2. Two MAC addresses behind one wireless client.** Home Assistant runs in a bridged VM, so one
 laptop presents two MACs and two IPs over a single association. Disable anything that treats this
 as spoofing: client integrity checks, MAC-per-station limits, WDS restrictions. *Easy to miss —
 please confirm explicitly.*
 
-**7. One /23 per zone.** Count DHCP leases, not devices: roughly **170–270 per zone** (~67 boards
+**3. One /23 per zone.** Count DHCP leases, not devices: roughly **170–270 per zone** (~67 boards
 + ~34 laptops × 2 for the bridged VMs + phones + spares). A /24 gives 254 usable addresses, which
-leaves no margin once phones join and no headroom for the long leases in requirement 10. **Please
+leaves no margin once phones join and no headroom for the long leases in requirement 6. **Please
 allocate a /23 to each zone**, with a small static range reserved in each for instructor
 equipment.
 
-**8. Instructor server present in all three zones.** It resolves and connects to every sensor
+**4. Instructor server present in all three zones.** It resolves and connects to every sensor
 board by name, in every zone, overnight. Provide its wired port as an **802.1Q trunk carrying
 VLANs 10, 20 and 30** and the server will configure its own sub-interfaces; three access ports,
 one per zone, is an acceptable alternative. Never by way of an mDNS reflector between zones.
 
-**9. Association surge.** If an AP or controller restarts, up to 200 boards reassociate at once.
+**5. Association surge.** If an AP or controller restarts, up to 200 boards reassociate at once.
 Confirm that no association rate limit or client-per-radio cap strands some, and that DHCP
 absorbs the burst.
 
-**10. DHCP leases long enough that addresses hold for the whole event.** Set the lease to span the
+**6. DHCP leases long enough that addresses hold for the whole event.** Set the lease to span the
 workshop, a week for instance, or use reservations. **Desirable rather than essential:**
 everything is addressed by hostname, so a changed IP breaks nothing on its own. It matters
 because a team that writes its board's IP down as a fallback on the first day should still find
-that address valid on the second. Requirement 7 is what makes a long lease affordable.
+that address valid on the second. Requirement 3 is what makes a long lease affordable.
 
 ---
 
@@ -126,21 +125,21 @@ the first hour of the workshop.
 
 | # | Test | Pass criterion |
 |---|---|---|
-| 1 | Board on `farm-iot-red`, laptop on `farm-laptop-red`: `ping <boardname>.local` | Resolves and replies — **cross-band mDNS within a zone** (requirement 3) |
-| 2 | Same ping from inside the laptop's bridged VM | Resolves and replies — **multicast + two MACs** (requirement 6) |
+| 1 | Board on `farm-iot-red`, laptop on `farm-laptop-red`: `ping <boardname>.local` | Resolves and replies — **cross-band mDNS within a zone** (requirement 1) |
+| 2 | Same ping from inside the laptop's bridged VM | Resolves and replies — **multicast + two MACs** (requirement 2) |
 | 3 | Laptop on `farm-laptop-green` pings the **red** board by name | **Must fail** — zones are isolated (guideline 2) |
 | 3b | Same laptop runs an mDNS browser (`dns-sd -B _esphome._tcp`, or a Discovery app on a phone) | **Only green boards appear.** No name containing `red` or `blue` shows up, proving no mDNS reflector is running (guideline 2) |
-| 4 | Instructor server on the trunk pings a red, a green and a blue board by name | All three resolve (requirement 8) |
+| 4 | Instructor server on the trunk pings a red, a green and a blue board by name | All three resolve (requirement 4) |
 | 5 | Phone on `farm-laptop-red` opens `http://<VM-ip>` | Dashboard loads — client-to-client, port 80 |
 | 6 | Laptop connected to a board, idle 30 minutes | Connection still live (section 5) |
-| 7 | **20–30 boards** across all zones powered at once; then power-cycle one AP | All associate and get leases; all rejoin after the restart (requirement 9) |
+| 7 | **20–30 boards** across all zones powered at once; then power-cycle one AP | All associate and get leases; all rejoin after the restart (requirement 5) |
 | 8 | Laptop on `farm-laptop-red` opens <https://web.esphome.io> | Page loads — internet from the laptop SSID |
 
 Tests 1, 2 and 4 are the ones that fail on default enterprise configurations.
 
 > **What this cannot test.** 20–30 boards is 10–15 % of the final load. It validates
 > configuration (SSIDs, VLANs, mDNS, DHCP, the trunk), which is the likely failure. It does not
-> validate 200 boards on 2.4 GHz; for that we rely on your capacity planning (requirement 9 and
+> validate 200 boards on 2.4 GHz; for that we rely on your capacity planning (requirement 5 and
 > the radio note in section 5).
 
 ---

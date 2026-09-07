@@ -361,8 +361,8 @@ assembled with an unflipped float reads backwards, which the first item below ca
 
 - [x] Re-flash and re-check: float up in water → **Wet**; float lifted out → **Dry**. Confirmed
       on the running firmware (Roger, 8 Sep 2026)
-- [ ] **No switch plugged in** (Grove cable out of port 1) → **Dry**. This is the fail-safe test
-      that was impossible before the flip
+- [x] **No switch plugged in** (Grove cable out of port 1) → **Dry**. This is the fail-safe test
+      that was impossible before the flip. Confirmed on the running firmware (Roger, 8 Sep 2026)
 - [ ] Pull one bare wire out of the adapter's terminal block while wet → **Dry** within ~0.5 s
 - [ ] Board's own web page: note what the two states are called there (ESPHome's page does not
       use the device class and may still say ON/OFF) so the session 1 record sheet and the
@@ -697,7 +697,7 @@ No port is needed — the OVA deliberately serves on **port 80, not 8123**
 | D two boards unique | ✅ | `gogo-iot-red-6749a4` + `gogo-relay-red-9d8b28`, both adopted at once, 15 entities. Crowded-list behaviour deferred to the venue |
 | E chattering visible | | clicks/min before hysteresis: |
 | F overnight | | relay board reboots overnight: |
-| G float switch | ✅ / 🔁 | pin: **GPIO0** · ON = **Wet** = water present (`inverted: true`, `device_class: moisture`) · float cylinder **flipped at kit prep** so the switch closes when UP/wet · internal pull-up only, **no external resistor needed** — 500 ms filters absorb surface jiggle entirely · broken wire / unplugged switch reads **Dry**, fails safe · Wet / Dry re-confirmed after the flip; unplugged-switch and pulled-wire checks still open |
+| G float switch | ✅ / 🔁 | pin: **GPIO0** · ON = **Wet** = water present (`inverted: true`, `device_class: moisture`) · float cylinder **flipped at kit prep** so the switch closes when UP/wet · internal pull-up only, **no external resistor needed** — 500 ms filters absorb surface jiggle entirely · broken wire / unplugged switch reads **Dry**, fails safe · Wet / Dry and **unplugged switch → Dry** confirmed after the flip; pulled-wire and board-page wording checks still open |
 | H relay board | ✅ | pins GPIO19/2/9 bench-confirmed · relay + button + LEDs OK · button works with HA down · `restore_mode: ALWAYS_OFF` ✅ · relay markings match `10A 250VAC` / `10A 30VDC` ✅ · **status LED: first version failed** — stayed lit out of range, because `inverted:` also inverts `status_led`'s 250/1250 ms blink; re-driven from an `interval:` as a symmetric 0.8 s blink on `wifi.connected` — **re-flashed and re-walked, works** · blink onset lags going out of range by several seconds (beacon timeout, accepted)  · **12 V-only boot ✅** — runs and connects on the screw terminal with USB unplugged, the day-of configuration · `restore_mode` re-confirmed on **both** supplies · **USB + 12 V together is harmless** — rails measured 5.04 V (USB) vs 5.12 V (12 V), 80 mV apart; board and serial port both fine, so the mistake costs nothing and a helper may plug in a laptop without unwiring the table |
 | I vibration calibration | ✅ | **signal is separable — verdict follows the real pump** · floor **3-8 mg**, running **~20-25 mg**, but measured on a deliberately soft mount · 25 / 12 kept as the **MEDIUM default** of a new three-level **sensitivity select** (high 15/10 · medium 25/12 · low 40/20), chosen in HA or on the board's web page · **re-flashed, selector works, choice survives a power cycle** |
 | J board web page | ✅ | live values ✅, relay control ✅, name-as-URL ✅ (trailing slash or `.local` required — bare name becomes a web search). `local: true` verified: 2 requests, both to the board, 13.2 kB page + SSE stream, no CDN — **works with no internet** |

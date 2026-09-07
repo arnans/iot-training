@@ -30,13 +30,13 @@ Every AP must broadcast all six SSIDs (three per radio). Zones are logical, not 
 board's firmware has its zone SSID compiled in, kits are colour-coded to match, and teams sit
 anywhere. Please do not add a seventh SSID on these radios.
 
-### The two rules the whole design rests on
+### Key design guidelines
 
-**Within one zone's SSID pair, devices must all see each other**, unicast and mDNS alike, across
+**1. Within one zone's SSID pair, devices must all see each other**, unicast and mDNS alike, across
 bands. So both of a zone's SSIDs bridge to the **same VLAN and subnet**, and **client isolation /
 AP isolation / guest mode is OFF on all six SSIDs.** Requirement 3 covers the mDNS half.
 
-**Across different zones' SSID pairs, devices must not see each other at all**: no unicast, no
+**2. Across different zones' SSID pairs, devices must not see each other at all**: no unicast, no
 broadcast, no multicast. So:
 
 - **No mDNS reflector, Bonjour gateway, AirGroup or mDNS repeater between VLANs.** Several
@@ -46,7 +46,7 @@ broadcast, no multicast. So:
 - **No routing between the three zone subnets.** If your topology has to route them, block it with
   an ACL at the gateway.
 
-The second rule is not about security, it is about **multicast volume**. mDNS load in a broadcast
+Guideline 2 is not about security, it is about **multicast volume**. mDNS load in a broadcast
 domain scales with queriers × responders, so genuinely separating three zones cuts it roughly
 ninefold. If any two zones can see each other, the load returns to that of one flat 500-client
 network, which is the single thing the zoning exists to avoid.
@@ -82,7 +82,7 @@ section 5.
 
 **3. mDNS forwarded wireless-to-wireless and across a zone's two SSIDs.** Hostname resolution is
 multicast DNS on **224.0.0.251 / UDP 5353**. It must reach every client in the zone and, per
-section 1, no further. Check that none of these drop it: broadcast/multicast filtering or
+guideline 2, no further. Check that none of these drop it: broadcast/multicast filtering or
 suppression; multicast-to-unicast conversion that mishandles mDNS; IGMP snooping without a
 querier on the segment; proxy ARP or ARP suppression.
 
@@ -128,8 +128,8 @@ the first hour of the workshop.
 |---|---|---|
 | 1 | Board on `farm-iot-red`, laptop on `farm-laptop-red`: `ping <boardname>.local` | Resolves and replies — **cross-band mDNS within a zone** (requirement 3) |
 | 2 | Same ping from inside the laptop's bridged VM | Resolves and replies — **multicast + two MACs** (requirement 6) |
-| 3 | Laptop on `farm-laptop-green` pings the **red** board by name | **Must fail** — zones are isolated (section 1) |
-| 3b | Same laptop runs an mDNS browser (`dns-sd -B _esphome._tcp`, or a Discovery app on a phone) | **Only green boards appear.** No name containing `red` or `blue` shows up, proving no mDNS reflector is running (section 1) |
+| 3 | Laptop on `farm-laptop-green` pings the **red** board by name | **Must fail** — zones are isolated (guideline 2) |
+| 3b | Same laptop runs an mDNS browser (`dns-sd -B _esphome._tcp`, or a Discovery app on a phone) | **Only green boards appear.** No name containing `red` or `blue` shows up, proving no mDNS reflector is running (guideline 2) |
 | 4 | Instructor server on the trunk pings a red, a green and a blue board by name | All three resolve (requirement 8) |
 | 5 | Phone on `farm-laptop-red` opens `http://<VM-ip>` | Dashboard loads — client-to-client, port 80 |
 | 6 | Laptop connected to a board, idle 30 minutes | Connection still live (section 5) |

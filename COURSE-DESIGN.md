@@ -6,11 +6,11 @@ A set of narrated decks (see *Online materials* below) remains as **optional pre
 
 **Tool stack:** Home Assistant (logic, dashboards, logging, remote control) **on each team's own laptop** · GoGo-IoT board (ESP32-C3, onboard temperature/humidity/light/pressure/IMU, float switch on port 1) as input · ESP32-C6 relay board driving a 12V pump as output · PWM solar charge controller as the kit's 12V source. Every device on the workshop WiFi. Teams wire the 12V circuit by hand once; no soldering anywhere.
 
-> **Decided — HASS host: participants' laptops, as a pre-built VirtualBox OVA.** Home Assistant runs in a VM on each team's laptop. Participants receive an appliance image with a minimal `configuration.yaml` (no `default_config`), a bridged adapter and onboarding already done — see [hass/](hass/). Consequence: laptops go home, so the between-session history comes from an **instructor Home Assistant** on a wired trunk that adopts every team's sensor node alongside their laptop. ESPHome's API accepts multiple simultaneous clients.
+> **Decided — HASS host: participants' laptops, as a pre-built VirtualBox OVA.** Home Assistant runs in a VM on each team's laptop. Participants receive an appliance image with a minimal `configuration.yaml` (no `default_config`), a bridged adapter and onboarding already done — see [hass/](hass/). Consequence: laptops go home, so **nothing records overnight** — and that absence is taught rather than patched. The logging teams read is the one their own HA makes across Day 2 morning, opened in the Session 3 afternoon. (Rejected 7 Sep 2026: an instructor Home Assistant on a wired trunk adopting all 100 sensor nodes. It buys one 15-min opener at the cost of a wired trunk in all three zones, a recorder tuned for ~250 writes/s, and a second machine that must not fail.)
 
 > **Decided — network: three logical zones.** The room is split into red / green / blue, each a VLAN with a 2.4 GHz SSID for boards and a 5 GHz SSID for laptops, all six SSIDs on every AP. Zones are logical, not spatial: the zone is compiled into the boards and colour-coded on the kit, and a team is told its colour. This cuts mDNS load per domain ~9× and needs no mDNS gateway. See [NETWORK-REQUIREMENTS.md](NETWORK-REQUIREMENTS.md).
 
-> **Decided — device addressing: DHCP, no static IPs, no per-board setup.** One firmware source per board type, **built three times** by `firmware/build-zones.py` with the zone's SSID and password injected, so the zone colour is part of each board's mDNS hostname (`gogo-iot-red-a1b2c3`). Teams read the name over USB at web.esphome.io, check the colour matches their kit, then add `<name>.local` in Home Assistant. See [firmware/](firmware/) and [TEST-PLAN.md](TEST-PLAN.md).
+> **Decided — device addressing: DHCP, no static IPs, no per-board setup.** One firmware source per board type, **built three times** by `firmware/build-zones.py` with the zone's SSID and password injected, so the zone colour is part of each board's mDNS hostname (`gogo-iot-red-a1b2c3`). Teams read the name over USB at web.esphome.io, check the colour matches their kit, then pick that board out of Home Assistant's discovered list by its six-character suffix (manual entry of the bare name, no `.local`, is the fallback — bench-verified). See [firmware/](firmware/) and [TEST-PLAN.md](TEST-PLAN.md).
 
 ---
 
@@ -33,34 +33,33 @@ A set of narrated decks (see *Online materials* below) remains as **optional pre
 |---|---------------|------|----------------------|
 | 1 | Input / Logic / Output model of autonomous systems | Session 1 | Reinforced in every activity; recap in Session 3 wrap-up |
 | 2 | Choose sensors & actuators (specs, form factor, price) | Session 1 | Session 3 design challenge |
-| 3 | Create & implement logic for smart farm tasks | Session 2 | Session 1 ends with a manual sense → act loop that motivates automation |
+| 3 | Create & implement logic for smart farm tasks | Session 2 | Session 1 ends with a hand-run loop and the first automation (float-switch guard) |
 | 4 | Choose IoT infrastructure, communication & protocols | Session 3 | Seeded by the Session 2 failure lab (the link that died) |
 | 5 | Practical factors: redundancy, fail-safe, safety, maintenance | Session 2 | Introduced in Session 1 (manual override / Auto-Off-Manual control box); Session 3 design challenge rubric |
-| 6 | Create dashboards to visualize inputs and control outputs | Session 3 | Introduced in Session 1 (cards, toggle); control panel in Session 2 |
+| 6 | Create dashboards to visualize inputs and control outputs | Session 3 | Introduced in Session 1 (entity history, toggle from laptop and phone); control panel in Session 2 |
 
 Each post-test targets the two goals that are core in its session.
 
 ### Design principles
-- **Experience first, vocabulary second.** Participants run a working networked system from Session 1 and only open the network in Session 3. ESPHome + HASS hide it completely: nobody types an SSID, an IP or a topic name before Session 3. One sentence of orientation at setup — *"your board and your Home Assistant talk over the workshop WiFi, not the hotel WiFi; we open that box on Saturday afternoon"* — and no more.
+- **Experience first, vocabulary second.** Participants run a working networked system from Session 1 and only open the network in Session 3. ESPHome + HASS hide it completely: nobody *configures* an address before Session 3 — teams read their board's name and IP off a screen, type that IP into a browser to see the board's own page, and later click the board's card in Home Assistant; nothing is ever assigned by hand. One sentence of orientation at setup — *"your board and your Home Assistant talk over the workshop WiFi, not the hotel WiFi; we open that box on Saturday afternoon"* — and no more.
 - **Goal 5 is taught by experiencing failure**, not slides. The sabotage round is the emotional peak and the thing participants will retell.
-- **One kit through all three sessions.** Boards and hosts keep logging overnight; the Day 2 opener is the overnight graph.
+- **One kit through all three sessions.** Boards stay powered in the room overnight so Day 2 starts ready, not so anything is logged — laptops go home and the recorder goes with them. Teams read *their own* half-day trace on Day 2 afternoon, and the missing night is the evidence for "a farm needs a machine that never closes its lid".
 - **Sessions 1–2 run fully offline on our router.** Only Session 3 (cloud push) needs venue internet.
 
 ---
 
 ## Session 1 — Day 1 PM (13:00–15:45, post-test 15:45–16:00)
 
-**ระบบสมองกลฝังตัวในฟาร์ม: รับรู้ ตัดสินใจ สั่งการ (Input → Logic → Output)** — Goals **1, 2** core; 6 introduced
+**ระบบสมองกลฝังตัวในฟาร์ม: รับรู้ ตัดสินใจ สั่งการ (Input → Logic → Output)** — Goals **1, 2** core; 3, 5, 6 introduced
 
 | Time | Block | Goals |
 |------|-------|-------|
 | 13:00–13:20 | **Live:** Input → Logic → Output with familiar examples — **air conditioner / fridge** (thermostat → "if too warm" → compressor), **automatic street light** (light sensor → "if dark" → lamp), **automatic water tank** (float switch → "if level low" → pump; the bridge example: already a sensor-controlled pump, with a mechanical switch as the logic) — then the same three boxes for a smart farm (the water tank with a different sensor and the logic moved into software), mapped onto the kit: sensor board = input node, relay board = output node, HASS = logic + dashboard + logging. 2-min demo of the finished system as the hook. Vocabulary fixed here and reused verbatim: **Input (เซนเซอร์), Logic (ตัวตัดสินใจ), Output (ตัวกระทำ/actuator)**. | 1, 6 |
-| 13:20–13:30 | Kit handout, role cards, teams open their team HASS in a browser. WiFi orientation sentence (see principles). | — |
-| 13:30–14:05 | **Activity 1 — Sense.** Adopt the sensor board (add-by-IP), add dashboard cards, watch live values and the history graph. Mini-challenge: *which entity changes when you breathe on the board? cover it?* 5 min on the ESPHome YAML: which pin, ADC, I2C — this is the "embedded" in the title. Compare the soil sensor's spec sheet (range, accuracy, interface, IP rating; capacitive vs resistive) with what they see. | 1, 2, 6 |
-| 14:05–14:30 | **Live:** actuators and driving loads. Pumps, valves, fans, lights; DC vs AC; why a microcontroller can't drive a pump → relay / SSR; reading relay ratings; inductive derating in one sentence; sizing a pump (head, flow, supply). **Manual override — never let the logic be the only way to control an actuator:** show a typical pump control box with its **Auto / Off / Manual** selector. Auto = the controller drives the pump; Off = pump cannot run (maintenance, leak found); Manual = pump runs regardless of the controller (sensor faulty, network down, crop still needs water). Standard practice, not an add-on: the person on the farm must be able to stop or start the pump without a laptop. First seed of Goal 5. Safety framing: **12V is our classroom voltage; 220V needs an electrician.** | 2, 5 |
-| 14:30–14:45 | Break | |
-| 14:45–15:25 | **Activity 2 — Act.** Adopt the relay board; toggle from dashboard and phone; connect the 12V pump (pre-made connectors); pump water between two containers on a drip tray. Recorder question: *what would change to run a 220V pump?* | 1, 2, 6 |
-| 15:25–15:45 | **Manual loop.** Irrigate by hand from the dashboard while watching the moisture graph — sets up "why automate" for tomorrow. Recap the three boxes. (This block is the timing buffer for Session 1.) | 1, 3 |
+| 13:20–13:55 | **Activity 1 — Sense.** Kit handout, role cards, zone-colour check; teams start their HA VM and leave it. Read the board's name **and IP** over USB at web.esphome.io, then open the board's own page at `http://<ip>/` — no Home Assistant yet. Mini-challenge on that page: *which entity changes when you breathe on the board? cover it? lift the float?* Count the seconds from covering to the light value moving (feeds Session 2's chatter). Analog vs digital sensors. | 1, 2 |
+| 13:55–14:35 | **Activity 2 — Act.** Part A, *the relay is a switch*: relay board on USB, read name + IP, toggle it from the board's page with nothing attached — click, indicator LED, onboard button; unplug USB. Part B, *the load*: wire the 12V distribution (charge controller → terminal block → relay board + pump), pump A→B once then recirculate, toggle from the board's page. Instructor talking point, 2 min, no equipment: the same junction on a real farm is a **pump control box** with an **Auto / Off / Manual** selector — first seed of Goal 5. Safety framing: **12V is our classroom voltage; 220V needs an electrician.** Recorder question: *what would change to run a 220V pump?* | 1, 2, 5 |
+| 14:35–14:50 | Break | |
+| 14:50–15:30 | **Activity 3 — Logic.** Adopt both boards into the team's Home Assistant (discovered cards, six-char suffix). Observe from the device page — click an entity → history graph ("the board only knows *now*; HA remembers") — and toggle the pump from laptop and phone. No custom dashboard: that is Session 3. **Be the Logic yourself** for 5 min (watch humidity, water by hand, lift the float mid-run), then the Recorder writes two rules as *ถ้า … ให้ …*. Build the float rule as the **first automation**: trigger = float switch → Off, action = relay off; pass criterion: pump stops itself 3 of 3. Hook for Session 2: lift the float *first*, then start the pump — nothing stops it (trigger vs condition). | 1, 3, 5, 6 |
+| 15:30–15:45 | **Activity 4 — Spec (timing buffer).** Paper only, no equipment. Each team draws a scenario card stating a job with numbers; they read the kit's specs (humidity / temperature accuracy, float-switch rating, the relay's printed DC rating, pump current) and rule fit / unfit, naming the single part to change. At least one card exceeds the sensor accuracy, one exceeds the relay rating, one passes. Instructor closes with the five things to read on every spec. Flexes 10–25 min; becomes a take-home if Activity 3 overruns. | 2 |
 
 **Post-test 1 (Goals 1, 2):** label input/logic/output in 3 scenarios (see Section 1 self-check below); pick the right sensor from a spec for 3 scenarios; match loads to relays/supplies; spot the unsafe pairing; given a scenario (sensor broken / leak found), pick the Auto/Off/Manual position.
 
@@ -72,12 +71,11 @@ Each post-test targets the two goals that are core in its session.
 
 | Time | Block | Goals |
 |------|-------|-------|
-| 09:00–09:15 | **Overnight data.** Open the history graph: what happened while we were away? Motivates both automation and logging. | 3 |
-| 09:15–09:30 | **Live:** the HASS automation editor — **trigger / condition / action**. Hysteresis explained on yesterday's own graph. | 3 |
-| 09:30–10:30 | **Activity 3 — Think.** Ladder: (a) threshold: sensor value → pump ON; (b) hysteresis/deadband so it doesn't chatter; (c) time-window condition; (d) phone notification. Fast teams: templated automation or a second condition. Add a dashboard **control panel**: automation on/off switch + manual override. (a) and (b) are the required core; (c) and (d) are stretch. | 3, 6 |
+| 09:00–09:15 | **Automation recap.** Open yesterday's float automation in the editor and name its three parts — **trigger / condition / action**. The Session 1 hook lands here: lifting the float *first* and then starting the pump did nothing, because a trigger answers *when did it change*, not *what is it now*; that is condition's job. No new build. | 3 |
+| 09:15–10:30 | **Activity 5 — Think.** Ladder: (a) threshold: sensor value → pump ON; (b) hysteresis/deadband so it doesn't chatter; (c) time-window condition; (d) phone notification. Fast teams: templated automation or a second condition. Add a dashboard **control panel**: automation on/off switch + manual override. (a) and (b) are the required core; (c) and (d) are stretch. | 3, 6 |
 | 10:30–10:45 | Break | |
-| 10:45–11:30 | **Activity 4 — Failure lab.** Instructor sabotage round *while the pump automation is live*: WiFi router unplugged / sensor disconnected / HASS stopped. Teams observe, diagnose, then implement fail-safes: **max pump run-time cutoff** and **sensor-unavailable → safe state**. Keep the network explanation light: "the link died, the entities went unavailable, the pump was on its own." The *why* waits for Session 3. | 5 |
-| 11:30–11:45 | **Debrief:** redundancy, watchdogs, maintenance expectations (who checks the system weekly? what corrodes first?). **Instructor demo (not a team task):** a real pump control box wired to the instructor kit — flip **Auto / Off / Manual** while the automation runs and show the pump obey the switch, not HASS. Links back to Session 1. | 5 |
+| 10:45–11:30 | **Activity 6 — Failure lab.** Paired-team sabotage from sealed cards *while the pump automation is live* — one instructor cannot reach 100 teams, so neighbouring teams sabotage each other, three rounds, cards revealed at the end. The three cards: sensor board power pulled (entities go `unavailable`) / laptop WiFi off (HA loses both boards) / pump lead unscrewed from the relay's NO terminal (relay clicks, indicator lights, dashboard says "on", no water moves — the one failure a dashboard cannot show). Teams observe, diagnose, then implement fail-safes: **max pump run-time cutoff** and **sensor-unavailable → safe state**. Keep the network explanation light: "the link died, the entities went unavailable, the pump was on its own." The *why* waits for Session 3. | 5 |
+| 11:30–11:45 | **Debrief:** redundancy, watchdogs, maintenance expectations (who checks the system weekly? what corrodes first?). Closes with the lunch instruction that makes Session 3's opener possible: **do not shut the VM down** — HA has been recording all morning; disable the watering automation and leave the relay off so nothing pumps unattended. **Instructor demo (not a team task):** a real pump control box wired to the instructor kit — flip **Auto / Off / Manual** while the automation runs and show the pump obey the switch, not HASS. Then the same idea one layer down: the relay board's **onboard button** toggles the relay with Home Assistant shut down (bench-verified) — an override that lives in the board rather than the wiring. Links back to Session 1. | 5 |
 
 **Post-test 2 (Goals 3, 5):** predict what a given automation does; fix a chattering automation with hysteresis; choose the fail-safe for a scenario; maintenance items.
 
@@ -89,10 +87,11 @@ Each post-test targets the two goals that are core in its session.
 
 | Time | Block | Goals |
 |------|-------|-------|
-| 13:00–13:30 | **Live (กำพล):** open the box — the `wifi:` and `api:` blocks in the ESPHome YAML, the device IP on the integration page, the live ESPHome log. Then the decision axes **distance, power source, data rate, cost**; WiFi (our choice), ESP-NOW, LoRa/LoRaWAN, cellular/NB-IoT, wired RS-485; MQTT (publish/subscribe), HTTP, ESPHome native API in one slide each. **Local-first vs cloud:** what happens to each when the internet fails — link back to yesterday's router failure. | 4 |
-| 13:30–14:30 | **Dashboard build** for a real user: gauges, history, controls, automation status, mobile view. Then push kit data to a cloud dashboard / broker for remote access (tool per กำพล). | 6, 4 |
+| 13:00–13:30 | **Live (กำพล):** open the box — the `wifi:` and `api:` blocks in the ESPHome YAML (no encryption key, no IP anywhere in the file), the device IP on the integration page, the live ESPHome log, and the board's **own web page** at `http://<name>/` — "your board *is* a web server on this network" is the most concrete thing in the block. Then the decision axes **distance, power source, data rate, cost**; WiFi (our choice), ESP-NOW, LoRa/LoRaWAN, cellular/NB-IoT, wired RS-485; MQTT (publish/subscribe), HTTP, ESPHome native API in one slide each. **Local-first vs cloud:** what happens to each when the internet fails — link back to yesterday's router failure. | 4 |
+| 13:30–13:40 | **Our own half-day.** Open History over this morning and find four things the team caused: the light dip from a cupped hand, the fast relay toggling before hysteresis, the gaps from the sabotage rounds, the pump's runs. Then the question the graph cannot answer — *the board ran all night, so why is there no night on this graph?* The recorder went home in a laptop bag. Motivates both logging and "a farm needs a machine that stays on". | 6, 4 |
+| 13:40–14:30 | **Dashboard build** for a real user: gauges, history (now populated with that morning), controls, automation status, mobile view. Then push kit data to a cloud dashboard / broker for remote access (tool per กำพล). | 6, 4 |
 | 14:30–14:45 | Break | |
-| 14:45–15:30 | **Activity 5 — Design challenge.** Each team draws a scenario card (greenhouse / 10-rai orchard / hydroponics / remote plot, no mains) and produces a one-page system spec on a printed canvas: sensors + actuators **with real prices**, comms/protocol choice **with reasoning**, and at least **one fail-safe**. 1-minute pitch per team. | 2, 4, 5 |
+| 14:45–15:30 | **Activity 7 — Design challenge.** Each team draws a scenario card (greenhouse / 10-rai orchard / hydroponics / remote plot, no mains) and produces a one-page system spec on a printed canvas: sensors + actuators **with real prices**, comms/protocol choice **with reasoning**, and at least **one fail-safe**. 1-minute pitch per team. | 2, 4, 5 |
 | 15:30–15:45 | **Wrap-up.** The three boxes across three sessions; where-to-go-next sheet (incl. take-home install guide); feedback form. | 1 |
 
 **Post-test 3 (Goals 4, 6):** choose comms for 3 farms (backyard greenhouse / 10-rai orchard / remote field with no mains power); dashboard and local-vs-cloud items. The design canvas is scored separately on the rubric.
@@ -118,7 +117,7 @@ These narrated decks (each ≤10 min + a 3–5 question self-check) were designe
 - Self-check: label the input, logic, and output in 3 scenarios, chosen to be different from the taught examples so learners generalize rather than recall:
   1. **Greenhouse exhaust fan** — a temperature sensor turns the fan on when the greenhouse exceeds 35 °C. *(Straightforward; a different actuator than a pump.)*
   2. **Fish / shrimp pond aerator** — a dissolved-oxygen (DO) sensor switches the paddle-wheel aerator on when oxygen in the pond drops, typically before dawn. *(An unfamiliar sensor and a large motor as the actuator; the three boxes still apply.)*
-  3. **Sprinkler with a rain sensor** — a timer starts the sprinkler every morning at 6:00, but not if the rain sensor is wet. *(Two inputs, one of which is a clock; the logic combines them. Previews the conditions they add in Activity 3.)*
+  3. **Sprinkler with a rain sensor** — a timer starts the sprinkler every morning at 6:00, but not if the rain sensor is wet. *(Two inputs, one of which is a clock; the logic combines them. Previews the conditions they add in Activity 5.)*
 
 ### Section 2 — เลือกเซนเซอร์ให้ฟาร์ม (10 min) — Goal 2 · *background to สงวนศักดิ์'s morning; hands-on in Session 1*
 - Survey of farm-relevant sensors in two tiers, so learners know what to buy first and what to treat with caution:
@@ -142,8 +141,7 @@ These narrated decks (each ≤10 min + a 3–5 question self-check) were designe
 - Prompt instead of quiz: "list two automations you'd want on a farm you know."
 
 ### Section 6 — ติดตั้ง Home Assistant (10 min video) — *take-home install guide*
-- Step-by-step guided install for participants' own machines, **one blessed path per OS** (e.g. HASS OS in VirtualBox for Windows; Docker for those who already have it) — do not present a menu of options.
-- **Now a hard prerequisite, not optional pre-reading**, since Home Assistant runs on participants' laptops. One blessed path per OS, **VirtualBox with a bridged adapter** (NAT breaks mDNS and phone access; Docker Desktop on Windows cannot work). Verification screenshot via a form **at least 3 days before Day 1**, reminder + 15-min online help slot for non-submitters, 3–4 laptops with the VM pre-imaged as day-of rescue.
+- **Now a hard prerequisite, not optional pre-reading**, since Home Assistant runs on participants' laptops. **One path only: install VirtualBox, import the pre-built OVA, press Start.** No from-scratch install, no Docker (Docker Desktop on Windows has no host networking, so no mDNS). The OVA carries the bridged adapter, the minimal config and a completed onboarding. **Two OVAs, not one:** x86-64 for Windows and Intel Macs, ARM64 for Apple Silicon — the guide branches on "what kind of computer do you have" before anything else (see `hass/README.md`). Verification screenshot via a form **at least 3 days before Day 1**, reminder + 15-min online help slot for non-submitters, 3–4 laptops with the VM pre-imaged as day-of rescue.
 
 ---
 
@@ -152,23 +150,23 @@ These narrated decks (each ≤10 min + a 3–5 question self-check) were designe
 **Per team. 100 teams of four, 400 participants. Plan 100 kits + 5 spares:**
 - Team's **own laptop** running Home Assistant in a bridged VM (installed before Day 1)
 - 1 × GoGo-IoT sensor board (ESP32-C3; temperature, humidity, light, pressure, IMU; 18650 cell)
-- 1 × float switch with Grove adapter → board port 1, as the reservoir-low guard
+- 1 × float switch (two bare wires → the outer two terminals of the Grove adapter's 4-way block) → board port 1, as the reservoir-low guard. Reads ON = water present
 - 1 × ESP32-C6 single-channel relay board
 - 1 × 12V aquarium pump + tubing + 2 water containers + drip tray + towel
 - 1 × PWM charge controller (12V 10A, USB out) + 12V adapter standing in for the battery
   + terminal block + hook-up wire — the kit's 12V distribution, wired by the team in Activity 2
 - 1 × 12V 15W solar panel, added to the controller in Session 3
 - USB-C cables, power strip, printed role cards + record sheet + design canvas
-- Team card: shared API encryption key, workshop SSID, instructor HA address
+- Team card: zone colour, zone WiFi SSID + password, Home Assistant VM user/password. **No encryption key** — the ESPHome API runs unencrypted, so there is nothing to type at adoption
 
 **Not in the kit any more:** soil moisture sensor (air humidity stands in for it), per-team
 Raspberry Pi, per-board IP labels.
 
 **Room (convention-centre ballroom, not a lab):**
-- **Dedicated WiFi router** (our own, no captive portal, 2.4 GHz on, printed SSID/password per table). Do not rely on venue WiFi. Sessions 1–2 need no internet at all.
-- Firmware pre-provisioned with the workshop SSID; **DHCP with week-long leases**, boards addressed by mDNS hostname. Full network spec for the provider in [NETWORK-REQUIREMENTS.md](NETWORK-REQUIREMENTS.md); the two requirements most likely to be missed are mDNS forwarding between wireless clients and allowing two MAC addresses per laptop (bridged VM).
-- **Overnight:** hosts and boards stay powered in the room between Day 1 and Day 2. Confirm with the venue that power stays on and the room is not cleared. Fallback: the instructor kit goes to the hotel room overnight and its data is the Day 2 opener.
-- Instructor station: HASS on a spare laptop mirroring a team kit, projected — also the rescue instance if a team's host dies. Also **one pump control box (Auto/Off/Manual)** wired between the instructor relay board and pump, for the Session 2 debrief demo only — teams do not get or build one.
+- **Dedicated workshop network**, built by the network provider to [NETWORK-REQUIREMENTS.md](NETWORK-REQUIREMENTS.md): three zone VLANs, six SSIDs on every AP, no captive portal, client isolation off, mDNS forwarded. Do not rely on venue WiFi. Sessions 1–2 need no internet at all.
+- Firmware pre-provisioned with the zone SSID; **DHCP, 12–24 h leases**, boards addressed by mDNS hostname so a changed IP costs nothing. Full network spec for the provider in [NETWORK-REQUIREMENTS.md](NETWORK-REQUIREMENTS.md); the two requirements most likely to be missed are mDNS forwarding between wireless clients and allowing two MAC addresses per laptop (bridged VM).
+- **Overnight:** boards and charge controllers stay powered in the room between Day 1 and Day 2; laptops go home. Nothing is recorded overnight and nothing needs to be — Day 2 opens on the automation editor, not on a graph. Power staying on only buys a ready-to-go kit at 09:00; confirm it with the venue anyway, and if the room is cleared the cost is ten minutes of re-cabling, not a lost activity.
+- **One instructor machine: the instructor kit** — a spare laptop mirroring a team kit, projected, for demos, and the rescue instance if a team's host dies. It adopts only its own two boards. (The separate wired-trunk instructor *server* is dropped along with the adopt-everything opener; `hass/configuration-instructor.yaml` and network requirement 3 exist for it and are now unused — see the open item in WORKSHEET-TODO.md.) On the kit, **one pump control box (Auto/Off/Manual)** wired between the relay board and pump, for the Session 2 debrief only — teams do not get or build one.
 - Venue internet (or an instructor phone hotspot) is needed only for the Session 3 cloud push.
 - Water discipline: pumps and containers stay on trays at the end of the table, boards and laptops at the other end. Confirm the venue allows water on tables.
 
@@ -177,29 +175,34 @@ Raspberry Pi, per-board IP labels.
 | Risk | Mitigation |
 |------|-----------|
 | HASS host decision slips → host images and worksheets blocked | Decide first; it gates the whole production list |
-| Venue cuts power or clears the room overnight | Confirm in writing; instructor-kit fallback for the Day 2 opener |
+| Venue cuts power or clears the room overnight | Confirm in writing. No activity depends on it any more — worst case, teams re-cable and re-adopt at the start of Session 2 |
 | Venue internet flaky during the Session 3 cloud push | Phone hotspot for the instructor; pre-recorded backup of the cloud demo |
 | Day 2 shape not agreed with กำพล | Agree the "30-min lecture + hands-on on the same kit" split and the cloud tool early, so firmware can be pre-provisioned for it |
 | Venue network blocks device-to-device traffic | Own router, always |
-| mDNS fails on a laptop | Fall back to the IP shown in the board's USB log; week-long DHCP leases keep it valid for the workshop |
+| mDNS fails on a laptop | Fall back to the IP, which the board now prints in its USB boot log and serves its own page from; 12–24 h leases mean re-reading it after an overnight is cheap |
 | Network provider leaves client isolation or multicast filtering on | Acceptance test in NETWORK-REQUIREMENTS.md, run during the setup window with someone who can change controller settings |
 | Participant laptop arrives without Home Assistant installed | Install guide sent ahead + verification form; spare laptops with the VM pre-imaged |
-| Relay chattering demo does not show at 1s sampling | TEST-PLAN.md test E settles this before firmware is committed |
+| Apple Silicon Mac can't boot the x86-64 master OVA | Build and test a second ARM64 master image (different VirtualBox OS type + storage controller); install guide branches by CPU, not just by OS — see `hass/README.md` |
+| Relay chattering demo does not show | Resolved in principle: the worksheet has the student *make* the fluctuation by wavering a hand, not wait for sensor noise (the BH1750 is stable). 1 s interval stays. TEST-PLAN test E still owes the before/after toggle counts |
 | Teams of 4 → passengers | Role cards with forced rotation + Recorder's written questions |
-| A board bricks / a pump leaks | 2 spare kits; drip trays; pumps only run during Activities 2–4 and the dashboard build |
-| Session 1 runs long now that sensor hands-on is ours too | The 15:25 manual-loop block is the buffer; Activity 1's YAML/spec segment is the first thing to trim |
+| A board bricks / a pump leaks | 2 spare kits; drip trays; pumps only run during Activities 2–6 and the dashboard build |
+| Session 1 runs long — HA adoption and the first automation both sit in Activity 3 | Activity 4 (spec game) runs last and is paper-only: it flexes 10–25 min or becomes a take-home. The VM is started in *Before you begin* so a broken laptop surfaces two hours before it is needed |
+| `homeassistant.local` resolves to a neighbour's VM | ~34 identical-hostname VMs per zone; demonstrated on the bench with a single extra HA on the network. **Open** — worksheets still say it. Recommended fix: "read the IP off your VM's console". See TEST-PLAN.md |
+| Float switch fails *unsafe* | The float closes when *down*, so a cut wire reads as "water present" and the pump may run dry. Decide float mounting orientation before kit prep; session 2's fail-safe must require positive confirmation of water — TEST-PLAN test G |
+| A team shuts the VM down at lunch, losing Session 3's opener | Last checklist item of Session 2 says do not; the block is 10 min and a team without data reads a neighbour's graph |
+| Facilitator ratio for 100 teams doing 12 V wiring | ~10 roving facilitators briefed on the `reference.md` failure modes; gates the run-sheet |
 
 ## Assessment & evidence per goal
 - **Pre-test (Day 1 AM, run by นัทธี):** contribute the Goal 1 labeling items and one comms-choice item so there is a baseline.
 - **Post-test 1:** Goals 1, 2 · **Post-test 2:** Goals 3, 5 · **Post-test 3:** Goals 4, 6 — items reuse the online self-checks, shuffled.
-- **Goal 3:** working automation with hysteresis demonstrated in Activity 3 (facilitator checklist per team)
-- **Goal 5:** fail-safe implemented in Activity 4 + at least one fail-safe on the canvas
-- **Goal 6:** facilitator checklist in Sessions 1 and 3 — team dashboard shows a live sensor graph and a working pump toggle (S1); a complete farm dashboard with controls and automation status (S3)
+- **Goal 3:** working automation with hysteresis demonstrated in Activity 5 (facilitator checklist per team)
+- **Goal 5:** fail-safe implemented in Activity 6 + at least one fail-safe on the canvas
+- **Goal 6:** facilitator checklist in Sessions 1 and 3 — team shows an entity's history graph from the device page and toggles the pump from laptop and phone (S1); a complete farm dashboard with controls and automation status (S3)
 - **Goals 2, 4, 5 applied:** design-challenge canvas scored on a simple rubric (spec justified? price realistic? comms reasoning sound? fail-safe present?)
 
 ## Production task list (suggested order)
-1. **Bench-test the provisioning flow** ([TEST-PLAN.md](TEST-PLAN.md)), then finalise the two firmware images in [firmware/](firmware/) and flash the production run. Rehearse overnight logging on the instructor instance. Longest lead time, gates everything.
-1b. **Write the pre-workshop Home Assistant install guide** (VirtualBox bridged, one blessed path per OS, opening port 8123 for phones) and get it to participants with a verification step. This is now a hard prerequisite, not optional pre-reading.
+1. **Bench-test the provisioning flow** ([TEST-PLAN.md](TEST-PLAN.md)), then finalise the two firmware images in [firmware/](firmware/) and flash the production run. Longest lead time, gates everything.
+1b. **Write the pre-workshop Home Assistant install guide** (VirtualBox bridged, one blessed path per OS **and per CPU architecture — Apple Silicon Macs need a separate ARM64 image and different import settings from Windows/Intel**, and a phone-reaches-the-VM check on port 80 — bridged, so no firewall to open) and get it to participants with a verification step. This is now a hard prerequisite, not optional pre-reading.
 1c. **Send [NETWORK-REQUIREMENTS.md](NETWORK-REQUIREMENTS.md) to the network provider** and book the setup-window acceptance test.
 2. Agree the Day 2 shape and cloud tool with กำพล; agree pre-test items and post-test logistics with นัทธี.
 3. Worksheets for 3 sessions + role cards + design canvas + scenario cards.
@@ -213,3 +216,7 @@ Raspberry Pi, per-board IP labels.
 - Who leads Session 2, and กำพล's cloud tool for Session 3
 - Whether the organizers can distribute optional pre-reading before Day 1
 - Venue confirmations: overnight power, water on tables, internet for Session 3
+- **`homeassistant.local` vs the VM's on-screen IP** in the session 1/2 worksheets — bench evidence says the hostname is unsafe once many VMs share a zone (TEST-PLAN.md)
+- **Overview Areas baked into the master image** — Flower Farm matches the kit; Corn Farm and Grass have no hardware behind them. Keep, trim, or rename?
+- **Float switch mounting orientation** — closed-when-wet would make a broken wire fail safe; decide before 100 kits are assembled
+- Whether the VM credential decided on the bench (`farmer` / `farmer`) is written into the repo, or lives only on the team card

@@ -2,44 +2,74 @@
 
 The worksheets in `docs/` follow the session structure in [COURSE-DESIGN.md](COURSE-DESIGN.md) but
 are written against the **actual kit list** (Sept 2026) rather than the design doc's assumptions.
-Where the two differ, the worksheet wins; COURSE-DESIGN still needs updating to match.
+Where the two differ, the worksheet wins. COURSE-DESIGN was brought back into line after the
+bench session (adoption flow, overnight, sabotage cards, instructor machines, install path).
 
 ## Decisions taken (worksheet reflects these)
 
 | Decision | Resolution | Consequence in the worksheet |
 |---|---|---|
-| Home Assistant host | Participants' own laptops, as a **pre-built VirtualBox OVA** (`hass/`) | Session 1 opens with "start the VM, open homeassistant.local:8123"; the install guide shrinks to "install VirtualBox, import, Start" |
+| Home Assistant host | Participants' own laptops, as a **pre-built VirtualBox OVA** (`hass/`) | Session 1 opens with "start the VM, open homeassistant.local"; the install guide shrinks to "install VirtualBox, import, Start" |
 | Network zoning | **Three logical zones** (red/green/blue), each a VLAN with a 2.4 GHz board SSID and a 5 GHz laptop SSID; all SSIDs on every AP; zones isolated from each other | Team card carries the zone colour; kits are colour-coded; the zone is in every board's hostname. Session 1 adds a "colour in the name matches your kit" check at the name-reading step |
 | Firmware per zone | **One source file per board, built three times** by `firmware/build-zones.py` (`esphome -s zone …`) | Six binaries in `firmware/dist/`. The only cross-zone risk is a wrong-coloured board at a table, and the board's own name reveals it |
 | Sensed input for watering | **Air humidity** (onboard) as a stand-in for soil moisture; **float switch** on GoGo-IoT port 1 as the reservoir-low guard | Worksheet says so explicitly ("จำลองสถานการณ์") rather than pretending humidity means soil |
 | Hysteresis teaching | **Light sensor → relay**, framed as night lighting for a flower farm (เบญจมาศ). Relay's own LED and click are the output | Session 2 runs two scenarios in sequence on the single relay: lighting first (ladder), then watering (apply the lesson) |
-| Between-session data | **Instructor HA adopts every team's sensor node** via ESPHome's multi-client API, stays on in the room | Session 2 opener reads the team's own trace on the instructor instance. Relay nodes are *not* adopted there (no double-driving) |
+| Session 1 shape | **Hardware first, Home Assistant last** (Roger, 7 Sep 2026). Activities: 1 Sense (board's own `web_server` page) · 2 Act (relay as a switch, then the load) · 3 Logic (adopt both boards, entity history, be-the-Logic, first automation = float → pump off) · 4 Spec (scenario-card game, the timing buffer). Sessions 2–3 activities renumbered 5–8 | No YAML / I2C reading. No dashboard cards in session 1 — history is read from the entity dialog. Auto/Off/Manual is a 2-min talking point in Activity 2 and an instructor demo in session 2, never a team build |
+| Between-session data | **Dropped** (Roger, 7 Sep 2026). No instructor HA adopting participant nodes: not practical at 100 boards, and the payoff was one 15-min opener. The data teams read is what **their own HA** records across Day 2 morning | The history block moves out of session 2 and into session 3, rewritten around the team's own half-day trace (light dip from a cupped hand, chattering relay before hysteresis, gaps from the sabotage rounds). Session 2 now opens on an automation recap instead. Session 2's last checklist item: do not shut the VM down at lunch |
+| Session 2 shape | **Hysteresis first** (Roger, 7 Sep 2026). Automation recap (15 min) → Activity 5 (75 min) → break → Activity 6 (45 min) → debrief (15 min) | The trigger/condition/action table moves out of Activity 5 into the opener, anchored on the float automation built in session 1 |
 | Charge controller | Wired by teams in Activity 2 as the kit's **12V source**: adapter → BATT pair; LOAD pair → terminal block → relay board DC-in and pump (+ via COM/NO, − direct). Controller USB powers the GoGo-IoT only when the laptop leaves (overnight). Panel is added in session 3 | Session 1 calls it "กล่องจ่ายไฟ 12V" with one sentence of orientation; session 3 "เปิดกล่อง: พลังงาน" reads the three terminal pairs, sets battery type, connects the panel |
 | 18650 cell | Powers the GoGo-IoT board directly; not part of the controller demo | Mentioned once in the kit list and once in the type-selection step |
 | Plain ESP32-C3 nodemcu (item 2) | Spare, unmentioned | — |
 
 ## Firmware requirements the worksheet now depends on
 
-1. **Light sensor `update_interval` ≈ 1 s, no averaging filter.** The chattering demonstration in
-   session 2 needs the relay to flicker while a hand hovers at the threshold. ESPHome's native API
-   pushes changes instantly and HA fires on the event, so the sensor's own interval is the only
-   throttle. At a 60 s default the demo silently fails. Other sensors can stay slower.
-2. **Float switch on port 1 as `binary_sensor`.** Worksheet asks teams to note which state appears
-   when the float is lifted and use that as the fail-safe trigger, so either polarity works.
-3. **Relay node exposes one `switch`.** Its onboard LED must follow the relay so the "lamp" is visible.
-4. **`name_add_mac_suffix: true`, WiFi baked in, shared API encryption key**, `reboot_timeout: 0s`.
+1. **Light sensor `update_interval` ≈ 1 s, no averaging filter.** Session 2's chattering demo has
+   the student *waver a hand* at the threshold and count toggles — it never depended on sensor
+   noise, and the bench showed the BH1750 is stable anyway. 1 s is fast enough to follow a hand;
+   at a 60 s default the demo silently fails. Other sensors can stay slower. See TEST-PLAN test E.
+2. **Float switch on port 1 as `binary_sensor`. Polarity now settled on the bench — write it into
+   the worksheet as fact, not as something teams discover.**
+   - **ON = มีน้ำ (water present)** · **OFF = น้ำหมด (dry)**. Verified on flashed firmware.
+   - Wiring for the kit list / session 1: two bare wires from the float switch onto the **outer
+     two positions** (Signal, Ground) of the adapter's **4-way terminal block**, then a Grove
+     cable from the adapter to **special port 1**.
+   - The worksheet may still ask teams to *observe* the two states (it is a good exercise), but
+     the fail-safe step must not depend on them getting it right.
+   - **Fail-safe wording matters here.** A cut wire or unseated Grove plug reads as **ON = water
+     present** (pin floats HIGH through the internal pull-up), so a wiring fault looks safe-to-pump.
+     The session 2 fail-safe must require positive confirmation of water and treat
+     `unavailable`/`unknown` as dry. See TEST-PLAN.md test G.
+2b. **NEW — every board serves its own web page.** `web_server:` is now in both images: live
+   sensor values, and a working switch on the relay board, at `http://<board-name>/` with **no
+   Home Assistant involved**. Not yet in any worksheet, and it earns a place in three:
+   - **Session 1**, as the first win — teams watch temperature and light react to a hand before
+     the VM is even adopted, instead of waiting out the whole import/onboard/adopt sequence.
+   - **`reference.md`**, as the support fallback — it proves a board is alive and sensing when a
+     team's Home Assistant is broken.
+   - **Session 3** ("open the network box"), where "your board *is* a web server, here is its
+     address" is far more concrete than a diagram.
+
+   **Address forms differ between the two boxes teams will type into — say so explicitly, or one
+   will break.** Browser: needs a dot or a trailing slash (`gogo-iot-red-6749a4/` or
+   `…-6749a4.local`); the bare name becomes a *web search*. Home Assistant's manual-entry Host
+   field: needs **neither** — the bare name is what works.
+3. **Relay node exposes one `switch`.** The relay's own hard-wired indicator follows the relay, so
+   the "lamp" is visible — that is what session 2's garden-lamp framing points at. The board's
+   *programmable* LED (GPIO2) is **not** the lamp: it is a connection-status light, blinking when
+   WiFi or the API is lost. Bench-decided; see TEST-PLAN.md test H.
+4. **`name_add_mac_suffix: true`, WiFi baked in, no API encryption**, `reboot_timeout: 0s`.
    No static IPs — see "Network and device provisioning" below. The light sensor's
    `update_interval` overrides the 5s used by the other sensors in the current
    `gogo-iot-node.yaml`.
-5. **Instructor HA adopts all GoGo-IoT nodes** before the end of session 1. Confirm the ESPHome
-   `api:` max-connections setting allows the team laptop plus the instructor instance plus a
-   dashboard log stream.
+5. ~~**Instructor HA adopts all GoGo-IoT nodes** before the end of session 1.~~ Dropped 7 Sep
+   2026 with the between-session data block. Only the team's own laptop connects to a board, so
+   the ESPHome `api:` connection budget is one client plus the occasional log stream.
 6. **Charge controller load mode set to always-on (`24H` or equivalent) before the room.** These
    PWM controllers commonly default to a dusk-driven or dusk-plus-N-hours load mode keyed off PV
    voltage. Indoors the empty PV pair reads "night" forever, so a timer mode cuts the LOAD pair some
    hours in — the relay board dies overnight and, worse, mid-activity. The USB ports are normally on
-   the battery rail and unaffected, so the GoGo-IoT overnight logging survives either way, but the
-   relay board must not. Check the manual's load-mode table and lock it.
+   the battery rail and unaffected, so the GoGo-IoT survives either way, but the relay board must
+   not — a dead relay board at 09:00 costs the team its first activity. Check the manual's load-mode table and lock it.
 7. **Adapter leads must terminate in bare wire or ferrules** for the controller's BATT screw
    terminals — a barrel-jack adapter needs a pigtail. Kit item 10 (หัวแปลงสาย) may be this; confirm.
    Also confirm the terminal block (แผงต่อสาย) is in the kit; the worksheet uses it as the 12V
@@ -70,20 +100,20 @@ Where the two differ, the worksheet wins; COURSE-DESIGN still needs updating to 
   10.7–11.1 V, so 12.0 V is safe. Do not set `b02` with the adapter attached: Li-ion thresholds
   differ and a 3S profile may treat 12.0 V oddly. The worksheet has teams view the options and
   return to `b01`.
-- **Phone reaching a laptop-hosted HA.** Windows firewall / VM networking often blocks port 8123
-  from other devices. Worksheet tells teams to skip and flag it; the install guide should open the
-  port, or the step will fail for most Windows teams.
+- **Phone reaching a laptop-hosted HA.** Bench result: with a bridged VM the host's Windows
+  firewall is not in the path at all — the phone reached the VM on port 80 first try once the
+  right port was used. The residual risk is the AP's handling of two MACs behind one wireless
+  client (NETWORK-REQUIREMENTS item 2), not the laptop. Worksheet still tells teams to skip and flag
+  it; `session-1.md`'s "มักเป็นเพราะไฟร์วอลล์ของแล็ปท็อป" line should be reworded.
 - **Water props not on the kit list**: two containers, a glass for the float switch, drip tray,
   towel. Worksheet says the instructor provides them at the table.
-- **Handouts referenced but not written**: ESPHome YAML printout for both boards; humidity sensor
+- **Handouts referenced but not written**: humidity sensor
   and float switch spec excerpts; equipment price sheet for the design challenge.
-- ~~**Worksheet adoption steps still say "IP from the team card"**~~ **Done.** Rewritten across
-  `session-1.md` (new "อ่านชื่อบอร์ด" block plus both adoption steps), `session-3.md` (the network
-  section now teaches that the config contains no IP at all), `reference.md` (menu path plus a
-  `.local`-fails fallback row), `index.md` and `record-sheet.md` (team card no longer carries IPs;
-  the record sheet has fields for the two board names). Safe to do before the bench test because
-  both possible outcomes of test B end in typing `<name>.local` — only *where the name comes from*
-  is still open (USB log vs a printed sticker), and that is four lines in one block.
+- ~~**Worksheet adoption steps still say "IP from the team card"**~~ **Done, and revised again
+  after the bench.** `session-1.md`, `reference.md`, `index.md`, `record-sheet.md` and
+  `session-3.md` now describe the bench-verified flow: read the name via **Reset device in the
+  browser**, **click the discovered card**, bare name (no `.local`) as the manual fallback, no
+  encryption key. Still untouched, pending a decision: `homeassistant.local` (see TEST-PLAN).
 
 ## Network and device provisioning
 
@@ -92,10 +122,20 @@ firmware image for all boards, with `name_add_mac_suffix: true` so each advertis
 mDNS hostname. Workshop SSID baked in; `improv_serial:` and `captive_portal:` included so WiFi
 can be set over USB or from a phone at a future delivery.
 
-Adoption flow per board: plug into the laptop over USB → web.esphome.io → Connect → read the
-board's name from the log → in HA, **Add integration → ESPHome → Host:** `<name>.local` →
-shared encryption key → rename the device to the team's name. Typing the name avoids the
-discovered-device list, which would show every board in the room.
+Adoption flow per board: plug into the laptop over USB → web.esphome.io → Connect → **press
+"Reset device" in the browser** (bench-critical: *not* the board's own reset button — native USB
+means a hardware reset kills the browser session and the log comes up blank, which looks like a
+dead board) → read the board's name from the boot banner and **write down the last six
+characters** → in HA, go to
+**Settings → Devices & services** and **click the discovered card carrying those six characters**
+→ rename the device to the team's name. No encryption key (the API is unencrypted). The
+six-character match and the zone colour in the name are what stop a team adopting a neighbour's
+board, which otherwise fails silently.
+
+**Fallback, if the card is not there** (bench-walked, and four levels deep — write it out
+step by step or teams will not find it): **+ Add integration** → type **ESPHome** (not
+"ESP-NOW") → **Add device** → **"Setup another instance of ESPHome"** → type the node name
+**without `.local`** (`gogo-iot-red-6749a4`). The bare name resolves; no suffix needed.
 
 Requirements this places on the network are written up in
 [NETWORK-REQUIREMENTS.md](NETWORK-REQUIREMENTS.md) for the provider. The two that most often
@@ -108,14 +148,15 @@ Consequences for the install guide, still to be written:
   multicast, `.local` will not resolve, and phones cannot reach it. This is the single decision
   the whole addressing scheme rests on.
 - **Docker Desktop on Windows cannot be offered as a path** — no host networking, so no mDNS.
-- The phone step reads the address from **HA Settings → System → Network** (the VM's IP), not
-  the laptop's IP.
-- Fallback if a laptop cannot resolve `.local`: use the IP shown in the USB log. Week-long DHCP
-  leases keep it valid for the workshop.
+- The phone step reads the address from the **VM's boot console** (or HA Settings → System →
+  Network) — the VM's IP, not the laptop's IP. Port 80, so no port number to type.
+- Fallback if a laptop cannot resolve a board by name: the board prints its IP in the USB boot
+  log (`=====  IP ADDRESS: ...  =====`) and serves its own page there. Leases are 12–24 h, so
+  re-read it after an overnight.
 
-Also still to verify: the ESPHome `api:` and `mqtt:` `reboot_timeout` default of 15 minutes must
-be set to `0s` on both boards, or they will reboot every 15 minutes overnight when no Home
-Assistant is connected.
+`reboot_timeout: 0s` is set on both `api:` and `wifi:` in both images (the 15-minute default
+would reboot boards overnight with no Home Assistant connected). TEST-PLAN test F verifies it
+held — still to run.
 
 ## Built: vibration reporter (accelerometer)
 
@@ -193,22 +234,19 @@ Session 1's "ยกมือ" instruction assumes someone can come. At a plausib
 facilitators, and they need briefing on the failure modes in `reference.md`. Not a materials
 problem, but it gates the run-sheet.
 
-**Still open — instructor Home Assistant capacity.** The session 2 opener has every team read
-their own board's overnight trace on one instructor instance. Adopting 100 ESPHome nodes means
-roughly 1,000 entities, and the state-write rate into the recorder is the concern: light at 1 s
-across 100 boards is ~100 writes/second on its own, plus vibration at 1 s and the 5 s sensors —
-call it 250/second, or on the order of 10 million rows across an overnight run. Default SQLite
-will not enjoy that. Options, in increasing order of effort:
+**Closed — instructor Home Assistant capacity.** The question was whether one instructor
+instance could record 100 adopted boards overnight (~1,000 entities, ~250 state writes/second,
+order 10 million rows a night, which default SQLite would not enjoy). Resolved 7 Sep 2026 by
+dropping the requirement rather than engineering around it: no instructor instance adopts
+participant nodes. The data session 3 reads is each team's own HA recording its own two boards
+across Day 2 morning — one client per board, a few writes a second, and no shared machine whose
+failure costs 100 teams their activity.
 
-- Configure `recorder:` on the instructor instance to include only what session 2 needs
-  (humidity, temperature) and record light from a **sample of ~10 boards** for the lights-off
-  trace. Cheapest, and the light story survives.
-- Move that instance to MariaDB/PostgreSQL on decent hardware.
-- Adopt only a sample of boards and make the opener a projected walkthrough rather than
-  per-team lookup.
-
-Worth deciding before the firmware is flashed at scale, because it may argue for a slower light
-`update_interval` on some boards.
+Falling out of that: `hass/configuration-instructor.yaml` (recorder limits sized for 100 boards)
+and NETWORK-REQUIREMENTS.md requirement 3 (instructor server on an 802.1Q trunk, present in all
+three zones) no longer have a consumer. **Open**: whether to delete the config and drop
+requirement 3 from the network spec, which would also remove the wired-trunk ask from the venue.
+The network document may already be with the provider.
 
 ## WiFi power save disabled on both boards
 
@@ -249,17 +287,19 @@ Three levers, in order of leverage:
 **Delivery recommendation that falls out of (3): ship a pre-built VirtualBox OVA**, not an
 install guide. The config only helps if it is on 100 laptops; a from-scratch install by 100
 teams will not put it there. An appliance image also bakes in the bridged adapter and the VM
-firewall for port 8123, closing two install-guide risks already listed above. See `hass/README.md`.
+firewall for port 80, closing two install-guide risks already listed above. See `hass/README.md`.
 
-**Instructor recorder** — `hass/configuration-instructor.yaml` excludes vibration and diagnostics
-and leaves the illuminance decision open (all boards vs a sample of ten; sample recommended).
+**Instructor recorder** — `hass/configuration-instructor.yaml` was sized for 100 adopted boards
+and is unused since 7 Sep 2026; see the closed capacity item above. The team image
+(`hass/configuration.yaml`) records two boards and needs no such limits.
 
 ## Reuse across deliveries
 
 The worksheets carry no dates, venue names, or weekday references. Session pages refer to each other
-as ช่วงที่ 1/2/3. The between-session gap now only needs to be long enough for the room lights to
-have gone off and on (the light trace is the opener's hook) and for humidity to have drifted — an
-overnight gap is ideal, a lunch break still shows something.
+as ช่วงที่ 1/2/3. Since the history block moved into session 3 and reads the team's own morning,
+**no between-session gap is required at all** — the data it needs is generated inside ช่วงที่ 2.
+The only carry-over between sessions is the kit staying wired, and if a delivery has to break that,
+the cost is re-cabling, not a lost activity.
 
 ## Images
 
@@ -275,14 +315,12 @@ for the workshop; if the worksheets are ever published more widely, retake them 
 The earlier `relay-board-generic-x1.webp` was **deleted** — it was the WROOM variant from
 devices.esphome.io, a different board.
 
-
-`docs/images/relay-board-generic-x1.webp` is the ESP32 Relay X1 product photo from
-[devices.esphome.io](https://devices.esphome.io/devices/esp32-relay-x1/) — the WROOM variant, same
-terminal layout, blue PCB. Replace with a photo of the actual C6 v1.1 board when one is in hand;
-`session-1.md` references `images/relay-board.jpg` for that slot. All other images are
-`placeholder.png` with alt text describing the shot. New shots this revision: GoGo-IoT board with
-port 1 labelled; COM/NO wiring diagram and photo; charge controller face and terminal pairs; the
-four-step connection sequence; instructor HA history with a team's light trace.
+All other images are `placeholder.png` with alt text describing the shot. Three alt texts were
+rewritten after the bench (web.esphome.io with the Reset device button and the DEVICE NAME
+banner; the discovered card on Devices & services; the YAML `api:` block with no encryption).
+Shot list still to write — parked until the worksheet text settles. Bench screenshots exist but
+carry bench-specific state (SSID `Annie`, `192.168.8.x`, browser extensions): reference only,
+retake on a clean profile once the config is frozen.
 
 ## Print artifact
 
@@ -291,11 +329,21 @@ fill-in lines (the exception to the web-Markdown conventions). Print from the re
 
 ## Not yet written
 
-- Scenario cards for Activity 6 (content is in `session-3.md`)
+- **Scenario cards for Activity 4 (spec game)** — one job per card with the numbers it needs.
+  Set of at least three: one exceeds the onboard humidity–temperature accuracy, one exceeds the
+  relay's printed DC rating (a 12V pump drawing more than 10 A, or a 220V load), one passes as-is.
+  Answer key names the single part to change.
+- **Session 2 knock-on**: Fail-safe 1 (float → pump off) is now built in session 1 Activity 3.
+  `session-2.md` still builds it fresh — rework when session 2 is revisited (replace with a third
+  fail-safe, or open the failure lab from the automation that already exists). The Activity 3
+  Recorder question (float lifted *before* the pump starts → nothing stops it) is the intended
+  lead-in to conditions.
+- Scenario cards for Activity 8 (content is in `session-3.md`)
 - Role cards (content is in `index.md`)
-- Team cards: both board IPs, workshop SSID, instructor HA address
+- Team cards: zone colour, zone laptop SSID + password, HA VM user/password. No instructor HA
+  address, no board names or IPs (read from the board), no encryption key
 - Pre-workshop Home Assistant install guide for participant laptops (COURSE-DESIGN Section 6),
-  including opening port 8123 so phones can reach it
+  including opening port 80 so phones can reach it
 - Equipment price sheet for the design challenge
 - The three post-tests
-- COURSE-DESIGN.md update to reflect the decisions above
+- ~~COURSE-DESIGN.md update to reflect the decisions above~~ done after the bench session; keep in step from here

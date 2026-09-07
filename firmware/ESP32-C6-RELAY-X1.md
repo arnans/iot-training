@@ -39,13 +39,29 @@ de-energised and off after a power cut.
 
 **Power input** (2-way, right side): **7–60 V DC** and **GND**.
 
-## Power — pick one, not both
+## Power — pick one, but both together is harmless
 
 > The datasheet states power is **"DC 7-60V or TYPE-C 5V (choose one)"**.
 >
 > This has a direct workshop consequence. Teams plug the board into a laptop over USB to read
 > its device name, then wire it to the 12 V rail. **The USB cable must come out before the
 > 12 V is connected.** The worksheet says so at that step.
+
+**Bench-measured, because ~100 teams means somebody will forget** (TEST-PLAN.md test H). The 5 V
+rail reads **5.04 V on USB alone** and **5.12 V on the 12 V terminal alone** — only 80 mV apart, so
+the two sources share the rail rather than fight over it. Plugging USB into a board already running
+on 12 V was tried directly: the board ran normally and the serial port enumerated and worked.
+
+So one-supply-at-a-time stays in the worksheet as the **normal practice** — it matches the
+datasheet and keeps the step simple — but it is no longer written as a prohibition, because the
+mistake is **not destructive**. Three practical consequences:
+
+- A team found with both connected needs a tidy-up, not a replacement board.
+- **A helper may plug a laptop into a board already wired to 12 V** to read the boot banner or
+  reflash it, without dismantling the team's wiring first.
+- **12 V applied to a board already on USB** — the reverse of what was tried — has an identical
+  steady state and differs only in the turn-on transient, as the 12 V regulator takes the rail over
+  from 80 mV above. **Worst case is a reset**, and `restore_mode: ALWAYS_OFF` makes a reset safe.
 
 ## Relay ratings
 

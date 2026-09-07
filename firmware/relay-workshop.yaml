@@ -18,7 +18,7 @@ substitutions:
   wifi_ssid: farm-iot-red
   wifi_password: SET_BY_BUILD_SCRIPT
   relay_pin: GPIO19        # confirmed: relay control, active high
-  led_pin: GPIO2           # confirmed: programmable LED, active high — now the status LED
+  led_pin: GPIO2           # confirmed: programmable LED, active high — now the WiFi status LED
   button_pin: GPIO9        # confirmed: programmable button, also the BOOT key
 
 esphome:
@@ -122,30 +122,59 @@ switch:
     # Safety: after a power cut or reboot the pump must not come back on by itself.
     restore_mode: ALWAYS_OFF
 
-# WORKSHOP: the programmable LED shows CONNECTION STATUS, not relay state.
+# WORKSHOP: the programmable LED shows WIFI CONNECTION STATUS, not relay state.
 # It used to mirror the relay, but the relay's own hard-wired indicator already
-# lights from the coil an inch away, so mirroring it bought nothing. Instead the
-# LED blinks on warning/error (WiFi lost, API disconnected) and stays quiet when
-# healthy, so a team can answer "is my board connected?" from the board itself
-# with no laptop and no Home Assistant. With ~100 teams in one room, that is the
-# support question that matters most.
+# lights from the coil an inch away, so mirroring it bought nothing. A team can
+# now answer "is my board on the network?" from the board itself, with no laptop
+# and no Home Assistant. With ~100 teams in one room, that is the support
+# question that matters most.
 #
 # Session 2's worksheet still holds: it tells teams the LED on the relay board
 # stands in for the garden lamp, and the relay's OWN indicator still lights
 # whenever the relay closes. Only the programmable LED changed jobs.
 #
-# Pin INVERTED on purpose, so the healthy state is the visible one:
-#   steady lit = connected and healthy
-#   blinking   = WiFi or API lost
+# The grammar, chosen so the healthy state is the VISIBLE one:
+#   steady lit = on WiFi
+#   blinking   = WiFi lost, board is trying to reconnect
 #   dark       = no power, or firmware not running
-# Plain `status_led` semantics are the other way round (dark when healthy), which
-# makes "fine" and "dead" look identical — the wrong answer to the question a
-# team actually asks. Lit-when-healthy also lets an instructor read the room from
-# the front: dark board = go help that table.
-status_led:
-  pin:
-    number: ${led_pin}
-    inverted: true
+# Dark-when-healthy (the ESPHome default) would make "fine" and "dead" look
+# identical — the wrong answer to the question a team actually asks. Lit-when-
+# healthy also lets an instructor read the room from the front: dark board = go
+# help that table.
+#
+# WHY NOT `status_led:` — bench-proven, do not "simplify" this back.
+# `status_led:` drives the pin itself: 250 ms on / 1250 ms off for a warning
+# (esphome/components/status_led/status_led.cpp). Inverting the pin to get
+# lit-when-healthy inverts THAT TOO, leaving the LED lit 83% of the time with a
+# 250 ms wink — which on the bench read as "stayed lit, never blinked" when
+# walking out of WiFi range. The blink has to be driven explicitly to be seen.
+#
+# WiFi only, deliberately: `status_led:` also counts "no Home Assistant client"
+# as a fault, but the relay board is DESIGNED to sit on 12 V overnight with no HA
+# (see reboot_timeout: 0s and TEST-PLAN test F). Including the API here would
+# have ~100 boards blinking all night for a condition that is normal.
+output:
+  - platform: gpio
+    pin: ${led_pin}          # active high — no inversion; the blink is ours now
+    id: led_out
+
+light:
+  - platform: binary
+    id: status_light
+    output: led_out
+    internal: true           # not an HA entity, so nothing fights the interval
+    restore_mode: ALWAYS_OFF
+
+interval:
+  - interval: 400ms          # 0.8 s blink period — readable across a room
+    then:
+      - if:
+          condition:
+            wifi.connected:
+          then:
+            - light.turn_on: status_light
+          else:
+            - light.toggle: status_light
 
 # Onboard button toggles the relay: a hardware manual override that works even when
 # Home Assistant is unreachable. Worth demonstrating in session 2 next to the

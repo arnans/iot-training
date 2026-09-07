@@ -26,24 +26,33 @@ The room is divided into three zones. Each zone is its own VLAN and carries one 
 > firmware of 200 boards ahead of the event and cannot be changed on site. Tell us at once if any
 > of them cannot be set as given.
 
-- **Every AP must broadcast all six SSIDs** (three per radio). Zones are logical, not spatial:
-  each board's firmware has its zone SSID compiled in, kits are colour-coded to match, and teams
-  sit anywhere.
-- **Do not add a seventh SSID** on these radios (no guest network). Three per radio is the
-  practical beacon-overhead limit on 2.4 GHz.
+Every AP must broadcast all six SSIDs (three per radio). Zones are logical, not spatial: each
+board's firmware has its zone SSID compiled in, kits are colour-coded to match, and teams sit
+anywhere. Please do not add a seventh SSID on these radios.
 
 ### The two rules the whole design rests on
 
-| | |
-|---|---|
-| **Within one zone's SSID pair** | Devices **must all see each other**, unicast and mDNS alike, across bands (items 1–3) |
-| **Across different zones' SSID pairs** | Devices **must not see each other at all** — no unicast, no broadcast, no multicast (item 10) |
+**Within one zone's SSID pair, devices must all see each other**, unicast and mDNS alike, across
+bands. So both of a zone's SSIDs bridge to the **same VLAN and subnet**, and **client isolation /
+AP isolation / guest mode is OFF on all six SSIDs.** Requirement 3 covers the mDNS half.
+
+**Across different zones' SSID pairs, devices must not see each other at all**: no unicast, no
+broadcast, no multicast. So:
+
+- **No mDNS reflector, Bonjour gateway, AirGroup or mDNS repeater between VLANs.** Several
+  vendors' controllers enable this by themselves once they see multiple VLANs, and it is the most
+  common trap for this design. We want none of it, because a team's laptop and boards already
+  share a VLAN.
+- **No routing between the three zone subnets.** If your topology has to route them, block it with
+  an ACL at the gateway.
 
 The second rule is not about security, it is about **multicast volume**. mDNS load in a broadcast
 domain scales with queriers × responders, so genuinely separating three zones cuts it roughly
 ninefold. If any two zones can see each other, the load returns to that of one flat 500-client
-network, which is the single thing the zoning exists to avoid. And because a team's laptop and
-boards always share a VLAN, **no mDNS gateway or reflector is needed anywhere.**
+network, which is the single thing the zoning exists to avoid.
+
+The one exception is the instructor server, which reaches all three zones through the trunk on its
+own port (requirement 8), not by letting the zones talk to each other.
 
 ---
 
@@ -52,9 +61,9 @@ boards always share a VLAN, **no mDNS gateway or reflector is needed anywhere.**
 | Device | Count | Connects via | Notes |
 |---|---|---|---|
 | Sensor boards (ESP32-C3) and relay boards (ESP32-C6) | 100 each | 2.4 GHz SSID **only**, 20 MHz | ~67 per zone. Powered on for the whole event, including overnight |
-| Team laptops | 100 (+ spares, + 1 instructor kit) | 5 GHz SSID | Each runs Home Assistant in a **bridged VM**, so one laptop has two MACs and two IPs (item 6) |
+| Team laptops | 100 (+ spares, + 1 instructor kit) | 5 GHz SSID | Each runs Home Assistant in a **bridged VM**, so one laptop has two MACs and two IPs (requirement 6) |
 | Phones | 100–400 | 5 GHz SSID | Open the team dashboard, which lives in the VM on the laptop rather than on the internet, so they must join their own zone's SSID |
-| Instructor server | 1 | **Wired, 802.1Q trunk** | Records every sensor board overnight; must see all three zones (item 8) |
+| Instructor server | 1 | **Wired, 802.1Q trunk** | Records every sensor board overnight; must see all three zones (requirement 8) |
 | Presentation laptop | 1 | **Wired**, access port | Slides; needs internet |
 
 **Concurrent clients: ~500 expected, up to ~800** if every participant joins a phone. Size the
@@ -65,125 +74,105 @@ by hostname, `name.local`, and hold a TCP connection to each for hours.
 
 ---
 
-## 3. Configuration requirements
+## 3. Requirements
 
-These numbers are referenced from our other documents; please keep them in replies.
-
-**1. Both of a zone's SSIDs bridge to the same VLAN and subnet.** For example `farm-iot-red` and
-`farm-laptop-red` land on VLAN 10 together. A laptop on 5 GHz must reach a board on 2.4 GHz as if
-on the same wire.
-
-**2. Client-to-client traffic permitted, including between a zone's two SSIDs.** Turn **client
-isolation / AP isolation / guest mode OFF on all six SSIDs.** Every sensor reading and every
-dashboard view crosses bands.
+These are the ones that decide whether the workshop works. The numbers are stable identifiers
+referenced from our other documents, so the gaps are deliberate. Everything else has moved to
+section 5.
 
 **3. mDNS forwarded wireless-to-wireless and across a zone's two SSIDs.** Hostname resolution is
-multicast DNS on **224.0.0.251 / UDP 5353** and must reach every client in the zone. Check that
-none of these drop it: broadcast/multicast filtering or suppression; multicast-to-unicast
-conversion that mishandles mDNS; IGMP snooping without a querier on the segment; proxy ARP or
-ARP suppression.
+multicast DNS on **224.0.0.251 / UDP 5353**. It must reach every client in the zone and, per
+section 1, no further. Check that none of these drop it: broadcast/multicast filtering or
+suppression; multicast-to-unicast conversion that mishandles mDNS; IGMP snooping without a
+querier on the segment; proxy ARP or ARP suppression.
 
 > Suppress other multicast as you see fit, **but 5353 must survive.** If your APs do
 > multicast-to-unicast conversion that handles mDNS correctly, please enable it — it is the
 > biggest airtime win at this density. If you rate-limit multicast, tell us the threshold.
-
-**4. The 2.4 GHz SSIDs tuned for microcontrollers.** Not WPA3-only and not WPA-Enterprise ·
-**PMF / 802.11w** optional or disabled · **no 802.11r / k / v**, no band steering, and no
-minimum-rate setting that excludes low 802.11n rates, since the boards never move · **no captive
-portal, splash page or periodic re-authentication** — association plus the password must grant
-full LAN access permanently · **rogue-AP containment off**, because each board raises a small
-setup hotspot if its zone SSID disappears, and an instructor phone hotspot is our internet
-fallback.
-
-**5. Long-lived connections survive.** Each laptop holds a TCP session to each of its boards for
-hours, and boards stay associated overnight with no client connected. **Disable client idle,
-session and inactivity timeouts**, and schedule **no nightly reboot, maintenance window or
-config push** for the duration of the event.
 
 **6. Two MAC addresses behind one wireless client.** Home Assistant runs in a bridged VM, so one
 laptop presents two MACs and two IPs over a single association. Disable anything that treats this
 as spoofing: client integrity checks, MAC-per-station limits, WDS restrictions. *Easy to miss —
 please confirm explicitly.*
 
-**7. DHCP per zone.** Count leases, not devices: roughly **170–270 per zone** (~67 boards +
-~34 laptops × 2 + phones + spares). A **/23 per zone** is the safe choice; a /24 only works if
-phones are held to one per team. Set **lease time 12–24 h** — devices are addressed by hostname,
-so a changed IP costs nothing. Reserve a small static range per zone for instructor equipment.
+**7. One /23 per zone.** Count DHCP leases, not devices: roughly **170–270 per zone** (~67 boards
++ ~34 laptops × 2 for the bridged VMs + phones + spares). A /24 gives 254 usable addresses, which
+leaves no margin once phones join and no headroom for the long leases in requirement 10. **Please
+allocate a /23 to each zone**, with a small static range reserved in each for instructor
+equipment.
 
 **8. Instructor server present in all three zones.** It resolves and connects to every sensor
 board by name, in every zone, overnight. Provide its wired port as an **802.1Q trunk carrying
 VLANs 10, 20 and 30** and the server will configure its own sub-interfaces; three access ports,
-one per zone, is an acceptable alternative. **Never by way of an mDNS reflector between
-zones** (item 10).
+one per zone, is an acceptable alternative. Never by way of an mDNS reflector between zones.
 
 **9. Association surge.** If an AP or controller restarts, up to 200 boards reassociate at once.
 Confirm that no association rate limit or client-per-radio cap strands some, and that DHCP
 absorbs the burst.
 
-**10. Zones fully isolated from each other, multicast above all.** Devices in different SSID pairs
-must not see each other at all. Three things specifically:
-
-- **No mDNS reflector, Bonjour gateway, AirGroup or mDNS repeater between VLANs.** Several
-  vendors' controllers enable this by themselves once they see multiple VLANs, and it is the most
-  common trap for this design. We want none of it, because a team's laptop and boards already
-  share a VLAN.
-- **One zone's broadcast and multicast must never appear in another**, mDNS on 5353 included.
-  Item 3 asks for it to be forwarded **within a zone only**.
-- **No routing between the three zone subnets.** If your topology has to route them, block it with
-  an ACL at the gateway.
-
-The one exception is the instructor server, which reaches all three zones through the trunk on its
-own port (item 8), not by letting the zones talk to each other.
+**10. DHCP leases long enough that addresses hold for the whole event.** Set the lease to span the
+workshop, a week for instance, or use reservations. **Desirable rather than essential:**
+everything is addressed by hostname, so a changed IP breaks nothing on its own. It matters
+because a team that writes its board's IP down as a fallback on the first day should still find
+that address valid on the second. Requirement 7 is what makes a long lease affordable.
 
 ---
 
-## 4. Access points and internet
-
-**2.4 GHz** has only three non-overlapping channels (1/6/11), so three well-placed APs beat six
-competing ones. If more than three are needed, make them spatially separated co-channel cells at
-reduced power. **5 GHz:** as many APs as coverage needs; WiFi 6 / OFDMA helps at this density.
-Coverage must be even at **table height**, since boards sit among people, laptops and water
-containers.
-
-**Internet** is needed only on the laptop SSIDs and the presentation laptop's port. The board
-SSIDs need none, and no inbound access is required anywhere.
-
-| When | What for | Outbound ports | If it fails |
-|---|---|---|---|
-| Throughout | The worksheets are a website, and Session 1 reads board names via <https://web.esphome.io> | 443 | Inconvenient, not fatal: printed worksheets instead |
-| **Session 3, about one hour** | Pushing data to a cloud dashboard, from all three zones | **443 and 8883** (MQTT/TLS) | **That block fails.** Fallback is an instructor phone hotspot |
-
----
-
-## 5. Acceptance test
+## 4. Acceptance test
 
 Run during the setup window before the event, with someone able to change controller settings.
-All of them must pass. We also ask for on-site or on-call support through the setup window and the
-first hour of the workshop.
+All of them must pass. We also ask for on-site or on-call support through the setup window and
+the first hour of the workshop.
 
 | # | Test | Pass criterion |
 |---|---|---|
-| 1 | Board on `farm-iot-red`, laptop on `farm-laptop-red`: `ping <boardname>.local` | Resolves and replies — **cross-band mDNS within a zone** (items 1–3) |
-| 2 | Same ping from inside the laptop's bridged VM | Resolves and replies — **multicast + two MACs** (item 6) |
-| 3 | Laptop on `farm-laptop-green` pings the **red** board by name | **Must fail** — zones are isolated (item 10) |
-| 3b | Same laptop runs an mDNS browser (`dns-sd -B _esphome._tcp`, or a Discovery app on a phone) | **Only green boards appear.** No name containing `red` or `blue` shows up, proving no mDNS reflector is running (item 10) |
-| 4 | Instructor server on the trunk pings a red, a green and a blue board by name | All three resolve (item 8) |
+| 1 | Board on `farm-iot-red`, laptop on `farm-laptop-red`: `ping <boardname>.local` | Resolves and replies — **cross-band mDNS within a zone** (requirement 3) |
+| 2 | Same ping from inside the laptop's bridged VM | Resolves and replies — **multicast + two MACs** (requirement 6) |
+| 3 | Laptop on `farm-laptop-green` pings the **red** board by name | **Must fail** — zones are isolated (section 1) |
+| 3b | Same laptop runs an mDNS browser (`dns-sd -B _esphome._tcp`, or a Discovery app on a phone) | **Only green boards appear.** No name containing `red` or `blue` shows up, proving no mDNS reflector is running (section 1) |
+| 4 | Instructor server on the trunk pings a red, a green and a blue board by name | All three resolve (requirement 8) |
 | 5 | Phone on `farm-laptop-red` opens `http://<VM-ip>` | Dashboard loads — client-to-client, port 80 |
-| 6 | Laptop connected to a board, idle 30 minutes | Connection still live (item 5) |
-| 7 | **20–30 boards** across all zones powered at once; then power-cycle one AP | All associate and get leases; all rejoin after the restart (item 9) |
+| 6 | Laptop connected to a board, idle 30 minutes | Connection still live (section 5) |
+| 7 | **20–30 boards** across all zones powered at once; then power-cycle one AP | All associate and get leases; all rejoin after the restart (requirement 9) |
 | 8 | Laptop on `farm-laptop-red` opens <https://web.esphome.io> | Page loads — internet from the laptop SSID |
 
 Tests 1, 2 and 4 are the ones that fail on default enterprise configurations.
 
 > **What this cannot test.** 20–30 boards is 10–15 % of the final load. It validates
 > configuration (SSIDs, VLANs, mDNS, DHCP, the trunk), which is the likely failure. It does not
-> validate 200 boards on 2.4 GHz; for that we rely on your capacity planning (item 9 and
-> section 4).
+> validate 200 boards on 2.4 GHz; for that we rely on your capacity planning (requirement 9 and
+> the radio note in section 5).
+
+---
+
+## 5. Secondary notes
+
+Standard practice for a network like this. They are listed because a default setting in any of
+them would cost us time on the day, not because we expect them to be contentious.
+
+- **The 2.4 GHz SSIDs suit simple clients.** Not WPA3-only and not WPA-Enterprise · PMF / 802.11w
+  optional or disabled · no 802.11r / k / v, no band steering, and no minimum-rate setting that
+  excludes low 802.11n rates, since the boards never move · no captive portal, splash page or
+  periodic re-authentication, because a microcontroller cannot accept terms.
+- **Long-lived connections survive.** Each laptop holds a TCP session to each of its boards for
+  hours, and boards stay associated overnight with no client connected. Disable client idle,
+  session and inactivity timeouts, and schedule no nightly reboot or maintenance window for the
+  duration of the event.
+- **Rogue-AP containment off.** Each board raises a small setup hotspot if its zone SSID
+  disappears, and an instructor phone hotspot is our internet fallback.
+- **Radio planning.** 2.4 GHz has only three non-overlapping channels (1/6/11), so three
+  well-placed APs beat six competing ones; beyond three, use spatially separated co-channel cells
+  at reduced power. On 5 GHz use as many APs as coverage needs, where WiFi 6 / OFDMA genuinely
+  helps. Coverage must be even at **table height**, since boards sit among people, laptops and
+  water containers.
+- **Internet** is needed on the laptop SSIDs and the presentation laptop's port only. Outbound 443
+  throughout, plus outbound **8883 (MQTT/TLS)** for about an hour in session 3, from all three
+  zones. The board SSIDs need none, and no inbound access is required anywhere.
 
 ---
 
 ## 6. Fallback if per-SSID VLANs are not possible
 
 One flat subnet (/22) with two SSIDs, `farm-iot` on 2.4 GHz and `farm-laptop` on 5 GHz, password
-`iotfarmer` as before. All other requirements unchanged, with heavy reliance on multicast-to-unicast
-conversion. **Tell us early** — the firmware is built differently for it.
+`iotfarmer` as before. All other requirements unchanged, with heavy reliance on
+multicast-to-unicast conversion. **Tell us early** — the firmware is built differently for it.

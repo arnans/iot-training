@@ -30,11 +30,33 @@ substitutions:
   vib_sample_interval: 25ms
   # How often the RMS figure is published to Home Assistant.
   vib_report_interval: 1s
-  # Hysteresis thresholds in milli-g, CALIBRATE THESE against the real pump.
-  # Same idea the workshop teaches in session 2: separate on and off thresholds
-  # so the reading does not flap when it sits near the line.
-  vib_on_threshold: "25"
-  vib_off_threshold: "12"
+  # Hysteresis thresholds in milli-g, one on/off pair per SENSITIVITY LEVEL.
+  # A team picks the level at runtime from the `pump sensitivity` select entity
+  # (in Home Assistant and on the board's own web page); the numbers here are
+  # what each level means. Same idea the workshop teaches in session 2:
+  # separate on and off thresholds so the reading does not flap near the line.
+  #
+  # MEDIUM is the bench-checked default (TEST-PLAN test I): noise floor 3-8 mg,
+  # pump running 20-25 mg on a deliberately SOFT, loosely-coupled mounting — a
+  # worst case. Mounted properly (against the tubing or on the drip tray) the
+  # running figure sits higher, so 25 is a fair operating point, not a ceiling.
+  # `off` at 12 is well clear of an 8 mg idle, so a knocked table cannot hold
+  # the verdict on.
+  #
+  # HIGH is for a decoupled mount or a quiet pump: `on` 15 is 4 mg under the
+  # weakest soft-mount reading; `off` 10 sits only 2 mg above the noisiest idle,
+  # so a team choosing HIGH is accepting some false positives from table knocks.
+  # LOW is for a hard-coupled mount or a noisy table: it needs a clearly
+  # running pump before it will say so.
+  #
+  # Runtime state lives in the two `vib_*_threshold` globals below; these
+  # substitutions only seed the select's on_value handler.
+  vib_on_high: "15"
+  vib_off_high: "10"
+  vib_on_medium: "25"
+  vib_off_medium: "12"
+  vib_on_low: "40"
+  vib_off_low: "20"
 
 esphome:
   name: ${device_base_name}-${zone}
@@ -315,6 +337,17 @@ globals:
     type: bool
     restore_value: false
     initial_value: 'false'
+  # Live thresholds, written by the sensitivity select's on_value. Not restored
+  # here — the select restores its own option from flash and republishes it at
+  # boot, which rewrites these before the first verdict.
+  - id: vib_on_threshold
+    type: float
+    restore_value: false
+    initial_value: '${vib_on_medium}'
+  - id: vib_off_threshold
+    type: float
+    restore_value: false
+    initial_value: '${vib_off_medium}'
 
 binary_sensor:
   # The verdict. Hysteresis in the lambda, persistence in the filters — the same
@@ -327,9 +360,9 @@ binary_sensor:
       const float v = id(vibration_rms).state;
       if (!(v == v)) return {};                 // no reading yet
       if (id(vib_running)) {
-        if (v < ${vib_off_threshold}) id(vib_running) = false;
+        if (v < id(vib_off_threshold)) id(vib_running) = false;
       } else {
-        if (v > ${vib_on_threshold}) id(vib_running) = true;
+        if (v > id(vib_on_threshold)) id(vib_running) = true;
       }
       return id(vib_running);
     filters:
@@ -370,3 +403,41 @@ binary_sensor:
     filters:
       - delayed_on: 500ms
       - delayed_off: 500ms   # mechanical float bounces on a moving water surface
+
+# WORKSHOP: the sensitivity selector for the pump verdict. Shows up as a
+# dropdown in Home Assistant (under the device's Configuration section) and on
+# the board's own web page, so a team whose mounting is unusually soft or hard
+# can fix the verdict without a reflash. `optimistic` because there is no
+# hardware to confirm against; `restore_value` so the choice survives a power
+# cut. on_value switches on the option INDEX, not the label, so the Thai text
+# can be edited freely. Boot republishes the restored option, which is what
+# seeds the two threshold globals before the first verdict.
+select:
+  - platform: template
+    name: "ความไวตรวจจับปั๊ม (pump sensitivity)"
+    id: pump_sensitivity
+    icon: "mdi:tune-vertical"
+    entity_category: config
+    optimistic: true
+    restore_value: true
+    options:
+      - "ต่ำ (low)"
+      - "กลาง (medium)"
+      - "สูง (high)"
+    initial_option: "กลาง (medium)"
+    on_value:
+      then:
+        - lambda: |-
+            switch (i) {
+              case 0:  id(vib_on_threshold) = ${vib_on_low};    id(vib_off_threshold) = ${vib_off_low};    break;
+              case 2:  id(vib_on_threshold) = ${vib_on_high};   id(vib_off_threshold) = ${vib_off_high};   break;
+              default: id(vib_on_threshold) = ${vib_on_medium}; id(vib_off_threshold) = ${vib_off_medium}; break;
+            }
+            // Drop the hysteresis state so the NEXT 1 s report judges against
+            // the new band from scratch, rather than carrying a verdict that
+            // was reached under the old one.
+            id(vib_running) = false;
+        - logger.log:
+            format: "pump sensitivity -> %s (on > %.0f mg, off < %.0f mg)"
+            args: ["x.c_str()", "id(vib_on_threshold)", "id(vib_off_threshold)"]
+            level: INFO

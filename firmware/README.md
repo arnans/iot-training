@@ -34,7 +34,14 @@ For a single bench board without the script:
 
 ```bash
 esphome -s zone red -s wifi_ssid farm-iot-red -s wifi_password <pw> run gogo-iot-workshop.yaml
+# over the air, no cable, once the board is on WiFi:
+esphome -s zone red -s wifi_ssid farm-iot-red -s wifi_password <pw> run gogo-iot-workshop.yaml --device gogo-iot-red-6749a4.local
 ```
+
+A plain `esphome compile` without the `-s` values builds with the placeholder credentials from the
+`substitutions:` block — it validates the YAML but the image will never join a network. After a
+re-flash, Home Assistant picks up new entities on its own when the board reconnects; do not
+remove and re-add the device (that discards the team's rename).
 
 **Production run:** flash ~34 sensor + ~34 relay boards per zone from `dist/`, and colour-code
 each board (tape or sticker) as you go. **The colour on the board must match the colour on the
@@ -99,15 +106,27 @@ Do not change these without reading the reasoning:
   row of underscores — and two Thai names of the same character length collide outright and fail
   to compile. The Thai stays first because that is what the worksheet refers to; the English tag
   makes the entity_id unique and greppable. **Do not remove the tags.**
+- **The relay board's LED is driven by an `interval:`, not by `status_led:`.** `status_led:`
+  blinks 250 ms on / 1250 ms off for a warning, and inverting the pin to get lit-when-healthy
+  inverts that too — the bench saw a "steady" LED with a 250 ms wink and called it broken. The
+  explicit interval gives a symmetric 0.8 s blink on WiFi loss and steady lit on WiFi. The API is
+  deliberately not part of it: the board is meant to run overnight with no Home Assistant, and
+  `status_led:` would have blinked all night. See TEST-PLAN.md test H.
+- **Top-level keys go at the end of the file, never mid-list.** Inserting `select:` after
+  `pump_running` silently re-parented the float switch (the next `- platform: gpio` item) under
+  `select:` and failed with `Platform not found: 'select.gpio'`. YAML gives no other warning.
 
-## Unconfirmed
+## Confirmed on the bench
 
-- **Float switch pin and polarity.** Port 1 is CN2 → GPIO0 / GPIO1 per the schematic
-  netlist; the config uses GPIO0 with a pullup and `inverted: true` so that
-  ON = water present. Confirm which way the switch closes. See TEST-PLAN.md test G.
-
-Relay board pins were unconfirmed until the vendor datasheet arrived; they are now
-GPIO19 (relay), GPIO2 (LED), GPIO9 (button), recorded in `ESP32-C6-RELAY-X1.md`.
+- **Float switch: GPIO0, internal pull-up, `inverted: false`, ON = water present.** The float
+  closes the contact when *down* (dry), so wet = open = pulled high, and `inverted: false` gives
+  the polarity the worksheets assume. Consequence: a cut wire or unseated Grove plug *also* reads
+  "water present". Session 2's watering rule therefore requires the float to be **On** as a
+  condition, so `unavailable` fails safe. TEST-PLAN.md test G.
+- **Relay board pins GPIO19 (relay), GPIO2 (LED), GPIO9 (button)**, from the vendor datasheet and
+  confirmed on hardware — `ESP32-C6-RELAY-X1.md`.
+- **`restore_mode: ALWAYS_OFF` holds on both supplies** (USB and 12 V): the relay is off after
+  every power-up.
 
 ## Vibration reporter
 
@@ -120,12 +139,43 @@ The point is **commanded state versus actual state**: a relay can be closed whil
 seized, unprimed or unplugged. Raw acceleration is never streamed to Home Assistant; the three
 axis sensors are `internal`.
 
-Thresholds in the `substitutions:` block are **guesses** and must be calibrated against the real
-pump — TEST-PLAN test I. The 40 Hz poll rate aliases vibration above 20 Hz, which is harmless
-for a yes/no verdict but means the milli-g figure is not a calibrated measurement.
+Thresholds were calibrated against the real pump (TEST-PLAN.md test I: idle 3–8 mg, running
+~20–25 mg on a deliberately soft mount) and are now chosen at runtime from a three-level
+**`select`**, `ความไวตรวจจับปั๊ม (pump sensitivity)`:
 
-## Hazard worth knowing
+| Level | on > | off < | For |
+|---|---|---|---|
+| สูง (high) | 15 mg | 10 mg | soft mount or quiet pump; accepts some knock false-positives |
+| กลาง (medium) — default | 25 mg | 12 mg | the bench-checked pair |
+| ต่ำ (low) | 40 mg | 20 mg | hard-coupled mount or a table that shakes |
 
-The relay board accepts **either** USB 5 V **or** 7–60 V on the screw terminal, **not both**.
-Teams plug in USB once to read the device name, then unplug it before wiring 12 V. The
-worksheet says so at that step.
+It appears in Home Assistant under the device's *Configuration* section and on the board's web
+page, and the choice survives a power cut (`restore_value`, bench-confirmed). The six numbers are
+`substitutions:`; the live pair lives in two `globals:` that the select's `on_value` writes,
+switching on the option index so the Thai labels can change freely. The 40 Hz poll rate aliases
+vibration above 20 Hz, which is harmless for a yes/no verdict but means the milli-g figure is not
+a calibrated measurement.
+
+## Two supplies at once — measured harmless, habit kept
+
+The relay board's datasheet says USB 5 V **or** 7–60 V on the screw terminal, "choose one".
+Bench-measured: the 5 V rail reads 5.04 V from USB and 5.12 V from the 12 V input — 80 mV apart —
+and plugging USB into a board already running on 12 V changes nothing; the serial port enumerates
+and works. The other order can at most reset the board, which `restore_mode: ALWAYS_OFF` makes
+safe. The worksheet keeps "unplug USB before wiring 12 V" as the normal practice, no longer as a
+prohibition, and a helper may plug a laptop into a wired board to read its log without
+dismantling anything. Details in `ESP32-C6-RELAY-X1.md`.
+
+## What each board exposes
+
+Entities visible in Home Assistant and on the board's own page (everything else is `internal`):
+
+| GoGo-IoT sensor node (11) | Relay board (5) |
+|---|---|
+| ความสว่าง (light) · อุณหภูมิ (temperature) · ความชื้นอากาศ (humidity) · ความกดอากาศ (pressure) | รีเลย์ (relay) — switch |
+| สวิตช์ลูกลอย (float switch) — binary | ปุ่มบนบอร์ด (button) — binary |
+| ความสั่นสะเทือน (vibration) · ปั๊มกำลังทำงาน (pump running) — binary · ความไวตรวจจับปั๊ม (pump sensitivity) — select | |
+| เวลาทำงาน (uptime) · ความแรงสัญญาณ WiFi · หมายเลข IP — diagnostics | เวลาทำงาน (uptime) · ความแรงสัญญาณ WiFi · หมายเลข IP — diagnostics |
+
+The raw accelerometer axes are never published — the worksheet's "tap the table" step reads
+`ความสั่นสะเทือน`, not an axis.

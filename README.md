@@ -70,6 +70,8 @@ network provider, and a clean A4 print. Edit the Markdown, re-run the script, co
 
 ### Conventions
 
-Web-rendered Markdown (see KSM `knowledge/md-for-web-rendering.md`): `<img>` tags with
-percentage widths, blockquote callouts, relative cross-links, no page-break markers.
+Web-rendered Markdown (see KSM `knowledge/md-for-web-rendering.md`): Markdown image syntax
+with an `attr_list` width — `![alt](images/x.png){ width="60%" }` — because MkDocs serves each
+page at a directory URL and rewrites only Markdown image paths, so a raw `<img src>` 404s on
+every page but the root. Blockquote callouts, relative cross-links, no page-break markers.
 `record-sheet.md` is the one exception — it is print-bound and uses dotted fill-in lines.

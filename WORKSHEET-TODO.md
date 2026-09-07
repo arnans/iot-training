@@ -9,7 +9,7 @@ bench session (adoption flow, overnight, sabotage cards, instructor machines, in
 
 | Decision | Resolution | Consequence in the worksheet |
 |---|---|---|
-| Home Assistant host | Participants' own laptops, as a **pre-built VirtualBox OVA** (`hass/`) | Session 1 opens with "start the VM, open homeassistant.local"; the install guide shrinks to "install VirtualBox, import, Start" |
+| Home Assistant host | Participants' own laptops, as a **pre-built VirtualBox OVA** (`hass/`) | Session 1 opens with "start the VM, open the IP on its screen"; the install guide shrinks to "install VirtualBox, import, Start" |
 | Network zoning | **Three logical zones** (red/green/blue), each a VLAN with a 2.4 GHz board SSID and a 5 GHz laptop SSID; all SSIDs on every AP; zones isolated from each other | Team card carries the zone colour; kits are colour-coded; the zone is in every board's hostname. Session 1 adds a "colour in the name matches your kit" check at the name-reading step |
 | Firmware per zone | **One source file per board, built three times** by `firmware/build-zones.py` (`esphome -s zone …`) | Six binaries in `firmware/dist/`. The only cross-zone risk is a wrong-coloured board at a table, and the board's own name reveals it |
 | Sensed input for watering | **Air humidity** (onboard) as a stand-in for soil moisture; **float switch** on GoGo-IoT port 1 as the reservoir-low guard | Worksheet says so explicitly ("จำลองสถานการณ์") rather than pretending humidity means soil |
@@ -41,7 +41,7 @@ bench session (adoption flow, overnight, sabotage cards, instructor machines, in
      `unavailable`/`unknown` as dry. See TEST-PLAN.md test G.
 2b. **NEW — every board serves its own web page.** `web_server:` is now in both images: live
    sensor values, and a working switch on the relay board, at `http://<board-name>/` with **no
-   Home Assistant involved**. Not yet in any worksheet, and it earns a place in three:
+   Home Assistant involved**. Now in all three places it earned:
    - **Session 1**, as the first win — teams watch temperature and light react to a hand before
      the VM is even adopted, instead of waiting out the whole import/onboard/adopt sequence.
    - **`reference.md`**, as the support fallback — it proves a board is alive and sensing when a
@@ -55,8 +55,10 @@ bench session (adoption flow, overnight, sabotage cards, instructor machines, in
    field: needs **neither** — the bare name is what works.
 3. **Relay node exposes one `switch`.** The relay's own hard-wired indicator follows the relay, so
    the "lamp" is visible — that is what session 2's garden-lamp framing points at. The board's
-   *programmable* LED (GPIO2) is **not** the lamp: it is a connection-status light, blinking when
-   WiFi or the API is lost. Bench-decided; see TEST-PLAN.md test H.
+   *programmable* LED (GPIO2) is **not** the lamp: it is a **WiFi**-status light — steady lit when
+   on WiFi, blinking when WiFi is lost, dark when unpowered. Home Assistant being down does NOT
+   blink it; the relay board is meant to run overnight without HA. Bench-decided; see TEST-PLAN.md
+   test H.
 4. **`name_add_mac_suffix: true`, WiFi baked in, no API encryption**, `reboot_timeout: 0s`.
    No static IPs — see "Network and device provisioning" below. The light sensor's
    `update_interval` overrides the 5s used by the other sensors in the current
@@ -82,10 +84,10 @@ bench session (adoption flow, overnight, sabotage cards, instructor machines, in
   power input is a separate 2-way block (7–60 V), relay is **GPIO19**, programmable LED
   **GPIO2**, button **GPIO9**, relay rating `10A 250VAC / 10A 30VDC`. Still confirm the
   supplied harness has two bare wires for the relay side.
-- **Relay board takes USB *or* 12 V, not both** (datasheet: "choose one"). Teams read the
-  device name over USB, then must unplug before wiring 12 V. Now stated in `session-1.md` and
-  in `reference.md` troubleshooting. Worth verifying on the bench how bad the mistake is if
-  someone forgets — see TEST-PLAN test H.
+- ~~**Relay board takes USB *or* 12 V, not both**~~ **Bench-measured harmless** (TEST-PLAN
+  test H): rails 80 mV apart, board and serial port fine with both connected. `session-1.md` keeps
+  "unplug USB before 12 V" as the practice, now phrased as a suggestion with "harmless if you
+  forget", and `reference.md` no longer lists dual power as a cause of network failure.
 - **Humidity test in class.** Breathing raises humidity fast; decay back is slow. Session 2's
   watering test relies on that decay to cross the "on" threshold. Rehearse the timing; if decay is
   too slow, teams lower the threshold temporarily (the worksheet says so).
@@ -104,7 +106,7 @@ bench session (adoption flow, overnight, sabotage cards, instructor machines, in
   firewall is not in the path at all — the phone reached the VM on port 80 first try once the
   right port was used. The residual risk is the AP's handling of two MACs behind one wireless
   client (NETWORK-REQUIREMENTS item 2), not the laptop. Worksheet still tells teams to skip and flag
-  it; `session-1.md`'s "มักเป็นเพราะไฟร์วอลล์ของแล็ปท็อป" line should be reworded.
+  it; `session-1.md`'s firewall line is **reworded** (same zone WiFi, same address, then flag it).
 - **Water props not on the kit list**: two containers, a glass for the float switch, drip tray,
   towel. Worksheet says the instructor provides them at the table.
 - **Handouts referenced but not written**: humidity sensor
@@ -113,7 +115,9 @@ bench session (adoption flow, overnight, sabotage cards, instructor machines, in
   after the bench.** `session-1.md`, `reference.md`, `index.md`, `record-sheet.md` and
   `session-3.md` now describe the bench-verified flow: read the name via **Reset device in the
   browser**, **click the discovered card**, bare name (no `.local`) as the manual fallback, no
-  encryption key. Still untouched, pending a decision: `homeassistant.local` (see TEST-PLAN).
+  encryption key. `homeassistant.local` is now **resolved**: the worksheets use the VM's own IP,
+  read off its boot screen and written on the record sheet, because ~34 identically-named VMs per
+  zone make the hostname point at a neighbour's machine (see TEST-PLAN).
 
 ## Network and device provisioning
 
@@ -174,16 +178,17 @@ Raw axes stay `internal`.
 
 **Still open:**
 
-- **Thresholds are guesses** (`vib_on_threshold: 25`, `vib_off_threshold: 12` milli-g). TEST-PLAN
-  test I calibrates them. If the pump-off and pump-on readings turn out indistinguishable, pull
-  the two entities rather than ship something that reports noise.
-- **Not yet in the worksheets.** Session 2's failure lab already runs three fail-safes and the
-  sabotage rounds in 45 minutes; a fourth hands-on item would overflow it. Two cheaper options,
-  both pending calibration:
-  - *Instructor demo* in the session 2 debrief, next to the Auto/Off/Manual control box — both
-    are about the layer that does not trust the controller. Roughly 3 minutes.
-  - *Design-canvas prompt* in session 3: "how does your system know the actuator actually did
-    something?" Pure text, no hardware time. **Added** — see the Output table in `record-sheet.md`.
+- ~~**Thresholds are guesses**~~ **Calibrated** (TEST-PLAN test I: idle 3–8 mg, running
+  20–25 mg on a soft mount; the signal separates). 25/12 stays as the default, now the *medium*
+  level of a three-way **sensitivity select** (high 15/10, low 40/20) a team changes from HA or the
+  board's page — bench-confirmed, including survival across a power cycle.
+- ~~**Not yet in the worksheets.**~~ **In three places now:** session 1's sensor table (tap the
+  table → `ความสั่นสะเทือน`, so the entity is familiar before it matters); session 2 **Fail-safe 4**
+  (*เมื่อมีเวลา*): commanded-on for 30 s with `ปั๊มกำลังทำงาน` Off → pump off + notification, tested
+  by unscrewing the pump lead — the same act as sabotage card 3, which is the point; and the
+  `reference.md` "pump won't run" row. The design-canvas prompt in `record-sheet.md` stays.
+  Fail-safe 4 tells Hardware to put the board against the tubing first — the sensor is on the
+  GoGo-IoT board, which otherwise lives on the charge controller's USB, away from the pump.
 - **Cost when unused**: 40 Hz I2C polling runs on every board whether or not anyone looks at the
   vibration entity. Watch during the bench test for any effect on the other sensors' stability or
   on WiFi; if it bites, the answer is a separate image variant rather than a slower poll.
@@ -333,11 +338,10 @@ fill-in lines (the exception to the web-Markdown conventions). Print from the re
   Set of at least three: one exceeds the onboard humidity–temperature accuracy, one exceeds the
   relay's printed DC rating (a 12V pump drawing more than 10 A, or a 220V load), one passes as-is.
   Answer key names the single part to change.
-- **Session 2 knock-on**: Fail-safe 1 (float → pump off) is now built in session 1 Activity 3.
-  `session-2.md` still builds it fresh — rework when session 2 is revisited (replace with a third
-  fail-safe, or open the failure lab from the automation that already exists). The Activity 3
-  Recorder question (float lifted *before* the pump starts → nothing stops it) is the intended
-  lead-in to conditions.
+- ~~**Session 2 knock-on**~~ **Reworked.** Fail-safe 1 now opens the session 1 automation,
+  renames it and adds the notification, then adds a float-**On** condition to `รดน้ำ - เปิดปั๊ม`
+  and tests the lifted-first case — which closes the Activity 3 Recorder hook (trigger vs
+  condition) and makes `unavailable` fail safe, as TEST-PLAN test G required.
 - Scenario cards for Activity 8 (content is in `session-3.md`)
 - Role cards (content is in `index.md`)
 - Team cards: zone colour, zone laptop SSID + password, HA VM user/password. No instructor HA

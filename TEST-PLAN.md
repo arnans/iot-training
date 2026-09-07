@@ -188,7 +188,8 @@ the fallback is four levels deep:
       **That was a wrong diagnosis** — at the time nothing was listening on port 80 because
       `web_server` had not been added yet. Windows resolves these names fine; see test J.)
 - [x] Device is added, entities appear with Thai names — 10 entities on the sensor board,
-      5 on the relay, matching the config exactly
+      5 on the relay, matching the config exactly at the time (the sensor board is **11** since
+      the pump-sensitivity select was added in test I)
 - [x] Rename the device to a team name; entity IDs stay stable — renaming from the UI works
 - [x] Unplug the board, wait 1 min, plug back in → returns to available on its own — **confirmed**:
       rejoined by itself and resumed streaming values, no intervention. This is the DHCP-plus-mDNS
@@ -219,7 +220,7 @@ board is not ready, flash the sensor image to any second ESP32 you have.
 - [x] Second board gets a **different** hostname from the same binary — `gogo-iot-red-6749a4`
       (sensor, C3) and `gogo-relay-red-9d8b28` (relay, C6). Suffixes are distinct and the zone
       colour is in both names
-- [x] Both adopt into Home Assistant simultaneously — 2 devices, 15 entities, both stable
+- [x] Both adopt into Home Assistant simultaneously — 2 devices, 15 entities (16 now), both stable
 - [x] In **Settings → Devices & services**, note what the *discovered* card list looks like with
       two boards on the network. On the day a team sees **only its own zone's** boards, since
       zones are isolated VLANs: 200 boards ÷ 3 ≈ **~67 cards**, not the whole room
@@ -357,13 +358,17 @@ relay **GPIO19**, programmable LED **GPIO2**, button **GPIO9**, all active high.
 confirmation, not discovery. **All three are now bench-confirmed on real hardware**, not just
 read off the PDF.
 
-> **Design change made during this test: the GPIO2 LED now shows connection status.** It
+> **Design change made during this test: the GPIO2 LED now shows WiFi connection status.** It
 > originally mirrored the relay, but the relay's own hard-wired indicator already does that from
-> the coil an inch away, so the mirror added nothing. It is now an ESPHome `status_led:` —
-> blinks on WiFi/API loss, quiet when healthy — so a team can tell whether their board is
-> connected without a laptop. With ~100 teams that is the support question that matters most.
-> Session 2's worksheet text survives unchanged: it says the LED on the relay board stands in
-> for the garden lamp, and the relay's own indicator still lights whenever the relay closes.
+> the coil an inch away, so the mirror added nothing. It now reads **steady lit = on WiFi,
+> blinking = WiFi lost, dark = no power or no firmware** — so a team can tell whether their board
+> is connected without a laptop, and an instructor can read the room from the front. With ~100
+> teams that is the support question that matters most. Session 2's worksheet text survives
+> unchanged: it says the LED on the relay board stands in for the garden lamp, and the relay's
+> own indicator still lights whenever the relay closes.
+>
+> The first attempt used ESPHome's `status_led:` and **failed on the bench** — see the finding
+> below. It is now driven explicitly.
 
 - [x] Relay clicks when the switch entity is toggled from Home Assistant
 - [x] Both LEDs light: the hard-wired relay indicator **and** the GPIO2 programmable LED —
@@ -373,19 +378,100 @@ read off the PDF.
 - [x] Onboard button toggles the relay, and works with Home Assistant closed — **verified with
       the HA VM shut down**. The toggle is an on-device ESPHome automation, no network involved.
       Session 2's failure lab depends on exactly this
-- [ ] **Re-check after the status-LED change:** GPIO2 blinks when WiFi/API is lost and is quiet
-      when connected
-- [ ] Power from **12 V into the screw terminal with USB unplugged** — board still connects
+- [x] **Re-check on the re-driven LED — confirmed on hardware.** Walked out of WiFi range: GPIO2
+      blinks, and returns to steady lit on rejoin. The first version of this failed; see below
+- [x] **The blink starts several seconds after the board is actually out of range** — observed
+      and **accepted, no change**. The ESP32 does not know it has lost the AP until it has missed
+      enough beacons for ESP-IDF's inactive/beacon timeout to fire; only then does the WiFi state
+      machine raise the warning the LED reads. So "unreachable by IP" happens first and "blinking"
+      follows. Harmless here — nobody is timing it, and a fast-twitch LED would flicker on every
+      momentary fade. **Worth knowing for the day:** a board that has just been unplugged or moved
+      shows steady-lit for a few seconds before it admits the problem, so tell a helper to look
+      twice rather than trust the first glance
+- [x] Power from **12 V into the screw terminal with USB unplugged** — **confirmed: the board
+      boots and connects normally on 12 V alone.** This is how every relay board runs on the day,
+      off the charge controller's LOAD pair, so it is the configuration the whole of session 2
+      depends on
 - [x] `restore_mode: ALWAYS_OFF` — **confirmed: the relay is always off after a boot**, never
       restores its previous state. This is the safety property that stops a pump restarting by
-      itself after a power cut, and it is now proven in firmware. (Re-confirm once the board is
-      running from 12 V, since that is the real power-loss case on the day.)
+      itself after a power cut, and it is now proven in firmware. **Confirmed on BOTH supplies —
+      5 V over USB and 12 V on the screw terminal.** The relay is off at every power-up regardless
+      of how the board is fed, which is the form the property has to hold in on the day
 - [x] Read the markings on the relay body and confirm they match what the worksheet tells
       teams to expect: `10A 250VAC` / `10A 30VDC` — **they match**
 
-> **Do not power USB and the 12 V terminal at the same time** — the datasheet says choose one.
-> The worksheet now tells teams to unplug USB before wiring 12 V; verify nothing bad happens
-> if someone forgets, so you know how bad the mistake is on the day.
+### Bench result: `status_led:` cannot give a visible blink on an inverted pin
+
+**Observed:** walking away from the WiFi until the board was unreachable by IP, **the LED stayed
+lit. It never blinked.**
+
+**Cause, found in the ESPHome source, not guessed.** `status_led:` writes the pin itself, and a
+warning — which is what WiFi loss is (`wifi_component.cpp` sets `status_set_warning` for
+"waiting to reconnect" / "scanning" / "associating") — is **250 ms on, 1250 ms off**:
+
+```cpp
+} else if ((app_state & STATUS_LED_WARNING) != 0u) {
+  this->pin_->digital_write(now % 1500 < 250);
+```
+
+`inverted: true` was added to make the healthy state the lit one. It does that — but it inverts
+**every** write, including those. The blink came out as *lit 83% of the time with a 250 ms wink
+once every 1.5 s*, which at a glance, on a small SMD LED, while walking away, is indistinguishable
+from steady. **Inverting the pin inverts the duty cycle too.** The healthy state was right and the
+fault state was invisible.
+
+Two things ruled out while tracing it, so they need no re-test: it is **not** a stalled component
+(`StatusLED::loop()` calls `disable_loop()` when healthy, but `Application::service_status_led_slow_()`
+re-dispatches it every 100 ms and re-enables it the moment a warning bit appears), and it is **not**
+the fallback AP masking the fault (COOLDOWN/SCANNING/CONNECTING all keep the warning flag set).
+
+**Fix, now in `relay-workshop.yaml` and compiling clean at 0.97 MB — unchanged size.** `status_led:`
+is gone; the LED is a plain `output:` plus an `internal:` binary `light:`, driven by a 400 ms
+`interval:` that turns it on when `wifi.connected:` and toggles it otherwise. That gives a
+**symmetric 0.8 s blink**, which cannot be mistaken for steady. **Re-flashed and re-walked out of
+range: confirmed working**, with the beacon-timeout lag noted in the checklist above.
+
+**WiFi only, on purpose — a decision, not an oversight.** `status_led:` also treats "no Home
+Assistant client connected" as a warning. The relay board is *designed* to sit on 12 V overnight
+with no HA (that is what `reboot_timeout: 0s` and test F exist for), so including the API would
+have ~100 boards blinking all night for a condition that is normal. HA being down is already
+visible in HA. The LED answers one question: **is my board on the network?**
+
+### Bench result: USB and 12 V together is harmless — keep the instruction, drop the alarm
+
+The datasheet says "DC 7-60V **or** TYPE-C 5V (choose one)", and the worksheet tells teams to
+unplug USB before wiring 12 V. This test existed to find out **how bad the mistake is** when a team
+forgets, because with ~100 tables somebody will.
+
+**Answer: it is not bad at all.** Measured on the board's 5 V rail:
+
+| Source | 5 V rail |
+|---|---|
+| USB alone | **5.04 V** |
+| 12 V terminal alone | **5.12 V** |
+
+**80 mV apart.** Two sources that close together simply share the rail; there is no voltage fight
+to damage anything. Plugging USB into a board already running on 12 V was then tried directly:
+**the board carried on normally and the serial port enumerated and worked as usual.**
+
+**Consequences, and the second one is the useful one:**
+
+1. **The worksheet keeps one-supply-at-a-time as the normal practice, but no longer as a
+   prohibition.** [session-1.md:102](docs/session-1.md#L102) said `ห้ามต่อพร้อมกัน` ("do not connect
+   both"); it now says the board is *designed* for one source, and adds that connecting both by
+   accident is harmless — at most the board restarts. Same practice, no false alarm. A helper who
+   finds a team with both connected says "tidy that up", not "you may have damaged the board".
+   **No board is lost to this mistake.**
+2. **Support on the day just got easier.** A helper can plug a laptop into a board that is already
+   wired to the 12 V rail — to read the boot banner, check the name, or reflash — **without
+   tearing down the team's wiring first.** For a room of ~100 tables that removes a genuinely
+   annoying step from every debugging visit.
+
+> **The reverse direction — 12 V applied to a board already on USB — was not separately tried,
+> and does not need to be.** Steady state is identical to the case that was; only the turn-on
+> transient differs, and the 12 V regulator simply takes over the rail from 80 mV above it.
+> **Worst case is that the board resets** — which costs a team nothing but the few seconds it
+> takes to reconnect, since `restore_mode: ALWAYS_OFF` means a reset leaves the relay safe anyway.
 
 **Question this answers:** does the board run from the charge controller's LOAD pair with the
 pump attached, and does it fail safe on power restore?
@@ -419,11 +505,85 @@ at the top of `gogo-iot-workshop.yaml`.
 - [ ] Knock the table — does the verdict falsely trip? The 2 s `delayed_on` should absorb it
 - [ ] Pump off — does the verdict clear within the 5 s `delayed_off`?
 
-> **If the two readings are indistinguishable**, the pump is too quiet or too decoupled to
-> detect at any threshold. That is a real result, not a failure — say so and I will pull the
-> two entities from the image rather than ship something that reads noise.
+### Bench result: the signal is separable, and the shipped guesses work
 
-**Question this answers:** what are the real thresholds, and is the signal separable at all?
+**Tried on the real pump: it works.** The verdict entity follows the pump. That settles the
+question this test existed to ask — the accelerometer *can* tell a running pump from a still one,
+so the two entities stay in the image and the "pull them rather than ship something that reads
+noise" fallback is off the table.
+
+It also means **`vib_on_threshold: 25` / `vib_off_threshold: 12` need no change** — see the
+measured numbers and the reasoning below.
+
+### The numbers, and why the thresholds stay as they are
+
+- **Noise floor, pump off:** **3-8 mg**
+- **Pump running:** **~20-25 mg**, measured with a **deliberately soft, loosely-coupled mounting**
+
+**Kept as the default: 25 / 12.** They are now the **MEDIUM** level of a three-way sensitivity
+select — see below — so this *did* become a firmware change after all, but not to the numbers.
+
+Read naively, 20-25 running against a 25 threshold looks like no margin at all, and the arithmetic
+this test prescribed would drop `on` to about 16. **That reading is wrong, because of how the
+measurement was taken.** The running figures come from a soft mount — a worst case, not the normal
+one. Mounted the way a team will actually have it, against the tubing or on the drip tray, the
+running figure sits higher, and 25 is a fair operating point rather than a ceiling.
+
+Keeping 25 is also the **conservative** direction. The two failure modes are not symmetric:
+
+| Threshold too high | Threshold too low |
+|---|---|
+| A very weakly-coupled pump is not noticed | A knocked table reports a pump that is not running |
+
+The first is a diagnostic that stays quiet; the second actively misinforms a team debugging their
+watering rule. **`off` at 12 is the number that had to be right**, and it is — 4 mg clear of the
+noisiest 8 mg idle reading, so ambient table noise cannot hold the verdict on.
+
+> **Recorded because it was nearly changed:** `vib_on` was briefly set to 16 on the arithmetic
+> above, then reverted on the bench-holder's judgement about the mounting. Anyone re-deriving the
+> thresholds from the 20-25 figure alone will reach 16 again — the figure is soft-mount data, and
+> the number to trust is the floor.
+
+### Then: a sensitivity selector, so a team can fix the verdict without a reflash
+
+The bench argument above — "the real mounting couples harder than the soft-mount figures" — is a
+statement about *one* mounting. On the day there are ~100, and the soft-mount case *will* happen
+at some tables. Rather than pick one threshold for all of them, the thresholds are now chosen at
+runtime from a **`select` entity, `ความไวตรวจจับปั๊ม (pump sensitivity)`**, visible in Home
+Assistant (device page → *Configuration*) and on the board's own web page:
+
+| Level | `on` > | `off` < | For |
+|---|---|---|---|
+| **สูง (high)** | 15 mg | 10 mg | soft mount or quiet pump; `off` is only 2 mg above the noisiest idle, so some knock false-positives are accepted |
+| **กลาง (medium)** — default | 25 mg | 12 mg | the bench-checked pair |
+| **ต่ำ (low)** | 40 mg | 20 mg | hard-coupled mount or a table that shakes |
+
+**How it is built**, for whoever touches it next: the six numbers are `substitutions:` at the top
+of the file; the live pair lives in two `globals:`; the verdict lambda reads the globals; the
+select's `on_value` writes them, switching on the option **index** so the Thai labels can change
+freely. It is `optimistic` (nothing to confirm against) and `restore_value: true`, and ESPHome
+republishes the restored option at boot, which is what seeds the globals before the first verdict
+— verified in the installed template-select source, not assumed. Changing level also clears the
+hysteresis state so the next 1 s report judges fresh against the new band.
+
+- [x] **Re-flashed**, and the select appears in HA and as a dropdown on the board's web page —
+      **confirmed working on the bench**
+- [x] Changing the level changes the verdict — **confirmed, "works well"**
+- [ ] Boot log shows `pump sensitivity -> กลาง (medium) (on > 25 mg, off < 12 mg)` on startup —
+      not separately checked; cosmetic
+- [x] Power-cycle with a non-default level selected — **it comes back on the same level.
+      Confirmed on hardware.** This is the property that matters on the day: every board goes dark
+      overnight, and a team's choice now survives it. `restore_value` verified in source *and* on
+      the bench
+
+> **On "the margin is unclear because of the filtered delay":** that is the verdict entity's
+> `delayed_on: 2s` / `delayed_off: 5s` doing their job — they deliberately hide short excursions,
+> so the binary cannot be used to find the thresholds. The raw
+> `ความสั่นสะเทือน (vibration)` number is unfiltered by those delays and is the one to read, which
+> is what the figures above are.
+
+**Question this answers, and the answer:** is the signal separable at all? **Yes.** The real
+thresholds turn out to be the ones already in the file.
 
 ---
 
@@ -485,10 +645,23 @@ live and correct (`192.168.8.163` on the bench). The worksheets can say "read th
 your VM's screen" instead of naming a hostname, which is immune to the whole problem and also
 survives DHCP handing out a different address between days.
 
-**Decision needed**, since it changes four files:
-1. Worksheets instruct the **IP from the VM console** (recommended — no per-team setup, self-healing).
-2. Or each team sets a unique hostname at first boot (**Settings → System → Network**), which adds
-   a step to session 1 and needs a name per team on the card.
+**Decided: option 1 — the IP from the VM console.** No per-team setup, immune to the collision
+entirely, and self-healing when DHCP hands out a different lease. The rejected alternative was
+having each team rename their VM at first boot, which asks ~100 teams to each perform a config task
+correctly to prevent a problem they cannot see, and whose failure mode is the same silent one.
+
+**Done — all four spots changed, plus the record sheet:**
+
+| File | Now says |
+|---|---|
+| [session-1.md:16](docs/session-1.md#L16) | wait for the VM screen to show the IP, **write it on the record sheet**, then browse to it |
+| [session-1.md:206](docs/session-1.md#L206) | the phone opens "the same address you wrote down" |
+| [session-2.md:12](docs/session-2.md#L12) | read the address off the VM screen again — **explicitly warns it may differ from yesterday** |
+| [reference.md:56](docs/reference.md#L56) | IP first; names `homeassistant.local` only to say **do not use it**, because it is duplicated room-wide |
+| [record-sheet.md:9](docs/record-sheet.md#L9) | new field: the team's HA address, with a **second blank for day 2** |
+
+No port is needed — the OVA deliberately serves on **port 80, not 8123**
+([hass/README.md:48](hass/README.md#L48)), so a bare `http://<IP>` is the whole address.
 
 ---
 
@@ -503,14 +676,17 @@ survives DHCP handing out a different address between days.
 | E chattering visible | | clicks/min before hysteresis: |
 | F overnight | | relay board reboots overnight: |
 | G float switch | ✅ | pin: **GPIO0** · ON = water present ✅ (`inverted: false`) · closes when float is DOWN/dry · internal pull-up only, **no external resistor needed** — 500 ms filters absorb surface jiggle entirely · broken wire reads as "water present" — see fail-safe note |
-| H relay board | ⚠️ | pins GPIO19/2/9 bench-confirmed · relay + button + LEDs OK · button works with HA down · `restore_mode: ALWAYS_OFF` ✅ · relay markings match `10A 250VAC` / `10A 30VDC` ✅ · **still open:** status-LED failure case, and 12 V-only boot |
-| I vibration calibration | | floor: ___mg  running: ___mg  thresholds set: |
+| H relay board | ✅ | pins GPIO19/2/9 bench-confirmed · relay + button + LEDs OK · button works with HA down · `restore_mode: ALWAYS_OFF` ✅ · relay markings match `10A 250VAC` / `10A 30VDC` ✅ · **status LED: first version failed** — stayed lit out of range, because `inverted:` also inverts `status_led`'s 250/1250 ms blink; re-driven from an `interval:` as a symmetric 0.8 s blink on `wifi.connected` — **re-flashed and re-walked, works** · blink onset lags going out of range by several seconds (beacon timeout, accepted)  · **12 V-only boot ✅** — runs and connects on the screw terminal with USB unplugged, the day-of configuration · `restore_mode` re-confirmed on **both** supplies · **USB + 12 V together is harmless** — rails measured 5.04 V (USB) vs 5.12 V (12 V), 80 mV apart; board and serial port both fine, so the mistake costs nothing and a helper may plug in a laptop without unwiring the table |
+| I vibration calibration | ✅ | **signal is separable — verdict follows the real pump** · floor **3-8 mg**, running **~20-25 mg**, but measured on a deliberately soft mount · 25 / 12 kept as the **MEDIUM default** of a new three-level **sensitivity select** (high 15/10 · medium 25/12 · low 40/20), chosen in HA or on the board's web page · **re-flashed, selector works, choice survives a power cycle** |
 | J board web page | ✅ | live values ✅, relay control ✅, name-as-URL ✅ (trailing slash or `.local` required — bare name becomes a web search). `local: true` verified: 2 requests, both to the board, 13.2 kB page + SSE stream, no CDN — **works with no internet** |
 
 ## After the test
 
-Values from G and H go into `firmware/*.yaml`. Of the two worksheet questions this plan existed
-to settle:
+Values from G and H are already in `firmware/*.yaml`. I's guessed thresholds survived contact
+with a real pump and became the MEDIUM default of a runtime sensitivity select, so a soft-mounted
+table can fix its own verdict without anyone reflashing. **Eight of the ten tests now pass; only E and F are
+open, and neither is a firmware question.** Of the two worksheet questions this plan existed to
+settle:
 
 - **B — settled.** The USB lookup is fast and unambiguous now that the name is an explicit
   banner on line 4. **No printed MAC stickers**, no change to kit prep, and the "press reset and
@@ -520,11 +696,16 @@ to settle:
 
 Also settled along the way, and feeding the worksheet rewrite: adoption is **pick the discovered
 card, manual entry as fallback** (C/D); the float switch reads **ON = water present** with the
-wiring recorded in G; the relay board's programmable LED is now a **connection-status light**,
-not a relay mirror (H); and every board now serves its own page at `http://<board-ip>/`, which
-gives teams live sensor values before any Home Assistant exists.
+wiring recorded in G; the relay board's programmable LED is now a **WiFi-status light**
+(steady lit = on WiFi, blinking = not), not a relay mirror (H); the pump's vibration **is**
+distinguishable from stillness, so the two reporter entities stay in the image (I); USB and 12 V
+together turn out to be **harmless**, which softened the worksheet's prohibition into a practice
+and lets a helper plug into a wired board without dismantling the table (H); and every board now
+serves its own page at `http://<board-ip>/`, which gives teams live sensor values before any Home
+Assistant exists.
 
 The worksheet adoption steps have now been rewritten to the bench-verified flow (Reset device in
 the browser → discovered card → bare-name fallback, no key) across `session-1.md`, `reference.md`,
-`index.md`, `record-sheet.md` and `session-3.md`. Still deliberately untouched, pending a decision:
-`homeassistant.local` — see the open risk above.
+`index.md`, `record-sheet.md` and `session-3.md`. **`homeassistant.local` is now resolved too** —
+the worksheets use the VM's own IP, read off its screen and written on the record sheet. See the
+section above.

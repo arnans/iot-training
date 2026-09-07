@@ -15,8 +15,9 @@
 # shrink that browse list. What it does remove: ssdp's periodic UPnP M-SEARCH
 # multicast, the dhcp sniffer, and the long tail of integrations that each add
 # their own startup traffic. Real, but the biggest lever on mDNS load is
-# elsewhere: keep phones on mobile data, and consider zoning the network -- see
-# NETWORK-REQUIREMENTS.md, "Alternative: three zones".
+# elsewhere: the three-zone network -- see NETWORK-REQUIREMENTS.md, section 1.
+# (Phones cannot stay on mobile data: the dashboard lives in this VM, so they
+# join the zone's laptop SSID.)
 
 homeassistant:
   name: Farm Workshop
@@ -25,9 +26,12 @@ homeassistant:
   country: TH
 
 # --- UI and API. The minimum for a usable Home Assistant. ---
+# WORKSHOP: no `http:` key. HA has migrated HTTP settings (network binding, trusted
+# proxies, etc.) to UI-managed storage (Settings > System > Network); a bare `http:`
+# in YAML is now ignored and becomes a hard error in 2027.2.0. `api`/`frontend`/
+# `websocket_api` already force-load http as a dependency, so nothing is lost.
 frontend:
 config:
-http:
 api:
 websocket_api:
 lovelace:

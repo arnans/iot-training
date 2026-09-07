@@ -22,7 +22,6 @@ homeassistant:
 
 frontend:
 config:
-http:
 api:
 websocket_api:
 lovelace:

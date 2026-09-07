@@ -232,11 +232,11 @@ Home Assistant ทำงานอยู่บนแล็ปท็อปขอ�
 automation หนึ่งข้อใน Home Assistant มีสามส่วน **trigger** (เมื่อไร) · **condition** (ถ้า ไม่บังคับใส่) · **action** (ให้ทำอะไร) กฎเรื่องลูกลอยใช้แค่สองส่วน
 
 1. **Driver** ไปที่ **Settings → Automations & scenes → + Create automation → Create new automation**
-2. ใต้ **When** กด **+ Add trigger → Entity → State** เลือก Entity เป็น **สวิตช์ลูกลอย** ของบอร์ดเรา ช่อง **To** เลือก **Off** (Off คือไม่มีน้ำ ดูค่าที่จดไว้ในกิจกรรมที่ 1)
+2. ใต้ **When** กด **+ Add trigger → Entity → State** เลือก Entity เป็น **สวิตช์ลูกลอย** ของบอร์ดเรา ช่อง **To** เลือก **Dry** (Dry คือน้ำหมด Wet คือมีน้ำ เทียบกับค่าที่จดไว้ในกิจกรรมที่ 1)
 3. ใต้ **Then do** กด **+ Add action → Switch → Turn off** เลือก **รีเลย์ (relay)** ของบอร์ดเรา
 4. กด **Save** ตั้งชื่อ `น้ำหมด หยุดปั๊ม`
 
-![หน้าแก้ไข automation ใน Home Assistant มี trigger เป็นสถานะสวิตช์ลูกลอยเปลี่ยนเป็น Off และ action เป็นปิดสวิตช์รีเลย์](images/placeholder.png){ width="60%" }
+![หน้าแก้ไข automation ใน Home Assistant มี trigger เป็นสถานะสวิตช์ลูกลอยเปลี่ยนเป็น Dry และ action เป็นปิดสวิตช์รีเลย์](images/placeholder.png){ width="60%" }
 
 ทดสอบ: ลูกลอยลอยอยู่ในใบ A · **Driver** เปิดปั๊มจากหน้าอุปกรณ์ · **Hardware** ยกลูกลอยขึ้น · ปั๊มต้องหยุดเองภายในราว 1 วินาที โดยไม่มีใครกดอะไร วางลูกลอยกลับ ปั๊มไม่เดินกลับมาเอง เพราะกฎบอกแค่ให้ปิด
 

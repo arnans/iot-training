@@ -346,6 +346,28 @@ the running firmware, not just in config.
 >    `unavailable`/`unknown` as dry, rather than trusting a single OFF. That is a better version
 >    of the lesson anyway.
 
+### Second pass (8 Sep 2026) — float cylinder flipped, mitigation 1 taken
+
+Roger pulled the retaining clip and **flipped the float cylinder on its rod**, so the switch now
+**closes when the float RISES (wet)** and opens when it drops (dry). Wet = closed = pin LOW.
+Firmware changed to `inverted: true` (ON = water present again) and gained
+`device_class: moisture`, so Home Assistant shows **Wet / Dry** instead of On / Off — the flip
+briefly made "Off = has water", and the device class removes that confusion in either orientation.
+
+Everything in the first pass about pin, pull-up and filters still stands. The fail-safe
+consequence above is now reversed: a cut wire, an unseated Grove plug, or no switch at all reads
+**Dry**, and the pump stays off. Kit prep must flip the cylinder on **every** float; a kit
+assembled with an unflipped float reads backwards, which the first item below catches.
+
+- [x] Re-flash and re-check: float up in water → **Wet**; float lifted out → **Dry**. Confirmed
+      on the running firmware (Roger, 8 Sep 2026)
+- [ ] **No switch plugged in** (Grove cable out of port 1) → **Dry**. This is the fail-safe test
+      that was impossible before the flip
+- [ ] Pull one bare wire out of the adapter's terminal block while wet → **Dry** within ~0.5 s
+- [ ] Board's own web page: note what the two states are called there (ESPHome's page does not
+      use the device class and may still say ON/OFF) so the session 1 record sheet and the
+      session 1 trigger step ask for the right words
+
 **Question this answers:** is the pin and polarity in the config right, and is the fail-safe
 trigger in session 2 pointing at the correct state?
 
@@ -675,7 +697,7 @@ No port is needed — the OVA deliberately serves on **port 80, not 8123**
 | D two boards unique | ✅ | `gogo-iot-red-6749a4` + `gogo-relay-red-9d8b28`, both adopted at once, 15 entities. Crowded-list behaviour deferred to the venue |
 | E chattering visible | | clicks/min before hysteresis: |
 | F overnight | | relay board reboots overnight: |
-| G float switch | ✅ | pin: **GPIO0** · ON = water present ✅ (`inverted: false`) · closes when float is DOWN/dry · internal pull-up only, **no external resistor needed** — 500 ms filters absorb surface jiggle entirely · broken wire reads as "water present" — see fail-safe note |
+| G float switch | ✅ / 🔁 | pin: **GPIO0** · ON = **Wet** = water present (`inverted: true`, `device_class: moisture`) · float cylinder **flipped at kit prep** so the switch closes when UP/wet · internal pull-up only, **no external resistor needed** — 500 ms filters absorb surface jiggle entirely · broken wire / unplugged switch reads **Dry**, fails safe · Wet / Dry re-confirmed after the flip; unplugged-switch and pulled-wire checks still open |
 | H relay board | ✅ | pins GPIO19/2/9 bench-confirmed · relay + button + LEDs OK · button works with HA down · `restore_mode: ALWAYS_OFF` ✅ · relay markings match `10A 250VAC` / `10A 30VDC` ✅ · **status LED: first version failed** — stayed lit out of range, because `inverted:` also inverts `status_led`'s 250/1250 ms blink; re-driven from an `interval:` as a symmetric 0.8 s blink on `wifi.connected` — **re-flashed and re-walked, works** · blink onset lags going out of range by several seconds (beacon timeout, accepted)  · **12 V-only boot ✅** — runs and connects on the screw terminal with USB unplugged, the day-of configuration · `restore_mode` re-confirmed on **both** supplies · **USB + 12 V together is harmless** — rails measured 5.04 V (USB) vs 5.12 V (12 V), 80 mV apart; board and serial port both fine, so the mistake costs nothing and a helper may plug in a laptop without unwiring the table |
 | I vibration calibration | ✅ | **signal is separable — verdict follows the real pump** · floor **3-8 mg**, running **~20-25 mg**, but measured on a deliberately soft mount · 25 / 12 kept as the **MEDIUM default** of a new three-level **sensitivity select** (high 15/10 · medium 25/12 · low 40/20), chosen in HA or on the board's web page · **re-flashed, selector works, choice survives a power cycle** |
 | J board web page | ✅ | live values ✅, relay control ✅, name-as-URL ✅ (trailing slash or `.local` required — bare name becomes a web search). `local: true` verified: 2 requests, both to the board, 13.2 kB page + SSE stream, no CDN — **works with no internet** |
@@ -695,7 +717,7 @@ settle:
   different input or a different demonstration.
 
 Also settled along the way, and feeding the worksheet rewrite: adoption is **pick the discovered
-card, manual entry as fallback** (C/D); the float switch reads **ON = water present** with the
+card, manual entry as fallback** (C/D); the float switch reads **Wet = water present** (float flipped, `inverted: true`) with the
 wiring recorded in G; the relay board's programmable LED is now a **WiFi-status light**
 (steady lit = on WiFi, blinking = not), not a relay mirror (H); the pump's vibration **is**
 distinguishable from stillness, so the two reporter entities stay in the image (I); USB and 12 V

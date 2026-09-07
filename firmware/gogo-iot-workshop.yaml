@@ -380,26 +380,32 @@ binary_sensor:
   # positions (Signal, Ground) of the adapter's 4-way terminal block; a Grove
   # cable runs from the adapter to SPECIAL PORT 1 on the board.
   #
-  # Polarity, measured: the float closes the switch when DOWN (dry) and opens it
-  # when it RISES (wet). Open + internal pull-up = pin HIGH when wet, so
-  # `inverted: false` gives ON = water present.
+  # Polarity: the float CYLINDER IS FLIPPED ON ITS ROD at kit prep (Roger,
+  # 8 Sep 2026) so the switch CLOSES when the float RISES (wet) and opens when
+  # it drops (dry). Closed = pin pulled LOW, so `inverted: true` gives
+  # ON = water present. As shipped, the float closed when DOWN; do not "fix"
+  # the inversion here without checking which way the cylinder is mounted.
   #
   # There is no external pull-up anywhere on the switch or the adapter — the
   # chip's internal one (~45k, weak) does the whole job. See TEST-PLAN.md test G.
   #
-  # FAIL-SAFE WARNING: a cut wire or unseated Grove plug also leaves the pin
-  # pulled HIGH, which is indistinguishable from "water present". A fault reads
-  # as safe-to-pump. Session 2's fail-safe must require positive confirmation of
-  # water and treat unavailable/unknown as dry — inverting the entity does not
-  # change this, it is a property of which way the float closes.
+  # FAIL-SAFE: this orientation is what makes the switch fail safe. A cut wire,
+  # an unseated Grove plug, or no switch at all leaves the pin HIGH, which now
+  # reads OFF = dry. Every wiring fault says "no water" and the pump stays off.
+  # Session 2's watering rule still requires positive confirmation (Wet) as a
+  # condition, so a dead board (unavailable) fails safe too.
+  #
+  # device_class: moisture makes Home Assistant show the states as Wet / Dry
+  # instead of On / Off, so "Off = has water" never has to be explained.
   - platform: gpio
     name: "สวิตช์ลูกลอย (float switch)"
+    device_class: moisture
     pin:
       number: GPIO0
       mode:
         input: true
         pullup: true
-      inverted: false     # open (wet) reads HIGH -> ON = water present
+      inverted: true      # closed (wet) reads LOW -> ON = Wet = water present
     filters:
       - delayed_on: 500ms
       - delayed_off: 500ms   # mechanical float bounces on a moving water surface

@@ -29,16 +29,18 @@ bench session (adoption flow, overnight, sabotage cards, instructor machines, in
    at a 60 s default the demo silently fails. Other sensors can stay slower. See TEST-PLAN test E.
 2. **Float switch on port 1 as `binary_sensor`. Polarity now settled on the bench — write it into
    the worksheet as fact, not as something teams discover.**
-   - **ON = มีน้ำ (water present)** · **OFF = น้ำหมด (dry)**. Verified on flashed firmware.
+   - **Wet = มีน้ำ (water present)** · **Dry = น้ำหมด**. The entity carries `device_class: moisture`,
+     so HA shows Wet / Dry, never On / Off. Float cylinder flipped on its rod at kit prep (8 Sep
+     2026); re-verification on flashed firmware pending — TEST-PLAN test G, second pass.
    - Wiring for the kit list / session 1: two bare wires from the float switch onto the **outer
      two positions** (Signal, Ground) of the adapter's **4-way terminal block**, then a Grove
      cable from the adapter to **special port 1**.
    - The worksheet may still ask teams to *observe* the two states (it is a good exercise), but
      the fail-safe step must not depend on them getting it right.
-   - **Fail-safe wording matters here.** A cut wire or unseated Grove plug reads as **ON = water
-     present** (pin floats HIGH through the internal pull-up), so a wiring fault looks safe-to-pump.
-     The session 2 fail-safe must require positive confirmation of water and treat
-     `unavailable`/`unknown` as dry. See TEST-PLAN.md test G.
+   - **Fail-safe wording.** With the float flipped, a cut wire, unseated Grove plug or missing
+     switch reads **Dry** (pin floats HIGH through the internal pull-up, inverted), so every wiring
+     fault looks like no water. The session 2 fail-safe still requires positive confirmation
+     (**Wet**) as a condition so a dead board (`unavailable`) fails safe. See TEST-PLAN.md test G.
 2b. **NEW — every board serves its own web page.** `web_server:` is now in both images: live
    sensor values, and a working switch on the relay board, at `http://<board-name>/` with **no
    Home Assistant involved**. Now in all three places it earned:
@@ -339,7 +341,7 @@ fill-in lines (the exception to the web-Markdown conventions). Print from the re
   relay's printed DC rating (a 12V pump drawing more than 10 A, or a 220V load), one passes as-is.
   Answer key names the single part to change.
 - ~~**Session 2 knock-on**~~ **Reworked.** Fail-safe 1 now opens the session 1 automation,
-  renames it and adds the notification, then adds a float-**On** condition to `รดน้ำ - เปิดปั๊ม`
+  renames it and adds the notification, then adds a float-**Wet** condition to `รดน้ำ - เปิดปั๊ม`
   and tests the lifted-first case — which closes the Activity 3 Recorder hook (trigger vs
   condition) and makes `unavailable` fail safe, as TEST-PLAN test G required.
 - Scenario cards for Activity 8 (content is in `session-3.md`)

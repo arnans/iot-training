@@ -118,11 +118,15 @@ Do not change these without reading the reasoning:
 
 ## Confirmed on the bench
 
-- **Float switch: GPIO0, internal pull-up, `inverted: false`, ON = water present.** The float
-  closes the contact when *down* (dry), so wet = open = pulled high, and `inverted: false` gives
-  the polarity the worksheets assume. Consequence: a cut wire or unseated Grove plug *also* reads
-  "water present". Session 2's watering rule therefore requires the float to be **On** as a
-  condition, so `unavailable` fails safe. TEST-PLAN.md test G.
+- **Float switch: GPIO0, internal pull-up, `inverted: true`, `device_class: moisture`, ON = Wet =
+  water present.** The float cylinder is **flipped on its rod at kit prep** (Roger, 8 Sep 2026) so
+  the contact closes when the float *rises* (wet): wet = closed = pulled low, and `inverted: true`
+  gives the polarity the worksheets assume. Consequence: a cut wire, an unseated Grove plug, or no
+  switch at all reads **Dry**, so every wiring fault fails safe. As shipped the float closed when
+  *down*; a kit assembled without the flip reads backwards — check the cylinder, not the YAML. The
+  moisture device class makes Home Assistant show **Wet / Dry** rather than On / Off. Session 2's
+  watering rule still requires **Wet** as a condition, so a dead board (`unavailable`) fails safe
+  too. TEST-PLAN.md test G.
 - **Relay board pins GPIO19 (relay), GPIO2 (LED), GPIO9 (button)**, from the vendor datasheet and
   confirmed on hardware — `ESP32-C6-RELAY-X1.md`.
 - **`restore_mode: ALWAYS_OFF` holds on both supplies** (USB and 12 V): the relay is off after

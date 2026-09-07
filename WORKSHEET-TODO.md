@@ -18,7 +18,7 @@ bench session (adoption flow, overnight, sabotage cards, instructor machines, in
 | Between-session data | **Dropped** (Roger, 7 Sep 2026). No instructor HA adopting participant nodes: not practical at 100 boards, and the payoff was one 15-min opener. The data teams read is what **their own HA** records across Day 2 morning | The history block moves out of session 2 and into session 3, rewritten around the team's own half-day trace (light dip from a cupped hand, chattering relay before hysteresis, gaps from the sabotage rounds). Session 2 now opens on an automation recap instead. Session 2's last checklist item: do not shut the VM down at lunch |
 | Session 2 shape | **Hysteresis first** (Roger, 7 Sep 2026). Automation recap (15 min) → Activity 5 (75 min) → break → Activity 6 (45 min) → debrief (15 min) | The trigger/condition/action table moves out of Activity 5 into the opener, anchored on the float automation built in session 1 |
 | Charge controller | Wired by teams in Activity 2 as the kit's **12V source**: adapter → BATT pair; LOAD pair → terminal block → relay board DC-in and pump (+ via COM/NO, − direct). Controller USB powers the GoGo-IoT only when the laptop leaves (overnight). Panel is added in session 3 | Session 1 calls it "กล่องจ่ายไฟ 12V" with one sentence of orientation; session 3 "เปิดกล่อง: พลังงาน" reads the three terminal pairs, sets battery type, connects the panel |
-| 18650 cell | **Reopened 8 Sep 2026.** A charged cell keeps the board running when USB is pulled, which defeats sabotage card 1, the Fail-safe 3 test and the Session 3 adapter demo. Recommendation: ship with no cell installed — see COURSE-DESIGN open decisions | Kit list still says "พร้อมถ่าน 18650"; change once decided |
+| 18650 cell | **Stays in** (Roger, 8 Sep 2026). A charged cell keeps the board running when USB is pulled, so "power loss" is simulated with the board's **on/off switch**, never by pulling a cable | Sabotage card 1 and the Fail-safe 3 test say ปิดสวิตช์บนบอร์ด; the Session 3 adapter demo shows the sensor board surviving on its cell; `reference.md` lists the switch first under `unavailable` |
 | Plain ESP32-C3 nodemcu (item 2) | Spare, unmentioned | — |
 
 ## Firmware requirements the worksheet now depends on
@@ -228,7 +228,7 @@ of the paired team performs a sabotage, then they swap, three rounds, cards reve
 This scales flat, and it is arguably better teaching — each team both diagnoses and causes a
 failure. The three cards are:
 
-1. Unplug the sensor board's power → entities go `unavailable`
+1. Switch the sensor board off with its on/off switch (it has an 18650 cell, so a pulled cable does nothing) → entities go `unavailable`
 2. Turn off WiFi on the laptop → Home Assistant loses both boards
 3. **Unscrew the pump's positive lead from the relay's NO terminal** → the relay still clicks,
    the LED still lights, Home Assistant still says the pump is on, and no water moves

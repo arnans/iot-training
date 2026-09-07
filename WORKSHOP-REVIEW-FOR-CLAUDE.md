@@ -299,10 +299,12 @@ worksheet's claim is now accurate: a cut wire reads Dry, a dead board reads unav
 is Wet. Remaining: the re-flash checks in TEST-PLAN test G second pass, and "flip every float" on
 the kit-prep list (COURSE-DESIGN open decisions).
 
-**18650 cell** was a "smaller fix" in the review; promoted to a blocking decision. The GoGo-IoT
-has a battery path with source selection, so a charged cell keeps the board running when USB is
-pulled, which defeats sabotage card 1, the Fail-safe 3 test and the Session 3 adapter demo.
-Recommendation recorded in COURSE-DESIGN: ship with no cell installed.
+**18650 cell** was a "smaller fix" in the review; it is bigger. The GoGo-IoT has a battery
+path with source selection, so a charged cell keeps the board running when USB is pulled, and
+sabotage card 1, the Fail-safe 3 test and the Session 3 adapter note all expected a pulled cable
+to make the board `unavailable`. Decided (Roger, 8 Sep 2026): the cell stays in the kit, and every
+power-loss step now says **switch the board off**. The adapter demo now shows the sensor board
+surviving on its cell, which is scenario D's night-time node.
 
 ### Declined or deferred
 
@@ -315,8 +317,8 @@ Recommendation recorded in COURSE-DESIGN: ship with no cell installed.
 ### Still open, needs the bench or a decision
 
 - TEST-PLAN test G second-pass re-flash checks.
-- 18650 cell: installed or not.
-- Adapter-out demo with the panel connected: one bench check of the LOAD pair and USB before it is
-  shown to 100 teams on the projector.
+- Bench check that switching the GoGo-IoT off makes its entities `unavailable` within seconds and that switching it back on needs no re-adoption.
+- Adapter-out demo with the panel connected: one bench check of the LOAD pair and USB when the
+  controller is to hand (not available on 8 Sep), before it is shown on the projector.
 - Cloud push tool and procedure.
 - Post-tests, scenario cards, role cards (Tester text), price sheet, install guide, take-home page.

@@ -11,7 +11,7 @@ belongs.
 | `gogo-iot-workshop.yaml` | GoGo-IoT sensor node (ESP32-C3) | Derived from `gogo-iot-node` repo bring-up config |
 | `relay-workshop.yaml` | ESP32-C6-Relay_X1 v1.1 | Pins confirmed — see `ESP32-C6-RELAY-X1.md` |
 | `ESP32-C6-RELAY-X1.md` | — | Hardware reference extracted from the vendor PDF |
-| `secrets.example.yaml` | — | Copy to `secrets.yaml` (gitignored): API key, OTA, fallback AP |
+| `secrets.example.yaml` | — | Copy to `secrets.yaml` (gitignored): OTA password, fallback AP password |
 | `zones.example.yaml` | — | Copy to `zones.yaml` (gitignored): per-zone SSID + password |
 | `build-zones.py` | — | Builds all six binaries into `dist/`; can also flash one |
 
@@ -23,7 +23,7 @@ only the workshop variant; changes to pin assignments or sensor drivers belong u
 
 ```bash
 pip install esphome esptool pyyaml
-cp secrets.example.yaml secrets.yaml     # API key etc.
+cp secrets.example.yaml secrets.yaml     # OTA + fallback AP passwords
 cp zones.example.yaml zones.yaml         # three SSIDs + passwords
 python build-zones.py                    # -> dist/gogo-iot-{red,green,blue}.factory.bin
                                          #    dist/gogo-relay-{red,green,blue}.factory.bin
@@ -44,20 +44,48 @@ reveals it at the name-reading step.
 ## What participants do
 
 1. Plug the board into a laptop over USB-C.
-2. Open <https://web.esphome.io>, click **Connect**, pick the serial port.
-3. Read the device name from the log — `gogo-iot-a1b2c3`.
-4. In Home Assistant: **Settings → Devices & services → + Add integration → ESPHome**,
-   **Host:** `gogo-iot-a1b2c3.local`, then the shared encryption key.
-5. Rename the device to the team's name.
+2. Open <https://web.esphome.io>, click **Connect**, pick the serial port, open **Logs & Console**.
+3. Press **Reset device** *in the browser window*. **Not the button on the board** — these chips
+   use native USB, so a hardware reset kills the browser's serial session and the boot output is
+   lost. An already-running board otherwise shows a blank log and looks broken.
+4. Read the device name from the banner — `gogo-iot-red-6749a4`. **Write down the last six
+   characters** (`6749a4`); that is what the next step matches against. The board's IP prints a
+   couple of seconds later, when WiFi connects.
+5. In Home Assistant: **Settings → Devices & services**. The board is already there as a
+   discovered card — **find the one carrying your six characters** and add it. No encryption key,
+   nothing to type. Same path for both boards.
+6. Rename the device to the team's name.
 
-Typing the name avoids Home Assistant's discovered-device list, which would show
-every board in the room.
+**Decided: pick the discovered card, with manual entry as the fallback.** Boards appear on the
+Devices & services page on their own, before any ESPHome integration exists, so there is nothing
+to set up first and no difference between adding the first board and the second.
+
+The fallback, for a board that does not appear, is four levels deep — worth writing out because a
+participant will not find it by guessing:
+
+1. **+ Add integration** → type **ESPHome** (not "ESP-NOW" — different Espressif protocol).
+2. ESPHome's page opens, listing discovered devices again. Still missing? **Add device**.
+3. The popup lists discovered devices once more — or choose **"Setup another instance of ESPHome"**.
+4. Type the node name **without `.local`** — `gogo-iot-red-6749a4`. Bench-verified; the bare name
+   resolves, and it is one less thing to type. Port 6053.
+
+The risk this trades into, and the mitigation: clicking the *wrong* card fails **silently** — a
+team adopting a neighbour's board sees entities appear and graphs populate, and nothing looks
+wrong. Typing the name was self-verifying; picking is not. So the six-character suffix is what
+makes the pick safe, and the zone colour in the name (`gogo-iot-**red**-…`) is a second free
+check: a red-zone team seeing `green` in the name knows immediately. Both belong in the worksheet
+wording, not just here.
 
 ## Settings that are load-bearing
 
 Do not change these without reading the reasoning:
 
 - **`name_add_mac_suffix: true`** — the entire provisioning strategy.
+- **The `on_boot:` logger banner printing `DEVICE NAME`** — this is the line participants read at
+  web.esphome.io, and nothing else prints it. The hostname appears only in WiFi's config dump at
+  `[C]`/CONFIG level, which `logger: level: INFO` filters out (ESPHome levels run
+  `INFO < CONFIG < DEBUG`). Do not delete the banner, and do not "simplify" it by raising the log
+  level instead — CONFIG dumps every component and buries the name. See TEST-PLAN.md test B.
 - **`reboot_timeout: 0s`** on both `api:` and `wifi:` — otherwise boards reboot every
   15 minutes overnight when no Home Assistant is connected, wrecking the session 2
   history graph.

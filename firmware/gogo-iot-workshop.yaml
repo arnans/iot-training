@@ -45,6 +45,22 @@ esphome:
   # appear in Home Assistant as the same human-readable name and teams could not
   # tell them apart. Without it, HA shows the unique hostname, and teams rename
   # the device to their own team name after adding it.
+  # WORKSHOP: print the name as one unmistakable INFO line at boot, rather than
+  # raising the whole logger to CONFIG just to surface it buried among every
+  # other component's config dump. This is the line participants read at
+  # web.esphome.io. See TEST-PLAN.md test B.
+  on_boot:
+    then:
+      - logger.log:
+          format: "================================================"
+          level: INFO
+      - logger.log:
+          format: "=====  DEVICE NAME: %s  ====="
+          args: ["App.get_name().c_str()"]
+          level: INFO
+      - logger.log:
+          format: "================================================"
+          level: INFO
 
 esp32:
   board: esp32-c3-devkitm-1
@@ -56,13 +72,15 @@ esp32:
 logger:
   hardware_uart: USB_SERIAL_JTAG
   # WORKSHOP: bring-up used VERBOSE, which floods once illuminance runs at 1s.
-  # INFO keeps the boot banner and the device name visible at web.esphome.io,
-  # which is all participants need to read.
+  # INFO keeps the log quiet. The device name is NOT printed by anything at
+  # INFO by default (bench-tested: it's only in WiFi's config dump, which is
+  # tagged CONFIG — one level up, filtered out here) so it's logged
+  # explicitly below via on_boot, instead of raising the whole log level.
   level: INFO
 
 api:
-  encryption:
-    key: !secret api_encryption_key
+  # WORKSHOP: no encryption key. Simplicity for adoption beats API confidentiality
+  # on an isolated per-zone workshop network — see firmware/README.md.
   # WORKSHOP: default is 15min — with no Home Assistant connected overnight the
   # board would reboot every 15 minutes, punching gaps in the session-2 history.
   reboot_timeout: 0s
@@ -99,6 +117,23 @@ captive_portal:
 # or Edge). Not needed when the SSID is baked in, but it is the escape hatch and
 # costs nothing.
 improv_serial:
+
+# WORKSHOP: the board serves its own page at http://<board-ip>/ with live values
+# and switch controls. Three jobs:
+#   1. First fifteen minutes — teams see temperature and light react to a hand
+#      before any Home Assistant exists.
+#   2. Support fallback — proves the board is alive and sensing when a team's HA
+#      is broken. Same reasoning as the relay board's status LED.
+#   3. Session 3 ("open the network box") — "your board IS a web server on the
+#      network, here is its address" beats any diagram.
+#
+# `local: true` is MANDATORY, not a preference: the default web UI fetches its
+# JavaScript from a CDN, and sessions 1-2 run with no internet at all, so the
+# page would come up blank. This embeds the assets in flash instead — it is the
+# part that costs binary size, so watch the build.
+web_server:
+  port: 80
+  local: true
 
 # Verified from PCB connectivity review: SDA -> GPIO8, SCL -> GPIO2
 i2c:
@@ -250,7 +285,18 @@ text_sensor:
   - platform: wifi_info
     ip_address:
       name: "หมายเลข IP"
+      id: ip_addr
       entity_category: diagnostic
+      # WORKSHOP: second half of the boot banner. The IP cannot be printed from
+      # on_boot — WiFi has not associated yet and there is no address to print.
+      # Logging it here, when the sensor first publishes, guarantees the value
+      # exists, and re-prints it if DHCP ever hands out a different one.
+      # This is the address for the web_server page above.
+      on_value:
+        - logger.log:
+            format: "=====  IP ADDRESS: %s  ====="
+            args: ["x.c_str()"]
+            level: INFO
 
 globals:
   - id: vib_baseline          # slow-moving magnitude, i.e. gravity + tilt
@@ -290,15 +336,29 @@ binary_sensor:
       - delayed_on: 2s        # ignore a knock on the table
       - delayed_off: 5s       # ride through a brief dip
 
-  # WORKSHOP: float switch on configurable port 1.
+  # WORKSHOP: float switch on configurable port 1. CONFIRMED ON THE BENCH.
   # Netlist (docs/SCHEMATIC_REFERENCE.md): SPECIALPORT1-A = CN2.1 = U1.12[IO0]
   #                                        SPECIALPORT1-B = CN2.2 = U1.13[IO1]
   # Neither is a strapping pin on the ESP32-C3 (those are IO2, IO8, IO9), so a
-  # switch to ground here is safe at boot.
+  # switch to ground here is safe at boot. GPIO0 confirmed correct — the switch
+  # does move this pin.
   #
-  # CONFIRM ON THE BENCH: which Grove pin the float-switch adapter uses, and
-  # whether the switch closes when the float RISES or FALLS. Set `inverted` so
-  # the entity reads ON = water present. See TEST-PLAN.md test G.
+  # Wiring: the float switch has two bare wire ends. They land on the OUTER two
+  # positions (Signal, Ground) of the adapter's 4-way terminal block; a Grove
+  # cable runs from the adapter to SPECIAL PORT 1 on the board.
+  #
+  # Polarity, measured: the float closes the switch when DOWN (dry) and opens it
+  # when it RISES (wet). Open + internal pull-up = pin HIGH when wet, so
+  # `inverted: false` gives ON = water present.
+  #
+  # There is no external pull-up anywhere on the switch or the adapter — the
+  # chip's internal one (~45k, weak) does the whole job. See TEST-PLAN.md test G.
+  #
+  # FAIL-SAFE WARNING: a cut wire or unseated Grove plug also leaves the pin
+  # pulled HIGH, which is indistinguishable from "water present". A fault reads
+  # as safe-to-pump. Session 2's fail-safe must require positive confirmation of
+  # water and treat unavailable/unknown as dry — inverting the entity does not
+  # change this, it is a property of which way the float closes.
   - platform: gpio
     name: "สวิตช์ลูกลอย (float switch)"
     pin:
@@ -306,7 +366,7 @@ binary_sensor:
       mode:
         input: true
         pullup: true
-      inverted: true      # switch pulls to GND when closed -> ON
+      inverted: false     # open (wet) reads HIGH -> ON = water present
     filters:
       - delayed_on: 500ms
       - delayed_off: 500ms   # mechanical float bounces on a moving water surface

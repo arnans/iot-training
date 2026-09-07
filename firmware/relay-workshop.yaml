@@ -18,7 +18,7 @@ substitutions:
   wifi_ssid: farm-iot-red
   wifi_password: SET_BY_BUILD_SCRIPT
   relay_pin: GPIO19        # confirmed: relay control, active high
-  led_pin: GPIO2           # confirmed: programmable LED, active high
+  led_pin: GPIO2           # confirmed: programmable LED, active high — now the status LED
   button_pin: GPIO9        # confirmed: programmable button, also the BOOT key
 
 esphome:
@@ -26,6 +26,20 @@ esphome:
   name_add_mac_suffix: true
   # No friendly_name: with ~60 identical boards, the unique hostname is what lets
   # a team find theirs in Home Assistant.
+  # See gogo-iot-workshop.yaml: print the name as one unmistakable INFO line at
+  # boot, rather than raising the whole logger to CONFIG to surface it.
+  on_boot:
+    then:
+      - logger.log:
+          format: "================================================"
+          level: INFO
+      - logger.log:
+          format: "=====  DEVICE NAME: %s  ====="
+          args: ["App.get_name().c_str()"]
+          level: INFO
+      - logger.log:
+          format: "================================================"
+          level: INFO
 
 esp32:
   board: esp32-c6-devkitc-1
@@ -37,8 +51,7 @@ logger:
   level: INFO
 
 api:
-  encryption:
-    key: !secret api_encryption_key
+  # WORKSHOP: no encryption key — see gogo-iot-workshop.yaml and firmware/README.md.
   # Critical here: the relay board sits on the 12V rail overnight with no Home
   # Assistant connected. At the 15min default it would reboot all night.
   reboot_timeout: 0s
@@ -65,6 +78,13 @@ wifi:
 captive_portal:
 improv_serial:
 
+# WORKSHOP: see gogo-iot-workshop.yaml for the reasoning. `local: true` is
+# mandatory — the default UI pulls its JavaScript from a CDN and sessions 1-2
+# have no internet, so the page would render blank.
+web_server:
+  port: 80
+  local: true
+
 # WORKSHOP: diagnostics. Uptime matters most on this board — it sits on the 12V
 # rail overnight with no Home Assistant connected, which is exactly the case
 # reboot_timeout: 0s exists to handle. TEST-PLAN test F checks it here.
@@ -83,7 +103,16 @@ text_sensor:
   - platform: wifi_info
     ip_address:
       name: "หมายเลข IP"
+      id: ip_addr
       entity_category: diagnostic
+      # WORKSHOP: see gogo-iot-workshop.yaml — the IP cannot be printed at
+      # on_boot because WiFi has not associated yet, so it is logged here when
+      # the sensor first publishes.
+      on_value:
+        - logger.log:
+            format: "=====  IP ADDRESS: %s  ====="
+            args: ["x.c_str()"]
+            level: INFO
 
 switch:
   - platform: gpio
@@ -92,18 +121,31 @@ switch:
     id: relay
     # Safety: after a power cut or reboot the pump must not come back on by itself.
     restore_mode: ALWAYS_OFF
-    # The board's own relay indicator LED is hard-wired to the coil and lights on
-    # its own. We drive the programmable LED in step with it as well, so the
-    # "lamp" in the session 2 flower-farm scenario is visible across the room.
-    on_turn_on:
-      - output.turn_on: led_output
-    on_turn_off:
-      - output.turn_off: led_output
 
-output:
-  - platform: gpio
-    pin: ${led_pin}
-    id: led_output
+# WORKSHOP: the programmable LED shows CONNECTION STATUS, not relay state.
+# It used to mirror the relay, but the relay's own hard-wired indicator already
+# lights from the coil an inch away, so mirroring it bought nothing. Instead the
+# LED blinks on warning/error (WiFi lost, API disconnected) and stays quiet when
+# healthy, so a team can answer "is my board connected?" from the board itself
+# with no laptop and no Home Assistant. With ~100 teams in one room, that is the
+# support question that matters most.
+#
+# Session 2's worksheet still holds: it tells teams the LED on the relay board
+# stands in for the garden lamp, and the relay's OWN indicator still lights
+# whenever the relay closes. Only the programmable LED changed jobs.
+#
+# Pin INVERTED on purpose, so the healthy state is the visible one:
+#   steady lit = connected and healthy
+#   blinking   = WiFi or API lost
+#   dark       = no power, or firmware not running
+# Plain `status_led` semantics are the other way round (dark when healthy), which
+# makes "fine" and "dead" look identical — the wrong answer to the question a
+# team actually asks. Lit-when-healthy also lets an instructor read the room from
+# the front: dark board = go help that table.
+status_led:
+  pin:
+    number: ${led_pin}
+    inverted: true
 
 # Onboard button toggles the relay: a hardware manual override that works even when
 # Home Assistant is unreachable. Worth demonstrating in session 2 next to the

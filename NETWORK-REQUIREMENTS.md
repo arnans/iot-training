@@ -14,13 +14,13 @@ about that.
 The room is divided into three zones. Each zone is its own VLAN and carries one pair of SSIDs:
 2.4 GHz for the boards, 5 GHz for laptops and phones.
 
-| Zone | VLAN (suggested) | 2.4 GHz SSID (boards) | 5 GHz SSID (laptops, phones) |
-|---|---|---|---|
-| red   | 10 | `farm-iot-red`   | `farm-laptop-red`   |
-| green | 20 | `farm-iot-green` | `farm-laptop-green` |
-| blue  | 30 | `farm-iot-blue`  | `farm-laptop-blue`  |
+| Zone | VLAN (suggested) | 2.4 GHz SSID (boards) | 5 GHz SSID (laptops, phones) | Password |
+|---|---|---|---|---|
+| red   | 10 | `farm-iot-red`   | `farm-laptop-red`   | `iotfarmer` |
+| green | 20 | `farm-iot-green` | `farm-laptop-green` | `iotfarmer` |
+| blue  | 30 | `farm-iot-blue`  | `farm-laptop-blue`  | `iotfarmer` |
 
-### Password `iotfarmer`, the same on all six SSIDs · WPA2-PSK (AES/CCMP)
+**The same password, `iotfarmer`, on all six SSIDs. WPA2-PSK (AES/CCMP).**
 
 > **These names and this password must be set exactly as written.** They are compiled into the
 > firmware of 200 boards ahead of the event and cannot be changed on site. Tell us at once if any

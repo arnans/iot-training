@@ -61,6 +61,7 @@ TEMPLATE = """<!DOCTYPE html>
     <p class="kicker">{kicker}</p>
     <h1>{title}</h1>
     <p class="meta">{meta}</p>
+    <p class="disclosure">{disclosure}</p>
   </header>
 {body}
   <footer class="doc-foot">
@@ -127,6 +128,15 @@ body {
 .doc-head h1 { margin: 0; font-size: clamp(1.7rem, 4vw, 2.3rem); line-height: 1.3; font-weight: 700; }
 
 .meta { margin: .75rem 0 0; font-size: .9rem; color: var(--ink-soft); }
+
+.disclosure {
+  margin: 1.1rem 0 0;
+  padding-top: .85rem;
+  border-top: 1px solid var(--rule-soft);
+  font-size: .82rem;
+  line-height: 1.7;
+  color: var(--ink-soft);
+}
 
 /* ---- headings ---------------------------------------------------------- */
 
@@ -256,6 +266,18 @@ METAS = {
     "en": "IoT in Smart Farming workshop · Last updated {date}",
 }
 
+# AI authorship disclosure, carried in the masthead of every rendered page.
+# Roger's wording, which names the tool and credits the preparing team; it is a
+# deliberate variant of the canonical disclaimer in roger-ksm
+# knowledge/ai-disclaimer-bilingual.md.
+DISCLOSURES = {
+    "th": "เอกสารนี้เรียบเรียงด้วย Claude AI เนื้อหาได้รับการออกแบบและตรวจทานโดยผู้รับผิดชอบแล้ว "
+          "ขอรับรองว่าเป็นไปตามเจตนาของคณะจัดทำทุกประการ",
+    "en": "This document was compiled with Claude AI. Its content was designed and reviewed by "
+          "those responsible, who certify that it reflects the intent of the preparing team in "
+          "every respect.",
+}
+
 
 def render(md_name: str, out_name: str, lang: str, kicker: str) -> pathlib.Path:
     src = ROOT / md_name
@@ -291,6 +313,7 @@ def render(md_name: str, out_name: str, lang: str, kicker: str) -> pathlib.Path:
         kicker=kicker,
         css=CSS.strip(),
         body=body,
+        disclosure=DISCLOSURES[lang],
         meta=METAS[lang].format(date=date),
         footer=FOOTERS[lang].format(src=md_name),
     )

@@ -20,7 +20,7 @@ The room is divided into three zones. Each zone is its own VLAN and carries one 
 | green | 20 | `farm-iot-green` | `farm-laptop-green` |
 | blue  | 30 | `farm-iot-blue`  | `farm-laptop-blue`  |
 
-### Password `farmer`, the same on all six SSIDs · WPA2-PSK (AES/CCMP)
+### Password `iotfarmer`, the same on all six SSIDs · WPA2-PSK (AES/CCMP)
 
 > **These names and this password must be set exactly as written.** They are compiled into the
 > firmware of 200 boards ahead of the event and cannot be changed on site. Tell us at once if any
@@ -161,5 +161,5 @@ Tests 1, 2 and 4 are the ones that fail on default enterprise configurations.
 ## 6. Fallback if per-SSID VLANs are not possible
 
 One flat subnet (/22) with two SSIDs, `farm-iot` on 2.4 GHz and `farm-laptop` on 5 GHz, password
-`farmer` as before. All other requirements unchanged, with heavy reliance on multicast-to-unicast
+`iotfarmer` as before. All other requirements unchanged, with heavy reliance on multicast-to-unicast
 conversion. **Tell us early** — the firmware is built differently for it.

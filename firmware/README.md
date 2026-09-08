@@ -130,7 +130,8 @@ Do not change these without reading the reasoning:
 - **Relay board pins GPIO19 (relay), GPIO2 (LED), GPIO9 (button)**, from the vendor datasheet and
   confirmed on hardware — `ESP32-C6-RELAY-X1.md`.
 - **`restore_mode: ALWAYS_OFF` holds on both supplies** (USB and 12 V): the relay is off after
-  every power-up.
+  every power-up. On the day the board runs on **USB from the charge controller** (decided
+  8 Sep 2026); the 7–60 V input stays empty.
 
 ## Vibration reporter
 
@@ -166,9 +167,9 @@ The relay board's datasheet says USB 5 V **or** 7–60 V on the screw terminal, 
 Bench-measured: the 5 V rail reads 5.04 V from USB and 5.12 V from the 12 V input — 80 mV apart —
 and plugging USB into a board already running on 12 V changes nothing; the serial port enumerates
 and works. The other order can at most reset the board, which `restore_mode: ALWAYS_OFF` makes
-safe. The worksheet keeps "unplug USB before wiring 12 V" as the normal practice, no longer as a
-prohibition, and a helper may plug a laptop into a wired board to read its log without
-dismantling anything. Details in `ESP32-C6-RELAY-X1.md`.
+safe. Since 8 Sep 2026 the worksheet never wires 12 V to the board at all — it runs on the charge
+controller's USB port — so this only matters if a team wires the 7–60 V input by mistake, which
+the measurement shows is harmless. To read a log, move the board's USB cable to the laptop. Details in `ESP32-C6-RELAY-X1.md`.
 
 ## What each board exposes
 

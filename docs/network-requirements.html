@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>ข้อกำหนดเครือข่ายสำหรับการอบรม</title>
+<title>ข้อกำหนดระบบเครือข่ายสำหรับการอบรม</title>
 <meta name="description" content="เอกสารข้อกำหนดทางเทคนิค">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -214,12 +214,12 @@ figcaption {
 <article class="doc">
   <header class="doc-head">
     <p class="kicker">เอกสารข้อกำหนดทางเทคนิค</p>
-    <h1>ข้อกำหนดเครือข่ายสำหรับการอบรม</h1>
+    <h1>ข้อกำหนดระบบเครือข่ายสำหรับการอบรม</h1>
     <p class="meta">โครงการอบรม IoT ในฟาร์มอัจฉริยะ · ปรับปรุงล่าสุด 2026-09-08</p>
     <p class="disclosure">เอกสารนี้เรียบเรียงด้วย Claude AI เนื้อหาได้รับการออกแบบและตรวจทานโดยผู้รับผิดชอบแล้ว ขอรับรองว่าเป็นไปตามเจตนาของคณะจัดทำทุกประการ</p>
   </header>
   <h2>1. ชื่อ SSID และรหัสผ่าน</h2>
-  <p>ห้องอบรมแบ่งเป็นสามโซน แต่ละโซนเป็น VLAN ของตัวเอง และมี SSID หนึ่งคู่ คือ 2.4 GHz สำหรับบอร์ด
+  <p>ห้องอบรมแบ่งเป็นสามโซน แต่ละโซนใช้ VLAN แยกกัน และมี SSID หนึ่งคู่ คือ 2.4 GHz สำหรับบอร์ด
   และ 5 GHz สำหรับแล็ปท็อปกับโทรศัพท์</p>
   <div class="table-scroll"><table>
   <thead>
@@ -260,12 +260,12 @@ figcaption {
   <p><strong>ต้องใช้ชื่อและรหัสผ่านตามนี้เท่านั้น</strong> เพราะผู้จัดคอมไพล์ค่าเหล่านี้ลงในเฟิร์มแวร์ของบอร์ด 200 ตัว
   ล่วงหน้า และแก้ที่หน้างานไม่ได้ หากมีข้อใดตั้งตามนี้ไม่ได้ ขอให้แจ้งทันที</p>
   </blockquote>
-  <p>ทุก AP ต้องกระจาย SSID ทั้งหกชื่อ (วิทยุละสามชื่อ) เพราะโซนเป็นเรื่องเชิงตรรกะ ไม่ใช่พื้นที่ในห้อง
+  <p>ทุก AP ต้องกระจาย SSID ทั้งหกชื่อ (วิทยุละสามชื่อ) เพราะการแบ่งโซนกำหนดจากเครือข่าย ไม่ได้แบ่งตามที่นั่ง
   เฟิร์มแวร์ของบอร์ดแต่ละตัวฝัง SSID ของโซนไว้ ชุดอุปกรณ์ติดสีไว้ตรงกัน และทีมจะนั่งตรงไหนก็ได้
   ขอให้ไม่เพิ่ม SSID ชื่อที่เจ็ดบนวิทยุเหล่านี้</p>
   <h3>แนวทางการออกแบบสำคัญ</h3>
   <figure>
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 430" role="img" aria-label="ทุก AP กระจาย SSID ทั้งหกชื่อ · รหัสผ่าน iotfarmer เหมือนกันทุกชื่อ · โซนเป็นเรื่องเชิงตรรกะ ไม่ใช่พื้นที่ในห้อง">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 430" role="img" aria-label="ทุก AP กระจาย SSID ทั้งหกชื่อ · รหัสผ่าน iotfarmer เหมือนกันทุกชื่อ · การแบ่งโซนกำหนดจากเครือข่าย ไม่ได้แบ่งตามที่นั่ง">
         <defs>
           <marker id="arrow-good" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7"
                   markerHeight="7" orient="auto-start-reverse">
@@ -283,7 +283,7 @@ figcaption {
       <text x="218" y="164" text-anchor="middle" font-family="Sarabun, 'Leelawadee UI', 'Noto Sans Thai', -apple-system, 'Segoe UI', system-ui, sans-serif" font-size="11" font-weight="400" fill="#5b6570">แล็ปท็อป</text>
       <text x="218" y="180" text-anchor="middle" font-family="Sarabun, 'Leelawadee UI', 'Noto Sans Thai', -apple-system, 'Segoe UI', system-ui, sans-serif" font-size="11" font-weight="400" fill="#5b6570">โทรศัพท์</text>
         <path d="M102,205 Q160,248 218,205" fill="none" stroke="#0f6b63" stroke-width="1.8" marker-start="url(#arrow-good)" marker-end="url(#arrow-good)"/>
-      <text x="160" y="254" text-anchor="middle" font-family="Sarabun, 'Leelawadee UI', 'Noto Sans Thai', -apple-system, 'Segoe UI', system-ui, sans-serif" font-size="11.5" font-weight="600" fill="#0f6b63">เห็นกัน · mDNS</text>
+      <text x="160" y="254" text-anchor="middle" font-family="Sarabun, 'Leelawadee UI', 'Noto Sans Thai', -apple-system, 'Segoe UI', system-ui, sans-serif" font-size="11.5" font-weight="600" fill="#0f6b63">ติดต่อกันได้ · mDNS</text>
         <text x="160" y="322" text-anchor="middle" font-family="Sarabun, 'Leelawadee UI', 'Noto Sans Thai', -apple-system, 'Segoe UI', system-ui, sans-serif" font-size="11" fill="#5b6570">2.4 GHz&#160;&#160;<tspan font-family="'IBM Plex Mono', ui-monospace, Consolas, monospace" font-size="12.5" font-weight="600" fill="#14181d">farm-iot-red</tspan></text>
         <text x="160" y="348" text-anchor="middle" font-family="Sarabun, 'Leelawadee UI', 'Noto Sans Thai', -apple-system, 'Segoe UI', system-ui, sans-serif" font-size="11" fill="#5b6570">5 GHz&#160;&#160;<tspan font-family="'IBM Plex Mono', ui-monospace, Consolas, monospace" font-size="12.5" font-weight="600" fill="#14181d">farm-laptop-red</tspan></text>
         <circle cx="480" cy="160" r="125" fill="#eef8f1" stroke="#1e8449" stroke-width="2.5"/>
@@ -297,7 +297,7 @@ figcaption {
       <text x="538" y="164" text-anchor="middle" font-family="Sarabun, 'Leelawadee UI', 'Noto Sans Thai', -apple-system, 'Segoe UI', system-ui, sans-serif" font-size="11" font-weight="400" fill="#5b6570">แล็ปท็อป</text>
       <text x="538" y="180" text-anchor="middle" font-family="Sarabun, 'Leelawadee UI', 'Noto Sans Thai', -apple-system, 'Segoe UI', system-ui, sans-serif" font-size="11" font-weight="400" fill="#5b6570">โทรศัพท์</text>
         <path d="M422,205 Q480,248 538,205" fill="none" stroke="#0f6b63" stroke-width="1.8" marker-start="url(#arrow-good)" marker-end="url(#arrow-good)"/>
-      <text x="480" y="254" text-anchor="middle" font-family="Sarabun, 'Leelawadee UI', 'Noto Sans Thai', -apple-system, 'Segoe UI', system-ui, sans-serif" font-size="11.5" font-weight="600" fill="#0f6b63">เห็นกัน · mDNS</text>
+      <text x="480" y="254" text-anchor="middle" font-family="Sarabun, 'Leelawadee UI', 'Noto Sans Thai', -apple-system, 'Segoe UI', system-ui, sans-serif" font-size="11.5" font-weight="600" fill="#0f6b63">ติดต่อกันได้ · mDNS</text>
         <text x="480" y="322" text-anchor="middle" font-family="Sarabun, 'Leelawadee UI', 'Noto Sans Thai', -apple-system, 'Segoe UI', system-ui, sans-serif" font-size="11" fill="#5b6570">2.4 GHz&#160;&#160;<tspan font-family="'IBM Plex Mono', ui-monospace, Consolas, monospace" font-size="12.5" font-weight="600" fill="#14181d">farm-iot-green</tspan></text>
         <text x="480" y="348" text-anchor="middle" font-family="Sarabun, 'Leelawadee UI', 'Noto Sans Thai', -apple-system, 'Segoe UI', system-ui, sans-serif" font-size="11" fill="#5b6570">5 GHz&#160;&#160;<tspan font-family="'IBM Plex Mono', ui-monospace, Consolas, monospace" font-size="12.5" font-weight="600" fill="#14181d">farm-laptop-green</tspan></text>
         <circle cx="800" cy="160" r="125" fill="#eef4fa" stroke="#21618c" stroke-width="2.5"/>
@@ -311,39 +311,38 @@ figcaption {
       <text x="858" y="164" text-anchor="middle" font-family="Sarabun, 'Leelawadee UI', 'Noto Sans Thai', -apple-system, 'Segoe UI', system-ui, sans-serif" font-size="11" font-weight="400" fill="#5b6570">แล็ปท็อป</text>
       <text x="858" y="180" text-anchor="middle" font-family="Sarabun, 'Leelawadee UI', 'Noto Sans Thai', -apple-system, 'Segoe UI', system-ui, sans-serif" font-size="11" font-weight="400" fill="#5b6570">โทรศัพท์</text>
         <path d="M742,205 Q800,248 858,205" fill="none" stroke="#0f6b63" stroke-width="1.8" marker-start="url(#arrow-good)" marker-end="url(#arrow-good)"/>
-      <text x="800" y="254" text-anchor="middle" font-family="Sarabun, 'Leelawadee UI', 'Noto Sans Thai', -apple-system, 'Segoe UI', system-ui, sans-serif" font-size="11.5" font-weight="600" fill="#0f6b63">เห็นกัน · mDNS</text>
+      <text x="800" y="254" text-anchor="middle" font-family="Sarabun, 'Leelawadee UI', 'Noto Sans Thai', -apple-system, 'Segoe UI', system-ui, sans-serif" font-size="11.5" font-weight="600" fill="#0f6b63">ติดต่อกันได้ · mDNS</text>
         <text x="800" y="322" text-anchor="middle" font-family="Sarabun, 'Leelawadee UI', 'Noto Sans Thai', -apple-system, 'Segoe UI', system-ui, sans-serif" font-size="11" fill="#5b6570">2.4 GHz&#160;&#160;<tspan font-family="'IBM Plex Mono', ui-monospace, Consolas, monospace" font-size="12.5" font-weight="600" fill="#14181d">farm-iot-blue</tspan></text>
         <text x="800" y="348" text-anchor="middle" font-family="Sarabun, 'Leelawadee UI', 'Noto Sans Thai', -apple-system, 'Segoe UI', system-ui, sans-serif" font-size="11" fill="#5b6570">5 GHz&#160;&#160;<tspan font-family="'IBM Plex Mono', ui-monospace, Consolas, monospace" font-size="12.5" font-weight="600" fill="#14181d">farm-laptop-blue</tspan></text>
         <line x1="286" y1="160" x2="354" y2="160" stroke="#b03a2e" stroke-width="1.6" stroke-dasharray="5 4"/>
         <circle cx="320" cy="160" r="15" fill="#ffffff" stroke="#b03a2e" stroke-width="1.8"/>
         <path d="M314,154 L326,166 M326,154 L314,166" stroke="#b03a2e" stroke-width="2" stroke-linecap="round"/>
-      <text x="320" y="197" text-anchor="middle" font-family="Sarabun, 'Leelawadee UI', 'Noto Sans Thai', -apple-system, 'Segoe UI', system-ui, sans-serif" font-size="10.5" font-weight="600" fill="#b03a2e">ไม่เห็นกัน</text>
+      <text x="320" y="197" text-anchor="middle" font-family="Sarabun, 'Leelawadee UI', 'Noto Sans Thai', -apple-system, 'Segoe UI', system-ui, sans-serif" font-size="10.5" font-weight="600" fill="#b03a2e">ติดต่อกันไม่ได้</text>
         <line x1="606" y1="160" x2="674" y2="160" stroke="#b03a2e" stroke-width="1.6" stroke-dasharray="5 4"/>
         <circle cx="640" cy="160" r="15" fill="#ffffff" stroke="#b03a2e" stroke-width="1.8"/>
         <path d="M634,154 L646,166 M646,154 L634,166" stroke="#b03a2e" stroke-width="2" stroke-linecap="round"/>
-      <text x="640" y="197" text-anchor="middle" font-family="Sarabun, 'Leelawadee UI', 'Noto Sans Thai', -apple-system, 'Segoe UI', system-ui, sans-serif" font-size="10.5" font-weight="600" fill="#b03a2e">ไม่เห็นกัน</text>
-      <text x="480" y="400" text-anchor="middle" font-family="Sarabun, 'Leelawadee UI', 'Noto Sans Thai', -apple-system, 'Segoe UI', system-ui, sans-serif" font-size="11.5" font-weight="400" fill="#5b6570">ทุก AP กระจาย SSID ทั้งหกชื่อ · รหัสผ่าน iotfarmer เหมือนกันทุกชื่อ · โซนเป็นเรื่องเชิงตรรกะ ไม่ใช่พื้นที่ในห้อง</text>
+      <text x="640" y="197" text-anchor="middle" font-family="Sarabun, 'Leelawadee UI', 'Noto Sans Thai', -apple-system, 'Segoe UI', system-ui, sans-serif" font-size="10.5" font-weight="600" fill="#b03a2e">ติดต่อกันไม่ได้</text>
+      <text x="480" y="400" text-anchor="middle" font-family="Sarabun, 'Leelawadee UI', 'Noto Sans Thai', -apple-system, 'Segoe UI', system-ui, sans-serif" font-size="11.5" font-weight="400" fill="#5b6570">ทุก AP กระจาย SSID ทั้งหกชื่อ · รหัสผ่าน iotfarmer เหมือนกันทุกชื่อ · การแบ่งโซนกำหนดจากเครือข่าย ไม่ได้แบ่งตามที่นั่ง</text>
       </svg>
-      <figcaption>แผนภาพสามโซน แต่ละโซนมีคู่ SSID คือ 2.4 GHz และ 5 GHz อยู่บน VLAN เดียวกัน อุปกรณ์ภายในโซนเดียวกันเห็นกันทั้งหมด ส่วนอุปกรณ์ต่างโซนไม่เห็นกันเลย</figcaption>
+      <figcaption>แผนภาพสามโซน แต่ละโซนมีคู่ SSID คือ 2.4 GHz และ 5 GHz อยู่บน VLAN เดียวกัน อุปกรณ์ภายในโซนเดียวกันเห็นกันทั้งหมด ส่วนอุปกรณ์ต่างโซนติดต่อกันไม่ได้เลย</figcaption>
     </figure>
-  <p><strong>แนวทางที่ 1 ภายในคู่ SSID ของโซนเดียวกัน อุปกรณ์ต้องเห็นกันทั้งหมด</strong> ทั้ง unicast และ mDNS
+  <p><strong>แนวทางที่ 1 ภายในคู่ SSID ของโซนเดียวกัน อุปกรณ์ต้องติดต่อกันได้ทั้งหมด</strong> ทั้ง unicast และ mDNS
   ข้ามย่านความถี่ ดังนั้น SSID ทั้งสองของโซนต้องอยู่บน <strong>VLAN และ subnet เดียวกัน</strong> และต้อง <strong>ปิด client isolation /
   AP isolation / guest mode บน SSID ทั้งหกชื่อ</strong> ส่วนฝั่ง mDNS อยู่ในข้อ 1</p>
-  <p><strong>แนวทางที่ 2 ข้ามคู่ SSID ต่างโซน อุปกรณ์ต้องไม่เห็นกันเลย</strong> ทั้ง unicast, broadcast
+  <p><strong>แนวทางที่ 2 ข้ามคู่ SSID ต่างโซน อุปกรณ์ต้องติดต่อข้ามโซนไม่ได้</strong> ทั้ง unicast, broadcast
   และ multicast ดังนั้น</p>
   <ul>
   <li><strong>ห้ามเปิด mDNS reflector / Bonjour gateway / AirGroup / mDNS repeater ระหว่าง VLAN</strong>
-    ฟีเจอร์นี้เป็นสิ่งที่ controller หลายยี่ห้อเปิดให้เองเมื่อเห็นว่ามีหลาย VLAN และเป็นกับดักที่พบบ่อยที่สุด
-    ของการออกแบบนี้ เราไม่ต้องการฟีเจอร์นี้เลย เพราะแล็ปท็อปกับบอร์ดของทีมเดียวกันอยู่ VLAN เดียวกันอยู่แล้ว</li>
+    ฟีเจอร์นี้เป็นสิ่งที่ controller หลายยี่ห้อเปิดให้เองเมื่อเห็นว่ามีหลาย VLAN และเป็นสาเหตุที่พบบ่อยของปัญหา
+    ของการออกแบบนี้ จึงไม่ต้องเปิดใช้ฟีเจอร์นี้ เพราะแล็ปท็อปกับบอร์ดของทีมเดียวกันอยู่ VLAN เดียวกันอยู่แล้ว</li>
   <li><strong>ไม่ route ระหว่าง subnet ของสามโซน</strong> หากโครงสร้างจำเป็นต้อง route ขอให้ปิดกั้นด้วย ACL ที่ gateway</li>
   </ul>
-  <p>แนวทางที่ 2 ไม่ใช่เรื่องความปลอดภัย แต่เป็นเรื่อง <strong>ปริมาณ multicast</strong> ภาระ mDNS ใน broadcast domain
-  หนึ่งแปรตามจำนวนผู้ถามคูณจำนวนผู้ตอบ การแยกสามโซนออกจากกันจริงจึงลดภาระลงราว 9 เท่า แต่ถ้าโซนใด
-  มองเห็นกันได้ ภาระจะกลับไปเท่ากับเครือข่ายแบนที่มี client 500 ตัว ซึ่งเป็นสิ่งเดียวที่การแบ่งโซนมีไว้
-  เพื่อหลีกเลี่ยง</p>
-  <p>ไม่มีอุปกรณ์ใดบนเครือข่ายนี้ที่ต้องข้ามโซน จึงไม่มีข้อยกเว้นที่ต้องเผื่อไว้</p>
+  <p>จุดประสงค์หลักของแนวทางที่ 2 คือการลด <strong>ปริมาณ multicast</strong> ภาระ mDNS ใน broadcast domain
+  หนึ่งแปรตามจำนวนอุปกรณ์ที่ส่งคำถามคูณจำนวนอุปกรณ์ที่ตอบกลับ การแยกสามโซนออกจากกันจริงจึงลดภาระลงราว 9 เท่า แต่ถ้าโซนใด
+  มองเห็นกันได้ ภาระจะกลับไปเท่ากับเครือข่ายที่รวม client 500 ตัวไว้ในวงเดียวกัน ทำให้การแบ่งโซนไม่ช่วยลดภาระตามที่ตั้งใจไว้</p>
+  <p>ไม่มีอุปกรณ์ใดบนเครือข่ายนี้ที่ต้องข้ามโซน จึงไม่ต้องเปิดข้อยกเว้นสำหรับการติดต่อข้ามโซน</p>
   <hr>
-  <h2>2. คาดการณ์ชนิดและจำนวนอุปกรณ์บนเครือข่าย</h2>
+  <h2>2. ประเภทและจำนวนอุปกรณ์ที่คาดว่าจะเชื่อมต่อ</h2>
   <div class="table-scroll"><table>
   <thead>
   <tr>
@@ -381,33 +380,32 @@ figcaption {
   </tbody>
   </table></div>
   <p><strong>จำนวน client ที่เชื่อมต่อพร้อมกัน คาดว่าประมาณ 500 และอาจถึง 800</strong> หากผู้เข้าอบรมทุกคนต่อโทรศัพท์
-  ขอให้วางขนาดฝั่ง 5 GHz ตามตัวเลขสูงสุด ส่วนฝั่ง 2.4 GHz มีเฉพาะบอร์ด 200 ตัวเท่านั้น ไม่มีอุปกรณ์อื่น</p>
+  ขอให้วางแผนรองรับอุปกรณ์บนย่าน 5 GHz ตามจำนวนสูงสุดนี้ ส่วนฝั่ง 2.4 GHz มีเฉพาะบอร์ด 200 ตัวเท่านั้น ไม่มีอุปกรณ์อื่น</p>
   <blockquote>
   <p><strong>ขอ private /16 ให้แต่ละโซน</strong> เช่น <code>10.10.0.0/16</code> โซนแดง <code>10.20.0.0/16</code> โซนเขียว
-  <code>10.30.0.0/16</code> โซนน้ำเงิน เพราะต้องนับจำนวน lease ไม่ใช่จำนวนอุปกรณ์ ตกราว <strong>โซนละ 170–270 lease</strong>
-  (บอร์ด ~67 ตัว + แล็ปท็อป ~34 เครื่อง × 2 จาก VM แบบ bridged + โทรศัพท์ + สำรอง) ส่วน /24 ไม่เหลือ
-  ที่ว่างเลยเมื่อรวมโทรศัพท์ และไม่พอสำหรับ lease ยาวตามข้อ 4 <strong>หากแผนการจัดสรร IP ให้ /16 ไม่ได้
+  <code>10.30.0.0/16</code> โซนน้ำเงิน เพราะต้องนับจำนวน lease ไม่ใช่จำนวนอุปกรณ์ รวมประมาณ <strong>โซนละ 170–270 lease</strong>
+  (บอร์ด ~67 ตัว + แล็ปท็อป ~34 เครื่อง × 2 จาก VM แบบ bridged + โทรศัพท์ + สำรอง) ส่วน /24 มีจำนวนหมายเลข IP ไม่เพียงพอเมื่อรวมโทรศัพท์ และไม่พอสำหรับ lease ยาวตามข้อ 4 <strong>หากแผนการจัดสรร IP ให้ /16 ไม่ได้
   ขั้นต่ำที่ใช้ได้คือโซนละหนึ่ง /23</strong></p>
-  <p>subnet ที่ใหญ่ขึ้นไม่ได้ทำให้เปลือง airtime เพิ่ม เพราะปริมาณ broadcast และ multicast แปรตาม
+  <p>subnet ที่ใหญ่ขึ้นไม่ได้ทำให้ใช้ airtime เพิ่มขึ้น เพราะปริมาณ broadcast และ multicast แปรตาม
   จำนวนอุปกรณ์ ซึ่งเท่าเดิม ไม่ได้แปรตามขนาดของ subnet</p>
   </blockquote>
-  <p><strong>พฤติกรรมหลักที่ต้องได้</strong> แล็ปท็อปของแต่ละทีมบน 5 GHz ต้องค้นหาบอร์ดสองตัวของทีมตัวเองบน 2.4 GHz
+  <p><strong>การใช้งานหลักที่ระบบต้องรองรับ</strong> แล็ปท็อปของแต่ละทีมบน 5 GHz ต้องค้นหาบอร์ดสองตัวของทีมตัวเองบน 2.4 GHz
   เจอด้วยชื่อ <code>name.local</code> และรักษาการเชื่อมต่อ TCP กับบอร์ดแต่ละตัวไว้ได้ต่อเนื่องหลายชั่วโมง</p>
   <hr>
   <h2>3. การตั้งค่าที่สำคัญ</h2>
-  <p>ข้อเหล่านี้คือข้อที่ชี้ขาดว่าการอบรมจะสำเร็จหรือไม่ ส่วนเรื่องอื่นย้ายไปอยู่ในส่วนที่ 5</p>
+  <p>โปรดตรวจสอบการตั้งค่าต่อไปนี้เป็นอันดับแรก เนื่องจากมีผลโดยตรงต่อการเชื่อมต่ออุปกรณ์ระหว่างอบรม ส่วนการตั้งค่าเพิ่มเติมอยู่ในส่วนที่ 5</p>
   <p><strong>1. ส่งต่อ mDNS ระหว่างอุปกรณ์ไร้สายด้วยกัน และข้าม SSID ทั้งสองของโซน</strong> การแปลงชื่อเป็น IP ใช้
-  multicast DNS ที่ <strong>224.0.0.251 / UDP 5353</strong> ซึ่งต้องไปถึง client ทุกตัวในโซน และไปไกลกว่านั้นไม่ได้
-  ตามแนวทางที่ 2 ขอให้ตรวจว่าไม่มีสิ่งเหล่านี้ทิ้งแพ็กเก็ต: การกรองหรือระงับ broadcast/multicast ·
+  multicast DNS ที่ <strong>224.0.0.251 / UDP 5353</strong> ซึ่งต้องไปถึง client ทุกตัวในโซน และส่งข้ามไปยังโซนอื่นไม่ได้
+  ตามแนวทางที่ 2 ขอให้ตรวจว่าการตั้งค่าต่อไปนี้ไม่ทำให้แพ็กเก็ตถูกทิ้ง: การกรองหรือระงับ broadcast/multicast ·
   การแปลง multicast เป็น unicast ที่จัดการ mDNS ไม่ถูกต้อง · IGMP snooping โดยไม่มี querier
   บน segment · proxy ARP / ARP suppression</p>
   <blockquote>
   <p>multicast อื่นจะระงับอย่างไรก็ได้ตามที่เห็นสมควร <strong>แต่พอร์ต 5353 ต้องผ่านเสมอ</strong> หาก AP ของท่าน
   แปลง multicast เป็น unicast โดยจัดการ mDNS ได้ถูกต้อง ขอให้เปิดใช้ เพราะเป็นวิธีประหยัด airtime
-  ที่ได้ผลที่สุดที่ความหนาแน่นระดับนี้ หากมีการจำกัดอัตรา multicast ขอทราบค่าที่ตั้งไว้</p>
+  ที่ได้ผลที่สุดเมื่อมีอุปกรณ์เชื่อมต่อหนาแน่นระดับนี้ หากมีการจำกัดอัตรา multicast ขอทราบค่าที่ตั้งไว้</p>
   </blockquote>
   <figure>
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 400" role="img" aria-label="ภายในโซนเดียวกัน · ต้องผ่าน / ข้ามโซนต่างกัน · ต้องไม่ผ่าน">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 400" role="img" aria-label="ภายในโซนเดียวกัน · ต้องผ่าน / ระหว่างโซน · ต้องไม่ผ่าน">
         <defs>
           <marker id="arrow-good" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7"
                   markerHeight="7" orient="auto-start-reverse">
@@ -429,7 +427,7 @@ figcaption {
         <line x1="202" y1="144" x2="265" y2="144" stroke="#0f6b63" stroke-width="1.8" marker-start="url(#arrow-good)" marker-end="url(#arrow-good)"/>
       <text x="233" y="136" text-anchor="middle" font-family="Sarabun, 'Leelawadee UI', 'Noto Sans Thai', -apple-system, 'Segoe UI', system-ui, sans-serif" font-size="11" font-weight="700" fill="#0f6b63">mDNS</text>
       <text x="235" y="224" text-anchor="middle" font-family="'IBM Plex Mono', ui-monospace, Consolas, monospace" font-size="11.5" font-weight="600" fill="#14181d">224.0.0.251 · UDP 5353</text>
-      <text x="32" y="262" text-anchor="start" font-family="Sarabun, 'Leelawadee UI', 'Noto Sans Thai', -apple-system, 'Segoe UI', system-ui, sans-serif" font-size="11.5" font-weight="700" fill="#14181d">ต้องไม่ถูกทิ้งโดย</text>
+      <text x="32" y="262" text-anchor="start" font-family="Sarabun, 'Leelawadee UI', 'Noto Sans Thai', -apple-system, 'Segoe UI', system-ui, sans-serif" font-size="11.5" font-weight="700" fill="#14181d">ตรวจว่าแพ็กเก็ตไม่ถูกกรองโดย</text>
         <circle cx="36" cy="284" r="3" fill="#b03a2e"/>
       <text x="48" y="288" text-anchor="start" font-family="Sarabun, 'Leelawadee UI', 'Noto Sans Thai', -apple-system, 'Segoe UI', system-ui, sans-serif" font-size="11" font-weight="400" fill="#5b6570">การกรองหรือระงับ broadcast และ multicast</text>
         <circle cx="36" cy="307" r="3" fill="#b03a2e"/>
@@ -441,7 +439,7 @@ figcaption {
         <rect x="505" y="8" width="447" height="384" rx="10" fill="#fdf5f4" stroke="#f0d6d2"/>
         <circle cx="533" cy="44" r="13" fill="#b03a2e"/>
         <path d="M528,39 l10,10 M538,39 l-10,10" stroke="#ffffff" stroke-width="2.2" stroke-linecap="round"/>
-      <text x="555" y="49" text-anchor="start" font-family="Sarabun, 'Leelawadee UI', 'Noto Sans Thai', -apple-system, 'Segoe UI', system-ui, sans-serif" font-size="14.5" font-weight="700" fill="#14181d">ข้ามโซนต่างกัน · ต้องไม่ผ่าน</text>
+      <text x="555" y="49" text-anchor="start" font-family="Sarabun, 'Leelawadee UI', 'Noto Sans Thai', -apple-system, 'Segoe UI', system-ui, sans-serif" font-size="14.5" font-weight="700" fill="#14181d">ระหว่างโซน · ต้องไม่ผ่าน</text>
         <rect x="541" y="112" width="152" height="64" rx="6" fill="#ffffff" stroke="#f0d6d2" stroke-width="1.4"/>
       <text x="617.0" y="139" text-anchor="middle" font-family="Sarabun, 'Leelawadee UI', 'Noto Sans Thai', -apple-system, 'Segoe UI', system-ui, sans-serif" font-size="12" font-weight="700" fill="#14181d">โซนแดง</text>
       <text x="617.0" y="158" text-anchor="middle" font-family="Sarabun, 'Leelawadee UI', 'Noto Sans Thai', -apple-system, 'Segoe UI', system-ui, sans-serif" font-size="11" font-weight="400" fill="#5b6570">VLAN 10</text>
@@ -460,19 +458,19 @@ figcaption {
         <circle cx="533" cy="330" r="3" fill="#b03a2e"/>
       <text x="545" y="334" text-anchor="start" font-family="Sarabun, 'Leelawadee UI', 'Noto Sans Thai', -apple-system, 'Segoe UI', system-ui, sans-serif" font-size="11" font-weight="400" fill="#5b6570">การ route ระหว่าง subnet ของสามโซน</text>
       </svg>
-      <figcaption>สิ่งที่ mDNS ต้องผ่านให้ได้ภายในโซน และสิ่งที่ต้องไม่ผ่านข้ามโซน พร้อมการตั้งค่าที่ทำให้ mDNS หายไปเงียบ ๆ</figcaption>
+      <figcaption>สิ่งที่ mDNS ต้องผ่านให้ได้ภายในโซน และสิ่งที่ต้องไม่ผ่านข้ามโซน พร้อมการตั้งค่าที่ทำให้ แพ็กเก็ต mDNS ถูกกรองโดยไม่แสดงข้อผิดพลาด</figcaption>
     </figure>
-  <p><strong>2. MAC address สองหมายเลขหลัง client ไร้สายหนึ่งตัว</strong> Home Assistant รันใน VM แบบ bridged
+  <p><strong>2. รองรับ MAC address สองหมายเลขผ่าน client ไร้สายหนึ่งเครื่อง</strong> Home Assistant รันใน VM แบบ bridged
   แล็ปท็อปหนึ่งเครื่องจึงแสดง MAC และ IP อย่างละสองหมายเลขผ่านการเชื่อมต่อเดียว ขอให้ปิดทุกอย่างที่
   มองว่าลักษณะนี้เป็นการปลอม MAC เช่น client integrity check การจำกัดจำนวน MAC ของแต่ละ station และ
-  ข้อจำกัดเรื่อง WDS <em>ข้อนี้มักหลุด ขอให้ยืนยันเป็นการเฉพาะ</em></p>
+  ข้อจำกัดเรื่อง WDS <em>ข้อนี้มักถูกมองข้าม โปรดยืนยันผลการตรวจสอบแยกต่างหาก</em></p>
   <p><strong>3. การเชื่อมต่อพร้อมกันจำนวนมาก</strong> หาก AP หรือ controller รีสตาร์ต บอร์ดมากถึง 200 ตัวจะเชื่อมต่อ
   ใหม่พร้อมกัน ขอให้ยืนยันว่าไม่มีการจำกัดอัตรา association หรือเพดานจำนวน client ของแต่ละวิทยุที่จะ
   ทำให้บอร์ดบางส่วนต่อไม่ได้ และ DHCP รองรับการขอ IP พร้อมกันครั้งนี้ได้</p>
-  <p><strong>4. เวลา lease ยาวพอให้ IP ไม่เปลี่ยนตลอดงาน</strong> ขอให้ตั้งเวลา lease ให้ครอบคลุมการอบรมทั้งหมด
-  เช่น 7 วัน หรือใช้ reservation <strong>ข้อนี้เป็นสิ่งที่ดีถ้าทำได้ ไม่ใช่ข้อบังคับ</strong> เพราะทุกอย่างอ้างอิงกันด้วยชื่อ
-  IP ที่เปลี่ยนไปจึงไม่ทำให้ระบบพัง แต่ที่ขอเพราะทีมที่จด IP ของบอร์ดไว้เป็นทางสำรองในวันแรก ควรใช้
-  เลขเดิมนั้นได้อีกในวันที่สอง และช่วง IP ในส่วนที่ 2 คือสิ่งที่ทำให้ lease ยาวเป็นไปได้</p>
+  <p><strong>4. กำหนดอายุ DHCP lease ให้ครอบคลุมระยะเวลาจัดงาน</strong> ขอให้ตั้งเวลา lease ให้ครอบคลุมการอบรมทั้งหมด
+  เช่น 7 วัน หรือใช้ reservation <strong>แนะนำให้ตั้งค่าตามนี้ หากระบบรองรับ</strong> เพราะทุกอย่างอ้างอิงกันด้วยชื่อ
+  IP ที่เปลี่ยนไปจึงไม่ทำให้การเชื่อมต่อผ่านชื่ออุปกรณ์หยุดทำงาน แต่ที่ขอเพราะทีมที่จด IP ของบอร์ดไว้เป็นทางสำรองในวันแรก ควรใช้
+  เลขเดิมนั้นได้อีกในวันที่สอง และการจัดสรรช่วง IP ตามส่วนที่ 2 จะช่วยให้มีหมายเลขเพียงพอสำหรับ lease ระยะยาว</p>
   <hr>
   <h2>4. การทดสอบตรวจรับ</h2>
   <p>ทำในช่วงติดตั้งก่อนวันงาน โดยมีผู้ที่แก้ค่าบน controller ได้อยู่ด้วย ต้องผ่านทุกข้อ และขอเจ้าหน้าที่
@@ -489,12 +487,12 @@ figcaption {
   <tr>
   <td>1</td>
   <td>บอร์ดบน <code>farm-iot-red</code> แล็ปท็อปบน <code>farm-laptop-red</code> แล้ว <code>ping &lt;boardname&gt;.local</code></td>
-  <td>หาชื่อเจอและตอบกลับ ยืนยัน <strong>mDNS ข้ามย่านความถี่ภายในโซน</strong> (ข้อ 1)</td>
+  <td>แปลงชื่อเป็น IP ได้และได้รับคำตอบจาก ping ยืนยัน <strong>mDNS ข้ามย่านความถี่ภายในโซน</strong> (ข้อ 1)</td>
   </tr>
   <tr>
   <td>2</td>
   <td>ping เดิมจากภายใน VM แบบ bridged บนแล็ปท็อป</td>
-  <td>หาชื่อเจอและตอบกลับ ยืนยัน <strong>multicast + สอง MAC</strong> (ข้อ 2)</td>
+  <td>แปลงชื่อเป็น IP ได้และได้รับคำตอบจาก ping ยืนยัน <strong>multicast + สอง MAC</strong> (ข้อ 2)</td>
   </tr>
   <tr>
   <td>3</td>
@@ -504,17 +502,17 @@ figcaption {
   <tr>
   <td>3ข</td>
   <td>แล็ปท็อปเครื่องเดิม เปิดโปรแกรมค้นหาอุปกรณ์ mDNS (เช่น <code>dns-sd -B _esphome._tcp</code> หรือ Discovery บนมือถือ)</td>
-  <td><strong>เห็นเฉพาะบอร์ดโซนเขียว</strong> ไม่มีชื่อที่มี <code>red</code> หรือ <code>blue</code> โผล่มาเลย ยืนยันว่าไม่มี mDNS reflector ทำงานอยู่ (แนวทางที่ 2)</td>
+  <td><strong>เห็นเฉพาะบอร์ดโซนเขียว</strong> ไม่มีชื่อที่มี <code>red</code> หรือ <code>blue</code> ปรากฏในรายการ ยืนยันว่าไม่มี mDNS reflector ทำงานอยู่ (แนวทางที่ 2)</td>
   </tr>
   <tr>
   <td>4</td>
   <td>โทรศัพท์บน <code>farm-laptop-red</code> เปิด <code>http://&lt;VM-ip&gt;</code></td>
-  <td>แดชบอร์ดขึ้น ยืนยันว่า client คุยกันเองได้ พอร์ต 80</td>
+  <td>เปิดแดชบอร์ดได้ ยืนยันว่า client ติดต่อกันได้โดยตรง พอร์ต 80</td>
   </tr>
   <tr>
   <td>5</td>
-  <td>แล็ปท็อปเชื่อมต่อบอร์ดค้างไว้เฉย ๆ 30 นาที</td>
-  <td>การเชื่อมต่อยังอยู่ (ส่วนที่ 5)</td>
+  <td>แล็ปท็อปคงการเชื่อมต่อกับบอร์ดไว้โดยไม่สั่งงาน 30 นาที</td>
+  <td>การเชื่อมต่อยังทำงานตามปกติ (ส่วนที่ 5)</td>
   </tr>
   <tr>
   <td>6</td>
@@ -530,40 +528,38 @@ figcaption {
   </table></div>
   <p>การทดสอบข้อ 1, 2 และ 3ข คือข้อที่มักไม่ผ่านบนค่าตั้งต้นของระบบเครือข่ายองค์กร</p>
   <blockquote>
-  <p><strong>สิ่งที่การทดสอบนี้พิสูจน์ไม่ได้</strong> บอร์ด 20–30 ตัวคิดเป็นเพียง 10–15 % ของโหลดจริง จึงพิสูจน์ได้เฉพาะ
+  <p><strong>ข้อจำกัดของการทดสอบ</strong> บอร์ด 20–30 ตัวคิดเป็นเพียง 10–15 % ของโหลดจริง จึงพิสูจน์ได้เฉพาะ
   เรื่องการตั้งค่า (SSID, VLAN, mDNS, DHCP) ซึ่งเป็นจุดที่มักผิดพลาด แต่พิสูจน์ไม่ได้ว่าบอร์ด
-  200 ตัวบนย่าน 2.4 GHz จะทำงานได้ ส่วนนั้นเราพึ่งการวางแผนความจุของท่าน (ข้อ 3 และหมายเหตุ
+  200 ตัวบนย่าน 2.4 GHz จะทำงานได้ จึงต้องอาศัยแผนรองรับจำนวนอุปกรณ์ของผู้ดูแลเครือข่าย (ข้อ 3 และหมายเหตุ
   เรื่องคลื่นความถี่ในส่วนที่ 5)</p>
   </blockquote>
   <hr>
-  <h2>5. หมายเหตุรอง</h2>
-  <p>ทั้งหมดนี้เป็นแนวปฏิบัติปกติของเครือข่ายลักษณะนี้ ที่เขียนไว้เพราะหากข้อใดยังตั้งไว้ตามค่าตั้งต้น
-  เราจะเสียเวลาหน้างาน ไม่ใช่เพราะคาดว่าจะเป็นประเด็น</p>
+  <h2>5. การตั้งค่าเพิ่มเติม</h2>
+  <p>โปรดตรวจสอบรายการต่อไปนี้เพิ่มเติมก่อนวันงาน เพื่อไม่ต้องแก้การตั้งค่าระหว่างอบรม</p>
   <ul>
-  <li><strong>SSID ฝั่ง 2.4 GHz เหมาะกับอุปกรณ์อย่างง่าย</strong> ไม่ใช่ WPA3 อย่างเดียวและไม่ใช่ WPA-Enterprise ·
+  <li><strong>ตั้งค่า SSID ย่าน 2.4 GHz ให้รองรับบอร์ดไมโครคอนโทรลเลอร์</strong> ไม่ใช่ WPA3 อย่างเดียวและไม่ใช่ WPA-Enterprise ·
     PMF / 802.11w ตั้งเป็น optional หรือปิด · ไม่ใช้ 802.11r / k / v ไม่ใช้ band steering และ
     ไม่ตั้งอัตราขั้นต่ำที่ตัดอัตราต่ำของ 802.11n ออก เพราะบอร์ดไม่มีการเคลื่อนย้าย · ไม่มี captive portal
-    หน้า splash หรือการยืนยันตัวตนซ้ำเป็นระยะ เพราะไมโครคอนโทรลเลอร์กดยอมรับเงื่อนไขไม่ได้</li>
-  <li><strong>การเชื่อมต่อระยะยาวต้องคงอยู่</strong> แล็ปท็อปแต่ละเครื่องเปิด TCP session ค้างไว้กับบอร์ดของตนนาน
+    หน้า splash หรือการยืนยันตัวตนซ้ำเป็นระยะ เพราะไมโครคอนโทรลเลอร์ไม่สามารถเปิดหน้าเว็บเพื่อกดยอมรับเงื่อนไขได้</li>
+  <li><strong>รักษาการเชื่อมต่อให้ต่อเนื่องตลอดงาน</strong> แล็ปท็อปแต่ละเครื่องเปิด TCP session ค้างไว้กับบอร์ดของตนนาน
     หลายชั่วโมง และบอร์ดต้องคงการเชื่อมต่อไว้ข้ามคืนโดยไม่มี client ต่ออยู่ ขอให้ปิด idle timeout,
     session timeout และ inactivity timeout ของ client ทั้งหมด และไม่มีการรีบูตประจำคืนหรือ
     ช่วงบำรุงรักษาตลอดงาน</li>
   <li><strong>ปิด rogue-AP containment</strong> เพราะบอร์ดแต่ละตัวจะเปิด hotspot เล็ก ๆ สำหรับตั้งค่าขึ้นมาเอง
     หาก SSID ของโซนหายไป และ hotspot จากโทรศัพท์ของผู้สอนคืออินเทอร์เน็ตสำรองของเรา</li>
-  <li><strong>การวางแผนคลื่นความถี่</strong> ย่าน 2.4 GHz มีช่องสัญญาณที่ไม่ทับซ้อนกันเพียงสามช่อง (1/6/11)
+  <li><strong>การวางแผนช่องสัญญาณและตำแหน่ง AP</strong> ย่าน 2.4 GHz มีช่องสัญญาณที่ไม่ทับซ้อนกันเพียงสามช่อง (1/6/11)
     AP สามตัวที่วางตำแหน่งดีจึงดีกว่า AP หกตัวที่แย่งช่องกัน หากต้องใช้มากกว่าสามตัว ขอให้เป็น cell
-    ช่องเดียวกันที่แยกพื้นที่กันชัดเจนและลดกำลังส่งลง ส่วนย่าน 5 GHz ใช้ AP ได้เท่าที่ความครอบคลุม
-    ต้องการ WiFi 6 / OFDMA ช่วยได้มากที่ความหนาแน่นระดับนี้ ขอสัญญาณสม่ำเสมอที่ <strong>ระดับความสูง
+    ช่องเดียวกันที่แยกพื้นที่กันชัดเจนและลดกำลังส่งลง ส่วนย่าน 5 GHz จัดจำนวน AP ให้ครอบคลุมพื้นที่ใช้งาน WiFi 6 / OFDMA ช่วยได้มากเมื่อมีอุปกรณ์เชื่อมต่อหนาแน่นระดับนี้ ขอสัญญาณสม่ำเสมอที่ <strong>ระดับความสูง
     ของโต๊ะ</strong> เพราะบอร์ดวางอยู่ท่ามกลางคน แล็ปท็อป และภาชนะใส่น้ำ</li>
   <li><strong>อินเทอร์เน็ต</strong> ต้องการเฉพาะ SSID ฝั่งแล็ปท็อปและพอร์ตของแล็ปท็อปนำเสนอ ขอพอร์ตขาออก 443
     ตลอดงาน และพอร์ตขาออก <strong>8883 (MQTT/TLS)</strong> ราวหนึ่งชั่วโมงในช่วงที่ 3 จากทั้งสามโซน ส่วน SSID
     ฝั่งบอร์ดไม่ต้องออกอินเทอร์เน็ต และไม่ต้องเปิดการเข้าถึงขาเข้าที่ใดทั้งสิ้น</li>
   </ul>
   <hr>
-  <h2>6. ทางสำรองหากแยก VLAN ตาม SSID ไม่ได้</h2>
+  <h2>6. แนวทางสำรองเมื่อแยก VLAN ตาม SSID ไม่ได้</h2>
   <p>ใช้ subnet เดียว (/22) กับ SSID สองชื่อ คือ <code>farm-iot</code> บน 2.4 GHz และ <code>farm-laptop</code> บน 5 GHz
   รหัสผ่าน <code>iotfarmer</code> เหมือนเดิม ข้อกำหนดอื่นคงเดิมทั้งหมด และต้องพึ่งการแปลง multicast เป็น unicast
-  อย่างมาก <strong>ขอให้แจ้งล่วงหน้าโดยเร็ว</strong> เพราะเฟิร์มแวร์ต้องสร้างต่างจากเดิม</p>
+  อย่างมาก <strong>ขอให้แจ้งล่วงหน้าโดยเร็ว</strong> เพราะต้องจัดเตรียมเฟิร์มแวร์ให้ตรงกับเครือข่ายที่จะใช้</p>
   <footer class="doc-foot">
     <p>เอกสารนี้สร้างจากไฟล์ต้นทาง NETWORK-REQUIREMENTS-th.md ในคลัง iot-training หากต้องการแก้ไข ขอให้แก้ที่ไฟล์ต้นทางแล้วสร้างใหม่</p>
   </footer>

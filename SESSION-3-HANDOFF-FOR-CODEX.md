@@ -54,7 +54,7 @@ Field keys added: `s2.pump_back_t` (Session 2 too), `s3.hist.relay_on`, `s3.hist
 
 2. **Check the arithmetic and the assumptions in the sizing exercise** with Roger: 4 full-rated
    sun-hours/day, 0.5 W for the sensor node, 10 W for router + HA host, 18 W for the kit pump, 750 W
-   for a 1 hp pump, 50 % usable depth for lead-acid. The numbers were chosen to be round; if a kit
+   for a 1 hp pump, 50 % usable depth for lead-acid; 400 W panel → 1,600 Wh/day by the same rule (the เฉลย says 2 panels by arithmetic, ~3 in practice for a direct-drive pump; an earlier draft wrongly said 6). The numbers were chosen to be round; if a kit
    measurement disagrees (the aquarium pump may draw less than 18 W), change the table and the เฉลย
    together.
 

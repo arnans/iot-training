@@ -36,8 +36,11 @@ nav:
   - "ช่วงที่ 1 — ระบบสมองกลฝังตัวในฟาร์ม: รับรู้ ตัดสินใจ สั่งการ": session-1.md
   - "ช่วงที่ 2 — ตรรกะควบคุมอัตโนมัติและการออกแบบ Fail-safe สำหรับฟาร์ม": session-2.md
   - "ช่วงที่ 3 — โครงสร้างระบบ IoT: การสื่อสาร คลาวด์ แดชบอร์ด และการออกแบบระบบ": session-3.md
-  - ใบบันทึกสำหรับพิมพ์: record-sheet.md
+  - ใบบันทึกของทีม: record-sheet.md
   - เมนูและวิธีแก้ปัญหา: reference.md
+
+hooks:
+  - hooks/fields.py   # {{f:key}} markers -> form fields, see FILLABLE-WORKSHEET.md
 
 plugins:
   - search
@@ -62,3 +65,4 @@ markdown_extensions:
       permalink: true
   - pymdownx.tasklist:
       custom_checkbox: true
+      clickable_checkbox: true   # extra.js remembers ticks per page

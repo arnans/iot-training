@@ -24,7 +24,7 @@ exclamation marks; say *why* after each constraint; session-neutral wording (ช
 | Block | Min | What |
 |---|---:|---|
 | History | 20 | three points of the team's own choosing linked to Session 1/2 activities (open-ended on purpose: 100 teams will not all have the scripted events); relay On is a **command**, lamp period before `s2.pump_back_t`; humidity min/max; overnight-gap question |
-| Dashboard (Activity 7) | 35 | plan 5, build 25 with a stated minimum, one usability test by someone who did not build it |
+| Dashboard (Activity 7) | 35 | plan 5 as two questions only (what must the user see, what must they control: `s3.dash.show.{1,2,3}`, `s3.dash.control.{1,2}`; the card/entity/position table was cut on 9 Sep as impractical), build 25 with a stated minimum, one usability test by someone who did not build it |
 | Break | 15 | |
 | Design (Activity 8) | 85 | scenario 5 · **step 1 network 20** (กำพล) · **step 2 power 15** · fill canvas 30 · paired exchange 10 · revise 5 |
 | Wrap-up | 10 | recap, save answers, kit return in the safe order |

@@ -473,7 +473,7 @@ exchange. Acted on, in `docs/session-3.md`, `docs/record-sheet.md`, COURSE-DESIG
   (new `s2.pump_back_t` field in Session 2 step 2 of the exchange-back, and on the record sheet);
   "not observed" allowed; time window explained; sample graph fallback; new two-event interpretation
   table (what / when / which experiment / what a farm would check). Overnight-gap question kept.
-- **Dashboard** 35 min: minimum vs optional steps stated; the two tests merged into one by someone who
+- **Dashboard** 35 min: plan reduced on 9 Sep to two questions (see / control) in the user's words, the card·entity·position table cut as impractical; minimum vs optional steps stated; the two tests merged into one by someone who
   did not build it, half-minute pass criterion; written question is about what the tester missed.
 - **Design**: framed as a first pilot; C and D marked advanced; new canvas box "สิ่งที่ยังไม่แน่ใจ"
   and a rubric line for it; note that classroom humidity thresholds are a stand-in; paired exchange

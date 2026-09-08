@@ -139,13 +139,9 @@
 
 ผู้ใช้หลักของแดชบอร์ด {{f:s3.dash.user|20}}
 
-| ผู้ใช้ต้องรู้หรือทำอะไร | การ์ด | entity | ตำแหน่ง |
-|--------------------------|------|--------|---------|
-| {{f:s3.dash.1.need|14}} | {{f:s3.dash.1.card|8}} | {{f:s3.dash.1.entity|10}} | {{f:s3.dash.1.pos|6}} |
-| {{f:s3.dash.2.need|14}} | {{f:s3.dash.2.card|8}} | {{f:s3.dash.2.entity|10}} | {{f:s3.dash.2.pos|6}} |
-| {{f:s3.dash.3.need|14}} | {{f:s3.dash.3.card|8}} | {{f:s3.dash.3.entity|10}} | {{f:s3.dash.3.pos|6}} |
-| {{f:s3.dash.4.need|14}} | {{f:s3.dash.4.card|8}} | {{f:s3.dash.4.entity|10}} | {{f:s3.dash.4.pos|6}} |
-| {{f:s3.dash.5.need|14}} | {{f:s3.dash.5.card|8}} | {{f:s3.dash.5.entity|10}} | {{f:s3.dash.5.pos|6}} |
+**ต้องเห็น** 1 {{f:s3.dash.show.1|18}} 2 {{f:s3.dash.show.2|18}} 3 {{f:s3.dash.show.3|18}}
+
+**ต้องสั่งได้** 1 {{f:s3.dash.control.1|18}} 2 {{f:s3.dash.control.2|18}}
 
 **คำถามท้ายกิจกรรมที่ 7** ผู้ทดลองใช้ตอบข้อไหนไม่ได้หรือใช้เวลานาน และเราปรับแดชบอร์ดอย่างไร
 

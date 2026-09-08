@@ -406,7 +406,8 @@ fill-in lines (the exception to the web-Markdown conventions). Print from the re
   remote URL prepared ahead, `cloud:` on the instructor kit's HA (see `hass/README.md`), a recorded
   backup run from mobile data, and กำพล's sign-off since it sits in their block
 - **Facilitator run sheet** — help-request signal, escalation owner, spare-kit policy, water and
-  reset procedure between failure-lab problems, timing checkpoints. Ratio assumption ~1:10 still to confirm
+  reset procedure between failure-lab problems, timing checkpoints, and the **"swap who is on the
+  laptop" cue at every activity boundary** (announced, not on the worksheet — Roger, 9 Sep 2026). Ratio assumption ~1:10 still to confirm
 - **Facilitator briefing for the failure lab** — pairing, who sabotages first, turn-taking and
   reset between problems are spoken, not on the worksheet (8 Sep 2026); sealed cards are no longer
   needed, the acts are printed in the worksheet
@@ -492,6 +493,10 @@ Three steers, all acted on in `docs/session-3.md`, `docs/record-sheet.md`, COURS
    Wh/day = W × h), plus one-night storage for the node and the pump, with a self-check answer. The
    point it lands: a farm pump is direct daylight DC solar with a water tank, no battery; batteries
    are for small loads that must last the night. Fields `s3.pwr.size.*`.
+4. **History made open-ended** (later on 9 Sep): "find three points on the graph you can link to
+   something we did" replaces the four scripted finds and the relay/gap counts, because 100 teams
+   run differently and the scripted events will not all exist on every graph. Fields
+   `s3.hist.ev{1,2,3}.*` plus humidity min/max; `s3.hist.relay_on/gaps/gap_max` removed.
 3. **Network reframed as local network vs access from outside.** Local: the six technologies stay,
    chosen by **elimination** (distance, then power at the far end) for the team's own two links —
    fields `s3.net.{1,2}.*`; instructor works card B on screen. MQTT and HTTP are gone from the

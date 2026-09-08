@@ -23,7 +23,7 @@ exclamation marks; say *why* after each constraint; session-neutral wording (ช
 
 | Block | Min | What |
 |---|---:|---|
-| History | 20 | four things on the graph; relay **commands** after `s2.pump_back_t`; two-event interpretation table; overnight-gap question |
+| History | 20 | three points of the team's own choosing linked to Session 1/2 activities (open-ended on purpose: 100 teams will not all have the scripted events); relay On is a **command**, lamp period before `s2.pump_back_t`; humidity min/max; overnight-gap question |
 | Dashboard (Activity 7) | 35 | plan 5, build 25 with a stated minimum, one usability test by someone who did not build it |
 | Break | 15 | |
 | Design (Activity 8) | 85 | scenario 5 · **step 1 network 20** (กำพล) · **step 2 power 15** · fill canvas 30 · paired exchange 10 · revise 5 |
@@ -40,8 +40,8 @@ loads on two rules (15 W ≈ 60 Wh/day; Wh/day = W × h) with one-night storage 
 (`s3.pwr.size.*`). Landing: pumps run on direct daylight solar and you store water, not electricity.
 
 Field keys removed since the original: `s3.comm.*` (all), `s3.pwr.btype/amp_*/unplug.*/order*`,
-`s3.cloud.tool/url/what/every/where`, `s3.remote.age/control`, `s3.hist.pump_runs`.
-Field keys added: `s2.pump_back_t` (Session 2 too), `s3.hist.relay_on`, `s3.hist.ev{1,2}.*`,
+`s3.cloud.tool/url/what/every/where`, `s3.remote.age/control`, `s3.hist.pump_runs`, `s3.hist.relay_on`, `s3.hist.gaps`, `s3.hist.gap_max`.
+Field keys added: `s2.pump_back_t` (Session 2 too), `s3.hist.ev{1,2,3}.*`,
 `s3.net.{1,2}.{dist,power,out_dist,out_power,left}`, `s3.remote.{conn,where,need,method,lost}`,
 `s3.q.cloud`, `s3.pwr.size.{node,ha,kitpump,farmpump}.{wh,panels,bat}`, `s3.pwr.size.night_{node,pump}`,
 `d.unknown`, `d.revise`. The worksheet and `docs/record-sheet.md` share keys — change both or neither.

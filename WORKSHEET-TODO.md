@@ -480,6 +480,25 @@ exchange. Acted on, in `docs/session-3.md`, `docs/record-sheet.md`, COURSE-DESIG
 - **Kit return** order fixed: automations off, relay Off, isolate power, then drain.
 - `hass/README.md` gains the instructor-kit `cloud:` note; the team config comment points to it.
 
+## Session 3, Roger's own review, 9 Sep 2026
+
+Three steers, all acted on in `docs/session-3.md`, `docs/record-sheet.md`, COURSE-DESIGN and SESSION-OVERVIEW:
+
+1. **Network and power had too little participation for an after-lunch slot.** Both are now decision
+   steps *inside* the design challenge (85 min: scenario 5 · network 20 · power 15 · fill 30 ·
+   exchange 10 · revise 5), and the afternoon opens with the two hands-on blocks, history (20) and
+   dashboard (35). Total still 150.
+2. **Power got a participation exercise**: panel sizing for four loads by two rules (15 W ≈ 60 Wh/day;
+   Wh/day = W × h), plus one-night storage for the node and the pump, with a self-check answer. The
+   point it lands: a farm pump is direct daylight DC solar with a water tank, no battery; batteries
+   are for small loads that must last the night. Fields `s3.pwr.size.*`.
+3. **Network reframed as local network vs access from outside.** Local: the six technologies stay,
+   chosen by **elimination** (distance, then power at the far end) for the team's own two links —
+   fields `s3.net.{1,2}.*`; instructor works card B on screen. MQTT and HTTP are gone from the
+   worksheet. Access from outside: a five-way menu (notifications only, Home Assistant Cloud, private
+   VPN, opening a door yourself, IoT cloud platform) so Nabu Casa is one option, not the only one;
+   the instructor still demos it. Fields `s3.remote.need/method/lost`; `s3.comm.choice.*` removed.
+
 Not acted on: the review's "readiness 5 min" and "recovery 10 min" rows — no room once design took
 the time; the ก่อนเริ่ม checklist stays untimed and the 5-min revise slot is the buffer. The network
 block stays at 20 rather than the review's implied cut because it is กำพล's live block and now also

@@ -9,3 +9,6 @@ firmware/secrets.yaml
 firmware/.esphome/
 firmware/zones.yaml
 firmware/dist/
+
+# Drop-box for photos and files handed to Claude; copy what the site needs into docs/images/
+user-import/

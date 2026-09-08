@@ -11,6 +11,7 @@ specific to that first delivery.
 
 | Path | What it is |
 |---|---|
+| [SESSION-OVERVIEW.md](SESSION-OVERVIEW.md) | One-page summary of the three sessions: what teams do, objective, learning-goal alignment |
 | [COURSE-DESIGN.md](COURSE-DESIGN.md) | Full course design: session plans, goals, kit list, risks, production tasks |
 | [PART1-RECORDING-PREP.md](PART1-RECORDING-PREP.md) | Readiness notes for the optional narrated online decks |
 | [WORKSHEET-TODO.md](WORKSHEET-TODO.md) | Open items and assumptions in the worksheets |

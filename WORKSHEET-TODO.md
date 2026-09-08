@@ -17,6 +17,7 @@ bench session (adoption flow, overnight, sabotage cards, instructor machines, in
 | Session 1 shape | **Hardware first, Home Assistant last** (Roger, 7 Sep 2026). Activities: 1 Sense (board's own `web_server` page) · 2 Act (relay as a switch, then the load) · 3 Logic (adopt both boards, entity history, be-the-Logic, first automation = float → pump off) · 4 Spec (scenario-card game, the timing buffer). Sessions 2–3 activities renumbered 5–8 | No YAML / I2C reading. No dashboard cards in session 1 — history is read from the entity dialog. Auto/Off/Manual is a 2-min talking point in Activity 2 and an instructor demo in session 2, never a team build |
 | Between-session data | **Dropped** (Roger, 7 Sep 2026). No instructor HA adopting participant nodes: not practical at 100 boards, and the payoff was one 15-min opener. The data teams read is what **their own HA** records across Day 2 morning | The history block moves out of session 2 and into session 3, rewritten around the team's own half-day trace (light dip from a cupped hand, chattering relay before hysteresis, gaps from the sabotage rounds). Session 2 now opens on an automation recap instead. Session 2's last checklist item: do not shut the VM down at lunch |
 | Session 2 shape | **Hysteresis first** (Roger, 7 Sep 2026). Automation recap (15 min) → Activity 5 (75 min) → break → Activity 6 (45 min) → debrief (15 min) | The trigger/condition/action table moves out of Activity 5 into the opener, anchored on the float automation built in session 1 |
+| Garden lamp in Activity 5 | **A 12V LED module joins the kit** (Roger, 8 Sep 2026): three-lens sign module, red/black leads, photo at `docs/images/led-module-12v.jpg`. The night-light ladder drives a real lamp instead of the relay indicator | Two load swaps inside the 75-min activity, ~5 min each (pump lead off NO → LED red on NO, LED black on the negative row; reverse before the watering scenario). Session 2 has no slack, so Activity 5's (c) and (d) are the first casualties if the swaps run long. Worksheet tells teams to aim the lenses away from the GoGo-IoT board so the lamp does not feed its own light sensor |
 | Charge controller | Wired by teams in Activity 2 as the kit's **12V source**: adapter → BATT pair; LOAD pair → terminal block → relay board DC-in and pump (+ via COM/NO, − direct). Controller USB powers the GoGo-IoT only when the laptop leaves (overnight). Panel is added in session 3 | Session 1 calls it "กล่องจ่ายไฟ 12V" with one sentence of orientation; session 3 "เปิดกล่อง: พลังงาน" reads the three terminal pairs, sets battery type, connects the panel |
 | 18650 cell | **Stays in** (Roger, 8 Sep 2026). A charged cell keeps the board running when USB is pulled, so "power loss" is simulated with the board's **on/off switch**, never by pulling a cable | Sabotage card 1 and the Fail-safe 3 test say ปิดสวิตช์บนบอร์ด; the Session 3 adapter demo shows the sensor board surviving on its cell; `reference.md` lists the switch first under `unavailable` |
 | Plain ESP32-C3 nodemcu (item 2) | Spare, unmentioned | — |
@@ -82,6 +83,12 @@ bench session (adoption flow, overnight, sabotage cards, instructor machines, in
 
 ## Needs verification against the real kit
 
+- **12V LED module** (added 8 Sep 2026): confirm on the bench that it lights from the kit's
+  12 V rail through the relay, that reversed polarity is harmless (the worksheet says so), and
+  that a lit module a hand's width from the GoGo-IoT board does not push the light reading
+  over a typical "dark" threshold — if it does, the worksheet's "aim it away" line needs a
+  distance. Time one full swap (pump → LED → pump) with a colleague; the worksheet budgets
+  5 min each way inside Activity 5's 75 min.
 - ~~**Relay board terminals.**~~ **Confirmed from the vendor datasheet**, extracted to
   `firmware/ESP32-C6-RELAY-X1.md`: terminals are **NO / COM / NC** as the worksheet assumed,
   power input is a separate 2-way block (7–60 V), relay is **GPIO19**, programmable LED
@@ -225,18 +232,27 @@ unfamiliar dashboard is exactly the test that activity is trying to run.
 **Fixed — the sabotage round.** The failure lab had the instructor walking to each team and
 breaking their rig unannounced. Impossible across 100 teams in 15 minutes. It is now **paired
 teams sabotaging each other** from sealed cards: one team observes their dashboard while a member
-of the paired team performs a sabotage, then they swap, three rounds, cards revealed at the end.
+of the paired team performs a sabotage, then they swap, four rounds, cards revealed at the end.
 This scales flat, and it is arguably better teaching — each team both diagnoses and causes a
-failure. The three cards are:
+failure. The four cards are:
 
 1. Switch the sensor board off with its on/off switch (it has an 18650 cell, so a pulled cable does nothing) → entities go `unavailable`
 2. Turn off WiFi on the laptop → Home Assistant loses both boards
 3. **Unscrew the pump's positive lead from the relay's NO terminal** → the relay still clicks,
    the LED still lights, Home Assistant still says the pump is on, and no water moves
+4. **Lift the float switch out of the water, then press the relay board's onboard button** →
+   yesterday's rule turns the pump off, then the pump runs again with the float still Dry
 
-Card 3 is new and deliberate: it is the only sabotage the dashboard cannot reveal, which is
-precisely the case the vibration reporter exists to catch. The record sheet now asks which round
+Card 3 is deliberate: it is the only sabotage the dashboard cannot reveal, which is
+precisely the case the vibration reporter exists to catch. The record sheet asks which round
 looked normal but was not.
+
+Card 4 was added 8 Sep 2026 (Roger). It stages the puzzle Session 1 leaves open — pump started
+with the float already Dry — so the team meets the hole and its fix (Fail-safe 1, steps 3–6) in
+the same activity. The Session 2 recap no longer raises the puzzle; it only names
+trigger / condition / action. Cost: one more round, roughly 3 min inside the 45-min lab. The
+between-round reset (saboteur undoes the act, observed team gets the pump running) is now one
+sentence in the worksheet; the facilitator run sheet still owns the water and timing details.
 
 **Still open — facilitator ratio.** 100 teams doing hands-on 12 V wiring needs roving help.
 Session 1's "ยกมือ" instruction assumes someone can come. At a plausible 1:10, that is ten

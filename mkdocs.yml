@@ -7,6 +7,11 @@ site_dir: site
 theme:
   name: material
   language: th
+  icon:
+    logo: material/sprout
+  font:
+    text: Prompt
+    code: IBM Plex Mono
   features:
     - navigation.top
     - navigation.sections
@@ -14,14 +19,14 @@ theme:
     - toc.integrate
   palette:
     - scheme: default
-      primary: teal
-      accent: teal
+      primary: custom
+      accent: custom
       toggle:
         icon: material/weather-night
         name: โหมดมืด
     - scheme: slate
-      primary: teal
-      accent: teal
+      primary: custom
+      accent: custom
       toggle:
         icon: material/weather-sunny
         name: โหมดสว่าง
@@ -31,8 +36,22 @@ nav:
   - "ช่วงที่ 1 — ระบบสมองกลฝังตัวในฟาร์ม: รับรู้ ตัดสินใจ สั่งการ": session-1.md
   - "ช่วงที่ 2 — ตรรกะควบคุมอัตโนมัติและการออกแบบ Fail-safe สำหรับฟาร์ม": session-2.md
   - "ช่วงที่ 3 — โครงสร้างระบบ IoT: การสื่อสาร คลาวด์ แดชบอร์ด และการออกแบบระบบ": session-3.md
-  - ใบบันทึก (พิมพ์): record-sheet.md
-  - อ้างอิงเมนู: reference.md
+  - ใบบันทึกสำหรับพิมพ์: record-sheet.md
+  - เมนูและวิธีแก้ปัญหา: reference.md
+
+plugins:
+  - search
+  - glightbox:
+      manual: true   # only links carrying the glightbox class open a popup; ordinary images stay inline
+      touchNavigation: true
+      zoomable: true
+      effect: zoom
+
+extra_css:
+  - stylesheets/extra.css
+
+extra_javascript:
+  - javascripts/extra.js
 
 markdown_extensions:
   - admonition
@@ -41,3 +60,5 @@ markdown_extensions:
   - tables
   - toc:
       permalink: true
+  - pymdownx.tasklist:
+      custom_checkbox: true

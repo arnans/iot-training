@@ -248,9 +248,9 @@ from the list, manual entry as fallback — see test C.)
 
 **This test's original premise was wrong, and the correction matters.** It assumed the lesson
 depends on the relay flickering *by itself* when a hand hovers near the threshold. It does not:
-[session-2.md:83](docs/session-2.md#L83) already has the Hardware role deliberately wave a hand up
+[session-2.md:83](docs/session-2.md#L83) already has a student deliberately wave a hand up
 and down at the threshold for a minute — "เหมือนเมฆบางลอยผ่านตอนพลบค่ำ", like thin clouds drifting
-past at dusk — while the Driver counts toggles. The fluctuation is **manufactured by the student
+past at dusk — while a teammate counts toggles. The fluctuation is **manufactured by the student
 on purpose**, and the worksheet says so.
 
 **Bench observation:** the BH1750 reading is *stable*. It tracks a hand faithfully and does not
@@ -412,9 +412,9 @@ read off the PDF.
       shows steady-lit for a few seconds before it admits the problem, so tell a helper to look
       twice rather than trust the first glance
 - [x] Power from **12 V into the screw terminal with USB unplugged** — **confirmed: the board
-      boots and connects normally on 12 V alone.** This is how every relay board runs on the day,
-      off the charge controller's LOAD pair, so it is the configuration the whole of session 2
-      depends on
+      boots and connects normally on 12 V alone.** *[Superseded 8 Sep 2026: the relay board now
+      runs on the charge controller's USB port and the 7–60 V input is unused; the USB-from-
+      controller configuration still needs its own bench check — see WORKSHEET-TODO.]*
 - [x] `restore_mode: ALWAYS_OFF` — **confirmed: the relay is always off after a boot**, never
       restores its previous state. This is the safety property that stops a pump restarting by
       itself after a power cut, and it is now proven in firmware. **Confirmed on BOTH supplies —

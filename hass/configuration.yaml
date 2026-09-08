@@ -64,7 +64,8 @@ recorder:
 #   ssdp            — periodic UPnP multicast to 239.255.255.250; pure noise here
 #   dhcp            — passive DHCP sniffing for device discovery; nothing to find
 #   bluetooth, usb  — no such hardware in the VM
-#   cloud           — Nabu Casa; needs internet, unused
+#   cloud           — Nabu Casa; needs internet, unused on team VMs. The instructor kit
+#                     adds `cloud:` for the Session 3 remote-access demo (README)
 #   stream, go2rtc, media_source, assist_pipeline, conversation, energy
 #                   — unused, and each pulls dependencies
 #   backup, my, homeassistant_alerts

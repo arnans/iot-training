@@ -92,6 +92,18 @@ decision open: **illuminance from all boards, or from a sample of ten.** The lig
 session 2's hook, and one board's trace tells that story as well as a hundred. Sample is
 recommended; the ten board names get filled in during kit prep.
 
+## Instructor kit: remote-access demo (Session 3)
+
+The instructor kit runs the same team OVA, plus one line so Settings → Home Assistant Cloud exists:
+
+```yaml
+cloud:
+```
+
+Add it to that one instance only, restart, sign in with the prepared Nabu Casa account, enable
+Remote access, and note the remote URL. Initial provisioning can take a while, so do this before
+the day and keep a recorded run from mobile data as the backup. Team VMs stay without `cloud:`.
+
 ## Not verified yet
 
 - The recorder `exclude`/`include` globs assume the entity-id shape produced by the Thai+ASCII

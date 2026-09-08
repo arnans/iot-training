@@ -260,6 +260,21 @@ trigger / condition / action. Cost: one more round, roughly 3 min inside the 45-
 between-round reset (saboteur undoes the act, observed team gets the pump running) is now one
 sentence in the worksheet; the facilitator run sheet still owns the water and timing details.
 
+**Revised again, 8 Sep 2026 (Roger, after reading the page).** The blind card round is gone. Too
+much logistics prose made the worksheet unattractive, the sabotage procedure was unclear, and the
+record (what did you see / what do you think caused it / seconds to notice) was vague. Activity 6
+is now **five problems, each sabotage → fix → sabotage again**: every problem opens with
+วิธีจำลองปัญหา (the exact act), ถ้าจำลองสำเร็จ (the symptom, and which other rule may mask it),
+the fix steps, and ถือว่าแก้ได้เมื่อ (repeat the act; stated pass criterion). Every team is
+sabotaged on every problem, so all see the failure before building the rule. The four cards became
+problems 1 (float + button → Fail-safe 1), 3 (board off → Fail-safe 3), 4 (NO lead → Fail-safe 4)
+and 5 (laptop WiFi off → no fix in HA, feeds the end question); problem 2 (pump left running →
+Fail-safe 2) is new so the run-time cutoff also answers a failure the team watched. Record per
+problem: จำลองสำเร็จ / เกิดอะไรขึ้น / แก้ได้แล้ว / หมายเหตุ (`s2.sab.<n>.ok|what|fixed|note`); the
+old `s2.sab.*.seen/pump/cause/time`, pair/correct/card and `s2.fs*.stop` keys are removed (no
+workshop data existed yet). Pairing and turn-taking logistics are the facilitator's spoken
+briefing, not worksheet text.
+
 **Still open — facilitator ratio.** 100 teams doing hands-on 12 V wiring needs roving help.
 Session 1's "ยกมือ" instruction assumes someone can come. At a plausible 1:10, that is ten
 facilitators, and they need briefing on the failure modes in `reference.md`. Not a materials
@@ -374,20 +389,27 @@ fill-in lines (the exception to the web-Markdown conventions). Print from the re
   address, no board names or IPs (read from the board), no encryption key
 - Pre-workshop Home Assistant install guide for participant laptops (COURSE-DESIGN Section 6),
   including opening port 80 so phones can reach it
-- Equipment price sheet for the design challenge
+- Equipment price sheet for the design challenge — prices marked as dated examples; the worksheet now
+  promises it under that name (ใบราคาอุปกรณ์ที่แจก)
+- Instructor's sample History graph from the instructor kit's own Session 2 morning, projected for teams
+  whose VM lost the recording (Session 3 history block)
+- Decide whether the instructor kit gets a real 12 V battery for a lit-vs-shaded charging demo; if not,
+  decide whether the 15 W panel stays in 100 kits as a prop (COURSE-DESIGN open decisions)
 - The three post-tests. Include one individual transfer item in post-test 2: *your pump is on, but the
   dashboard stops updating — what can you conclude, and what do you check?*
 - **Take-home page: one worked farm example** — from a named problem to sensor choice, placement,
   threshold, control rules, equipment, maintenance, and what must be re-measured before copying
   the classroom thresholds. No session time for it; it is the bridge from air-humidity stand-in to
   a real irrigation decision (review item, 8 Sep 2026)
-- **Cloud push procedure** — blocked on กำพล's tool choice. Needs prerequisites, per-team identity,
-  what is published and how often, observe-only or control, and the fallback when venue internet is
-  down. Until then the worksheet's remote-access outcome is optional
+- ~~**Cloud push procedure**~~ replaced 8 Sep 2026 by the **Home Assistant Cloud remote-access demo**
+  on the instructor kit (worksheet section ดูข้อมูลฟาร์มจากนอกพื้นที่). Still owed: instructor account and
+  remote URL prepared ahead, `cloud:` on the instructor kit's HA (see `hass/README.md`), a recorded
+  backup run from mobile data, and กำพล's sign-off since it sits in their block
 - **Facilitator run sheet** — help-request signal, escalation owner, spare-kit policy, water and
-  reset procedure between sabotage rounds, timing checkpoints. Ratio assumption ~1:10 still to confirm
-- **Sabotage card text** — one representative of the team walks to the paired team (no named
-  roles since 8 Sep 2026); the cards should say so
+  reset procedure between failure-lab problems, timing checkpoints. Ratio assumption ~1:10 still to confirm
+- **Facilitator briefing for the failure lab** — pairing, who sabotages first, turn-taking and
+  reset between problems are spoken, not on the worksheet (8 Sep 2026); sealed cards are no longer
+  needed, the acts are printed in the worksheet
 - ~~COURSE-DESIGN.md update to reflect the decisions above~~ done after the bench session; keep in step from here
 
 ## Session 2 review, 8 Sep 2026 (SESSION-2-REVIEW-FOR-CLAUDE.md)
@@ -424,6 +446,41 @@ restore 5 · watering rules and test 12 · disable/enable exercise 5 · written 
 leaving ~25 for Fail-safes 1 and 2 with 3 and 4 as stretch. Both need a timed rehearsal before
 anyone calls them verified.
 
-Not acted on, decisions pending (review items 9–12): cloud push tool (กำพล), solar-demo
-disconnection order against the real controller (bench), delivery materials, and the take-home
-worked farm example — all already listed above.
+Not acted on, decisions pending (review items 9–12): delivery materials and the take-home worked farm
+example — listed above. The cloud tool and the solar-demo disconnection order were settled by the
+Session 3 review below.
+
+## Session 3 review, 8 Sep 2026 (SESSION-3-REVIEW-FOR-CLAUDE.md)
+
+Roger's steer: the session was too dense; the design challenge needs real time to think, work and
+exchange. Acted on, in `docs/session-3.md`, `docs/record-sheet.md`, COURSE-DESIGN and SESSION-OVERVIEW:
+
+- **Timetable** network + remote demo 20 · power 10 · history 20 · dashboard 35 · break · design 55 ·
+  wrap-up 10 = 150. The worksheet opens with this table. Design went from 45 (30 design + 5 pair +
+  10 plenary) to 55 (40 + 10 + 5), the plenary is gone, and the first half lost 25 min.
+- **Comms block condensed**: the blank 30-cell มาก/กลาง/น้อย table became a completed reference table
+  with a limitation column and a caveat line; the only written record is one choice (card B) after
+  the instructor's worked example (card A). Protocol table kept as read-only. Zigbee row kept.
+- **Remote access** is an instructor demo of Home Assistant Cloud (Nabu Casa), placed at the end of
+  the network block. Fields for tool / URL / what / interval / where were removed; two observations
+  and one written question replace them. Subscription stated. Session intro, index.md and the
+  overview now say "explain how", not "each team tested".
+- **Power** is 10 min instructor-led at the team's own box: terminals, LCD, produce/store/supply,
+  "who needs power all night". Teams do not wire the panel, do not open the battery menu; the
+  adapter-pull demo and the "18650 → b02" line are gone. Record fields cut to volt, icon, night list.
+- **History** is 20 min: relay On is a *command*, counted only after the pump went back on the relay
+  (new `s2.pump_back_t` field in Session 2 step 2 of the exchange-back, and on the record sheet);
+  "not observed" allowed; time window explained; sample graph fallback; new two-event interpretation
+  table (what / when / which experiment / what a farm would check). Overnight-gap question kept.
+- **Dashboard** 35 min: minimum vs optional steps stated; the two tests merged into one by someone who
+  did not build it, half-minute pass criterion; written question is about what the tester missed.
+- **Design**: framed as a first pilot; C and D marked advanced; new canvas box "สิ่งที่ยังไม่แน่ใจ"
+  and a rubric line for it; note that classroom humidity thresholds are a stand-in; paired exchange
+  1 + 3 min each way with the "what happens next if it fails" question; `d.revise` field.
+- **Kit return** order fixed: automations off, relay Off, isolate power, then drain.
+- `hass/README.md` gains the instructor-kit `cloud:` note; the team config comment points to it.
+
+Not acted on: the review's "readiness 5 min" and "recovery 10 min" rows — no room once design took
+the time; the ก่อนเริ่ม checklist stays untimed and the 5-min revise slot is the buffer. The network
+block stays at 20 rather than the review's implied cut because it is กำพล's live block and now also
+carries the remote demo; confirm with them. Dashboard build time (25 min) still needs a novice timing.

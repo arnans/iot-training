@@ -162,7 +162,7 @@ Requirements this places on the network are written up in
 fail by default: **mDNS forwarded between wireless clients**, and **two MAC addresses allowed
 per laptop** (the Home Assistant VM is bridged, so it has its own MAC and IP).
 
-Consequences for the install guide, still to be written:
+Consequences for the install guide (drafted 11 Sep 2026 as `docs/install.md`):
 
 - **VirtualBox network adapter must be Bridged, not NAT.** With NAT the VM cannot receive
   multicast, `.local` will not resolve, and phones cannot reach it. This is the single decision

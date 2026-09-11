@@ -208,7 +208,7 @@ Raspberry Pi, per-board IP labels.
 
 ## Production task list (suggested order)
 1. **Bench-test the provisioning flow** ([TEST-PLAN.md](TEST-PLAN.md)), then finalise the two firmware images in [firmware/](firmware/) and flash the production run. Longest lead time, gates everything.
-1b. **Write the pre-workshop Home Assistant install guide** (VirtualBox bridged, one blessed path per OS **and per CPU architecture — Apple Silicon Macs need a separate ARM64 image and different import settings from Windows/Intel**, and a phone-reaches-the-VM check on port 80 — bridged, so no firewall to open) and get it to participants with a verification step. This is now a hard prerequisite, not optional pre-reading.
+1b. **Write the pre-workshop Home Assistant install guide** — *drafted 11 Sep 2026 as [docs/install.md](docs/install.md); download links, credentials, form and help channel still `TODO`, screenshots still placeholders* (VirtualBox bridged, one blessed path per OS **and per CPU architecture — Apple Silicon Macs need a separate ARM64 image and different import settings from Windows/Intel**, and a phone-reaches-the-VM check on port 80 — bridged, so no firewall to open) and get it to participants with a verification step. This is now a hard prerequisite, not optional pre-reading.
 1c. **Send [NETWORK-REQUIREMENTS.md](NETWORK-REQUIREMENTS.md) to the network provider** and book the setup-window acceptance test.
 2. Agree the Day 2 shape with กำพล, including the trimmed 20-min network block and the Home Assistant Cloud remote-access demo it now ends with (account, subscription, `cloud:` on the instructor kit's HA, recorded backup); agree pre-test items and post-test logistics with นัทธี.
 3. Worksheets for 3 sessions + design canvas + scenario cards.

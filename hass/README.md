@@ -70,6 +70,26 @@ participant even opens VirtualBox. See
 This also closes the two install-guide risks already in WORKSHEET-TODO: the bridged-vs-NAT
 adapter choice (baked in) and port 80 reachability from phones (the VM's firewall is ours).
 
+### What the participant guide assumes about the image
+
+The participant guide is [docs/install.md](../docs/install.md). It is written against these
+facts; change one here and the guide (and session 1's ก่อนเริ่ม) must change with it:
+
+- **VM name `Farm Workshop`** — the guide and session 1 tell participants to press Start on it.
+- **File names** `farm-workshop-x86-64.ova` (Windows + Intel Mac) and `farm-workshop-arm64.ova`
+  (Apple Silicon). Fill in the real download links, the file size, and the workshop
+  user/password where the guide says `TODO`.
+- **Adapter 1 is Bridged.** The host NIC name inside the OVA is the build machine's, so
+  every participant re-picks their WiFi card after import (guide step 2.3). Otherwise Start
+  fails with "physical network interfaces were not found".
+- **Import with "Generate new MAC addresses for all network adapters".** Participants set this
+  explicitly (guide step 2.2). CPU and RAM come from the OVA; participants leave them alone. With "Include all network adapter MAC addresses", every clone
+  keeps the build machine's MAC, and 34 identical MACs in one zone break the network.
+- **Port 80, IP read from the console.** The guide says to read the `IPv4 addresses` line and
+  ignore `homeassistant.local`. Before sending the guide, replace the placeholder screenshots
+  with real ones from the final build, and check the banner wording matches, especially on
+  ARM64, where the interface name may not be `enp0s3`.
+
 ## What the team config removes, honestly
 
 - **`ssdp`** — periodic UPnP M-SEARCH multicast to 239.255.255.250. Pure noise here. Removed.

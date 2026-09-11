@@ -1,5 +1,5 @@
 [build]
-  command = "pip install -r requirements.txt && python scripts/render-network-doc.py && mkdocs build"
+  command = "pip install -r requirements.txt && python scripts/render-network-doc.py && python scripts/render-worksheets.py && mkdocs build"
   publish = "site"
 
 [build.environment]

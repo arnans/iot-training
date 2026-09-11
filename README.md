@@ -41,6 +41,7 @@ docs/
 ├── reference.md      Home Assistant menu paths and troubleshooting
 ├── network-requirements.html      generated — Thai network spec
 ├── network-requirements-en.html   generated — English network spec
+├── renders/                       generated — install + sessions 1–3 as standalone HTML
 └── images/
     └── network-*.svg              generated — the two spec diagrams, per language
 ```
@@ -50,12 +51,16 @@ docs/
 ```bash
 pip install -r requirements.txt
 python scripts/render-network-doc.py   # regenerate the two network-spec pages
+python scripts/render-worksheets.py    # regenerate docs/renders/ (standalone worksheets)
 mkdocs serve                           # preview at http://127.0.0.1:8000
 mkdocs build                           # static site into site/
 ```
 
-Deployment config for Netlify is in `netlify.toml`, which runs the render step before the
-build so the published spec always matches its Markdown. `site/` is generated and not tracked.
+Published by **GitHub Pages** from `docs/` on `main`, at https://arnans.github.io/iot-training/.
+Pages serves the committed files as they are and does not run MkDocs: the generated HTML
+(network spec, `renders/`) must be regenerated and committed after editing its Markdown, and
+the `.md` pages at that address are GitHub's plain rendering, without the worksheet theme or
+fields. `site/` is generated and not tracked.
 
 ### The network spec pages
 

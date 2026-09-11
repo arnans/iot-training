@@ -23,7 +23,7 @@ claude.ai Artifact; it asks the host for its download capability so the
 Requires the `markdown` and `pymdownx` packages, which arrive with mkdocs-material
 (requirements.txt). GitHub Pages serves docs/ from main, so the committed files are public
 at https://arnans.github.io/iot-training/renders/<page>.html -- re-run this script and
-commit after editing a worksheet. (A Netlify build, if one is connected, re-runs it itself.)
+commit after editing a worksheet.
 """
 
 from __future__ import annotations

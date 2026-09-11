@@ -48,14 +48,15 @@ ROOT = pathlib.Path(__file__).resolve().parent.parent
 DOCS = ROOT / "docs"
 OUT_DIR = DOCS / "renders"
 
-# (source, slug, label in the page switcher)
+# (source, slug, switcher eyebrow, switcher label) -- the label is the session title cut
+# to what fits a chip on a phone; keep it in step with the page's own # heading
 PAGES = [
-    ("install.md", "install", "เตรียมแล็ปท็อป"),
-    ("session-1.md", "session-1", "ช่วงที่ 1"),
-    ("session-2.md", "session-2", "ช่วงที่ 2"),
-    ("session-3.md", "session-3", "ช่วงที่ 3"),
+    ("install.md", "install", "ก่อนการอบรม", "เตรียมแล็ปท็อป"),
+    ("session-1.md", "session-1", "ช่วงที่ 1", "รับรู้ ตัดสินใจ สั่งการ"),
+    ("session-2.md", "session-2", "ช่วงที่ 2", "ควบคุมอัตโนมัติและ Fail-safe"),
+    ("session-3.md", "session-3", "ช่วงที่ 3", "แดชบอร์ดและออกแบบระบบ"),
 ]
-SLUGS = {slug for _, slug, _ in PAGES}
+SLUGS = {p[1] for p in PAGES}
 
 SITE_NAME = "IoT ในฟาร์มอัจฉริยะ"
 FONTS = ("https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700"
@@ -77,7 +78,7 @@ FIELDS = _load_fields_hook()
 def site_css() -> str:
     """extra.css with Material's scheme attributes swapped for the three-state theme pattern."""
     css = (DOCS / "stylesheets" / "extra.css").read_text(encoding="utf-8")
-    css = re.sub(r"@import[^;]+;\s*", "", css)  # fonts arrive via <link>
+    css = re.sub(r"^@import .*$\n?", "", css, flags=re.M)  # fonts arrive via <link>; the URL itself holds ";"
     m = re.search(r'\[data-md-color-scheme="slate"\]\s*\{(.*?)\n\}', css, re.S)
     if not m:
         sys.exit("extra.css: dark (slate) block not found; update site_css()")
@@ -156,6 +157,8 @@ body {
   border-color: var(--ag-green);
   color: #ffffff;
 }
+.ws-n::after { content: " · "; }
+.ws-pages > li.is-current .ws-n { opacity: 0.85; }
 .ws-toc { display: none; }
 .ws-side a:focus-visible, .ws-top a:focus-visible { outline: 2px solid var(--ag-marigold); outline-offset: 2px; }
 
@@ -179,6 +182,17 @@ body {
     font-weight: 600;
   }
   .ws-pages > li.is-current > a { background: var(--ag-panel); color: var(--md-typeset-a-color); }
+  /* sidebar: session number as a small eyebrow over the session's name */
+  .ws-n {
+    display: block;
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.03em;
+    color: var(--md-default-fg-color--lighter);
+  }
+  .ws-n::after { content: none; }
+  .ws-pages > li.is-current .ws-n { color: var(--ag-marigold-deep); opacity: 1; }
+  .ws-t { display: block; }
   .ws-pages > li.is-current .ws-toc {
     display: block;
     list-style: none;
@@ -457,8 +471,9 @@ def _h2_tokens(tokens):
 
 def switcher(pages: list[dict], current: str | None, combined: bool) -> str:
     rows = []
-    for (_, slug, label), p in zip(PAGES, pages):
+    for (_, slug, eyebrow, name), p in zip(PAGES, pages):
         cur = slug == current
+        label = f'<span class="ws-n">{eyebrow}</span><span class="ws-t">{html.escape(name)}</span>'
         if combined:
             head = f'<a href="#{slug}" data-goto="{slug}">{label}</a>'
             toc = "".join(
@@ -521,7 +536,7 @@ def main() -> None:
     stamp = _dt.date.today().isoformat()
     OUT_DIR.mkdir(exist_ok=True)
 
-    pages = [render_page(src, slug, combined=False) for src, slug, _ in PAGES]
+    pages = [render_page(src, slug, combined=False) for src, slug, *_ in PAGES]
     for p in pages:
         doc = full_document(page_shell(p["title"], switcher(pages, p["slug"], False), p["body"], "", stamp))
         out = OUT_DIR / f"{p['slug']}.html"
@@ -529,7 +544,7 @@ def main() -> None:
         print(f"wrote {out.relative_to(ROOT)}  ({out.stat().st_size / 1e6:.1f} MB)")
 
     if args.combined:
-        cpages = [render_page(src, slug, combined=True) for src, slug, _ in PAGES]
+        cpages = [render_page(src, slug, combined=True) for src, slug, *_ in PAGES]
         main_html = "\n".join(
             f'<section class="ws-page" data-page="{p["slug"]}">\n{p["body"]}\n</section>' for p in cpages
         )

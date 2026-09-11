@@ -16,7 +16,7 @@ specific to that first delivery.
 | [PART1-RECORDING-PREP.md](PART1-RECORDING-PREP.md) | Readiness notes for the optional narrated online decks |
 | [WORKSHEET-TODO.md](WORKSHEET-TODO.md) | Open items and assumptions in the worksheets |
 | [NETWORK-REQUIREMENTS.md](NETWORK-REQUIREMENTS.md) | Wireless network spec for the venue's network provider. Thai edition: [NETWORK-REQUIREMENTS-th.md](NETWORK-REQUIREMENTS-th.md). Both render to standalone HTML in `docs/` — see below |
-| `scripts/` | [render-network-doc.py](scripts/render-network-doc.py) turns the two network Markdown files into print-ready HTML. [render-worksheets.py](scripts/render-worksheets.py) renders the install guide and sessions 1–3 into self-contained HTML in `docs/renders/`, published at `<site>/renders/<page>.html` and re-rendered on every Netlify build |
+| `scripts/` | [render-network-doc.py](scripts/render-network-doc.py) turns the two network Markdown files into print-ready HTML. [render-worksheets.py](scripts/render-worksheets.py) renders the install guide and sessions 1–3 into self-contained HTML in `docs/renders/`, served by GitHub Pages at `arnans.github.io/iot-training/renders/<page>.html`. Pages serves the committed copies, so re-run the script and commit after editing a worksheet |
 | [TEST-PLAN.md](TEST-PLAN.md) | Bench test for the ESPHome provisioning flow, before committing the firmware image |
 | `firmware/` | The two workshop ESPHome images (sensor node, relay board) |
 | `hass/` | Home Assistant configuration for the team VM image (plus a now-unused instructor-server config) |

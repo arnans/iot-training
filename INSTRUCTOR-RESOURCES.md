@@ -39,7 +39,7 @@ The same image participants install. Put it on the instructor kit and on every r
 
 | Laptop | VirtualBox | Farm Workshop VM |
 |---|---|---|
-| Windows / Intel Mac | [Downloads](https://www.virtualbox.org/wiki/Downloads) | `farm-workshop-x86-64.ova` — **not built yet** |
+| Windows / Intel Mac | [Downloads](https://www.virtualbox.org/wiki/Downloads) | [`farm-workshop-x86-64.ova`](https://drive.google.com/file/d/1OdS3sBFBDT3OUg7olJJABfEBeRGMHrIW/view?usp=sharing) (Google Drive) |
 | Apple Silicon Mac (M1+) | [Downloads](https://www.virtualbox.org/wiki/Downloads) | `farm-workshop-arm64.ova` — **not built yet** |
 
 Import steps, settings and the login are in the participant guide:
@@ -105,8 +105,8 @@ team card as one matching set.
 
 Nobody has produced these yet:
 
-- **The two Farm Workshop OVAs**, and a file host for them — blocks sending the install guide to
-  participants
+- **The ARM64 Farm Workshop OVA** (`farm-workshop-arm64.ova`) — blocks sending the install guide
+  to participants with Apple Silicon Macs. The x86-64 image is built and hosted on Google Drive
 - The install-guide details participants need: VM login, file size, verification form, help channel
 - Slide decks for Sessions 1–3, the three post-tests, and the facilitator run-sheet
 - Real screenshots in the install guide (currently placeholders)

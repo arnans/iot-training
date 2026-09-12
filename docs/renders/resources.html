@@ -1,0 +1,1439 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<title>รวมไฟล์และลิงก์</title>
+<meta name="description" content="ใบงานผู้เข้าร่วม IoT ในฟาร์มอัจฉริยะ (ฉบับร่างสำหรับทดลองใช้)">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;600&display=swap">
+<style>
+
+:root { color-scheme: light; }
+[hidden] { display: none !important; }
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; scroll-padding-top: 1rem; }
+body {
+  margin: 0;
+  background: var(--md-default-bg-color);
+  color: var(--md-default-fg-color);
+  font: 400 16px/1.6 "Prompt", "Segoe UI", Tahoma, sans-serif;
+}
+
+/* ---- top band ---- */
+.ws-top {
+  background: linear-gradient(90deg, var(--md-primary-fg-color--dark), var(--md-primary-fg-color));
+  color: #ffffff;
+  padding-block: 0.75rem;
+  padding-inline: 16px;
+}
+.ws-top__inner {
+  max-width: 76rem;
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.4rem 1rem;
+}
+.ws-brand { font-weight: 600; font-size: 1.05rem; letter-spacing: 0.01em; }
+.ws-draft {
+  font-size: 0.76rem;
+  padding: 0.1rem 0.75rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.16);
+  border: 1px solid rgba(255, 255, 255, 0.28);
+}
+
+/* ---- shell: page switcher + reading column ---- */
+.ws-shell {
+  max-width: 76rem;
+  margin: 0 auto;
+  padding-inline: 16px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  column-gap: 2.75rem;
+}
+.ws-side { padding-block: 1rem 0; font-size: 0.86rem; line-height: 1.5; }
+.ws-pages { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 0.4rem; }
+.ws-pages > li > a {
+  display: inline-block;
+  padding: 0.3rem 0.9rem;
+  border-radius: 999px;
+  border: 1px solid var(--ag-chip-border);
+  color: var(--md-default-fg-color--light);
+  text-decoration: none;
+  font-weight: 500;
+}
+.ws-pages > li > a:hover { border-color: var(--ag-green); color: var(--md-typeset-a-color); }
+.ws-pages > li.is-current > a {
+  background: var(--ag-green);
+  border-color: var(--ag-green);
+  color: #ffffff;
+}
+.ws-n::after { content: " · "; }
+.ws-pages > li.is-current .ws-n { opacity: 0.85; }
+.ws-toc { display: none; }
+.ws-side a:focus-visible, .ws-top a:focus-visible { outline: 2px solid var(--ag-marigold); outline-offset: 2px; }
+
+@media (min-width: 64rem) {
+  .ws-shell { grid-template-columns: 15rem minmax(0, 47rem); }
+  .ws-side {
+    position: sticky;
+    top: 0;
+    align-self: start;
+    max-height: 100vh;
+    overflow-y: auto;
+    padding-block: 2rem;
+  }
+  .ws-pages { display: block; }
+  .ws-pages > li { margin-bottom: 0.3rem; }
+  .ws-pages > li > a {
+    display: block;
+    border: 0;
+    border-radius: 0.5rem;
+    padding: 0.35rem 0.7rem;
+    font-weight: 600;
+  }
+  .ws-pages > li.is-current > a { background: var(--ag-panel); color: var(--md-typeset-a-color); }
+  /* sidebar: session number as a small eyebrow over the session's name */
+  .ws-n {
+    display: block;
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.03em;
+    color: var(--md-default-fg-color--lighter);
+  }
+  .ws-n::after { content: none; }
+  .ws-pages > li.is-current .ws-n { color: var(--ag-marigold-deep); opacity: 1; }
+  .ws-t { display: block; }
+  .ws-pages > li.is-current .ws-toc {
+    display: block;
+    list-style: none;
+    margin: 0.3rem 0 0.8rem 0.9rem;
+    padding: 0 0 0 0.75rem;
+    border-left: 2px solid var(--ag-rule);
+  }
+  .ws-toc a {
+    display: block;
+    padding: 0.22rem 0;
+    color: var(--md-default-fg-color--light);
+    text-decoration: none;
+    font-size: 0.8rem;
+  }
+  .ws-toc a:hover { color: var(--md-typeset-a-color); }
+}
+
+/* ---- the worksheet itself ---- */
+.md-typeset { padding-block: 1rem 5rem; overflow-wrap: break-word; min-width: 0; }
+.md-typeset > section > h1:first-child, .md-typeset > h1:first-child { margin-top: 0.6em; }
+.md-typeset p, .md-typeset ul, .md-typeset ol, .md-typeset blockquote { margin: 0 0 1em; }
+.md-typeset ul { padding-left: 1.4em; }
+.md-typeset li > ul, .md-typeset li > ol { margin: 0.4em 0 0.4em; }
+.md-typeset a { color: var(--md-typeset-a-color); text-underline-offset: 0.18em; }
+.md-typeset code {
+  font-family: "IBM Plex Mono", Consolas, monospace;
+  background: var(--md-code-bg-color);
+  color: var(--md-code-fg-color);
+}
+.md-typeset pre {
+  background: var(--md-code-bg-color);
+  padding: 0.8em 1em;
+  border-radius: 0.6em;
+  overflow-x: auto;
+  margin: 0.4em 0 1em;
+}
+.md-typeset pre code { padding: 0; background: none; font-size: 0.88em; }
+.md-typeset hr { border: 0; }
+.md-typeset blockquote > :last-child { margin-bottom: 0; }
+.md-typeset img { max-width: 100%; height: auto; display: inline-block; }
+.md-typeset .table-wrap { overflow-x: auto; margin: 0 0 1.3em; }
+.md-typeset table { border-collapse: separate; border-spacing: 0; width: 100%; }
+.md-typeset th, .md-typeset td { padding: 0.55em 0.9em; text-align: left; }
+.md-typeset td { font-variant-numeric: tabular-nums; }
+.md-typeset .admonition {
+  margin: 1.2em 0;
+  padding: 0.6em 1em;
+  border-left: 4px solid var(--ag-sky);
+  background: var(--ag-panel);
+}
+.md-typeset .admonition-title { font-weight: 600; margin-bottom: 0.3em; }
+/* IoT ในฟาร์มอัจฉริยะ — worksheet site design tokens and components.
+   Loaded after Material's own stylesheet via mkdocs.yml extra_css.
+   Type: Prompt (headings and body) + IBM Plex Mono (names/code).
+   Palette: field green / leaf / marigold / sky / soil / tomato on a green-tinted white ground. */
+
+/* Material loads Prompt 300/400/700 from mkdocs.yml theme.font; this adds the 500/600 weights */
+
+:root {
+  --md-text-font: "Prompt";
+  --md-code-font: "IBM Plex Mono";
+  --ag-green: #2e7d32;
+  --ag-green-deep: #1b5e20;
+  --ag-leaf: #7cb342;
+  --ag-marigold: #f5a524;
+  --ag-marigold-deep: #c77e00;
+  --ag-sky: #3b8bc9;
+  --ag-soil: #6d4c2f;
+  --ag-tomato: #d84a2b;
+  --ag-ink: #1e2a1f;
+}
+
+/* ---------- light scheme ---------- */
+:root {
+  --md-primary-fg-color: var(--ag-green);
+  --md-primary-fg-color--light: var(--ag-leaf);
+  --md-primary-fg-color--dark: var(--ag-green-deep);
+  --md-accent-fg-color: var(--ag-marigold-deep);
+  --md-accent-fg-color--transparent: rgba(245, 165, 36, 0.12);
+  --md-default-bg-color: #fafcf7;
+  --md-default-fg-color: var(--ag-ink);
+  --md-default-fg-color--light: #4b5a4d;
+  --md-default-fg-color--lighter: #8a968b;
+  --md-typeset-color: var(--ag-ink);
+  --md-typeset-a-color: var(--ag-green-deep);
+  --md-code-bg-color: #eef4e8;
+  --md-code-fg-color: #24402a;
+  --md-typeset-table-color: rgba(30, 42, 31, 0.1);
+  --ag-panel: #f0f6ea;
+  --ag-panel-record: #fff6e3;
+  --ag-chip-bg: #fff1d6;
+  --ag-chip-fg: #7a4a00;
+  --ag-chip-border: #f2cf86;
+  --ag-step-bg: var(--ag-green);
+  --ag-step-fg: #ffffff;
+  --ag-rule: var(--ag-leaf);
+  --ag-shadow: rgba(30, 42, 31, 0.14);
+}
+
+/* ---------- dark scheme ---------- */
+
+
+/* ---------- shell ---------- */
+.md-grid {
+  max-width: 76rem;
+}
+
+.md-header,
+.md-tabs,
+.md-sidebar,
+.md-nav,
+.md-search,
+.md-footer {
+  font-family: "Prompt", "Segoe UI", sans-serif;
+}
+
+.md-header {
+  background: linear-gradient(90deg, var(--md-primary-fg-color--dark), var(--md-primary-fg-color));
+}
+
+.md-header__title,
+.md-nav__title,
+.md-tabs__link {
+  font-family: "Prompt", "Segoe UI", sans-serif;
+  font-weight: 600;
+}
+
+.md-header__title {
+  font-size: 1rem;
+}
+
+.md-nav {
+  font-size: 0.78rem;
+  line-height: 1.6;
+}
+
+.md-nav__link--active,
+.md-nav__item--active > .md-nav__link {
+  color: var(--md-typeset-a-color);
+  font-weight: 600;
+}
+
+/* ---------- type ---------- */
+.md-typeset {
+  font-family: "Prompt", "Segoe UI", sans-serif;
+  font-size: 1rem;
+  line-height: 1.85;
+}
+
+.md-typeset strong {
+  font-weight: 600;
+}
+
+.md-typeset h1,
+.md-typeset h2,
+.md-typeset h3,
+.md-typeset h4 {
+  font-family: "Prompt", "Segoe UI", sans-serif;
+  font-weight: 600;
+  line-height: 1.3;
+  text-wrap: balance;
+  color: var(--md-default-fg-color);
+}
+
+.md-typeset h1 {
+  font-size: 2.1em;
+  color: var(--md-typeset-a-color);
+  margin-bottom: 0.6em;
+}
+
+.md-typeset h2 {
+  font-size: 1.55em;
+  margin-top: 2.2em;
+  padding-top: 0.7em;
+  border-top: 3px solid var(--ag-rule);
+}
+
+.md-typeset h3 {
+  font-size: 1.25em;
+  margin-top: 1.8em;
+}
+
+.md-typeset h4 {
+  font-size: 1.05em;
+  margin-top: 1.5em;
+}
+
+.md-typeset code {
+  font-size: 0.85em;
+  padding: 0.1em 0.45em;
+  border-radius: 0.35em;
+}
+
+.md-typeset hr {
+  border-bottom: 2px dashed var(--ag-rule);
+  margin: 2.5em 0;
+}
+
+/* ---------- numbered steps ---------- */
+.md-typeset ol {
+  counter-reset: step;
+  list-style: none;
+  margin-left: 0;
+  padding-left: 0;
+}
+
+.md-typeset ol > li {
+  counter-increment: step;
+  position: relative;
+  padding-left: 2.9rem;
+  margin: 0.55em 0;
+}
+
+.md-typeset ol > li::before {
+  content: counter(step);
+  position: absolute;
+  left: 0;
+  top: 0.2em;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  background: var(--ag-step-bg);
+  color: var(--ag-step-fg);
+  font: 600 0.85rem/2rem "Prompt", sans-serif;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+
+.md-typeset ol ol > li::before {
+  background: transparent;
+  color: var(--md-typeset-a-color);
+  border: 2px solid var(--ag-rule);
+  line-height: calc(2rem - 4px);
+}
+
+/* ---------- screenshot chip (glightbox link after a step) ---------- */
+.md-typeset a.glightbox {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3em;
+  margin-left: 0.3em;
+  padding: 0.02em 0.6em 0.02em 0.45em;
+  border-radius: 999px;
+  background: var(--ag-chip-bg);
+  color: var(--ag-chip-fg);
+  border: 1px solid var(--ag-chip-border);
+  font-size: 0.78em;
+  line-height: 1.7;
+  text-decoration: none;
+  vertical-align: 0.12em;
+  white-space: nowrap;
+  transition: background 0.15s, transform 0.15s;
+}
+
+.md-typeset a.glightbox::after {
+  content: "ดูภาพ";
+  font-family: "Prompt", "Segoe UI", sans-serif;
+  font-weight: 500;
+}
+
+.md-typeset a.glightbox:hover,
+.md-typeset a.glightbox:focus-visible {
+  background: var(--ag-marigold);
+  color: var(--ag-ink);
+  transform: translateY(-1px);
+  outline: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .md-typeset a.glightbox {
+    transition: none;
+  }
+}
+
+/* ---------- role chips (extra.js tags <strong>Hardware</strong> etc.) ---------- */
+.md-typeset strong.role {
+  display: inline-block;
+  padding: 0 0.55em;
+  border-radius: 0.4em;
+  font-family: "Prompt", "Segoe UI", sans-serif;
+  font-weight: 600;
+  font-size: 0.78em;
+  line-height: 1.75;
+  letter-spacing: 0.02em;
+  color: #ffffff;
+  vertical-align: 0.1em;
+}
+
+.md-typeset strong.role-hardware { background: var(--ag-soil); }
+.md-typeset strong.role-driver   { background: var(--ag-sky); }
+.md-typeset strong.role-recorder { background: var(--ag-marigold-deep); }
+.md-typeset strong.role-tester   { background: var(--ag-tomato); }
+
+/* ---------- callouts (blockquotes) ---------- */
+.md-typeset blockquote {
+  margin: 1.4em 0;
+  padding: 0.8em 1.2em;
+  border-left: 5px solid var(--ag-rule);
+  border-radius: 0 0.7em 0.7em 0;
+  background: var(--ag-panel);
+  color: var(--md-typeset-color);
+}
+
+.md-typeset blockquote.note-record {
+  border-left-color: var(--ag-marigold);
+  background: var(--ag-panel-record);
+}
+
+.md-typeset blockquote.note-record > p:first-child::before {
+  content: "✎ ";
+  color: var(--ag-marigold-deep);
+}
+
+/* ---------- checklists ---------- */
+.md-typeset .task-list-item {
+  margin-left: 0;
+  padding-left: 2.2em;
+  list-style: none;
+}
+
+.md-typeset .task-list-control .task-list-indicator {
+  top: 0.35em;
+  left: -2em;
+  width: 1.3em;
+  height: 1.3em;
+  border: 2px solid var(--ag-rule);
+  border-radius: 0.3em;
+  background: var(--md-default-bg-color);
+  opacity: 1;
+}
+
+.md-typeset .task-list-control [type="checkbox"]:checked + .task-list-indicator {
+  background: var(--ag-green);
+  border-color: var(--ag-green);
+}
+
+/* ---------- tables ---------- */
+.md-typeset table:not([class]) {
+  font-size: 0.9em;
+  line-height: 1.6;
+  border: 0;
+  border-radius: 0.6em;
+  overflow: hidden;
+  box-shadow: 0 1px 0 var(--md-typeset-table-color);
+}
+
+.md-typeset table:not([class]) th {
+  background: var(--md-primary-fg-color);
+  color: #ffffff;
+  font-family: "Prompt", "Segoe UI", sans-serif;
+  font-weight: 600;
+  border: 0;
+}
+
+.md-typeset table:not([class]) tr:nth-child(even) td {
+  background: var(--ag-panel);
+}
+
+.md-typeset table:not([class]) td {
+  border-top: 1px solid var(--md-typeset-table-color);
+  vertical-align: top;
+}
+
+/* ---------- images ---------- */
+.md-typeset img:not(.twemoji):not(.emojione) {
+  border-radius: 0.7em;
+  box-shadow: 0 3px 14px var(--ag-shadow);
+}
+
+/* ---------- admonitions on the palette ---------- */
+.md-typeset .admonition,
+.md-typeset details {
+  border-radius: 0.7em;
+  font-size: 0.9em;
+}
+
+.md-typeset .admonition.note,
+.md-typeset .admonition.info,
+.md-typeset .admonition.tip {
+  border-color: var(--ag-sky);
+}
+
+.md-typeset .admonition.warning,
+.md-typeset .admonition.danger {
+  border-color: var(--ag-tomato);
+}
+
+/* ---------- hover preview panel (extra.js) ---------- */
+#shot-hover {
+  position: fixed;
+  z-index: 60;
+  padding: 0.5rem;
+  border: 1px solid var(--ag-chip-border);
+  border-radius: 0.8em;
+  background: var(--md-default-bg-color);
+  box-shadow: 0 14px 44px var(--ag-shadow);
+  pointer-events: none;
+}
+
+#shot-hover img {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 74vh;
+  object-fit: contain;
+  border-radius: 0.5em;
+  box-shadow: none;
+}
+
+#shot-hover .shot-hover__cap {
+  padding: 0.4rem 0.2rem 0;
+  font: 500 0.8rem/1.5 "Prompt", "Segoe UI", sans-serif;
+  color: var(--md-default-fg-color--light);
+}
+
+/* ---------- sidebar table of contents: one indent per heading level ---------- */
+/* h2 entries: the page's sections */
+.md-nav--secondary > .md-nav__list > .md-nav__item > .md-nav__link {
+  font-weight: 600;
+  margin-top: 0.4em;
+}
+
+/* h3 entries: indented under their section, hung on a leaf-green rule */
+.md-nav--secondary .md-nav .md-nav__list {
+  margin-left: 0.55rem;
+  padding-left: 0.75rem;
+  border-left: 2px solid var(--ag-rule);
+}
+
+.md-nav--secondary .md-nav .md-nav__link {
+  font-size: 0.72rem;
+  font-weight: 400;
+}
+
+/* h4 entries: one more indent, lighter, dashed rule */
+.md-nav--secondary .md-nav .md-nav .md-nav__list {
+  border-left-style: dashed;
+}
+
+.md-nav--secondary .md-nav .md-nav .md-nav__link {
+  font-size: 0.68rem;
+  color: var(--md-default-fg-color--light);
+}
+
+.md-nav--secondary .md-nav__link--active,
+.md-nav--secondary .md-nav .md-nav__link--active {
+  color: var(--md-typeset-a-color);
+  font-weight: 600;
+}
+
+/* ---------- fillable worksheet (hooks/fields.py generates, extra.js saves) ---------- */
+/* one-line box: sits in the prose like a blank on a paper form */
+.md-typeset input.fld {
+  font: inherit;
+  font-size: 0.92em;
+  line-height: 1.5;
+  padding: 0 0.45em;
+  margin: 0 0.15em;
+  border: 0;
+  border-bottom: 2px solid var(--ag-marigold);
+  border-radius: 0.35em 0.35em 0 0;
+  background: var(--ag-panel-record);
+  color: var(--md-typeset-color);
+  min-width: 2.5em;
+  max-width: 100%;
+  vertical-align: baseline;
+  box-sizing: content-box;
+}
+
+.md-typeset input.fld:focus {
+  outline: none;
+  border-bottom-color: var(--ag-green);
+  background: var(--md-default-bg-color);
+  box-shadow: 0 2px 0 var(--ag-green);
+}
+
+/* multi-line box: full width, grows with the text (extra.js), no scrollbar ever */
+.md-typeset textarea.fld-ta {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  margin: 0.5em 0 1em;
+  padding: 0.5em 0.7em;
+  font: inherit;
+  font-size: 0.95em;
+  line-height: 1.7;
+  min-height: 3.2em;
+  border: 1px solid var(--ag-chip-border);
+  border-left: 5px solid var(--ag-marigold);
+  border-radius: 0.5em;
+  background: var(--ag-panel-record);
+  color: var(--md-typeset-color);
+  resize: none;
+  overflow: hidden;
+}
+
+.md-typeset textarea.fld-ta:focus {
+  outline: none;
+  border-color: var(--ag-green);
+}
+
+.md-typeset blockquote textarea.fld-ta,
+.md-typeset li textarea.fld-ta {
+  margin: 0.4em 0 0.2em;
+}
+
+/* radio group: "circle one" on paper */
+.md-typeset .fld-radio {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 0.2em 0.9em;
+  vertical-align: baseline;
+  padding: 0 0.4em;
+  border-bottom: 2px solid var(--ag-marigold);
+  border-radius: 0.35em 0.35em 0 0;
+  background: var(--ag-panel-record);
+}
+
+.md-typeset .fld-radio label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3em;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.md-typeset .fld-radio input {
+  margin: 0;
+  width: 1em;
+  height: 1em;
+  accent-color: var(--ag-green);
+}
+
+.md-typeset table:not([class]) td input.fld {
+  font-size: 0.95em;
+}
+
+/* toolbar under the page title */
+#ws-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 0.6rem;
+  margin: 0 0 1.6rem;
+  padding: 0.7rem 1rem;
+  border: 1px solid var(--ag-chip-border);
+  border-radius: 0.7em;
+  background: var(--ag-panel-record);
+  font-family: "Prompt", "Segoe UI", sans-serif;
+  font-size: 0.78rem;
+  line-height: 1.5;
+}
+
+#ws-bar .ws-status {
+  flex: 1 1 16rem;
+  color: var(--md-default-fg-color--light);
+}
+
+#ws-bar .ws-status strong {
+  color: var(--ag-marigold-deep);
+  font-weight: 600;
+}
+
+.ws-btn {
+  font: 600 0.76rem/1.9 "Prompt", "Segoe UI", sans-serif;
+  padding: 0 0.9em;
+  border-radius: 999px;
+  border: 1px solid var(--ag-green);
+  background: var(--ag-green);
+  color: #ffffff;
+  cursor: pointer;
+}
+
+.ws-btn:hover,
+.ws-btn:focus-visible {
+  background: var(--ag-green-deep);
+  border-color: var(--ag-green-deep);
+  outline: none;
+}
+
+.ws-btn--quiet {
+  background: transparent;
+  color: var(--md-default-fg-color--light);
+  border-color: var(--ag-chip-border);
+}
+
+.ws-btn--quiet:hover,
+.ws-btn--quiet:focus-visible {
+  background: var(--ag-panel);
+  color: var(--ag-tomato);
+  border-color: var(--ag-tomato);
+}
+
+/* ---------- print: a filled page reads like a completed paper form ---------- */
+@media print {
+  #ws-bar,
+  #shot-hover,
+  .md-typeset a.glightbox {
+    display: none !important;
+  }
+
+  .md-typeset input.fld {
+    border-bottom: 1px solid #333333;
+    background: transparent;
+    color: #000000;
+  }
+
+  .md-typeset textarea.fld-ta {
+    border: 1px solid #888888;
+    border-left-width: 1px;
+    background: transparent;
+    color: #000000;
+    overflow: visible;
+  }
+
+  .md-typeset .fld-radio {
+    border: 0;
+    background: transparent;
+  }
+
+  .md-typeset blockquote,
+  .md-typeset table,
+  .md-typeset textarea.fld-ta,
+  .md-typeset li {
+    break-inside: avoid;
+  }
+}
+
+/* dark: follows the OS unless the viewer picked light; an explicit dark pick always wins */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+  --md-primary-fg-color: #1f5a24;
+  --md-primary-fg-color--light: var(--ag-leaf);
+  --md-primary-fg-color--dark: #143d18;
+  --md-accent-fg-color: #f5b84a;
+  --md-accent-fg-color--transparent: rgba(245, 184, 74, 0.14);
+  --md-default-bg-color: #14201a;
+  --md-default-fg-color: #e6efe3;
+  --md-default-fg-color--light: #b7c6b6;
+  --md-default-fg-color--lighter: #7f9182;
+  --md-typeset-color: #e6efe3;
+  --md-typeset-a-color: #9cd07a;
+  --md-code-bg-color: #1d2c23;
+  --md-code-fg-color: #cfe3c8;
+  --md-typeset-table-color: rgba(230, 239, 227, 0.12);
+  --ag-panel: #1b2a21;
+  --ag-panel-record: #2e2510;
+  --ag-chip-bg: #3a2e14;
+  --ag-chip-fg: #f5c971;
+  --ag-chip-border: #5a4620;
+  --ag-step-bg: var(--ag-leaf);
+  --ag-step-fg: #14201a;
+  --ag-rule: #4e7d2c;
+  --ag-shadow: rgba(0, 0, 0, 0.45);
+  color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --md-primary-fg-color: #1f5a24;
+  --md-primary-fg-color--light: var(--ag-leaf);
+  --md-primary-fg-color--dark: #143d18;
+  --md-accent-fg-color: #f5b84a;
+  --md-accent-fg-color--transparent: rgba(245, 184, 74, 0.14);
+  --md-default-bg-color: #14201a;
+  --md-default-fg-color: #e6efe3;
+  --md-default-fg-color--light: #b7c6b6;
+  --md-default-fg-color--lighter: #7f9182;
+  --md-typeset-color: #e6efe3;
+  --md-typeset-a-color: #9cd07a;
+  --md-code-bg-color: #1d2c23;
+  --md-code-fg-color: #cfe3c8;
+  --md-typeset-table-color: rgba(230, 239, 227, 0.12);
+  --ag-panel: #1b2a21;
+  --ag-panel-record: #2e2510;
+  --ag-chip-bg: #3a2e14;
+  --ag-chip-fg: #f5c971;
+  --ag-chip-border: #5a4620;
+  --ag-step-bg: var(--ag-leaf);
+  --ag-step-fg: #14201a;
+  --ag-rule: #4e7d2c;
+  --ag-shadow: rgba(0, 0, 0, 0.45);
+  color-scheme: dark;
+}
+
+.md-typeset ul.task-list { padding-left: 0; }
+.md-typeset .task-list-item { position: relative; }
+.md-typeset .task-list-control .task-list-indicator { position: absolute; display: block; left: 0; top: 0.3em; }
+.md-typeset .task-list-control .task-list-indicator::after {
+  content: "";
+  position: absolute;
+  left: 0.36em;
+  top: 0.1em;
+  width: 0.34em;
+  height: 0.68em;
+  border: solid #ffffff;
+  border-width: 0 0.16em 0.16em 0;
+  transform: rotate(45deg);
+  opacity: 0;
+}
+.md-typeset .task-list-control [type="checkbox"] {
+  position: absolute;
+  left: 0;
+  top: 0.3em;
+  width: 1.3em;
+  height: 1.3em;
+  margin: 0;
+  opacity: 0;
+  cursor: pointer;
+  z-index: 1;
+}
+.md-typeset .task-list-control [type="checkbox"]:checked + .task-list-indicator::after { opacity: 1; }
+.md-typeset .task-list-control [type="checkbox"]:focus-visible + .task-list-indicator {
+  outline: 2px solid var(--ag-marigold);
+  outline-offset: 2px;
+}
+.md-typeset input.fld:focus-visible, .md-typeset textarea.fld-ta:focus-visible { outline: 2px solid var(--ag-green); }
+
+/* lightbox for the ดูภาพ chips (the site uses glightbox) */
+#shot-box {
+  border: 0;
+  padding: 0.6rem;
+  max-width: min(96vw, 1100px);
+  border-radius: 0.8rem;
+  background: var(--md-default-bg-color);
+  color: var(--md-default-fg-color);
+  box-shadow: 0 20px 60px var(--ag-shadow);
+}
+#shot-box::backdrop { background: rgba(10, 20, 12, 0.72); }
+#shot-box img { display: block; max-width: 100%; max-height: 80vh; margin: 0 auto; border-radius: 0.5rem; }
+#shot-box p { margin: 0.5rem 0.2rem 0; font-size: 0.85rem; color: var(--md-default-fg-color--light); }
+
+@media print {
+  .ws-top, .ws-side, #shot-box { display: none !important; }
+  .ws-shell { display: block; max-width: none; padding: 0; }
+}
+
+</style>
+<header class="ws-top">
+  <div class="ws-top__inner">
+    <span class="ws-brand">IoT ในฟาร์มอัจฉริยะ</span>
+    <span class="ws-draft">ฉบับร่างสำหรับทดลองใช้ · 2026-09-12</span>
+  </div>
+</header>
+<div class="ws-shell">
+<nav class="ws-side" aria-label="หน้าในชุดใบงาน"><ul class="ws-pages"><li data-page="install"><a href="install.html"><span class="ws-n">ก่อนการอบรม</span><span class="ws-t">เตรียมแล็ปท็อป</span></a></li><li data-page="session-1"><a href="session-1.html"><span class="ws-n">ช่วงที่ 1</span><span class="ws-t">รับรู้ ตัดสินใจ สั่งการ</span></a></li><li data-page="session-2"><a href="session-2.html"><span class="ws-n">ช่วงที่ 2</span><span class="ws-t">ควบคุมอัตโนมัติและ Fail-safe</span></a></li><li data-page="session-3"><a href="session-3.html"><span class="ws-n">ช่วงที่ 3</span><span class="ws-t">แดชบอร์ดและออกแบบระบบ</span></a></li><li data-page="resources" class="is-current"><a href="resources.html" aria-current="page"><span class="ws-n">อ้างอิง</span><span class="ws-t">รวมไฟล์และลิงก์</span></a><ul class="ws-toc"><li><a href="#1-กอนวนอบรม--ตดตงลงแลปทอป">1. ก่อนวันอบรม — ติดตั้งลงแล็ปท็อป</a></li><li><a href="#2-ใบงานทใชระหวางอบรม">2. ใบงานที่ใช้ระหว่างอบรม</a></li><li><a href="#3-เวบและทอยทใชระหวางอบรม">3. เว็บและที่อยู่ที่ใช้ระหว่างอบรม</a></li><li><a href="#4-สงทผสอนแจกทโตะ">4. สิ่งที่ผู้สอนแจกที่โต๊ะ</a></li><li><a href="#5-หลงการอบรม--ถาอยากทำตอเอง">5. หลังการอบรม — ถ้าอยากทำต่อเอง</a></li></ul></li><li data-page="reference"><a href="reference.html"><span class="ws-n">อ้างอิง</span><span class="ws-t">เมนูและวิธีแก้ปัญหา</span></a></li><li data-page="record-sheet"><a href="record-sheet.html"><span class="ws-n">อ้างอิง</span><span class="ws-t">ใบบันทึกของทีม</span></a></li></ul></nav>
+<main class="md-content__inner md-typeset" id="ws-main">
+<h1 id="รวมไฟลและลงก">รวมไฟล์และลิงก์</h1>
+<p>หน้านี้รวมทุกไฟล์และทุกลิงก์ที่ผู้เข้าอบรมต้องใช้ไว้ที่เดียว เปิดหน้านี้เมื่อจำไม่ได้ว่าของที่ต้องการอยู่หน้าไหน ขั้นตอนการทำงานจริงอยู่ในใบงานแต่ละช่วง</p>
+<hr />
+<h2 id="1-กอนวนอบรม--ตดตงลงแลปทอป">1. ก่อนวันอบรม — ติดตั้งลงแล็ปท็อป</h2>
+<p>ทำให้เสร็จและส่งแบบยืนยัน <strong>อย่างน้อย 3 วันก่อนวันอบรม</strong> ขั้นตอนละเอียดพร้อมภาพประกอบอยู่ใน<a href="install.html">คู่มือเตรียมแล็ปท็อป</a></p>
+<p>ดูว่าแล็ปท็อปของเราเป็นแบบไหน แล้วดาวน์โหลด <strong>ทั้งสองไฟล์ในแถวนั้น</strong> (Mac: เมนู Apple → About This Mac ดูบรรทัด Chip หรือ Processor)</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>แล็ปท็อป</th>
+<th>VirtualBox</th>
+<th>ไฟล์ Farm Workshop (TODO GB)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Windows</td>
+<td><a href="https://www.virtualbox.org/wiki/Downloads">Windows hosts</a></td>
+<td><a href="https://TODO/farm-workshop-x86-64.ova">farm-workshop-x86-64.ova</a></td>
+</tr>
+<tr>
+<td>Mac ชิป Intel</td>
+<td><a href="https://www.virtualbox.org/wiki/Downloads">macOS / Intel hosts</a></td>
+<td><a href="https://TODO/farm-workshop-x86-64.ova">farm-workshop-x86-64.ova</a></td>
+</tr>
+<tr>
+<td>Mac ชิป Apple (M1 ขึ้นไป)</td>
+<td><a href="https://www.virtualbox.org/wiki/Downloads">macOS / Apple Silicon hosts</a></td>
+<td><a href="https://TODO/farm-workshop-arm64.ova">farm-workshop-arm64.ova</a></td>
+</tr>
+</tbody>
+</table></div>
+<blockquote>
+<p>ไฟล์ <code>.ova</code> มีขนาดใหญ่ <strong>ดาวน์โหลดที่บ้านหรือที่ทำงานล่วงหน้า</strong> ดาวน์โหลดที่สถานที่อบรมไม่ทัน · ต้องมี RAM 8 GB และพื้นที่ว่าง 20 GB ขึ้นไป · Chromebook, iPad และ Windows ชิป ARM ใช้ไม่ได้</p>
+</blockquote>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>สิ่งที่ต้องทำ</th>
+<th>ลิงก์</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>คู่มือติดตั้งทีละขั้น</td>
+<td><a href="install.html">เตรียมแล็ปท็อปก่อนการอบรม</a></td>
+</tr>
+<tr>
+<td>ส่งภาพหน้าจอยืนยันว่าติดตั้งสำเร็จ</td>
+<td><a href="https://TODO/form">แบบยืนยันการติดตั้ง</a></td>
+</tr>
+<tr>
+<td>ติดปัญหาระหว่างติดตั้ง</td>
+<td>ติดต่อทีมผู้สอน: TODO (ช่องทางติดต่อ และเวลาช่วงช่วยเหลือออนไลน์)</td>
+</tr>
+<tr>
+<td>ไฟล์ที่ต้องมีหากติดตั้ง VirtualBox บน Windows แล้วไม่ผ่าน</td>
+<td><a href="https://aka.ms/vs/17/release/vc_redist.x64.exe">vc_redist.x64.exe</a></td>
+</tr>
+</tbody>
+</table></div>
+<hr />
+<h2 id="2-ใบงานทใชระหวางอบรม">2. ใบงานที่ใช้ระหว่างอบรม</h2>
+<p>เปิดจากโทรศัพท์หรือแล็ปท็อปก็ได้ คำตอบที่กรอกจะถูกจำไว้ในเบราว์เซอร์ของเครื่องที่กรอก</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>หน้า</th>
+<th>ใช้เมื่อ</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>เริ่มต้นที่นี่</td>
+<td>ดูภาพรวม อุปกรณ์ในชุด ข้อควรระวัง และคำศัพท์</td>
+</tr>
+<tr>
+<td><a href="session-1.html">ช่วงที่ 1 — รับรู้ ตัดสินใจ สั่งการ</a></td>
+<td>อ่านค่าเซนเซอร์ ต่อวงจร 12V และสั่งปั๊มจากแดชบอร์ด</td>
+</tr>
+<tr>
+<td><a href="session-2.html">ช่วงที่ 2 — ควบคุมอัตโนมัติและ Fail-safe</a></td>
+<td>เขียนกฎอัตโนมัติ hysteresis และกฎกันพลาด</td>
+</tr>
+<tr>
+<td><a href="session-3.html">ช่วงที่ 3 — แดชบอร์ดและออกแบบระบบ</a></td>
+<td>อ่านกราฟ สร้างแดชบอร์ด และทำแบบร่างระบบของทีม</td>
+</tr>
+<tr>
+<td><a href="record-sheet.html">ใบบันทึกของทีม</a></td>
+<td>รวมคำตอบทุกช่อง + แบบร่างระบบ กด <strong>ดาวน์โหลดคำตอบ</strong> ก่อนจบการอบรม และ <strong>พิมพ์ / บันทึก PDF</strong> ไว้อ้างอิง</td>
+</tr>
+<tr>
+<td><a href="reference.html">เมนูและวิธีแก้ปัญหา</a></td>
+<td>ค้นเมนู Home Assistant และแก้อาการที่เจอบ่อย</td>
+</tr>
+</tbody>
+</table></div>
+<blockquote>
+<p>ทีมที่สะดวกเขียนกระดาษ ให้พิมพ์<a href="record-sheet.html">ใบบันทึกของทีม</a>ตอนที่ยังว่างไว้ล่วงหน้า</p>
+</blockquote>
+<hr />
+<h2 id="3-เวบและทอยทใชระหวางอบรม">3. เว็บและที่อยู่ที่ใช้ระหว่างอบรม</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>ต้องการ</th>
+<th>เปิดที่</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>อ่านชื่อบอร์ดจากสาย USB</td>
+<td><a href="https://web.esphome.io">https://web.esphome.io</a> (ใช้ Chrome หรือ Edge เท่านั้น)</td>
+</tr>
+<tr>
+<td>เปิด Home Assistant ของทีม</td>
+<td><code>http://</code> ตามด้วยเลข IP ที่อ่านจากหน้าต่างเครื่อง Farm Workshop — <strong>ไม่ใช้ <code>homeassistant.local</code></strong> และไม่ต้องใส่ <code>:8123</code></td>
+</tr>
+<tr>
+<td>ดูค่าจากบอร์ดโดยตรง ไม่ผ่าน Home Assistant</td>
+<td><code>http://</code> ตามด้วย IP ของบอร์ด หรือ <code>http://&lt;ชื่อบอร์ด&gt;/</code> (ต้องมี <code>/</code> ปิดท้าย)</td>
+</tr>
+<tr>
+<td>ใบงานหน้านี้ทั้งชุด</td>
+<td><a href="https://arnans.github.io/iot-training/">https://arnans.github.io/iot-training/</a></td>
+</tr>
+</tbody>
+</table></div>
+<hr />
+<h2 id="4-สงทผสอนแจกทโตะ">4. สิ่งที่ผู้สอนแจกที่โต๊ะ</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>ของ</th>
+<th>มีอะไรอยู่บนนั้น</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>บัตรประจำทีม</strong></td>
+<td>สีโซนของทีม · ชื่อและรหัส WiFi ของโซน · ชื่อผู้ใช้และรหัสผ่าน Home Assistant</td>
+</tr>
+<tr>
+<td><strong>ชุดอุปกรณ์ของทีม</strong></td>
+<td>รายการทั้งหมดอยู่ในหน้าเริ่มต้นที่นี่</td>
+</tr>
+<tr>
+<td><strong>ใบบันทึกของทีมแบบพิมพ์</strong></td>
+<td>ฉบับเดียวกับ<a href="record-sheet.html">ใบบันทึกของทีม</a>บนเว็บ</td>
+</tr>
+</tbody>
+</table></div>
+<blockquote>
+<p><strong>บัตรประจำทีมไม่มีชื่อบอร์ด</strong> ชื่อบอร์ดอ่านจากบอร์ดเองในกิจกรรมที่ 1 · ก่อนเริ่มให้ตรวจว่า <strong>สีบนบอร์ด สีบนบัตร และชื่อ WiFi ที่แล็ปท็อปเชื่อมต่อ ตรงกันทั้งหมด</strong></p>
+</blockquote>
+<hr />
+<h2 id="5-หลงการอบรม--ถาอยากทำตอเอง">5. หลังการอบรม — ถ้าอยากทำต่อเอง</h2>
+<p>ไม่ต้องใช้ในห้องอบรม แต่เป็นจุดเริ่มต้นสำหรับคนที่อยากสร้างระบบของตัวเองต่อ</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>แหล่งข้อมูล</th>
+<th>คืออะไร</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://www.home-assistant.io/">Home Assistant</a></td>
+<td>คู่มือและวิธีติดตั้งอย่างเป็นทางการของซอฟต์แวร์ที่เราใช้</td>
+</tr>
+<tr>
+<td><a href="https://esphome.io/">ESPHome</a></td>
+<td>ซอฟต์แวร์ที่อยู่ในบอร์ดของเรา ใช้เขียนค่าเซนเซอร์และรีเลย์เป็นไฟล์ YAML</td>
+</tr>
+<tr>
+<td><a href="https://github.com/arnans/iot-training/tree/main/firmware">ไฟล์ตั้งค่าบอร์ดของการอบรมนี้</a></td>
+<td>ไฟล์ ESPHome ของบอร์ด GoGo-IoT และบอร์ดรีเลย์ที่เราใช้</td>
+</tr>
+<tr>
+<td><a href="https://github.com/arnans/iot-training/tree/main/hass">ไฟล์ตั้งค่า Home Assistant ของการอบรมนี้</a></td>
+<td><code>configuration.yaml</code> ที่อยู่ในเครื่อง Farm Workshop</td>
+</tr>
+<tr>
+<td><a href="https://github.com/arnans/gogo-iot-node">บอร์ด GoGo-IoT</a></td>
+<td>ข้อมูลฮาร์ดแวร์ของบอร์ดเซนเซอร์ที่ใช้ในห้องอบรม</td>
+</tr>
+</tbody>
+</table></div>
+<blockquote>
+<p>เครื่อง Farm Workshop ในแล็ปท็อปยังใช้ต่อได้หลังจบการอบรม เปิด VirtualBox แล้วกด Start ได้เหมือนเดิม แต่บอร์ดจะหาไม่เจอเพราะ WiFi ของโซนมีเฉพาะในห้องอบรม ต้องแก้ WiFi ในบอร์ดด้วย ESPHome ก่อน</p>
+</blockquote>
+</main>
+</div>
+<dialog id="shot-box" aria-label="ภาพหน้าจอ"><img alt=""><p></p></dialog>
+<script>
+(function () {
+  var downloads = null;
+  if (window.claude && typeof window.claude.use === "function") {
+    window.claude.use("downloads").then(function (d) { downloads = d; }, function () {});
+  }
+  function anchorSave(name, text) {
+    var a = document.createElement("a");
+    a.href = URL.createObjectURL(new Blob([text], { type: "application/json" }));
+    a.download = name;
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(function () { URL.revokeObjectURL(a.href); a.remove(); }, 1500);
+  }
+  window.wsSaveFile = function (name, text) {
+    if (!downloads) { anchorSave(name, text); return; }
+    downloads.save({ filename: name, data: text }).catch(function (e) {
+      if (e && e.code === "declined") return;
+      window.alert("ดาวน์โหลดไม่สำเร็จ (" + ((e && (e.message || e.code)) || "unknown") + ")");
+    });
+  };
+})();
+</script>
+<script>/* Worksheet page behaviour, loaded after Material's bundle via mkdocs.yml extra_javascript.
+   1. Tag recurring elements so extra.css can style them:
+        <strong>Hardware</strong> / Driver / Recorder / Tester   -> role chips
+        blockquotes that start with "บันทึกผล" or "จดลงใบบันทึก"  -> record note panel
+   2. Hover preview for step screenshots: resting the pointer on a "ดูภาพ" chip (a.glightbox)
+      shows the screenshot in a floating panel beside it; leaving hides it. Click still opens
+      the glightbox lightbox, which is also the only path on touch screens (no hover there).
+   3. Fillable worksheet: every <input class="fld"> / <textarea class="fld"> / radio group that
+      hooks/fields.py generated, plus the task-list checkboxes, is saved to localStorage as the
+      team types and restored on every page load. A toolbar under the page title offers
+      download (JSON), import (merge), print, and clear. Design notes: FILLABLE-WORKSHEET.md.
+   Runs on every page load, including Material's instant navigation. */
+(function () {
+  var ROLES = { Hardware: "hardware", Driver: "driver", Recorder: "recorder", Tester: "tester" };
+
+  function decorate(root) {
+    root.querySelectorAll(".md-typeset strong").forEach(function (el) {
+      var key = el.textContent.trim();
+      if (ROLES[key]) {
+        el.classList.add("role", "role-" + ROLES[key]);
+      }
+    });
+    root.querySelectorAll(".md-typeset blockquote").forEach(function (el) {
+      var t = el.textContent.trim();
+      if (t.indexOf("บันทึกผล") === 0 || t.indexOf("จดลงใบบันทึก") === 0) {
+        el.classList.add("note-record");
+      }
+    });
+  }
+
+  /* ---- hover preview ---- */
+  var canHover = window.matchMedia && window.matchMedia("(hover: hover)").matches;
+  var panel, img, cap, timer, current;
+
+  function ensurePanel() {
+    if (panel) return;
+    panel = document.createElement("div");
+    panel.id = "shot-hover";
+    panel.hidden = true;
+    img = document.createElement("img");
+    img.alt = "";
+    cap = document.createElement("div");
+    cap.className = "shot-hover__cap";
+    panel.appendChild(img);
+    panel.appendChild(cap);
+    document.body.appendChild(panel);
+    img.addEventListener("load", function () { if (current) place(current); });
+  }
+
+  function place(a) {
+    var r = a.getBoundingClientRect();
+    var vw = window.innerWidth, vh = window.innerHeight, pad = 16;
+    var w = Math.min(760, Math.floor(vw * 0.6));
+    panel.style.width = w + "px";
+    var ph = panel.offsetHeight;
+    var x = r.right + pad;                       // prefer to the right of the chip
+    if (x + w > vw - pad) x = r.left - w - pad;  // else to the left
+    if (x < pad) x = pad;                        // else clamp
+    var y = r.top - 24;
+    if (y + ph > vh - pad) y = vh - pad - ph;
+    if (y < pad) y = pad;
+    panel.style.left = x + "px";
+    panel.style.top = y + "px";
+  }
+
+  function show(a) {
+    ensurePanel();
+    current = a;
+    img.src = a.getAttribute("href");
+    cap.textContent = a.getAttribute("data-title") || "";
+    panel.hidden = false;
+    place(a);
+  }
+
+  function hide() {
+    current = null;
+    if (panel) panel.hidden = true;
+  }
+
+  function bindHover(root) {
+    if (!canHover) return;
+    root.querySelectorAll("a.glightbox").forEach(function (a) {
+      if (a.dataset.hoverBound) return;
+      a.dataset.hoverBound = "1";
+      a.addEventListener("mouseenter", function () {
+        clearTimeout(timer);
+        timer = setTimeout(function () { show(a); }, 120);
+      });
+      a.addEventListener("mouseleave", function () { clearTimeout(timer); hide(); });
+      a.addEventListener("focus", function () { show(a); });
+      a.addEventListener("blur", hide);
+      a.addEventListener("click", hide);
+    });
+  }
+
+  /* ---- fillable worksheet ---- */
+  var STORE = "farm-worksheet.v1";   // bump the suffix if the stored shape ever changes
+  var ZONE_SLUG = { "แดง": "red", "เขียว": "green", "น้ำเงิน": "blue" };
+  var store = emptyStore();
+  var saveTimer;
+
+  function emptyStore() { return { v: 1, fields: {}, checks: {} }; }
+
+  function loadStore() {
+    try {
+      var d = JSON.parse(localStorage.getItem(STORE));
+      if (d && typeof d.fields === "object") {
+        d.checks = d.checks || {};
+        return d;
+      }
+    } catch (e) { /* no storage, or corrupt: start clean */ }
+    return emptyStore();
+  }
+
+  function writeStore() {
+    store.v = 1;
+    store.updated = new Date().toISOString();
+    try {
+      localStorage.setItem(STORE, JSON.stringify(store));
+      setStatus();
+    } catch (e) {
+      setStatus("เบราว์เซอร์นี้ไม่อนุญาตให้เก็บข้อมูล คำตอบจะหายเมื่อปิดหน้า ให้ดาวน์โหลดคำตอบไว้ก่อน");
+    }
+  }
+
+  function saveSoon() { clearTimeout(saveTimer); saveTimer = setTimeout(writeStore, 300); }
+  function saveNow() { clearTimeout(saveTimer); writeStore(); }
+
+  function pageId() { return location.pathname.replace(/index\.html$/, ""); }
+
+  function taskBoxes(root) {
+    return Array.prototype.slice.call(
+      (root || document).querySelectorAll(".md-typeset .task-list-item input[type=checkbox]")
+    );
+  }
+
+  /* a box grows to fit what is typed, so nothing is clipped on screen or in print */
+  function grow(el) {
+    if (el.tagName === "TEXTAREA") {
+      el.style.height = "auto";
+      el.style.height = (el.scrollHeight + 2) + "px";
+    } else if (el.type === "text") {
+      var base = parseInt(el.dataset.size, 10) || 10;
+      el.size = Math.max(base, el.value.length + 1);
+    }
+  }
+
+  function fillFields(root) {
+    root.querySelectorAll(".fld").forEach(function (el) {
+      var v = store.fields[el.dataset.k];
+      if (el.type === "radio") {
+        el.checked = (v !== undefined && el.value === v);
+        return;
+      }
+      el.value = (v === undefined || v === null) ? "" : v;
+      grow(el);
+    });
+    var pid = pageId();
+    taskBoxes(root).forEach(function (cb, i) {
+      cb.disabled = false;
+      cb.checked = !!store.checks[pid + "#" + i];
+    });
+  }
+
+  function hasFields(root) {
+    return !!(root.querySelector(".fld") || root.querySelector(".task-list-item input[type=checkbox]"));
+  }
+
+  /* ---- toolbar ---- */
+  function buildBar() {
+    var inner = document.querySelector(".md-content__inner");
+    if (!inner || inner.querySelector("#ws-bar") || !hasFields(inner)) return;
+    var bar = document.createElement("div");
+    bar.id = "ws-bar";
+    bar.innerHTML =
+      '<span class="ws-status"></span>' +
+      '<button type="button" class="ws-btn" data-act="export">ดาวน์โหลดคำตอบ</button>' +
+      '<button type="button" class="ws-btn" data-act="import">นำเข้าจากไฟล์</button>' +
+      '<button type="button" class="ws-btn" data-act="print">พิมพ์ / บันทึก PDF</button>' +
+      '<button type="button" class="ws-btn ws-btn--quiet" data-act="clear">ล้างคำตอบทั้งหมด</button>' +
+      '<input type="file" accept=".json,application/json" hidden>';
+    var h1 = inner.querySelector("h1");
+    if (h1) h1.insertAdjacentElement("afterend", bar); else inner.insertBefore(bar, inner.firstChild);
+    bar.querySelector("input[type=file]").addEventListener("change", function (e) {
+      if (e.target.files && e.target.files[0]) doImport(e.target.files[0]);
+      e.target.value = "";
+    });
+    setStatus();
+  }
+
+  function setStatus(msg) {
+    var el = document.querySelector("#ws-bar .ws-status");
+    if (!el) return;
+    if (msg) { el.innerHTML = "<strong>" + msg + "</strong>"; return; }
+    var team = (store.fields["team.no"] || "").trim();
+    var n = Object.keys(store.fields).filter(function (k) { return String(store.fields[k]).trim() !== ""; }).length;
+    var when = "";
+    if (store.updated) {
+      var d = new Date(store.updated);
+      when = " · บันทึกล่าสุด " + d.getHours() + ":" + ("0" + d.getMinutes()).slice(-2);
+    }
+    el.innerHTML = (team ? "<strong>ทีม " + escapeHtml(team) + "</strong> · " : "") +
+      (n ? "กรอกแล้ว " + n + " ช่อง" : "ยังไม่มีคำตอบ") +
+      " · คำตอบเก็บอยู่ในเบราว์เซอร์นี้เท่านั้น" + when;
+  }
+
+  function escapeHtml(s) {
+    return String(s).replace(/[&<>"]/g, function (c) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c];
+    });
+  }
+
+  function teamNo() {
+    var t = (store.fields["team.no"] || "").trim();
+    if (!t) {
+      t = (window.prompt("หมายเลขทีม (ใช้ตั้งชื่อไฟล์และให้ผู้สอนรู้ว่าเป็นของทีมใด)") || "").trim();
+      if (t) { store.fields["team.no"] = t; fillFields(document); saveNow(); }
+    }
+    return t;
+  }
+
+  function doExport() {
+    var t = teamNo();
+    if (!t) return;
+    var zone = store.fields["team.zone"] || "";
+    var out = {
+      kind: "iot-farm-worksheet",
+      v: 1,
+      team: t,
+      zone: zone,
+      exported: new Date().toISOString(),
+      fields: store.fields,
+      checks: store.checks
+    };
+    var name = "farm-team-" + t.replace(/[^\w฀-๿-]+/g, "") +
+      (ZONE_SLUG[zone] ? "-" + ZONE_SLUG[zone] : "") + ".json";
+    window.wsSaveFile(name, JSON.stringify(out, null, 2));
+  }
+
+  /* merge rule: fill empty boxes; ask once before overwriting boxes that already differ */
+  function doImport(file) {
+    var reader = new FileReader();
+    reader.onload = function () {
+      var d;
+      try { d = JSON.parse(reader.result); } catch (e) { d = null; }
+      if (!d || typeof d.fields !== "object") {
+        window.alert("ไฟล์นี้ไม่ใช่ไฟล์คำตอบของใบงาน");
+        return;
+      }
+      var added = 0, conflicts = [];
+      Object.keys(d.fields).forEach(function (k) {
+        var nv = d.fields[k], cur = store.fields[k];
+        if (nv === undefined || nv === null || String(nv).trim() === "") return;
+        if (cur === undefined || cur === null || String(cur).trim() === "") { store.fields[k] = nv; added++; }
+        else if (String(cur) !== String(nv)) conflicts.push(k);
+      });
+      var overwritten = 0;
+      if (conflicts.length &&
+          window.confirm("มี " + conflicts.length + " ช่องที่กรอกไว้แล้วในเครื่องนี้และต่างจากในไฟล์\n" +
+                         "กด OK เพื่อใช้ค่าจากไฟล์แทน หรือ Cancel เพื่อคงค่าในเครื่องนี้")) {
+        conflicts.forEach(function (k) { store.fields[k] = d.fields[k]; });
+        overwritten = conflicts.length;
+      }
+      Object.keys(d.checks || {}).forEach(function (k) { if (d.checks[k]) store.checks[k] = true; });
+      saveNow();
+      fillFields(document);
+      window.alert("นำเข้าแล้ว เติมช่องว่าง " + added + " ช่อง" +
+        (overwritten ? " เขียนทับ " + overwritten + " ช่อง" : "") +
+        (conflicts.length && !overwritten ? " คงค่าเดิม " + conflicts.length + " ช่อง" : ""));
+    };
+    reader.readAsText(file);
+  }
+
+  function doClear() {
+    if (!window.confirm("ลบคำตอบทั้งหมดที่เก็บในเบราว์เซอร์นี้?\nถ้ายังไม่ได้ดาวน์โหลดคำตอบไว้ ให้กด Cancel แล้วดาวน์โหลดก่อน")) return;
+    store = emptyStore();
+    saveNow();
+    fillFields(document);
+  }
+
+  /* one set of listeners for the whole document: survives instant navigation */
+  document.addEventListener("input", function (e) {
+    var el = e.target;
+    if (!el.classList || !el.classList.contains("fld") || el.type === "radio") return;
+    var k = el.dataset.k;
+    store.fields[k] = el.value;
+    grow(el);
+    document.querySelectorAll('.fld[data-k="' + k + '"]').forEach(function (o) {
+      if (o !== el && o.type !== "radio") { o.value = el.value; grow(o); }
+    });
+    saveSoon();
+  });
+
+  document.addEventListener("change", function (e) {
+    var el = e.target;
+    if (el.classList && el.classList.contains("fld") && el.type === "radio") {
+      store.fields[el.dataset.k] = el.value;
+      saveNow();
+      return;
+    }
+    if (el.type === "checkbox" && el.closest && el.closest(".task-list-item")) {
+      var i = taskBoxes().indexOf(el);
+      if (i < 0) return;
+      var key = pageId() + "#" + i;
+      if (el.checked) store.checks[key] = true; else delete store.checks[key];
+      saveNow();
+    }
+  });
+
+  document.addEventListener("click", function (e) {
+    var btn = e.target.closest && e.target.closest("#ws-bar .ws-btn");
+    if (!btn) return;
+    var act = btn.dataset.act;
+    if (act === "export") doExport();
+    else if (act === "import") document.querySelector("#ws-bar input[type=file]").click();
+    else if (act === "print") window.print();
+    else if (act === "clear") doClear();
+  });
+
+  /* another tab (record sheet open beside a session page) saved: show its values here */
+  window.addEventListener("storage", function (e) {
+    if (e.key !== STORE) return;
+    store = loadStore();
+    fillFields(document);
+    setStatus();
+  });
+
+  function init() {
+    decorate(document);
+    bindHover(document);
+    store = loadStore();
+    fillFields(document);
+    buildBar();
+  }
+
+  if (window.document$ && typeof window.document$.subscribe === "function") {
+    window.document$.subscribe(init);
+  } else if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", init);
+  } else {
+    init();
+  }
+})();
+</script>
+<script>
+(function () {
+  var box = document.getElementById("shot-box");
+  if (!box || typeof box.showModal !== "function") return;
+  var img = box.querySelector("img"), cap = box.querySelector("p");
+  document.addEventListener("click", function (e) {
+    var a = e.target.closest && e.target.closest("a.glightbox");
+    if (!a) return;
+    e.preventDefault();
+    img.src = a.getAttribute("href");
+    cap.textContent = a.getAttribute("data-title") || "";
+    box.showModal();
+  });
+  box.addEventListener("click", function () { box.close(); });
+})();
+</script>
+
+</body>
+</html>

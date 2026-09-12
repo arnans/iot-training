@@ -30,6 +30,9 @@ python build-zones.py                    # -> dist/gogo-iot-{red,green,blue}.fac
 python build-zones.py --flash red sensor COM7
 ```
 
+**On Windows, build from PowerShell or cmd — not Git Bash.** ESP-IDF's installer refuses to run
+under MSYS/MinGW and fails with `ERROR: MSys/Mingw is not supported` before compiling anything.
+
 For a single bench board without the script:
 
 ```bash

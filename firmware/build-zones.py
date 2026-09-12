@@ -52,9 +52,17 @@ def build(board, zone, cfg):
     subprocess.run(cmd, cwd=HERE, check=True)
 
     name = f"{base}-{zone}"
-    src = HERE / ".esphome" / "build" / name / ".pioenvs" / name / "firmware.factory.bin"
-    if not src.exists():
-        sys.exit(f"expected binary not found: {src}")
+    # ESPHome 2026.x drives ESP-IDF/CMake directly and writes to build/;
+    # older PlatformIO-based versions wrote to .pioenvs/<name>/. Accept both.
+    build_dir = HERE / ".esphome" / "build" / name
+    candidates = [
+        build_dir / "build" / "firmware.factory.bin",
+        build_dir / ".pioenvs" / name / "firmware.factory.bin",
+    ]
+    src = next((p for p in candidates if p.exists()), None)
+    if src is None:
+        sys.exit("expected binary not found, looked in:\n  "
+                 + "\n  ".join(str(p) for p in candidates))
     dist = HERE / "dist"
     dist.mkdir(exist_ok=True)
     dst = dist / f"{name}.factory.bin"

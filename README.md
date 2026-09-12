@@ -11,6 +11,7 @@ specific to that first delivery.
 
 | Path | What it is |
 |---|---|
+| [INSTRUCTOR-RESOURCES.md](INSTRUCTOR-RESOURCES.md) | Links page for instructors and TAs: the six firmware images, the two OVAs, worksheets, and what to read before teaching. Participant-facing counterpart: [docs/resources.md](docs/resources.md) |
 | [SESSION-OVERVIEW.md](SESSION-OVERVIEW.md) | One-page summary of the three sessions: what teams do, objective, learning-goal alignment |
 | [COURSE-DESIGN.md](COURSE-DESIGN.md) | Full course design: session plans, goals, kit list, risks, production tasks |
 | [PART1-RECORDING-PREP.md](PART1-RECORDING-PREP.md) | Readiness notes for the optional narrated online decks |
@@ -33,15 +34,20 @@ is the gap between sessions 1 and 2 — see `WORKSHEET-TODO.md`.
 
 ```
 docs/
-├── index.md          เริ่มต้นที่นี่ — kit, roles, safety, vocabulary
+├── index.html        the published site's front door — hand-written, links everything below
+├── .nojekyll         serve docs/ as static files; without it Jekyll collides index.html with index.md
+├── index.md          เริ่มต้นที่นี่ — kit, roles, safety, vocabulary (MkDocs preview only)
 ├── session-1.md      Input → Logic → Output: sensors to pump
 ├── session-2.md      Automation logic and fail-safe design
 ├── session-3.md      Networking, dashboards, and the design challenge
 ├── record-sheet.md   Printed team record sheet + design canvas
 ├── reference.md      Home Assistant menu paths and troubleshooting
+├── resources.md      every download and link participants need, in one place
 ├── network-requirements.html      generated — Thai network spec
 ├── network-requirements-en.html   generated — English network spec
-├── renders/                       generated — install + sessions 1–3 as standalone HTML
+├── instructor-resources.html      generated — INSTRUCTOR-RESOURCES.md as a standalone page
+├── firmware/                      the six built ESP32 images, served for flashing
+├── renders/                       generated — all seven participant pages as standalone HTML
 └── images/
     └── network-*.svg              generated — the two spec diagrams, per language
 ```

@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Instructor & TA resources</title>
+<meta name="description" content="Instructor & TA handbook">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;600;700&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink: #14181d;
+  --ink-soft: #4a545f;
+  --rule: #d9dee4;
+  --rule-soft: #eaeef2;
+  --paper: #ffffff;
+  --wash: #f5f7f9;
+  --accent: #0f6b63;
+  --accent-wash: #e8f3f1;
+  --flag: #8a5a00;
+  --flag-wash: #fdf4e3;
+  --mono: "IBM Plex Mono", ui-monospace, "Cascadia Mono", Consolas, monospace;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  padding: 3.5rem 1.25rem 5rem;
+  background: var(--wash);
+  color: var(--ink);
+  font-family: Sarabun, "Leelawadee UI", "Noto Sans Thai", -apple-system,
+               BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  font-size: 16px;
+  line-height: 1.85;
+}
+
+.doc {
+  max-width: 54rem;
+  margin: 0 auto;
+  padding: 3.5rem clamp(1.5rem, 5vw, 4rem) 3rem;
+  background: var(--paper);
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  box-shadow: 0 1px 2px rgba(20, 24, 29, .04), 0 12px 32px rgba(20, 24, 29, .06);
+}
+
+/* ---- masthead ---------------------------------------------------------- */
+
+.doc-head { border-bottom: 3px solid var(--accent); padding-bottom: 1.5rem; margin-bottom: 2.5rem; }
+
+.kicker {
+  margin: 0 0 .6rem;
+  font-size: .78rem;
+  font-weight: 600;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.doc-head h1 { margin: 0; font-size: clamp(1.7rem, 4vw, 2.3rem); line-height: 1.3; font-weight: 700; }
+
+.meta { margin: .75rem 0 0; font-size: .9rem; color: var(--ink-soft); }
+
+.disclosure {
+  margin: 1.1rem 0 0;
+  padding-top: .85rem;
+  border-top: 1px solid var(--rule-soft);
+  font-size: .82rem;
+  line-height: 1.7;
+  color: var(--ink-soft);
+}
+
+/* ---- headings ---------------------------------------------------------- */
+
+h2 {
+  margin: 3rem 0 1rem;
+  padding-bottom: .5rem;
+  border-bottom: 1px solid var(--rule);
+  font-size: 1.4rem;
+  line-height: 1.4;
+  font-weight: 700;
+}
+
+h3 {
+  margin: 2rem 0 .75rem;
+  font-size: 1.12rem;
+  line-height: 1.5;
+  font-weight: 700;
+  color: var(--accent);
+}
+
+h2 + h3 { margin-top: 1.25rem; }
+
+p { margin: 0 0 1.15rem; }
+
+a { color: var(--accent); text-underline-offset: 2px; }
+
+strong { font-weight: 700; }
+
+hr { height: 0; margin: 3rem 0; border: 0; border-top: 1px solid var(--rule-soft); }
+
+/* ---- lists ------------------------------------------------------------- */
+
+ul, ol { margin: 0 0 1.15rem; padding-left: 1.35rem; }
+li { margin-bottom: .5rem; }
+li > ul, li > ol { margin-top: .5rem; margin-bottom: .25rem; }
+
+/* ---- tables ------------------------------------------------------------ */
+
+.table-scroll { overflow-x: auto; margin: 0 0 1.6rem; -webkit-overflow-scrolling: touch; }
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: .92rem;
+  line-height: 1.65;
+}
+
+th, td {
+  padding: .6rem .8rem;
+  border: 1px solid var(--rule);
+  text-align: left;
+  vertical-align: top;
+}
+
+thead th {
+  background: var(--wash);
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+tbody tr:nth-child(even) { background: #fbfcfd; }
+
+/* ---- callouts (blockquotes carry the load-bearing asks) ---------------- */
+
+blockquote {
+  margin: 0 0 1.6rem;
+  padding: 1.1rem 1.35rem .35rem;
+  background: var(--flag-wash);
+  border: 1px solid #f0dfba;
+  border-left: 4px solid var(--flag);
+  border-radius: 3px;
+}
+
+blockquote p { margin-bottom: .8rem; }
+
+/* ---- code -------------------------------------------------------------- */
+
+code {
+  padding: .12em .38em;
+  background: var(--accent-wash);
+  border-radius: 3px;
+  font-family: var(--mono);
+  font-size: .88em;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+blockquote code { background: #fff; border: 1px solid #ecdcb8; }
+
+figure {
+  margin: 0 0 1.9rem;
+  padding: 1.25rem 1.25rem .9rem;
+  background: #fcfdfd;
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+}
+
+figure svg { display: block; width: 100%; height: auto; }
+
+figcaption {
+  margin-top: .9rem;
+  padding-top: .7rem;
+  border-top: 1px solid var(--rule-soft);
+  font-size: .82rem;
+  line-height: 1.6;
+  color: var(--ink-soft);
+  text-align: center;
+}
+
+/* ---- footer ------------------------------------------------------------ */
+
+.doc-foot {
+  margin-top: 3.5rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--rule);
+  font-size: .82rem;
+  color: var(--ink-soft);
+}
+
+.doc-foot p { margin: 0; }
+
+/* ---- print ------------------------------------------------------------- */
+
+@media print {
+  @page { size: A4; margin: 16mm 14mm; }
+  body { padding: 0; background: #fff; font-size: 10.5pt; line-height: 1.6; }
+  .doc { max-width: none; padding: 0; border: 0; border-radius: 0; box-shadow: none; }
+  a { color: inherit; text-decoration: none; }
+  h2 { break-after: avoid; page-break-after: avoid; }
+  h3 { break-after: avoid; page-break-after: avoid; }
+  table, blockquote, .table-scroll, figure { break-inside: avoid; page-break-inside: avoid; }
+  tr, li { break-inside: avoid; page-break-inside: avoid; }
+  thead { display: table-header-group; }
+  .doc-foot { break-before: avoid; }
+}
+</style>
+</head>
+<body>
+<article class="doc">
+  <header class="doc-head">
+    <p class="kicker">Instructor & TA handbook</p>
+    <h1>Instructor & TA resources</h1>
+    <p class="meta">IoT in Smart Farming workshop · Last updated 2026-09-12</p>
+    <p class="disclosure">This document was compiled with Claude AI. Its content was designed and reviewed by those responsible, who certify that it reflects the intent of the preparing team in every respect.</p>
+  </header>
+  <p>Every file and link needed to prepare for and run the workshop, in one place.
+  Participants get a trimmed version at
+  <a href="https://arnans.github.io/iot-training/renders/resources.html">รวมไฟล์และลิงก์</a>.</p>
+  <p>Links are absolute so this page works the same whether you read it in the repository or as the
+  published page at
+  <a href="https://arnans.github.io/iot-training/instructor-resources.html">arnans.github.io/iot-training/instructor-resources.html</a>.
+  Rows marked <em>(repo)</em> need access to the private <code>iot-training</code> repository.</p>
+  <hr>
+  <h2>1. Board firmware — six images</h2>
+  <p>One image per board type, per zone colour. The zone colour is baked in: a red-zone image only
+  joins the red SSID. Built and verified 12 Sep 2026.</p>
+  <div class="table-scroll"><table>
+  <thead>
+  <tr>
+  <th>Board</th>
+  <th>Red zone</th>
+  <th>Green zone</th>
+  <th>Blue zone</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr>
+  <td><strong>GoGo-IoT sensor board</strong> (ESP32-C3)</td>
+  <td><a href="https://arnans.github.io/iot-training/firmware/gogo-iot-red.factory.bin">gogo-iot-red.factory.bin</a></td>
+  <td><a href="https://arnans.github.io/iot-training/firmware/gogo-iot-green.factory.bin">gogo-iot-green.factory.bin</a></td>
+  <td><a href="https://arnans.github.io/iot-training/firmware/gogo-iot-blue.factory.bin">gogo-iot-blue.factory.bin</a></td>
+  </tr>
+  <tr>
+  <td><strong>Relay board</strong> (ESP32-C6-Relay_X1)</td>
+  <td><a href="https://arnans.github.io/iot-training/firmware/gogo-relay-red.factory.bin">gogo-relay-red.factory.bin</a></td>
+  <td><a href="https://arnans.github.io/iot-training/firmware/gogo-relay-green.factory.bin">gogo-relay-green.factory.bin</a></td>
+  <td><a href="https://arnans.github.io/iot-training/firmware/gogo-relay-blue.factory.bin">gogo-relay-blue.factory.bin</a></td>
+  </tr>
+  </tbody>
+  </table></div>
+  <p><strong>To flash a board:</strong> plug it into a laptop over USB-C, open <a href="https://web.esphome.io">https://web.esphome.io</a> in Chrome or
+  Edge → <strong>Connect</strong> → pick the serial port → <strong>Install</strong> → choose the <code>.bin</code> for that board and
+  zone. Needs internet.</p>
+  <blockquote>
+  <p><strong>The colour on the board must match the colour on the kit and on the team card.</strong> A mismatched
+  board joins the wrong WiFi and the team's Home Assistant never sees it. The board says which it
+  is — its name reads <code>gogo-iot-red-a1b2c3</code>.</p>
+  </blockquote>
+  <p>Spare boards flashed during the workshop must be flashed to <strong>that table's zone colour</strong>.</p>
+  <hr>
+  <h2>2. Home Assistant virtual machine</h2>
+  <p>The same image participants install. Put it on the instructor kit and on every rescue laptop.</p>
+  <div class="table-scroll"><table>
+  <thead>
+  <tr>
+  <th>Laptop</th>
+  <th>VirtualBox</th>
+  <th>Farm Workshop VM</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr>
+  <td>Windows / Intel Mac</td>
+  <td><a href="https://www.virtualbox.org/wiki/Downloads">Downloads</a></td>
+  <td><code>farm-workshop-x86-64.ova</code> — <strong>not built yet</strong></td>
+  </tr>
+  <tr>
+  <td>Apple Silicon Mac (M1+)</td>
+  <td><a href="https://www.virtualbox.org/wiki/Downloads">Downloads</a></td>
+  <td><code>farm-workshop-arm64.ova</code> — <strong>not built yet</strong></td>
+  </tr>
+  </tbody>
+  </table></div>
+  <p>Import steps, settings and the login are in the participant guide:
+  <strong><a href="https://arnans.github.io/iot-training/renders/install.html">เตรียมแล็ปท็อป</a></strong>. The two things
+  that go wrong: Adapter 1 must be <strong>Bridged</strong> and set to the laptop's own WiFi card, and the VM is
+  reached at <code>http://&lt;its IP&gt;</code> — never <code>homeassistant.local</code>, because every team's VM answers to
+  that name.</p>
+  <p>Login: <code>TODO</code> / <code>TODO</code> (also printed on each team card).</p>
+  <hr>
+  <h2>3. Worksheets and printed material</h2>
+  <div class="table-scroll"><table>
+  <thead>
+  <tr>
+  <th>What</th>
+  <th>Link</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr>
+  <td>Participant site</td>
+  <td><a href="https://arnans.github.io/iot-training/">https://arnans.github.io/iot-training/</a></td>
+  </tr>
+  <tr>
+  <td>Before the workshop — เตรียมแล็ปท็อป</td>
+  <td><a href="https://arnans.github.io/iot-training/renders/install.html">install.html</a></td>
+  </tr>
+  <tr>
+  <td>Session 1 — รับรู้ ตัดสินใจ สั่งการ</td>
+  <td><a href="https://arnans.github.io/iot-training/renders/session-1.html">session-1.html</a></td>
+  </tr>
+  <tr>
+  <td>Session 2 — ควบคุมอัตโนมัติและ Fail-safe</td>
+  <td><a href="https://arnans.github.io/iot-training/renders/session-2.html">session-2.html</a></td>
+  </tr>
+  <tr>
+  <td>Session 3 — แดชบอร์ดและออกแบบระบบ</td>
+  <td><a href="https://arnans.github.io/iot-training/renders/session-3.html">session-3.html</a></td>
+  </tr>
+  <tr>
+  <td>Participant file &amp; link list</td>
+  <td><a href="https://arnans.github.io/iot-training/renders/resources.html">resources.html</a></td>
+  </tr>
+  <tr>
+  <td>Team record sheet + design canvas — <strong>the one thing that gets printed</strong></td>
+  <td><a href="https://github.com/arnans/iot-training/blob/main/docs/record-sheet.md">record-sheet.md</a> <em>(repo)</em></td>
+  </tr>
+  <tr>
+  <td>Home Assistant menu paths + troubleshooting — <strong>keep this open while roving</strong></td>
+  <td><a href="https://github.com/arnans/iot-training/blob/main/docs/reference.md">reference.md</a> <em>(repo)</em></td>
+  </tr>
+  </tbody>
+  </table></div>
+  <p>The <code>renders/</code> pages are self-contained: open one once and it keeps working with no internet.</p>
+  <hr>
+  <h2>4. Preparing to teach</h2>
+  <div class="table-scroll"><table>
+  <thead>
+  <tr>
+  <th>What</th>
+  <th>Link</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr>
+  <td>What happens in each session, and why</td>
+  <td><a href="https://github.com/arnans/iot-training/blob/main/SESSION-OVERVIEW.md">SESSION-OVERVIEW.md</a> <em>(repo)</em></td>
+  </tr>
+  <tr>
+  <td>Full course design — timings, kit list, risks, open decisions</td>
+  <td><a href="https://github.com/arnans/iot-training/blob/main/COURSE-DESIGN.md">COURSE-DESIGN.md</a> <em>(repo)</em></td>
+  </tr>
+  <tr>
+  <td>Known gaps and assumptions in the worksheets</td>
+  <td><a href="https://github.com/arnans/iot-training/blob/main/WORKSHEET-TODO.md">WORKSHEET-TODO.md</a> <em>(repo)</em></td>
+  </tr>
+  <tr>
+  <td>Network spec to hand the venue's provider — Thai</td>
+  <td><a href="https://arnans.github.io/iot-training/network-requirements.html">network-requirements.html</a></td>
+  </tr>
+  <tr>
+  <td>Network spec — English</td>
+  <td><a href="https://arnans.github.io/iot-training/network-requirements-en.html">network-requirements-en.html</a></td>
+  </tr>
+  </tbody>
+  </table></div>
+  <p><strong>Instructor kit</strong> — a spare laptop mirroring a team kit, projected. It also rescues a team whose
+  laptop dies. Three things teams don't have: the <strong>Auto / Off / Manual pump control box</strong> for the
+  Session 2 debrief, a Home Assistant Cloud account for the Session 3 remote-access demo, and a saved
+  morning history graph for teams that shut their VM down at lunch.</p>
+  <p><strong>Kit prep, the two that fail silently:</strong> flip the float cylinder on its rod so it closes when wet
+  (otherwise a cut wire reads "water present" and a pump can run dry), and colour-code board, kit and
+  team card as one matching set.</p>
+  <hr>
+  <h2>5. Tools and external links</h2>
+  <div class="table-scroll"><table>
+  <thead>
+  <tr>
+  <th>Tool</th>
+  <th>Used for</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr>
+  <td><a href="https://web.esphome.io">https://web.esphome.io</a></td>
+  <td>Flashing boards and reading a board's name from its USB log. Chrome or Edge only</td>
+  </tr>
+  <tr>
+  <td><a href="https://www.home-assistant.io/docs/">https://www.home-assistant.io/docs/</a></td>
+  <td>Home Assistant reference</td>
+  </tr>
+  <tr>
+  <td><a href="https://esphome.io/">https://esphome.io/</a></td>
+  <td>ESPHome reference</td>
+  </tr>
+  <tr>
+  <td><a href="https://github.com/arnans/gogo-iot-node">github.com/arnans/gogo-iot-node</a></td>
+  <td>GoGo-IoT sensor board hardware</td>
+  </tr>
+  </tbody>
+  </table></div>
+  <hr>
+  <h2>Still missing</h2>
+  <p>Nobody has produced these yet:</p>
+  <ul>
+  <li><strong>The two Farm Workshop OVAs</strong>, and a file host for them — blocks sending the install guide to
+    participants</li>
+  <li>The install-guide details participants need: VM login, file size, verification form, help channel</li>
+  <li>Slide decks for Sessions 1–3, the three post-tests, and the facilitator run-sheet</li>
+  <li>Real screenshots in the install guide (currently placeholders)</li>
+  <li>Bench tests against the built firmware — see
+    <a href="https://github.com/arnans/iot-training/blob/main/TEST-PLAN.md">TEST-PLAN.md</a> <em>(repo)</em>, especially
+    test B (the boot banner participants read) and test G (float switch polarity)</li>
+  </ul>
+  <hr>
+  <p><em>Building the images rather than using them? The firmware build and the 18-step OVA recipe are in
+  <a href="https://github.com/arnans/iot-training/blob/main/firmware/README.md">firmware/README.md</a> and
+  <a href="https://github.com/arnans/iot-training/blob/main/hass/README.md">hass/README.md</a> — both repo-only.</em></p>
+  <footer class="doc-foot">
+    <p>Generated from INSTRUCTOR-RESOURCES.md in the iot-training repository. Edit the Markdown source and re-render rather than this file.</p>
+  </footer>
+</article>
+</body>
+</html>

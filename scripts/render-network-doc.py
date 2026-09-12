@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Render the network requirements Markdown into standalone HTML for docs/.
+"""Render root-level Markdown documents into standalone HTML for docs/.
 
 The Markdown at the repo root stays the single source of truth. This script
 produces a self-contained, print-ready page per language, styled for handing to
@@ -42,6 +42,11 @@ DOCUMENTS = [
      "เอกสารข้อกำหนดทางเทคนิค"),
     ("NETWORK-REQUIREMENTS.md", "network-requirements-en.html", "en",
      "Vendor specification"),
+    # Not a vendor document, but the same shape: one standalone page, no worksheet
+    # theme, readable by anyone with the link. Its links are absolute so the page
+    # works from the repository and from GitHub Pages alike.
+    ("INSTRUCTOR-RESOURCES.md", "instructor-resources.html", "en",
+     "Instructor & TA handbook"),
 ]
 
 EXTENSIONS = ["tables", "attr_list", "sane_lists", "md_in_html"]

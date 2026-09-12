@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>IoT ในฟาร์มอัจฉริยะ</title>
+<meta name="description" content="ใบงานและไฟล์ทั้งหมดสำหรับการอบรม IoT ในฟาร์มอัจฉริยะ">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  /* Palette mirrors docs/stylesheets/extra.css so the front door matches the worksheets. */
+  :root {
+    --ag-green: #2e7d32;
+    --ag-green-deep: #1b5e20;
+    --ag-leaf: #7cb342;
+    --ag-marigold: #f5a524;
+    --ag-marigold-deep: #c77e00;
+    --ag-sky: #3b8bc9;
+    --ag-ink: #1e2a1f;
+    --bg: #fafcf7;
+    --card: #ffffff;
+    --muted: #4b5a4d;
+    --lighter: #8a968b;
+    --rule: rgba(30, 42, 31, 0.12);
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --ag-green: #4a9e50;
+      --ag-green-deep: #7cb342;
+      --ag-ink: #e6efe3;
+      --bg: #14201a;
+      --card: #1b2b22;
+      --muted: #b7c7b5;
+      --lighter: #8a9a8b;
+      --rule: rgba(230, 239, 227, 0.16);
+      color-scheme: dark;
+    }
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    padding-block: 0 4rem;
+    background: var(--bg);
+    color: var(--ag-ink);
+    font-family: "Prompt", system-ui, -apple-system, "Segoe UI", sans-serif;
+    font-size: 16px;
+    line-height: 1.65;
+    font-weight: 300;
+  }
+  .wrap { max-width: 60rem; margin: 0 auto; padding-inline: 20px; }
+
+  header.masthead {
+    background: linear-gradient(135deg, var(--ag-green-deep), var(--ag-green) 60%, var(--ag-leaf));
+    color: #fff;
+    padding-block: 2.6rem 2.2rem;
+    margin-bottom: 2.4rem;
+  }
+  header.masthead .kicker {
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    font-size: 0.72rem;
+    font-weight: 600;
+    opacity: 0.85;
+    margin: 0 0 0.5rem;
+  }
+  header.masthead h1 { margin: 0 0 0.5rem; font-size: clamp(1.7rem, 5vw, 2.5rem); font-weight: 600; }
+  header.masthead p { margin: 0; max-width: 44rem; opacity: 0.94; font-size: 1.02rem; }
+
+  h2 {
+    font-size: 1.22rem;
+    font-weight: 600;
+    margin: 2.6rem 0 0.4rem;
+    padding-bottom: 0.45rem;
+    border-bottom: 2px solid var(--rule);
+  }
+  h2:first-of-type { margin-top: 0; }
+  .lede { margin: 0 0 1.1rem; color: var(--muted); font-size: 0.95rem; }
+
+  .grid { display: grid; gap: 0.85rem; grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr)); }
+
+  a.card {
+    display: block;
+    background: var(--card);
+    border: 1px solid var(--rule);
+    border-left: 4px solid var(--ag-green);
+    border-radius: 10px;
+    padding: 0.95rem 1.1rem;
+    text-decoration: none;
+    color: inherit;
+    transition: transform 0.12s ease, box-shadow 0.12s ease, border-left-color 0.12s ease;
+  }
+  a.card:hover, a.card:focus-visible {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(30, 42, 31, 0.12);
+    border-left-color: var(--ag-marigold);
+  }
+  a.card .eyebrow {
+    display: block;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-weight: 600;
+    color: var(--ag-green-deep);
+    margin-bottom: 0.15rem;
+  }
+  a.card .name { display: block; font-weight: 600; font-size: 1.02rem; margin-bottom: 0.15rem; }
+  a.card .what { display: block; color: var(--muted); font-size: 0.88rem; line-height: 1.5; }
+
+  .callout {
+    background: rgba(245, 165, 36, 0.1);
+    border-left: 4px solid var(--ag-marigold);
+    border-radius: 8px;
+    padding: 0.9rem 1.1rem;
+    margin: 1.2rem 0 0;
+    font-size: 0.94rem;
+  }
+  .callout strong { font-weight: 600; }
+
+  /* Instructor block — deliberately set apart so participants can see it is not for them. */
+  .staff { margin-top: 3.2rem; padding-top: 0.2rem; border-top: 3px double var(--rule); }
+  .staff h2 { border-bottom-color: var(--ag-sky); }
+  .staff a.card { border-left-color: var(--ag-sky); }
+  .staff a.card .eyebrow { color: var(--ag-sky); }
+  .staff .lede { font-size: 0.92rem; }
+
+  table { border-collapse: collapse; width: 100%; margin: 0.4rem 0 0; font-size: 0.92rem; }
+  th, td { text-align: left; padding: 0.5rem 0.7rem; border-bottom: 1px solid var(--rule); }
+  th { font-weight: 600; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); }
+  td a { color: var(--ag-green-deep); font-family: "IBM Plex Mono", ui-monospace, monospace; font-size: 0.88rem; }
+  .table-scroll { overflow-x: auto; }
+
+  footer.foot {
+    margin-top: 3rem;
+    padding-top: 1.2rem;
+    border-top: 1px solid var(--rule);
+    color: var(--lighter);
+    font-size: 0.85rem;
+  }
+  footer.foot a { color: inherit; }
+</style>
+</head>
+<body>
+
+<header class="masthead">
+  <div class="wrap">
+    <p class="kicker">หลักสูตรนวัตกรเกษตรอัจฉริยะ AIoT สำหรับเกษตรแม่นยำ</p>
+    <h1>IoT ในฟาร์มอัจฉริยะ</h1>
+    <p>ใบงานและไฟล์ทั้งหมดสำหรับการอบรมสามช่วง เปิดได้ทั้งบนโทรศัพท์และแล็ปท็อป</p>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <h2>เริ่มที่นี่</h2>
+  <p class="lede">ทำก่อนวันอบรมอย่างน้อย 3 วัน ใช้เวลาราว 30 นาที ไม่รวมเวลาดาวน์โหลด</p>
+  <div class="grid">
+    <a class="card" href="renders/install.html">
+      <span class="eyebrow">ก่อนการอบรม</span>
+      <span class="name">เตรียมแล็ปท็อป</span>
+      <span class="what">ติดตั้ง VirtualBox นำเข้าเครื่อง Farm Workshop และเปิด Home Assistant ให้ได้</span>
+    </a>
+    <a class="card" href="renders/resources.html">
+      <span class="eyebrow">อ้างอิง</span>
+      <span class="name">รวมไฟล์และลิงก์</span>
+      <span class="what">ทุกไฟล์ที่ต้องดาวน์โหลดและทุกลิงก์ที่ใช้ รวมไว้ที่เดียว</span>
+    </a>
+  </div>
+
+  <h2>ใบงานระหว่างการอบรม</h2>
+  <p class="lede">แต่ละช่วงต่อยอดจากช่วงก่อนหน้า และใช้ชุดอุปกรณ์ชุดเดิมตลอด</p>
+  <div class="grid">
+    <a class="card" href="renders/session-1.html">
+      <span class="eyebrow">ช่วงที่ 1</span>
+      <span class="name">รับรู้ ตัดสินใจ สั่งการ</span>
+      <span class="what">อ่านค่าเซนเซอร์บนแดชบอร์ด ต่อวงจร 12V และสั่งปั๊มน้ำจากแล็ปท็อปและโทรศัพท์</span>
+    </a>
+    <a class="card" href="renders/session-2.html">
+      <span class="eyebrow">ช่วงที่ 2</span>
+      <span class="name">ควบคุมอัตโนมัติและ Fail-safe</span>
+      <span class="what">เปิดไฟเองเมื่อมืดโดยไม่กะพริบ รดน้ำเองเมื่ออากาศแห้ง และหยุดเองเมื่อน้ำหมด</span>
+    </a>
+    <a class="card" href="renders/session-3.html">
+      <span class="eyebrow">ช่วงที่ 3</span>
+      <span class="name">แดชบอร์ดและออกแบบระบบ</span>
+      <span class="what">อ่านกราฟย้อนหลัง สร้างแดชบอร์ดสำหรับผู้ใช้จริง และร่างระบบของฟาร์มเราเอง</span>
+    </a>
+  </div>
+
+  <h2>ใช้ระหว่างทำกิจกรรม</h2>
+  <div class="grid">
+    <a class="card" href="renders/reference.html">
+      <span class="eyebrow">อ้างอิง</span>
+      <span class="name">เมนูและวิธีแก้ปัญหา</span>
+      <span class="what">เมนู Home Assistant ที่ใช้บ่อย และอาการที่เจอบ่อยพร้อมวิธีแก้</span>
+    </a>
+    <a class="card" href="renders/record-sheet.html">
+      <span class="eyebrow">ของทีม</span>
+      <span class="name">ใบบันทึกของทีม</span>
+      <span class="what">รวมคำตอบทุกช่องและแบบร่างระบบ พิมพ์ไว้ล่วงหน้า หรือกรอกบนเว็บแล้วดาวน์โหลด</span>
+    </a>
+  </div>
+
+  <div class="callout">
+    <strong>ก่อนจบการอบรม</strong> เปิดใบบันทึกของทีม กด <strong>ดาวน์โหลดคำตอบ</strong> ส่งไฟล์ให้ผู้สอน
+    และกด <strong>พิมพ์ / บันทึก PDF</strong> เก็บไว้อ้างอิง
+  </div>
+
+  <section class="staff">
+    <h2>For instructors and TAs</h2>
+    <p class="lede">Not needed by participants. Everything required to prepare for and run the workshop.</p>
+    <div class="grid">
+      <a class="card" href="instructor-resources.html">
+        <span class="eyebrow">Handbook</span>
+        <span class="name">Instructor &amp; TA resources</span>
+        <span class="what">Firmware downloads, the VM image, worksheets, kit prep, and what is still missing</span>
+      </a>
+      <a class="card" href="network-requirements-en.html">
+        <span class="eyebrow">Venue</span>
+        <span class="name">Network requirements</span>
+        <span class="what">Wireless specification for the venue's network provider, with the acceptance test. Thai edition: <em>network-requirements.html</em></span>
+      </a>
+    </div>
+
+    <h2>Board firmware</h2>
+    <p class="lede">Flash at <a href="https://web.esphome.io">web.esphome.io</a> over USB-C, in Chrome or Edge.
+      The colour on the board must match the colour on the kit and on the team card.</p>
+    <div class="table-scroll">
+      <table>
+        <thead>
+          <tr><th>Board</th><th>Red zone</th><th>Green zone</th><th>Blue zone</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>GoGo-IoT sensor (ESP32-C3)</td>
+            <td><a href="firmware/gogo-iot-red.factory.bin">gogo-iot-red</a></td>
+            <td><a href="firmware/gogo-iot-green.factory.bin">gogo-iot-green</a></td>
+            <td><a href="firmware/gogo-iot-blue.factory.bin">gogo-iot-blue</a></td>
+          </tr>
+          <tr>
+            <td>Relay board (ESP32-C6)</td>
+            <td><a href="firmware/gogo-relay-red.factory.bin">gogo-relay-red</a></td>
+            <td><a href="firmware/gogo-relay-green.factory.bin">gogo-relay-green</a></td>
+            <td><a href="firmware/gogo-relay-blue.factory.bin">gogo-relay-blue</a></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <footer class="foot">
+    <p>IoT ในฟาร์มอัจฉริยะ · เอกสารชุดนี้สร้างจากคลัง <code>iot-training</code>
+      แก้ไขที่ไฟล์ต้นทางแล้วสร้างใหม่ ไม่แก้ที่ไฟล์ HTML</p>
+  </footer>
+
+</div>
+</body>
+</html>

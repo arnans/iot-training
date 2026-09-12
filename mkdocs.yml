@@ -4,6 +4,11 @@ site_description: ใบงานสำหรับผู้เข้าร่�
 docs_dir: docs
 site_dir: site
 
+# index.html is the published site's front door, hand-written for GitHub Pages.
+# MkDocs renders index.md to the same destination, so keep it out of the preview build.
+exclude_docs: |
+  index.html
+
 theme:
   name: material
   language: th
@@ -39,6 +44,7 @@ nav:
   - "ช่วงที่ 3 — โครงสร้างระบบ IoT: การสื่อสาร คลาวด์ แดชบอร์ด และการออกแบบระบบ": session-3.md
   - ใบบันทึกของทีม: record-sheet.md
   - เมนูและวิธีแก้ปัญหา: reference.md
+  - รวมไฟล์และลิงก์: resources.md
 
 hooks:
   - hooks/fields.py   # {{f:key}} markers -> form fields, see FILLABLE-WORKSHEET.md

@@ -850,7 +850,7 @@ body {
 <header class="ws-top">
   <div class="ws-top__inner">
     <span class="ws-brand">IoT ในฟาร์มอัจฉริยะ</span>
-    <span class="ws-draft">ฉบับร่างสำหรับทดลองใช้ · 2026-09-12</span>
+    <span class="ws-draft">ฉบับร่างสำหรับทดลองใช้ · 2026-09-13</span>
   </div>
 </header>
 <div class="ws-shell">
@@ -864,7 +864,7 @@ body {
 </blockquote>
 <p><strong>ทีมที่</strong> <input class="fld" type="text" data-k="team.no" data-size="4" size="4" autocomplete="off" spellcheck="false"> · <strong>โซนของทีม</strong> <span class="fld-radio" data-k="team.zone"><label><input class="fld" type="radio" name="team.zone" data-k="team.zone" value="แดง"> แดง</label><label><input class="fld" type="radio" name="team.zone" data-k="team.zone" value="เขียว"> เขียว</label><label><input class="fld" type="radio" name="team.zone" data-k="team.zone" value="น้ำเงิน"> น้ำเงิน</label></span> · WiFi แล็ปท็อป <code>farm-laptop-</code><input class="fld" type="text" data-k="team.wifi" data-size="6" size="6" autocomplete="off" spellcheck="false"></p>
 <p><strong>ที่อยู่ Home Assistant ของทีม</strong> (อ่านจากหน้าจอเครื่อง VM) ช่วงที่ 1 <code>http://</code><input class="fld" type="text" data-k="ha.ip1" data-size="15" size="15" autocomplete="off" spellcheck="false"> · ช่วงที่ 2 <code>http://</code><input class="fld" type="text" data-k="ha.ip2" data-size="15" size="15" autocomplete="off" spellcheck="false"></p>
-<p><strong>ชื่อบอร์ด</strong> (อ่านจาก web.esphome.io สีในชื่อต้องตรงกับโซน) GoGo-IoT <input class="fld" type="text" data-k="board.iot.name" data-size="22" size="22" autocomplete="off" spellcheck="false"> IP <input class="fld" type="text" data-k="board.iot.ip" data-size="15" size="15" autocomplete="off" spellcheck="false"> · บอร์ดรีเลย์ <input class="fld" type="text" data-k="board.relay.name" data-size="22" size="22" autocomplete="off" spellcheck="false"> IP <input class="fld" type="text" data-k="board.relay.ip" data-size="15" size="15" autocomplete="off" spellcheck="false"></p>
+<p><strong>ชื่อบอร์ด</strong> (อ่านจาก <a href="https://web.esphome.io">web.esphome.io</a> สีในชื่อต้องตรงกับโซน) GoGo-IoT <input class="fld" type="text" data-k="board.iot.name" data-size="22" size="22" autocomplete="off" spellcheck="false"> IP <input class="fld" type="text" data-k="board.iot.ip" data-size="15" size="15" autocomplete="off" spellcheck="false"> · บอร์ดรีเลย์ <input class="fld" type="text" data-k="board.relay.name" data-size="22" size="22" autocomplete="off" spellcheck="false"> IP <input class="fld" type="text" data-k="board.relay.ip" data-size="15" size="15" autocomplete="off" spellcheck="false"></p>
 <p><strong>ปัญหาในฟาร์มที่เราอยากแก้</strong> (เขียนตอนเริ่มช่วงที่ 1 หนึ่งประโยค ยังไม่ต้องคิดวิธีแก้ จะได้ใช้ในช่วงที่ 3)</p>
 <textarea class="fld fld-ta" data-k="farm.problem" rows="2"></textarea>
 
@@ -1474,6 +1474,22 @@ body {
       if (t.indexOf("บันทึกผล") === 0 || t.indexOf("จดลงใบบันทึก") === 0) {
         el.classList.add("note-record");
       }
+    });
+    externalLinks(root);
+  }
+
+  /* Links off the worksheet open in a new tab, so a half-filled page is never
+     navigated away from -- answers live in this tab's localStorage. Links to
+     other worksheet pages, and in-page anchors, stay in the same tab. */
+  function externalLinks(root) {
+    root.querySelectorAll(".md-typeset a[href]").forEach(function (a) {
+      var href = a.getAttribute("href") || "";
+      if (!/^https?:/i.test(href)) return;
+      var url;
+      try { url = new URL(href, location.href); } catch (e) { return; }
+      if (location.protocol.indexOf("http") === 0 && url.hostname === location.hostname) return;
+      a.target = "_blank";
+      a.rel = "noopener noreferrer";
     });
   }
 

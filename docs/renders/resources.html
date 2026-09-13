@@ -850,7 +850,7 @@ body {
 <header class="ws-top">
   <div class="ws-top__inner">
     <span class="ws-brand">IoT ในฟาร์มอัจฉริยะ</span>
-    <span class="ws-draft">ฉบับร่างสำหรับทดลองใช้ · 2026-09-12</span>
+    <span class="ws-draft">ฉบับร่างสำหรับทดลองใช้ · 2026-09-13</span>
   </div>
 </header>
 <div class="ws-shell">
@@ -1101,6 +1101,22 @@ body {
       if (t.indexOf("บันทึกผล") === 0 || t.indexOf("จดลงใบบันทึก") === 0) {
         el.classList.add("note-record");
       }
+    });
+    externalLinks(root);
+  }
+
+  /* Links off the worksheet open in a new tab, so a half-filled page is never
+     navigated away from -- answers live in this tab's localStorage. Links to
+     other worksheet pages, and in-page anchors, stay in the same tab. */
+  function externalLinks(root) {
+    root.querySelectorAll(".md-typeset a[href]").forEach(function (a) {
+      var href = a.getAttribute("href") || "";
+      if (!/^https?:/i.test(href)) return;
+      var url;
+      try { url = new URL(href, location.href); } catch (e) { return; }
+      if (location.protocol.indexOf("http") === 0 && url.hostname === location.hostname) return;
+      a.target = "_blank";
+      a.rel = "noopener noreferrer";
     });
   }
 

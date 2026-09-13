@@ -8,7 +8,7 @@
 
 **ที่อยู่ Home Assistant ของทีม** (อ่านจากหน้าจอเครื่อง VM) ช่วงที่ 1 `http://`{{f:ha.ip1|15}} · ช่วงที่ 2 `http://`{{f:ha.ip2|15}}
 
-**ชื่อบอร์ด** (อ่านจาก web.esphome.io สีในชื่อต้องตรงกับโซน) GoGo-IoT {{f:board.iot.name|22}} IP {{f:board.iot.ip|15}} · บอร์ดรีเลย์ {{f:board.relay.name|22}} IP {{f:board.relay.ip|15}}
+**ชื่อบอร์ด** (อ่านจาก [web.esphome.io](https://web.esphome.io) สีในชื่อต้องตรงกับโซน) GoGo-IoT {{f:board.iot.name|22}} IP {{f:board.iot.ip|15}} · บอร์ดรีเลย์ {{f:board.relay.name|22}} IP {{f:board.relay.ip|15}}
 
 **ปัญหาในฟาร์มที่เราอยากแก้** (เขียนตอนเริ่มช่วงที่ 1 หนึ่งประโยค ยังไม่ต้องคิดวิธีแก้ จะได้ใช้ในช่วงที่ 3)
 

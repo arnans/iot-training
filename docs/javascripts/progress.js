@@ -137,9 +137,10 @@
     return { pos: pos, done: allDone, act: pos >= 0 ? order[pos] : null, a: pos >= 0 ? p.acts[order[pos]] : null };
   }
 
-  /* the whole board for one page */
-  function board(tree, page, now) {
+  /* the whole board for one page; teamMax is the dashboard's "จำนวนทีม" (default TEAM_MAX) */
+  function board(tree, page, now, teamMax) {
     now = now || Date.now();
+    teamMax = teamMax || TEAM_MAX;
     var views = [], unknown = [];
     tree = objectify(tree) || {};
     Object.keys(tree).forEach(function (t) {
@@ -147,7 +148,7 @@
       var n = parseInt(t, 10);
       var v = teamView(t, tree[t]);
       if (!v.devs) return;                                    // every device document deleted: not a team any more
-      if (/^([1-9][0-9]?|100)$/.test(t) && n >= 1 && n <= TEAM_MAX) views.push(v); else unknown.push(v);
+      if (/^[1-9][0-9]*$/.test(t) && n >= 1 && n <= teamMax) views.push(v); else unknown.push(v);
     });
     var order = activityOrder(views, page);
     var names = {}, steps = {};
@@ -179,6 +180,24 @@
     ticks.sort(function (a, b) { return num(b.last.ts) - num(a.last.ts); });
     return { page: page, order: order, names: names, steps: steps, cells: cells, counts: counts, reported: reported,
              stale: stale, unknown: unknown, ticks: ticks.slice(0, 20) };
+  }
+
+  /* ---- one team's devices, for the dashboard's reset controls: newest first, each placed on `page` ---- */
+  function deviceList(team, devices, page, order, now) {
+    now = now || Date.now();
+    var out = [];
+    devices = objectify(devices) || {};
+    Object.keys(devices).forEach(function (key) {
+      var d = devices[key];
+      if (!d || typeof d !== "object") return;
+      var one = {}; one[key] = d;
+      var v = teamView(team, one), s = standing(v, page, order || []);
+      var srv = num(d.srv) || num(d.ts);
+      out.push({ key: key, dev: String(d.dev || key), srv: srv, stale: srv > 0 && now - srv > STALE_MS,
+                 onPage: !!v.pages[page], pos: s.pos, done: s.done, act: s.act, a: s.a });
+    });
+    out.sort(function (x, y) { return y.srv - x.srv || (x.key < y.key ? -1 : 1); });
+    return out;
   }
 
   /* ---- messages/<day>: newest first, each with its database id ---- */
@@ -213,6 +232,6 @@
   return {
     TEAM_MAX: TEAM_MAX, STALE_MS: STALE_MS,
     applyEvent: applyEvent, objectify: objectify, pageOrder: pageOrder, teamView: teamView, activityOrder: activityOrder,
-    standing: standing, board: board, messageList: messageList, actLabel: actLabel, localDay: localDay
+    standing: standing, board: board, deviceList: deviceList, messageList: messageList, actLabel: actLabel, localDay: localDay
   };
 });

@@ -192,6 +192,30 @@
     background: var(--ag-green); color: #fff; font-weight: 600; font-size: 0.9rem; cursor: pointer;
   }
   .tip-btn:hover, .tip-btn:focus-visible { background: var(--ag-green-deep); outline: none; }
+  .tip.is-pinned { max-width: 24rem; }
+
+  /* devices of one team, with remove controls (pinned popover only) */
+  .tip .devs { margin-top: 0.6rem; padding-top: 0.5rem; border-top: 1px solid var(--grid); }
+  .tip .devs-h { font-size: 0.74rem; font-weight: 600; color: var(--muted); margin-bottom: 0.15rem; }
+  .tip .dev { display: grid; grid-template-columns: 0.7rem minmax(0, 1fr) auto; gap: 0.45rem; align-items: center; padding: 0.22rem 0; }
+  .tip .dev .dot { width: 0.55rem; height: 0.55rem; border-radius: 50%; background: var(--ag-green); }
+  .tip .dev .info { font-size: 0.78rem; }
+  .tip .dev .info b { font-family: "IBM Plex Mono", monospace; font-weight: 600; }
+  .tip .dev.is-stale .dot { background: var(--lighter); }
+  .tip .dev.is-stale .info { color: var(--lighter); }
+  .tip-mini {
+    border: 1px solid var(--rule); background: transparent; color: var(--ag-tomato); border-radius: 999px;
+    padding: 0 0.65rem; font-size: 0.75rem; line-height: 1.8; cursor: pointer;
+  }
+  .tip-mini:hover, .tip-mini:focus-visible { background: var(--ag-tomato); border-color: var(--ag-tomato); color: #fff; outline: none; }
+  .tip-btn.tip-btn--danger { background: transparent; color: var(--ag-tomato); border: 1px solid var(--ag-tomato); font-weight: 500; font-size: 0.82rem; }
+  .tip-btn.tip-btn--danger:hover, .tip-btn.tip-btn--danger:focus-visible { background: var(--ag-tomato); color: #fff; }
+
+  .unknown .unk {
+    border: 1px solid var(--rule); background: var(--card); color: var(--ag-ink); border-radius: 0.4rem;
+    padding: 0 0.45rem; font: inherit; font-weight: 600; cursor: pointer;
+  }
+  .unknown .unk:hover, .unknown .unk:focus-visible { border-color: var(--ag-tomato); outline: none; }
 
   /* messages from teams: a live feed down the side, newest on top, new ones slide in */
   .msgs { list-style: none; margin: 0; padding: 0; font-size: 0.88rem; max-height: calc(100vh - 9rem); overflow-y: auto; }
@@ -326,7 +350,7 @@
   var msgTrees = {};       // day -> raw messages tree
   var streams = {};        // "progress:day" / "messages:day" -> EventSource
   var status = {};         // stream key -> "live" | "off" | "wait"
-  var hidden = loadJson("farm-progress.hidden") || {};   // message ids the instructor has put away
+  var pending = {};        // message id -> { on, at }: a TA's "helped" press not yet echoed by the database
   var openActs = loadJson("farm-progress.open") || {};   // activities whose task boxes are expanded
   var showTable = false, showHidden = false, showTicker = !!loadJson("farm-progress.ticker"), renderTimer, saveTimers = {};
   var seenMsg = null, seenHelp = null;     // ids already on screen: only newcomers animate
@@ -510,20 +534,32 @@
     return out;
   }
 
-  /* a TA marks a help call as done: written to the database so every screen agrees; local `hidden` gives instant feedback */
+  /* A TA marks a help call as done (or undoes it). The database's `handled` field is the truth,
+     so every TA's screen agrees whoever pressed last. `pending` only bridges the second before
+     the stream echoes the change back; a write that fails drops it, and the screen reverts. */
+  var PENDING_MS = 10000;
   function setHandled(m, on) {
-    if (on) hidden[m.id] = Date.now(); else delete hidden[m.id];
-    saveJson("farm-progress.hidden", hidden);
-    if (DEMO || !m.day) { render(); return; }
+    pending[m.id] = { on: on, at: Date.now() };
+    render();
+    if (DEMO || !m.day) return;                                   // demo: nothing to write, the local state is all there is
     fetch(DB + "/messages/" + m.day + "/" + m.id + "/handled.json?print=silent",
           { method: on ? "PUT" : "DELETE", body: on ? String(Date.now()) : undefined })
-      .catch(function () {});
-    render();
+      .then(function (r) { if (!r.ok) throw new Error(r.status); })
+      .catch(function () {
+        delete pending[m.id];
+        render();
+        window.alert("บันทึกไม่สำเร็จ ทีม " + m.team + " ยังแสดงว่าขอความช่วยเหลือ\nตรวจการเชื่อมต่อแล้วลองอีกครั้ง");
+      });
   }
   function resolveTeamHelp(team) {
     lastMsgs.forEach(function (m) { if (m.team === team && m.kind === "help" && !isHidden(m)) setHandled(m, true); });
   }
-  function isHidden(m) { return !!(m.handled || hidden[m.id]); }
+  function isHidden(m) {
+    var p = pending[m.id];
+    if (p && (DEMO || Date.now() - p.at < PENDING_MS) && p.on !== !!m.handled) return p.on;   // not echoed yet
+    if (p && p.on === !!m.handled) delete pending[m.id];          // echoed: the database agrees, stop overriding it
+    return !!m.handled;
+  }
 
   /* ---- render ---- */
   var STEPS = 8, CHEV = '<svg viewBox="0 0 10 10" aria-hidden="true"><path d="M3 1l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>';
@@ -534,7 +570,7 @@
 
   var lastBoard = null, lastMsgs = [], helpTeams = {}, lastMsgByTeam = {};
   function render() {
-    var b = lastBoard = Progress.board(combined(), page, Date.now());
+    var b = lastBoard = Progress.board(combined(), page, Date.now(), TEAM_MAX);
     var n = b.order.length;
     var lab = function (id) { return Progress.actLabel(id, b.names); };
 
@@ -634,11 +670,14 @@
       $("ticker-empty").hidden = b.ticks.length > 0;
     }
 
-    // unknown team numbers (outside 1..TEAM_MAX as set here)
-    var unknown = b.unknown.map(function (v) { return v.team; });
-    Object.keys(b.cells).forEach(function (t) { if (+t > TEAM_MAX) unknown.push(t); });
+    // team numbers outside 1..TEAM_MAX as set here: clickable, so their data can be removed too
+    var unknown = b.unknown.map(function (v) { return v.team; }).sort(function (x, y) { return +x - +y; });
     $("unknown").hidden = unknown.length === 0;
-    if (unknown.length) $("unknown").innerHTML = "<b>หมายเลขทีมที่ไม่อยู่ในช่วง 1–" + TEAM_MAX + ":</b> " + unknown.map(esc).join(", ");
+    if (unknown.length) {
+      $("unknown").innerHTML = "<b>หมายเลขทีมที่ไม่อยู่ในช่วง 1–" + TEAM_MAX + ":</b> " + unknown.map(function (t) {
+        return '<button type="button" class="unk" data-team="' + esc(t) + '">' + esc(t) + "</button>";
+      }).join(" ");
+    }
 
     // table view
     $("tablewrap").hidden = !showTable;
@@ -670,12 +709,75 @@
     if (m) setHandled(m, !isHidden(m));
   });
 
-  /* hover / focus tooltip on a cell; a click pins it, and on a team asking for help it carries the "helped" button */
-  var tip = $("tip"), pinnedTeam = null;
+  /* ---- one team's devices, and removing them ----
+     Each device's slot is progress/<day>/<team>/<dev>. Removing it clears that device's progress
+     from every screen. A worksheet still open on that device reports again on its next tick, so
+     this removes leftovers (a cleared browser, a changed number, a device gone home), not live data. */
+  function rawDevices(team) {
+    var out = {};
+    days().forEach(function (d) {
+      var t = Progress.objectify(trees[d]) || {}, sub = Progress.objectify(t[team]);
+      if (!sub || typeof sub !== "object") return;
+      Object.keys(sub).forEach(function (dev) { if (sub[dev] && typeof sub[dev] === "object") out[d + "/" + dev] = sub[dev]; });
+    });
+    return out;
+  }
+
+  function cellFor(team) {
+    if (!lastBoard) return null;
+    if (lastBoard.cells[team]) return lastBoard.cells[team];
+    var v = lastBoard.unknown.filter(function (u) { return u.team === team; })[0];
+    return v ? { view: v, standing: Progress.standing(v, page, lastBoard.order), stale: false } : null;
+  }
+
+  function removeDevices(team, keys) {
+    trees = trees || {};
+    keys.forEach(function (key) {                                   // off this screen at once; the stream confirms
+      var i = key.indexOf("/"), d = key.slice(0, i), dev = key.slice(i + 1);
+      trees[d] = Progress.objectify(trees[d]) || {};
+      var sub = Progress.objectify(trees[d][team]);
+      if (sub) { delete sub[dev]; trees[d][team] = sub; if (!Object.keys(sub).length) delete trees[d][team]; }
+      scheduleSave("progress", d);
+    });
+    render();
+    if (DEMO) return;
+    Promise.all(keys.map(function (key) {
+      var i = key.indexOf("/");
+      return fetch(DB + "/progress/" + key.slice(0, i) + "/" + encodeURIComponent(team) + "/" + encodeURIComponent(key.slice(i + 1)) + ".json?print=silent",
+                   { method: "DELETE" })
+        .then(function (r) { if (!r.ok) throw new Error(r.status); });
+    })).catch(function () {
+      window.alert("ลบข้อมูลของ ทีม " + team + " ไม่สำเร็จ\nตรวจการเชื่อมต่อแล้วลองอีกครั้ง กระดานจะแสดงข้อมูลจริงจากฐานข้อมูล");
+      trees = {}; msgTrees = {};
+      reconnect();                                                   // the database is the truth: reload it
+    });
+  }
+
+  function devLabel(d) { return d.dev.slice(0, 4); }
+
+  function devicesHtml(team) {
+    var list = Progress.deviceList(team, rawDevices(team), page, lastBoard.order, Date.now());
+    if (!list.length) return "";
+    var lab = function (id) { return Progress.actLabel(id, lastBoard.names); };
+    return '<div class="devs"><div class="devs-h">อุปกรณ์ที่ส่งข้อมูลของทีมนี้</div>' + list.map(function (d) {
+      var where = !d.onPage ? "ยังไม่เปิดหน้านี้"
+        : d.done ? "ครบทุกข้อ"
+        : d.pos < 0 ? "เปิดแล้ว"
+        : lab(d.act) + (d.a && d.a.total ? " · " + d.a.done + "/" + d.a.total : "");
+      var otherDay = d.key.slice(0, 10) !== day ? " · วันก่อน" : "";
+      return '<div class="dev' + (d.stale ? " is-stale" : "") + '"><span class="dot"></span>' +
+        '<span class="info"><b>' + esc(devLabel(d)) + "</b> ล่าสุด " + hhmm(d.srv) + " · " + esc(where) + (d.stale ? " (เงียบ)" : "") + otherDay + "</span>" +
+        '<button type="button" class="tip-mini" data-rm="' + esc(d.key) + '" data-team="' + esc(team) + '">ลบ</button></div>';
+    }).join("") +
+    '<button type="button" class="tip-btn tip-btn--danger" data-reset="' + esc(team) + '">ล้างข้อมูลทีมนี้ทั้งหมด</button></div>';
+  }
+
+  /* hover / focus tooltip on a cell; a click pins it, with the "helped" button and the device controls */
+  var tip = $("tip"), pinnedTeam = null, pinnedEl = null;
   function showTip(cell, pin) {
-    var team = cell.dataset.team, c = lastBoard && lastBoard.cells[team], m = lastMsgByTeam[team];
+    var team = cell.dataset.team, c = cellFor(team), m = lastMsgByTeam[team];
     if (!c && !m) { tip.hidden = true; return; }
-    if (pin) { pinnedTeam = team; tip.classList.add("is-pinned"); } else if (pinnedTeam) return;
+    if (pin) { pinnedTeam = team; pinnedEl = cell; tip.classList.add("is-pinned"); } else if (pinnedTeam) return;
     var lab = function (id) { return Progress.actLabel(id, lastBoard.names); };
     var lines = "<b>ทีม " + esc(team) + "</b>";
     if (c) {
@@ -690,10 +792,11 @@
       if (v.last) lines += '<div class="dim">ติ๊กล่าสุด ' + hhmm(v.last.ts) + " " + esc(v.last.label || "") + "</div>";
     }
     if (m) lines += '<div class="' + (m.kind === "help" && !isHidden(m) ? "msg" : "dim") + '">' + KIND[m.kind] + " " + hhmm(m.ts) + " " + esc(m.text) + "</div>";
-    if (helpTeams[team]) {
-      lines += pin
-        ? '<button type="button" class="tip-btn" data-resolve="' + esc(team) + '">✓ ช่วยเหลือแล้ว</button>'
-        : '<div class="dim">กดที่ช่องเพื่อล้างสถานะขอความช่วยเหลือ</div>';
+    if (pin) {
+      if (helpTeams[team]) lines += '<button type="button" class="tip-btn" data-resolve="' + esc(team) + '">✓ ช่วยเหลือแล้ว</button>';
+      if (c) lines += devicesHtml(team);
+    } else {
+      lines += '<div class="dim">' + (helpTeams[team] ? "กดที่ช่องเพื่อล้างสถานะขอความช่วยเหลือ หรือจัดการข้อมูลของทีม" : c ? "กดที่ช่องเพื่อจัดการข้อมูลของทีม" : "") + "</div>";
     }
     tip.innerHTML = lines; tip.hidden = false;
     var r = cell.getBoundingClientRect(), w = tip.offsetWidth, h = tip.offsetHeight;
@@ -701,7 +804,21 @@
     if (y + h > window.innerHeight - 8) y = r.top - h - 6;
     tip.style.left = x + "px"; tip.style.top = y + "px";
   }
-  function unpin() { pinnedTeam = null; tip.classList.remove("is-pinned"); tip.hidden = true; }
+  function unpin() { pinnedTeam = null; pinnedEl = null; tip.classList.remove("is-pinned"); tip.hidden = true; }
+
+  /* after a change, show the same team's popover again on its freshly drawn cell (or its "unknown" button) */
+  function repin(team) {
+    var el = document.querySelector('.cell[data-team="' + team + '"]') || document.querySelector('.unk[data-team="' + team + '"]');
+    unpin();
+    if (el && cellFor(team)) showTip(el, true);
+  }
+  $("unknown").addEventListener("click", function (e) {
+    var u = e.target.closest(".unk");
+    if (!u) return;
+    e.stopPropagation();
+    if (pinnedTeam === u.dataset.team) { unpin(); return; }
+    showTip(u, true);
+  });
   $("grid").addEventListener("mouseover", function (e) { var c = e.target.closest(".cell"); if (c) showTip(c); });
   $("grid").addEventListener("mouseout", function (e) { if (!pinnedTeam && (!e.relatedTarget || !e.relatedTarget.closest(".cell"))) tip.hidden = true; });
   $("grid").addEventListener("focusin", function (e) { var c = e.target.closest(".cell"); if (c) showTip(c); });
@@ -716,9 +833,29 @@
   tip.addEventListener("click", function (e) {
     e.stopPropagation();
     var b = e.target.closest("[data-resolve]");
-    if (!b) return;
-    resolveTeamHelp(b.dataset.resolve);
-    unpin();
+    if (b) { resolveTeamHelp(b.dataset.resolve); unpin(); return; }
+
+    var rm = e.target.closest("[data-rm]");
+    if (rm) {
+      var team = rm.dataset.team, key = rm.dataset.rm, short = key.slice(key.indexOf("/") + 1, key.indexOf("/") + 5);
+      if (!window.confirm("ลบข้อมูลของเครื่อง " + short + " ออกจาก ทีม " + team + "?\n\n" +
+                          "ความคืบหน้าจากเครื่องนี้จะหายจากกระดานทุกจอ\n" +
+                          "ถ้าเครื่องนี้ยังเปิดใบงานของทีมอยู่ ข้อมูลจะกลับมาเองเมื่อติ๊กครั้งถัดไป")) return;
+      removeDevices(team, [key]);
+      repin(team);
+      return;
+    }
+
+    var reset = e.target.closest("[data-reset]");
+    if (reset) {
+      var t = reset.dataset.reset, keys = Object.keys(rawDevices(t));
+      if (!keys.length) { unpin(); return; }
+      if (!window.confirm("ล้างความคืบหน้าทั้งหมดของ ทีม " + t + " (" + keys.length + " เครื่อง)?\n\n" +
+                          "ช่องของทีมนี้จะว่างบนกระดานทุกจอ ข้อความและคำขอความช่วยเหลือไม่ถูกลบ\n" +
+                          "เครื่องที่ยังเปิดใบงานของทีมนี้อยู่จะส่งข้อมูลกลับมาเองเมื่อติ๊กครั้งถัดไป")) return;
+      removeDevices(t, keys);
+      unpin();
+    }
   });
   document.addEventListener("click", function () { if (pinnedTeam) unpin(); });
   document.addEventListener("keydown", function (e) { if (e.key === "Escape" && pinnedTeam) unpin(); });
@@ -728,7 +865,7 @@
     var merged = {}, all = combined();
     Object.keys(all).forEach(function (team) { merged[team] = Progress.teamView(team, all[team]); });
     var out = { kind: "iot-farm-progress", exported: new Date().toISOString(), days: days(), teams: merged,
-                messages: Progress.messageList(combinedMsgs()), hiddenLocally: Object.keys(hidden), raw: {}, rawMessages: {} };
+                messages: Progress.messageList(combinedMsgs()), raw: {}, rawMessages: {} };
     days().forEach(function (d) { out.raw[d] = trees[d] || {}; out.rawMessages[d] = msgTrees[d] || {}; });
     var blob = new Blob([JSON.stringify(out, null, 2)], { type: "application/json" });
     var a = document.createElement("a");

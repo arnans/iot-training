@@ -95,6 +95,23 @@ b = P.board(ts, "session-1", 3);
 eq("device OR per box", b.cells["11"].view.pages["session-1"].steps.a1.map(s => s.on), [1, 1, 0]);
 eq("teams per box", b.steps.a1.map(s => s.l + "=" + s.n), ["1.1 ต่อสาย=2", "1.2 อ่านค่า=2", "1.3 จด=0"]);
 
+// 4d2. the dashboard's team count decides the grid; numbers above it are listed, not dropped
+let big = P.applyEvent(null, "put", "/", { "110": { d: { team: "110", dev: "d", ts: 1, srv: 1, pages: { "session-1": s1(A(1, 3, 0, 2), A(0, 5, 0, 3)) } } } });
+eq("team 110 is unknown on a 100-team board", P.board(big, "session-1", 2).unknown.map(v => v.team), ["110"]);
+eq("team 110 is a cell on a 120-team board", [Object.keys(P.board(big, "session-1", 2, 120).cells), P.board(big, "session-1", 2, 120).unknown.length], [["110"], 0]);
+
+// 4d3. one team's devices, newest first, each placed on the page, silent ones marked
+const devs = P.deviceList("17", {
+  "2026-09-14/old1": { team: "17", dev: "old1", ts: 1000, srv: 1000, pages: { "session-1": s1(A(3, 3, 2, 2), A(0, 5, 0, 3)) } },
+  "2026-09-14/new2": { team: "17", dev: "new2", ts: 900000, srv: 900000, pages: { "session-1": s1(A(3, 3, 2, 2), A(2, 5, 1, 3)) } },
+  "2026-09-14/idle": { team: "17", dev: "idle", ts: 950000, srv: 950000, pages: { "session-2": { ts: 1, acts: { a5: A(1, 7, 0, 0) } } } }
+}, "session-1", ["ก่อนเริ่ม", "a1", "a2"], 1000 + P.STALE_MS + 1);
+eq("devices newest first", devs.map(d => d.dev), ["idle", "new2", "old1"]);
+eq("device keys keep the day", devs.map(d => d.key)[2], "2026-09-14/old1");
+eq("device placed on the page", [devs[1].act, devs[1].a.done, devs[2].act], ["a2", 2, "a1"]);
+eq("device not on this page", [devs[0].onPage, devs[0].pos], [false, -1]);
+eq("silent device marked stale", devs.map(d => d.stale), [false, false, true]);
+
 // 4e. messages: newest first, kinds normalised
 const msgs = P.messageList({ "-Aa": { team: "3", kind: "help", text: "ปั๊มไม่ทำงาน", ts: 10, srv: 10 },
                              "-Ab": { team: "17", kind: "weird", text: "so cool", ts: 20, srv: 20 },

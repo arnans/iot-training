@@ -40,15 +40,20 @@ scripts/test_progress.js       node checks for progress.js
 ### Guarding the team number
 
 A wrong number paints another team's cell, so nothing is sent until the number is checked
-(`store.sentAs` = the number this browser has reported as):
+(`store.sentAs` = the number this browser has reported as). The worksheet first looks the new
+number up (a shallow GET of `progress/<day>/<team>`), then asks **at most one** `confirm`,
+worded for whichever of these apply:
 
-1. **Changing a number that has already reported** → `confirm`: "เคยส่งความคืบหน้าในชื่อ ทีม 17
-   แล้ว เปลี่ยนเป็น ทีม 23 ใช่ไหม?" Cancel puts the old number back; OK moves this device's row
-   (the entry under the old number is deleted, so no ghost stays on the board).
-2. **Any number another device already reports under today** (a shallow GET of
-   `progress/<day>/<team>`) → `confirm`: "มีอุปกรณ์อีกเครื่องส่งความคืบหน้าอยู่แล้ว ถ้าเป็นโทรศัพท์
-   หรือแล็ปท็อปอีกเครื่องของทีมเรา กด OK". The phone-and-laptop team answers once; a wrong number
-   is cancelled and the box clears. Offline, the check is skipped.
+1. **Changing a number that has already reported** ("เปลี่ยนหมายเลขทีมจาก ทีม 17 เป็น ทีม 23
+   ใช่ไหม?"). Cancel puts the old number back; OK moves this device's row (the entry under the
+   old number is deleted, so no ghost stays on the board).
+2. **A number another device already reports under today** ("ทีม 23 มีอุปกรณ์อีกเครื่องส่ง
+   ความคืบหน้าอยู่แล้ว ถ้าเป็นโทรศัพท์หรือแล็ปท็อปอีกเครื่องของทีมเรา กด OK"). The phone-and-laptop
+   team answers once; a wrong number is cancelled and the box clears.
+3. **Both at once**: one combined question; Cancel goes back to the old number.
+
+Offline, the lookup fails quietly and only case 1 can be asked. (Until 14 Sep 2026 cases 1 and 2
+were two dialogs in a row, which felt redundant.)
 
 Typing in the box does not trigger a report; leaving it does, so a half-typed "2" on the way
 to "23" is never checked. The status shows "● กำลังตรวจสอบหมายเลขทีม…" until the check passes.
@@ -117,7 +122,7 @@ otherwise the usual prompt appears first.
 `docs/progress.html?page=session-2&day=2026-09-20` (both default: session 1, today).
 `&plus=1` also streams the previous day and merges it, for the second workshop day.
 **จำนวนทีม** sets how many cells the grid shows (1–400; remembered in the browser and in the
-URL as `&max=`). It only changes the display: the worksheet's own limit is `TEAM_MAX` in
+URL as `&max=`); teams above it are counted and listed rather than drawn. It only changes the display: the worksheet's own limit is `TEAM_MAX` in
 extra.js (100 for this workshop — change it per event), and the database rules accept 1–400 so
 that constant can move without another rules paste. Numbers above the dashboard's setting are
 listed under "หมายเลขทีมที่ไม่อยู่ในช่วง".
@@ -177,15 +182,51 @@ Limits that matter: **100 simultaneous connections**, **10 GB/month downloaded**
 Uploads are not metered.
 
 - Connections: only streaming (SSE/WebSocket) connections count — the dashboard screens, two
-  per screen (progress + messages). The worksheets' PUTs and POSTs are one-shot HTTP requests.
-  A burst of 100 teams ticking in the same second is ~100 writes/s against a ~1000/s ceiling.
-- Download: a team document is ~3–8 KB (the `steps` labels are most of it). Generous estimate:
-  100 teams × 200 writes/day × 2 days = 40k writes, each re-sent to every dashboard stream:
-  40k × 8 KB × 3 screens ≈ 1 GB. Writes use `?print=silent` so the database does not echo the
-  document back (that alone would have been another ~320 MB). Messages are negligible.
-  So roughly 1–2 GB against 10 GB. The margin matters: **a Spark database that exceeds its
-  download quota stops serving until the month rolls over.** If a bigger event is ever planned,
-  Blaze (pay-as-you-go) at this volume costs cents and removes the cliff.
+  per screen (progress + messages; four with "รวมวันก่อนหน้า"). The worksheets' PUTs and POSTs
+  are one-shot HTTP requests. So **up to ~45 dashboard screens** at once; a projector plus 10–15
+  TAs on phones is ~30 connections. A burst of 100 teams ticking in the same second is
+  ~100 writes/s against a ~1000/s ceiling.
+- Download: a team document is ~3–8 KB (the `steps` labels are most of it), and **every open
+  dashboard receives every write**, so screens multiply it. Generous estimate: 100 teams ×
+  200 writes/day × 2 days = 40k writes × 8 KB ≈ 320 MB per screen over the workshop — about
+  4 GB with 12 screens open all day. Writes use `?print=silent` so the database does not echo
+  the document back. Messages are negligible. The margin matters: **a Spark database that
+  exceeds its download quota stops serving until the month rolls over**, so ask TAs to close
+  the dashboard between sessions. With 25+ screens, or a longer event, switch the project to
+  Blaze (pay-as-you-go): at this volume it costs cents and removes the cliff.
+
+### Removing a team's progress data
+
+Click a team's cell (or its number in "หมายเลขทีมที่ไม่อยู่ในช่วง") and the pinned popover lists
+**the devices reporting for that team**: a short device id, last seen, where that device is on
+the current page, faded with "(เงียบ)" after 10 minutes of silence. Each has **ลบ**, and
+**ล้างข้อมูลทีมนี้ทั้งหมด** removes them all. Both confirm first. Each removal is a DELETE of
+`progress/<day>/<team>/<dev>` (the rules already allow it; deleting a whole team in one request
+is refused), and the cell updates on every screen through the stream. Messages and help
+calls are not touched.
+
+What it is for, given that the dashboard never writes back to worksheets and every worksheet
+re-sends its full state on its next tick:
+
+| Case | Does removal stick? |
+|---|---|
+| Leftover slot after **ล้างคำตอบทั้งหมด** (same team restarted, or the laptop passed on) — the browser now has a new device id | Yes |
+| A device that changed its number, or went home | Yes |
+| A **live** device reporting under the wrong team | No: it re-sends on its next tick. Fix the number on that worksheet; the popover shows which device to look for |
+| "Start this team from zero" while its devices still hold ticks | No, and correctly: the board mirrors the worksheets |
+
+The typical sign of a leftover: the cell shows a team further along than it is (devices merge
+by maximum), and the popover shows one faded device ahead of the live one.
+
+### Several TAs at once
+
+Any number of TAs may open the same URL, each on their own device. A help call rings on
+every screen; whoever presses **✓ ช่วยเหลือแล้ว** writes `handled` to the database and the ring
+clears on every screen within a second or two; ↺ on any screen brings it back everywhere. Two
+TAs pressing at the same moment is harmless (both write a timestamp; the last one stays).
+Each screen shows its own press immediately and waits for the database to agree; if the write
+fails, that screen reverts and says so. Verified 14 Sep 2026 with two screens: clear on A,
+undo on B, simultaneous clear on both — the screens stayed in step each time.
 - Storage: kilobytes.
 
 ## Testing checklist (browser)

@@ -439,8 +439,8 @@ def render_page(src: str, slug: str, combined: bool) -> dict:
     body = md.convert(text)
 
     prefix = f"{slug}--" if combined else ""
-    if prefix:  # heading ids must stay unique once four pages share one document
-        body = re.sub(r'(<h[1-6] id=")', r"\1" + prefix, body)
+    if prefix:  # ids (headings, and paragraphs given one with attr_list) must stay unique once four pages share one document
+        body = re.sub(r'(<(?:h[1-6]|p|div) id=")', r"\1" + prefix, body)
         body = body.replace('href="#', 'href="#' + prefix)
 
     # links to the other worksheets; anything else in docs/ is not rendered, so unwrap it

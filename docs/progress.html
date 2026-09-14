@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>กระดานความคืบหน้าของทีม</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  /* Palette mirrors docs/index.html; the progress ramp is one green hue, light->dark,
+     validated as an ordinal ramp on both surfaces (dataviz skill, 13 Sep 2026). */
+  :root {
+    --ag-green: #2e7d32;
+    --ag-green-deep: #1b5e20;
+    --ag-leaf: #7cb342;
+    --ag-marigold: #f5a524;
+    --ag-marigold-deep: #c77e00;
+    --ag-tomato: #d84a2a;
+    --ag-ink: #1e2a1f;
+    --bg: #fafcf7;
+    --card: #ffffff;
+    --muted: #4b5a4d;
+    --lighter: #8a968b;
+    --rule: rgba(30, 42, 31, 0.12);
+    --grid: rgba(30, 42, 31, 0.07);
+    --help-bg: rgba(216, 74, 42, 0.08);
+    --p1: #71c468; --p2: #5caf54; --p3: #489a40; --p4: #33862c;
+    --p5: #1b7314; --p6: #085e02; --p7: #034a00; --p8: #003600;
+    --p1-ink: var(--ag-ink); --p2-ink: var(--ag-ink); --p3-ink: #fff; --p4-ink: #fff;
+    --p5-ink: #fff; --p6-ink: #fff; --p7-ink: #fff; --p8-ink: #fff;
+    --done: var(--ag-marigold);
+    --done-ink: var(--ag-ink);
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --ag-green: #4a9e50;
+      --ag-green-deep: #7cb342;
+      --ag-ink: #e6efe3;
+      --bg: #14201a;
+      --card: #1b2b22;
+      --muted: #b7c7b5;
+      --lighter: #8a9a8b;
+      --rule: rgba(230, 239, 227, 0.16);
+      --grid: rgba(230, 239, 227, 0.08);
+      --help-bg: rgba(216, 74, 42, 0.16);
+      --p1: #186012; --p2: #2f7429; --p3: #44893d; --p4: #599e52;
+      --p5: #6db366; --p6: #82c97b; --p7: #98df90; --p8: #adf6a5;
+      --p1-ink: #fff; --p2-ink: #fff; --p3-ink: #fff; --p4-ink: #fff;
+      --p5-ink: #14201a; --p6-ink: #14201a; --p7-ink: #14201a; --p8-ink: #14201a;
+      --done-ink: #14201a;
+      color-scheme: dark;
+    }
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    padding-block: 0 3rem;
+    background: var(--bg);
+    color: var(--ag-ink);
+    font-family: "Prompt", system-ui, -apple-system, "Segoe UI", sans-serif;
+    font-size: 15px;
+    line-height: 1.55;
+    font-weight: 300;
+  }
+  .wrap { max-width: 78rem; margin: 0 auto; padding-inline: 20px; }
+  button, input, select { font: inherit; }
+
+  header.top {
+    background: linear-gradient(135deg, var(--ag-green-deep), var(--ag-green) 60%, var(--ag-leaf));
+    color: #fff;
+    padding-block: 1.1rem 1rem;
+    margin-bottom: 1.4rem;
+  }
+  header.top .wrap { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.3rem 1.2rem; }
+  header.top h1 { margin: 0; font-size: 1.35rem; font-weight: 600; }
+  header.top .brand { font-size: 0.8rem; opacity: 0.9; letter-spacing: 0.04em; }
+  header.top .live { margin-left: auto; font-size: 0.85rem; font-weight: 500; white-space: nowrap; }
+  header.top .live .dot { display: inline-block; width: 0.6em; height: 0.6em; border-radius: 50%; background: #fff; margin-right: 0.4em; opacity: 0.5; }
+  header.top .live.is-live .dot { opacity: 1; box-shadow: 0 0 0 4px rgba(255,255,255,0.25); }
+  header.top .live.is-off .dot { background: var(--ag-marigold); opacity: 1; }
+
+  .controls { display: flex; flex-wrap: wrap; align-items: center; gap: 0.6rem 0.9rem; margin-bottom: 1.2rem; }
+  .tabs { display: flex; flex-wrap: wrap; gap: 0.35rem; }
+  .tabs button {
+    padding: 0.25rem 0.9rem; border-radius: 999px; border: 1px solid var(--rule);
+    background: var(--card); color: var(--muted); cursor: pointer; font-weight: 500; font-size: 0.85rem;
+  }
+  .tabs button[aria-selected="true"] { background: var(--ag-green); border-color: var(--ag-green); color: #fff; }
+  .controls label { display: inline-flex; align-items: center; gap: 0.4rem; font-size: 0.85rem; color: var(--muted); }
+  .controls input[type=date], .controls input[type=number] { padding: 0.15rem 0.4rem; border: 1px solid var(--rule); border-radius: 0.4rem; background: var(--card); color: var(--ag-ink); }
+  .controls input[type=number] { width: 4.6rem; }
+  .controls .spacer { flex: 1 1 auto; }
+  .btn {
+    padding: 0.25rem 0.9rem; border-radius: 999px; border: 1px solid var(--ag-green);
+    background: transparent; color: var(--ag-green); cursor: pointer; font-weight: 500; font-size: 0.85rem;
+  }
+  .btn:hover, .btn:focus-visible { background: var(--ag-green); color: #fff; outline: none; }
+  .btn--quiet { border-color: var(--rule); color: var(--muted); }
+  .btn--quiet:hover, .btn--quiet:focus-visible { background: transparent; color: var(--ag-tomato); border-color: var(--ag-tomato); }
+
+  .tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr)); gap: 0.8rem; margin-bottom: 1.2rem; }
+  .tile { background: var(--card); border: 1px solid var(--rule); border-radius: 0.8rem; padding: 0.7rem 1rem 0.6rem; }
+  .tile .n { font-size: 1.9rem; font-weight: 600; line-height: 1.1; }
+  .tile .n small { font-size: 0.95rem; font-weight: 400; color: var(--lighter); }
+  .tile .l { font-size: 0.8rem; color: var(--muted); }
+  .tile.is-help .n { color: var(--ag-tomato); }
+  .tile .n, .tile .l, .panel h2 { overflow-wrap: anywhere; }
+
+  /* main column: where teams are (first, largest), then the board; side: the live message feed */
+  .panels { display: grid; grid-template-columns: minmax(0, 1fr) minmax(17rem, 22rem); gap: 1.2rem; align-items: start; }
+  @media (max-width: 960px) { .panels { grid-template-columns: minmax(0, 1fr); } .side { position: static !important; } }
+  .col { display: grid; gap: 1.2rem; }
+  .side { position: sticky; top: 0.8rem; }
+  .panel { background: var(--card); border: 1px solid var(--rule); border-radius: 0.8rem; padding: 1rem 1.1rem; }
+  .panel h2 { margin: 0 0 0.6rem; font-size: 0.95rem; font-weight: 600; display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.2rem 0.5rem; }
+  .panel h2 small { font-weight: 300; color: var(--lighter); }
+  .panel h2 .right { margin-left: auto; font-weight: 400; font-size: 0.78rem; }
+  .panel h2 .right button { border: 0; background: none; color: var(--ag-green); cursor: pointer; padding: 0; font-size: inherit; }
+
+  /* bars: how many teams stand at each activity -- the pacing view, so it is the biggest thing on the page;
+     a chevron opens the activity's task boxes */
+  .panel--bars h2 { font-size: 1.1rem; }
+  .bars { display: grid; grid-template-columns: max-content minmax(0, 1fr) 2.6rem; gap: 0.5rem 0.8rem; align-items: center; font-size: 1rem; }
+  .bars .lab { color: var(--ag-ink); white-space: nowrap; display: flex; align-items: center; gap: 0.4rem; }
+  .bars .sw { width: 0.9rem; height: 0.9rem; border-radius: 0.2rem; border: 1px solid var(--rule); flex: none; }
+  .bars .trk { height: 1.25rem; background: var(--grid); border-radius: 0.3rem; overflow: hidden; }
+  .bars .bar { height: 100%; border-radius: 0 4px 4px 0; background: var(--ag-green); min-width: 0; transition: width 0.3s; }
+  .bars .val { text-align: right; font-variant-numeric: tabular-nums; font-weight: 600; font-size: 1.1rem; }
+  .chev {
+    width: 1.3rem; height: 1.3rem; flex: none; border: 0; background: none; color: var(--lighter); cursor: pointer;
+    padding: 0; display: inline-flex; align-items: center; justify-content: center; border-radius: 0.3rem;
+  }
+  .chev svg { width: 0.7rem; height: 0.7rem; transition: transform 0.15s; }
+  .chev[aria-expanded="true"] svg { transform: rotate(90deg); }
+  .chev:hover, .chev:focus-visible { background: var(--grid); color: var(--ag-ink); outline: none; }
+  .chev--none { visibility: hidden; }
+  .steps {
+    grid-column: 1 / -1; display: grid; grid-template-columns: minmax(0, 13rem) minmax(0, 1fr) 2.2rem;
+    gap: 0.25rem 0.6rem; align-items: center; margin: 0.1rem 0 0.5rem 1.65rem; padding-left: 0.6rem;
+    border-left: 2px solid var(--grid); font-size: 0.8rem;
+  }
+  .steps .lab { display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--muted); }
+  .steps .trk { height: 0.7rem; }
+  .steps .bar { background: var(--p3); }
+  .steps .val { font-weight: 400; font-size: 0.85rem; }
+
+  /* the board: one cell per team */
+  .grid { display: grid; grid-template-columns: repeat(10, minmax(0, 1fr)); gap: 4px; }
+  @media (max-width: 560px) { .grid { grid-template-columns: repeat(5, minmax(0, 1fr)); } }
+  .cell {
+    position: relative; aspect-ratio: 1.15; min-height: 3rem; border-radius: 0.45rem; border: 1px solid var(--rule);
+    background: var(--bg); color: var(--lighter); padding: 0.25rem 0.3rem; cursor: default; text-align: left;
+    display: flex; flex-direction: column; justify-content: space-between; overflow: hidden;
+  }
+  .cell .no { font-weight: 600; font-size: 1.05rem; line-height: 1; }
+  .cell .sub { font-size: 0.68rem; line-height: 1.15; opacity: 0.9; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .cell.is-on { border-color: transparent; }
+  .cell.is-stale { opacity: 0.45; border-style: dashed; border-color: var(--lighter); }
+  .cell.is-done { background: var(--done); color: var(--done-ink); }
+  /* a team asking for help is what the board is for: heavy red ring and a raised hand, over any colour */
+  .cell.has-help { opacity: 1; outline: 3px solid var(--ag-tomato); outline-offset: -1px; z-index: 1; }
+  .cell.has-help::after {
+    content: "🙋"; position: absolute; top: 0.05rem; right: 0.2rem; font-size: 1rem; line-height: 1;
+    filter: drop-shadow(0 0 2px rgba(0,0,0,0.35));
+  }
+  @keyframes help-in { 0% { box-shadow: 0 0 0 0 rgba(216, 74, 42, 0.7); } 100% { box-shadow: 0 0 0 14px rgba(216, 74, 42, 0); } }
+  .cell.has-help.is-new { animation: help-in 1.2s ease-out 3; }
+  .cell:focus-visible { outline: 2px solid var(--ag-marigold); outline-offset: 1px; }
+
+  .legend { display: flex; flex-wrap: wrap; gap: 0.3rem 0.9rem; margin: 0.7rem 0 0; font-size: 0.78rem; color: var(--muted); }
+  .legend span { display: inline-flex; align-items: center; gap: 0.35rem; }
+  .legend i { width: 0.85rem; height: 0.85rem; border-radius: 0.2rem; border: 1px solid var(--rule); display: inline-block; }
+  .legend i.help { border-radius: 50%; background: var(--ag-tomato); border-color: transparent; width: 0.7rem; height: 0.7rem; }
+
+  .tip {
+    position: fixed; z-index: 10; max-width: 20rem; padding: 0.55rem 0.8rem; border-radius: 0.6rem;
+    background: var(--card); color: var(--ag-ink); border: 1px solid var(--rule); box-shadow: 0 6px 24px rgba(0,0,0,0.14);
+    font-size: 0.8rem; line-height: 1.45; pointer-events: none;
+  }
+  .tip b { font-weight: 600; }
+  .tip .row { display: flex; justify-content: space-between; gap: 1rem; }
+  .tip .row span:last-child { font-variant-numeric: tabular-nums; }
+  .tip .dim { color: var(--lighter); }
+  .tip .msg { color: var(--ag-tomato); }
+  .tip.is-pinned { pointer-events: auto; border-color: var(--ag-tomato); }
+  .tip-btn {
+    display: block; width: 100%; margin-top: 0.5rem; padding: 0.4rem 0.8rem; border-radius: 999px; border: 0;
+    background: var(--ag-green); color: #fff; font-weight: 600; font-size: 0.9rem; cursor: pointer;
+  }
+  .tip-btn:hover, .tip-btn:focus-visible { background: var(--ag-green-deep); outline: none; }
+
+  /* messages from teams: a live feed down the side, newest on top, new ones slide in */
+  .msgs { list-style: none; margin: 0; padding: 0; font-size: 0.88rem; max-height: calc(100vh - 9rem); overflow-y: auto; }
+  .msgs li {
+    display: grid; grid-template-columns: 3.4rem minmax(0, 1fr) 1.4rem; grid-template-areas: "team txt x" "t txt x"; gap: 0 0.5rem; align-items: start;
+    padding: 0.45rem 0.4rem 0.45rem 0.6rem; border-top: 1px solid var(--grid); border-left: 3px solid transparent;
+  }
+  .msgs li:first-child { border-top: 0; }
+  .msgs .team { grid-area: team; }
+  .msgs .t { grid-area: t; font-size: 0.75rem; }
+  .msgs .txt { grid-area: txt; }
+  .msgs .x { grid-area: x; }
+  @keyframes msg-in { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: none; } }
+  .msgs li.is-new { animation: msg-in 0.45s ease-out; }
+  .msgs li.k-help { border-left-color: var(--ag-tomato); background: var(--help-bg); }
+  .msgs li.k-done { border-left-color: var(--ag-green); }
+  .msgs li.is-hidden { opacity: 0.45; }
+  .msgs .t { color: var(--lighter); font-variant-numeric: tabular-nums; }
+  .msgs .team { font-weight: 600; }
+  .msgs .txt { overflow-wrap: anywhere; }
+  .msgs .txt .k { margin-right: 0.3rem; }
+  .msgs .x { border: 0; background: none; color: var(--lighter); cursor: pointer; padding: 0; font-size: 1rem; line-height: 1; }
+  .msgs .x:hover, .msgs .x:focus-visible { color: var(--ag-tomato); outline: none; }
+
+  .ticker { list-style: none; margin: 0; padding: 0; font-size: 0.83rem; }
+  .ticker li { display: flex; gap: 0.6rem; padding: 0.22rem 0; border-top: 1px solid var(--grid); }
+  .ticker li:first-child { border-top: 0; }
+  .ticker .t { color: var(--lighter); font-variant-numeric: tabular-nums; flex: none; width: 3.2rem; }
+  .ticker .team { font-weight: 600; flex: none; width: 4.2rem; }
+  .ticker .mark { flex: none; width: 1.1rem; color: var(--ag-green); }
+  .ticker .mark.off { color: var(--ag-tomato); }
+  .ticker .what { color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; flex: 1 1 auto; }
+
+  .unknown { font-size: 0.83rem; color: var(--muted); margin-top: 0.8rem; }
+  .unknown b { color: var(--ag-tomato); font-weight: 600; }
+
+  .tablewrap { overflow-x: auto; margin-top: 1.2rem; }
+  table { border-collapse: collapse; font-size: 0.82rem; min-width: 100%; }
+  th, td { padding: 0.3rem 0.6rem; border-bottom: 1px solid var(--grid); text-align: left; white-space: nowrap; }
+  th { font-weight: 600; color: var(--muted); position: sticky; top: 0; background: var(--card); }
+  td.n { font-variant-numeric: tabular-nums; text-align: right; }
+  .empty { color: var(--lighter); font-size: 0.85rem; padding: 0.6rem 0; }
+  .foot { margin-top: 1.6rem; font-size: 0.78rem; color: var(--lighter); overflow-wrap: anywhere; }
+  .foot code { font-family: "IBM Plex Mono", monospace; font-size: 0.95em; }
+  [hidden] { display: none !important; }
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <span class="brand">IoT ในฟาร์มอัจฉริยะ</span>
+    <h1>กระดานความคืบหน้าของทีม</h1>
+    <span class="live" id="live"><span class="dot"></span><span id="live-text">กำลังเชื่อมต่อ…</span></span>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="controls">
+    <div class="tabs" role="tablist" id="tabs"></div>
+    <label>วันที่ <input type="date" id="day"></label>
+    <label><input type="checkbox" id="plus"> รวมวันก่อนหน้า</label>
+    <label>จำนวนทีม <input type="number" id="max" min="1" max="400" step="1"></label>
+    <span class="spacer"></span>
+    <button class="btn" id="export" type="button">ดาวน์โหลด JSON</button>
+    <button class="btn btn--quiet" id="table-toggle" type="button" aria-pressed="false">ตาราง</button>
+    <button class="btn btn--quiet" id="ticker-toggle" type="button" aria-pressed="false" title="รายการติ๊กล่าสุด สำหรับตรวจสอบระบบ">ติ๊กล่าสุด</button>
+    <button class="btn btn--quiet" id="clear" type="button">ล้างข้อมูลที่จำไว้</button>
+  </div>
+
+  <div class="tiles">
+    <div class="tile"><div class="n"><span id="t-reported">0</span> <small>/ <span id="t-max">100</span></small></div><div class="l">ทีมที่รายงานเข้ามาแล้ว</div></div>
+    <div class="tile"><div class="n" id="t-current">–</div><div class="l" id="t-current-l">กิจกรรมที่ทีมส่วนใหญ่อยู่</div></div>
+    <div class="tile"><div class="n" id="t-done">0</div><div class="l">ทีมที่ทำครบทุกข้อของหน้านี้</div></div>
+    <div class="tile is-help"><div class="n" id="t-help">0</div><div class="l">ทีมที่ขอความช่วยเหลือ</div></div>
+    <div class="tile"><div class="n" id="t-stale">0</div><div class="l">เงียบเกิน 10 นาที</div></div>
+  </div>
+
+  <div class="panels">
+    <div class="col main">
+      <section class="panel panel--bars">
+        <h2>ทีมใดอยู่กิจกรรมใด <small id="bars-note"></small></h2>
+        <div class="bars" id="bars"></div>
+        <div class="empty" id="bars-empty" hidden>ยังไม่มีทีมรายงานหน้านี้</div>
+      </section>
+
+      <section class="panel">
+        <h2>ทีมที่ขอความช่วยเหลือ และภาพรวมทีม 1–<span id="g-max">100</span> <small>กรอบแดง 🙋 = ขอความช่วยเหลือ · สีเข้มขึ้นตามกิจกรรมที่ไปถึง · เหลือง = ครบทุกข้อ · จาง = เงียบเกิน 10 นาที</small></h2>
+        <div class="grid" id="grid" aria-live="off"></div>
+        <div class="legend" id="legend"></div>
+        <div class="unknown" id="unknown" hidden></div>
+      </section>
+
+      <section class="panel" id="ticker-panel" hidden>
+        <h2>ติ๊กล่าสุด <small>สำหรับตรวจสอบว่าข้อมูลเข้ามา</small></h2>
+        <ol class="ticker" id="ticker"></ol>
+        <div class="empty" id="ticker-empty" hidden>ยังไม่มี</div>
+      </section>
+    </div>
+
+    <aside class="col side">
+      <section class="panel panel--msgs">
+        <h2>ข้อความจากทีม <small id="msgs-note"></small><span class="right"><button type="button" id="show-hidden">แสดงที่ซ่อนไว้</button></span></h2>
+        <ul class="msgs" id="msgs"></ul>
+        <div class="empty" id="msgs-empty" hidden>ยังไม่มีข้อความ · ทีมส่งได้จากแถบบนใบงาน</div>
+      </section>
+    </aside>
+  </div>
+
+  <div class="tablewrap" id="tablewrap" hidden><table id="table"></table></div>
+
+  <p class="foot">ข้อมูลมาจากใบงานของแต่ละทีมทันทีที่ติ๊ก กรอก หรือส่งข้อความ เก็บไว้ในเบราว์เซอร์นี้ด้วย
+    (<code>localStorage</code>) จึงเปิดดูย้อนหลังได้แม้ขาดอินเทอร์เน็ต · ที่มา <code id="foot-url"></code></p>
+</main>
+
+<div class="tip" id="tip" hidden></div>
+
+<script src="javascripts/progress.js"></script>
+<script>
+(function () {
+  "use strict";
+  var DB = "https://iot-farm-workshop-default-rtdb.asia-southeast1.firebasedatabase.app";
+  var PAGES = [
+    ["session-1", "ช่วงที่ 1"], ["session-2", "ช่วงที่ 2"], ["session-3", "ช่วงที่ 3"], ["record-sheet", "ใบบันทึก"]
+  ];
+  var q = new URLSearchParams(location.search);
+  var page = PAGES.some(function (p) { return p[0] === q.get("page"); }) ? q.get("page") : "session-1";
+  var day = /^\d{4}-\d{2}-\d{2}$/.test(q.get("day") || "") ? q.get("day") : Progress.localDay();
+  var plus = q.get("plus") === "1";
+  var TEAM_MAX = loadMax();
+  var trees = {};          // day -> raw progress tree from the stream
+  var msgTrees = {};       // day -> raw messages tree
+  var streams = {};        // "progress:day" / "messages:day" -> EventSource
+  var status = {};         // stream key -> "live" | "off" | "wait"
+  var hidden = loadJson("farm-progress.hidden") || {};   // message ids the instructor has put away
+  var openActs = loadJson("farm-progress.open") || {};   // activities whose task boxes are expanded
+  var showTable = false, showHidden = false, showTicker = !!loadJson("farm-progress.ticker"), renderTimer, saveTimers = {};
+  var seenMsg = null, seenHelp = null;     // ids already on screen: only newcomers animate
+
+  var $ = function (id) { return document.getElementById(id); };
+
+  function loadJson(key) { try { return JSON.parse(localStorage.getItem(key)); } catch (e) { return null; } }
+  function saveJson(key, v) { try { localStorage.setItem(key, JSON.stringify(v)); } catch (e) {} }
+  function loadMax() {
+    var m = parseInt(q.get("max"), 10) || parseInt((loadJson("farm-progress.max") || 0), 10) || Progress.TEAM_MAX;
+    return Math.min(400, Math.max(1, m));
+  }
+
+  $("t-max").textContent = TEAM_MAX; $("g-max").textContent = TEAM_MAX; $("max").value = TEAM_MAX;
+  $("day").value = day; $("plus").checked = plus;
+
+  /* ---- controls ---- */
+  PAGES.forEach(function (p) {
+    var b = document.createElement("button");
+    b.type = "button"; b.setAttribute("role", "tab"); b.textContent = p[1]; b.dataset.page = p[0];
+    b.setAttribute("aria-selected", p[0] === page ? "true" : "false");
+    b.addEventListener("click", function () { page = p[0]; syncUrl(); render(); });
+    $("tabs").appendChild(b);
+  });
+  $("day").addEventListener("change", function () {
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(this.value)) return;
+    day = this.value; syncUrl(); reconnect();
+  });
+  $("plus").addEventListener("change", function () { plus = this.checked; syncUrl(); reconnect(); });
+  $("max").addEventListener("change", function () {
+    var m = Math.min(400, Math.max(1, parseInt(this.value, 10) || Progress.TEAM_MAX));
+    this.value = m; TEAM_MAX = m; saveJson("farm-progress.max", m);
+    $("t-max").textContent = m; $("g-max").textContent = m;
+    syncUrl(); render();
+  });
+  $("table-toggle").addEventListener("click", function () {
+    showTable = !showTable; this.setAttribute("aria-pressed", String(showTable)); render();
+  });
+  $("ticker-toggle").setAttribute("aria-pressed", String(showTicker));
+  $("ticker-toggle").addEventListener("click", function () {
+    showTicker = !showTicker; this.setAttribute("aria-pressed", String(showTicker)); saveJson("farm-progress.ticker", showTicker); render();
+  });
+  $("show-hidden").addEventListener("click", function () {
+    showHidden = !showHidden; this.textContent = showHidden ? "ซ่อนที่ซ่อนไว้" : "แสดงที่ซ่อนไว้"; render();
+  });
+  $("export").addEventListener("click", exportJson);
+  $("clear").addEventListener("click", function () {
+    if (!window.confirm("ลบข้อมูลของวันนี้ที่จำไว้ในเบราว์เซอร์นี้? ข้อมูลในฐานข้อมูลไม่ถูกลบ และจะโหลดกลับมาใหม่ทันทีที่เชื่อมต่อได้")) return;
+    days().forEach(function (d) { try { localStorage.removeItem("farm-progress." + d); localStorage.removeItem("farm-messages." + d); } catch (e) {} });
+    trees = {}; msgTrees = {}; reconnect();
+  });
+
+  function syncUrl() {
+    var u = new URLSearchParams();
+    u.set("page", page); u.set("day", day);
+    if (plus) u.set("plus", "1");
+    if (TEAM_MAX !== Progress.TEAM_MAX) u.set("max", TEAM_MAX);
+    history.replaceState(null, "", "?" + u.toString());
+    document.querySelectorAll("#tabs button").forEach(function (b) { b.setAttribute("aria-selected", String(b.dataset.page === page)); });
+    $("foot-url").textContent = DB.replace(/^https:\/\//, "") + "/progress/" + day;
+  }
+
+  function prevDay(d) {
+    var p = d.split("-"), dt = new Date(+p[0], +p[1] - 1, +p[2] - 1);
+    return Progress.localDay(dt);
+  }
+  function days() { return plus ? [day, prevDay(day)] : [day]; }
+
+  /* ---- demo: made-up teams and messages, no connection (?demo=1), to see the layout before the day ---- */
+  var DEMO = q.get("demo") === "1";
+  function demoTree() {
+    var t = {}, now = Date.now(), acts = ["ก่อนเริ่ม", "a1", "a2", "a3", "a4"], totals = [5, 6, 7, 6, 5];
+    var names = { "ก่อนเริ่ม": "ก่อนเริ่ม" };
+    for (var i = 1; i <= TEAM_MAX; i++) {
+      if (i % 9 === 0) continue;                                    // a few teams never opened the page
+      var pos = Math.floor(Math.pow((i * 37) % 100 / 100, 0.8) * (acts.length + 1));   // acts.length = every activity complete
+      var a = {}, steps = {}, done = pos >= acts.length;
+      pos = Math.min(pos, acts.length - 1);
+      acts.forEach(function (id, k) {
+        var tot = totals[k], d = done ? tot : k < pos ? tot : k === pos ? (i * 7) % tot : 0;
+        a[id] = { done: d, total: tot, filled: Math.min(3, d), nf: 3 };
+        steps[id] = [];
+        for (var s = 0; s < tot; s++) steps[id].push({ l: (k ? k + "." + (s + 1) : "") + " ขั้นตอนตัวอย่างที่ " + (s + 1), on: s < d ? 1 : 0 });
+      });
+      var age = (i % 13 === 0) ? 15 * 60000 : (i * 11) % 300000;
+      t[String(i)] = { d1: { team: String(i), dev: "d1", zone: ["red", "green", "blue"][i % 3], ts: now - age, srv: now - age,
+        pages: { "session-1": { ts: now - age, order: acts, names: names, acts: a, steps: steps } },
+        last: { page: "session-1", act: acts[pos], label: (pos) + "." + (1 + i % 4) + " ตัวอย่างขั้นตอนที่ติ๊ก", on: i % 17 !== 0, ts: now - age } } };
+    }
+    t["abc"] = { x: { team: "abc", dev: "x", ts: now, srv: now, pages: {} } };
+    return t;
+  }
+  function demoMsgs() {
+    var now = Date.now(), out = {};
+    [["17", "help", "ขอความช่วยเหลือ", 90], ["42", "note", "ปั๊มทำงานแล้ว 🎉", 200], ["5", "note", "ปั๊มไม่หมุน ลองเปลี่ยนสายแล้วก็ยังไม่ได้ 🤔", 400],
+     ["88", "note", "So cool! 🔥", 700], ["23", "help", "ขอความช่วยเหลือ", 1200], ["61", "note", "ลูกลอยติด 😅", 1500]].forEach(function (m, i) {
+      out["-demo" + i] = { team: m[0], kind: m[1], text: m[2], ts: now - m[3] * 1000, srv: now - m[3] * 1000, zone: "red", page: "session-1" };
+    });
+    return out;
+  }
+
+  /* ---- streams ---- */
+  function reconnect() {
+    Object.keys(streams).forEach(function (k) { streams[k].close(); delete streams[k]; });
+    status = {};
+    if (DEMO) {
+      trees = {}; msgTrees = {}; trees[day] = demoTree(); msgTrees[day] = demoMsgs();
+      $("live-text").textContent = "ตัวอย่าง · ไม่ได้เชื่อมต่อ"; $("live").classList.add("is-off");
+      render();
+      return;
+    }
+    days().forEach(function (d) {
+      if (!trees[d]) trees[d] = loadJson("farm-progress." + d) || {};
+      if (!msgTrees[d]) msgTrees[d] = loadJson("farm-messages." + d) || {};
+      connect("progress", d);
+      connect("messages", d);
+    });
+    render();
+  }
+
+  function connect(kind, d) {
+    var key = kind + ":" + d;
+    status[key] = "wait"; showLive();
+    var es = new EventSource(DB + "/" + kind + "/" + d + ".json");
+    streams[key] = es;
+    var bag = kind === "progress" ? trees : msgTrees;
+    function onData(ev) {
+      return function (e) {
+        var msg; try { msg = JSON.parse(e.data); } catch (err) { return; }
+        bag[d] = Progress.applyEvent(bag[d], ev, msg.path, msg.data);
+        status[key] = "live"; showLive();
+        scheduleRender(); scheduleSave(kind, d);
+      };
+    }
+    function again() { es.close(); status[key] = "off"; showLive(); setTimeout(function () { if (streams[key] === es) connect(kind, d); }, 3000); }
+    es.addEventListener("put", onData("put"));
+    es.addEventListener("patch", onData("patch"));
+    es.addEventListener("keep-alive", function () { status[key] = "live"; showLive(); });
+    es.addEventListener("cancel", again);
+    es.addEventListener("auth_revoked", again);
+    es.onopen = function () { status[key] = "live"; showLive(); };
+    es.onerror = function () { status[key] = es.readyState === 2 ? "off" : "wait"; showLive(); };   // EventSource retries by itself
+  }
+
+  function showLive() {
+    var el = $("live"), st = Object.keys(status).map(function (k) { return status[k]; });
+    var all = st.length > 0 && st.every(function (s) { return s === "live"; }), none = st.length > 0 && st.every(function (s) { return s === "off"; });
+    el.classList.toggle("is-live", all); el.classList.toggle("is-off", none);
+    $("live-text").textContent = all ? "รับข้อมูลสด · " + day + (plus ? " + วันก่อนหน้า" : "")
+      : none ? "ขาดการเชื่อมต่อ กำลังลองใหม่ · แสดงข้อมูลที่จำไว้" : "กำลังเชื่อมต่อ…";
+  }
+
+  function scheduleSave(kind, d) {
+    var key = kind + ":" + d;
+    clearTimeout(saveTimers[key]);
+    saveTimers[key] = setTimeout(function () { saveJson((kind === "progress" ? "farm-progress." : "farm-messages.") + d, (kind === "progress" ? trees : msgTrees)[d]); }, 1000);
+  }
+  function scheduleRender() { clearTimeout(renderTimer); renderTimer = setTimeout(render, 80); }
+
+  /* the tree the board reads: one day, or two days merged with device ids kept apart */
+  function combined() {
+    var ds = days();
+    if (ds.length === 1) return trees[ds[0]] || {};
+    var out = {};
+    ds.forEach(function (d) {
+      var t = Progress.objectify(trees[d]) || {};
+      Object.keys(t).forEach(function (team) {
+        if (!t[team] || typeof t[team] !== "object") return;
+        out[team] = out[team] || {};
+        Object.keys(t[team]).forEach(function (dev) { out[team][d + "/" + dev] = t[team][dev]; });
+      });
+    });
+    return out;
+  }
+  function combinedMsgs() {
+    var out = {};
+    days().forEach(function (d) {
+      var t = Progress.objectify(msgTrees[d]) || {};
+      Object.keys(t).forEach(function (id) { if (t[id] && typeof t[id] === "object") { out[id] = Object.assign({}, t[id], { _day: d }); } });
+    });
+    return out;
+  }
+
+  /* a TA marks a help call as done: written to the database so every screen agrees; local `hidden` gives instant feedback */
+  function setHandled(m, on) {
+    if (on) hidden[m.id] = Date.now(); else delete hidden[m.id];
+    saveJson("farm-progress.hidden", hidden);
+    if (DEMO || !m.day) { render(); return; }
+    fetch(DB + "/messages/" + m.day + "/" + m.id + "/handled.json?print=silent",
+          { method: on ? "PUT" : "DELETE", body: on ? String(Date.now()) : undefined })
+      .catch(function () {});
+    render();
+  }
+  function resolveTeamHelp(team) {
+    lastMsgs.forEach(function (m) { if (m.team === team && m.kind === "help" && !isHidden(m)) setHandled(m, true); });
+  }
+  function isHidden(m) { return !!(m.handled || hidden[m.id]); }
+
+  /* ---- render ---- */
+  var STEPS = 8, CHEV = '<svg viewBox="0 0 10 10" aria-hidden="true"><path d="M3 1l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  function stepFor(pos, n) { return n <= 1 ? STEPS : Math.round(pos * (STEPS - 1) / (n - 1)) + 1; }
+  function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
+  function hhmm(ts) { if (!ts) return ""; var d = new Date(ts); return d.getHours() + ":" + ("0" + d.getMinutes()).slice(-2); }
+  var KIND = { help: "🙋", done: "✅", note: "💬" };
+
+  var lastBoard = null, lastMsgs = [], helpTeams = {}, lastMsgByTeam = {};
+  function render() {
+    var b = lastBoard = Progress.board(combined(), page, Date.now());
+    var n = b.order.length;
+    var lab = function (id) { return Progress.actLabel(id, b.names); };
+
+    // messages (all pages: a call for help is not page-specific)
+    var msgs = lastMsgs = Progress.messageList(combinedMsgs());
+    helpTeams = {}; lastMsgByTeam = {};
+    var openHelp = 0;
+    msgs.forEach(function (m) {
+      if (!lastMsgByTeam[m.team]) lastMsgByTeam[m.team] = m;
+      if (m.kind === "help" && !isHidden(m)) { if (!helpTeams[m.team]) openHelp++; helpTeams[m.team] = true; }
+    });
+    var shown = msgs.filter(function (m) { return showHidden || !isHidden(m); }).slice(0, 80);
+    var firstPaint = seenMsg === null, nowSeen = {};
+    $("msgs").innerHTML = shown.map(function (m) {
+      var hid = isHidden(m), fresh = !firstPaint && !seenMsg[m.id];
+      nowSeen[m.id] = true;
+      return '<li class="k-' + m.kind + (hid ? " is-hidden" : "") + (fresh ? " is-new" : "") + '" data-id="' + esc(m.id) + '">' +
+        '<span class="team">ทีม ' + esc(m.team) + '</span><span class="t">' + hhmm(m.ts) + '</span>' +
+        '<span class="txt"><span class="k">' + KIND[m.kind] + '</span>' + esc(m.text) + '</span>' +
+        '<button type="button" class="x" title="' + (hid ? "นำกลับมา" : "ซ่อน (จัดการแล้ว)") + '" aria-label="' + (hid ? "นำกลับมา" : "ซ่อน") + '">' + (hid ? "↺" : "×") + '</button></li>';
+    }).join("");
+    msgs.forEach(function (m) { nowSeen[m.id] = true; });
+    seenMsg = nowSeen;
+    var newHelp = {}, prevHelp = seenHelp;
+    Object.keys(helpTeams).forEach(function (t) { if (prevHelp && !prevHelp[t]) newHelp[t] = true; });
+    seenHelp = helpTeams;
+    $("msgs-empty").hidden = shown.length > 0;
+    var hiddenN = msgs.filter(isHidden).length;
+    $("msgs-note").textContent = (msgs.length ? msgs.length + " ข้อความ" : "") + (hiddenN ? " · ซ่อนไว้ " + hiddenN : "");
+    $("show-hidden").hidden = hiddenN === 0 && !showHidden;
+
+    // tiles
+    $("t-reported").textContent = b.reported;
+    $("t-done").textContent = b.counts.done;
+    $("t-stale").textContent = b.stale;
+    $("t-help").textContent = openHelp;
+    var top = -1, topN = -1;
+    b.counts.byPos.forEach(function (c, i) { if (c > topN) { topN = c; top = i; } });
+    if (b.counts.done > 0 && b.counts.done > topN) { $("t-current").textContent = "ครบแล้ว"; $("t-current-l").textContent = b.counts.done + " ทีมทำครบทุกข้อ"; }
+    else if (top >= 0 && topN > 0) { $("t-current").textContent = lab(b.order[top]); $("t-current-l").textContent = topN + " ทีมอยู่ที่นี่"; }
+    else { $("t-current").textContent = "–"; $("t-current-l").textContent = "ยังไม่มีทีมเริ่มหน้านี้"; }
+
+    // bars, each activity openable to its task boxes
+    var denom = Math.max(1, b.reported);
+    function row(label, count, color, act) {
+      var steps = act ? (b.steps[act] || []) : [], open = !!(act && openActs[act]);
+      var chev = act && steps.length
+        ? '<button type="button" class="chev" data-act="' + esc(act) + '" aria-expanded="' + open + '" aria-label="ขั้นตอนของ ' + esc(label) + '">' + CHEV + '</button>'
+        : '<span class="chev chev--none"></span>';
+      var html = '<div class="lab">' + chev + '<i class="sw" style="background:' + color + '"></i>' + esc(label) + '</div>' +
+        '<div class="trk"><div class="bar" style="width:' + (100 * count / denom) + '%;background:' + color + '"></div></div>' +
+        '<div class="val">' + count + '</div>';
+      if (open) {
+        html += '<div class="steps">' + steps.map(function (s, i) {
+          if (!s) return "";
+          return '<div class="lab" title="' + esc(s.l) + '">' + esc(s.l || ("ข้อ " + (i + 1))) + '</div>' +
+            '<div class="trk"><div class="bar" style="width:' + (100 * s.n / denom) + '%"></div></div><div class="val">' + s.n + '</div>';
+        }).join("") + '</div>';
+      }
+      return html;
+    }
+    var bars = [row("ยังไม่เริ่ม", b.counts.none, "var(--grid)", null)];
+    b.order.forEach(function (id, i) { bars.push(row(lab(id), b.counts.byPos[i], "var(--p" + stepFor(i, n) + ")", id)); });
+    bars.push(row("ครบทุกข้อ", b.counts.done, "var(--done)", null));
+    $("bars").innerHTML = bars.join("");
+    $("bars-empty").hidden = b.reported > 0;
+    $("bars-note").textContent = b.reported ? "จำนวนทีม จาก " + b.reported + " ทีมที่รายงาน · กดลูกศรเพื่อดูรายข้อ" : "";
+
+    // grid
+    var cells = [];
+    for (var t = 1; t <= TEAM_MAX; t++) {
+      var c = b.cells[String(t)], help = helpTeams[String(t)] ? " has-help" + (newHelp[String(t)] ? " is-new" : "") : "";
+      if (!c) { cells.push('<button type="button" class="cell' + help + '" data-team="' + t + '" tabindex="-1"><span class="no">' + t + '</span><span class="sub"></span></button>'); continue; }
+      var s = c.standing, cls = "cell is-on" + (c.stale ? " is-stale" : "") + (s.done ? " is-done" : ""), style = "", sub = "";
+      if (s.done) sub = "ครบ ✓";
+      else if (s.pos >= 0) {
+        var k = stepFor(s.pos, n);
+        style = ' style="background:var(--p' + k + ');color:var(--p' + k + '-ink)"';
+        sub = lab(s.act).replace("กิจกรรม ", "") + (s.a.total ? " · " + s.a.done + "/" + s.a.total : "");   // fields are in the tooltip
+      } else { cls = "cell" + (c.stale ? " is-stale" : ""); sub = "เปิดแล้ว"; }
+      cells.push('<button type="button" class="' + cls + help + '" data-team="' + t + '"' + style + ' aria-label="ทีม ' + t + ' ' + esc(sub) + (help ? " ขอความช่วยเหลือ" : "") + '"><span class="no">' + t + '</span><span class="sub">' + esc(sub) + '</span></button>');
+    }
+    $("grid").innerHTML = cells.join("");
+
+    // legend
+    $("legend").innerHTML = b.order.map(function (id, i) {
+      return '<span><i style="background:var(--p' + stepFor(i, n) + ')"></i>' + esc(lab(id)) + '</span>';
+    }).join("") + (n ? '<span><i style="background:var(--done)"></i>ครบทุกข้อ</span>' : "") + '<span>🙋 ขอความช่วยเหลือ</span>';
+
+    // ticker (admin view, off by default)
+    $("ticker-panel").hidden = !showTicker;
+    if (showTicker) {
+      $("ticker").innerHTML = b.ticks.map(function (x) {
+        return '<li><span class="t">' + hhmm(x.last.ts) + '</span><span class="team">ทีม ' + esc(x.team) + '</span>' +
+          '<span class="mark' + (x.last.on ? "" : " off") + '">' + (x.last.on ? "✓" : "✗") + '</span><span class="what">' + esc(x.last.label || lab(x.last.act)) + '</span></li>';
+      }).join("");
+      $("ticker-empty").hidden = b.ticks.length > 0;
+    }
+
+    // unknown team numbers (outside 1..TEAM_MAX as set here)
+    var unknown = b.unknown.map(function (v) { return v.team; });
+    Object.keys(b.cells).forEach(function (t) { if (+t > TEAM_MAX) unknown.push(t); });
+    $("unknown").hidden = unknown.length === 0;
+    if (unknown.length) $("unknown").innerHTML = "<b>หมายเลขทีมที่ไม่อยู่ในช่วง 1–" + TEAM_MAX + ":</b> " + unknown.map(esc).join(", ");
+
+    // table view
+    $("tablewrap").hidden = !showTable;
+    if (showTable) {
+      var h = "<tr><th>ทีม</th><th>โซน</th>" + b.order.map(function (id) { return "<th>" + esc(lab(id)) + "</th>"; }).join("") + "<th>ล่าสุด</th><th>ข้อความล่าสุด</th></tr>";
+      var body = Object.keys(b.cells).sort(function (a, c) { return +a - +c; }).map(function (team) {
+        var c = b.cells[team], p = c.view.pages[page], m = lastMsgByTeam[team];
+        return "<tr><td>" + team + "</td><td>" + esc(c.view.zone || "") + "</td>" + b.order.map(function (id) {
+          var a = p && p.acts[id]; if (!a) return "<td class=n>–</td>";
+          return "<td class=n>" + a.done + "/" + a.total + (a.nf ? " · " + a.filled + "/" + a.nf : "") + "</td>";
+        }).join("") + "<td>" + hhmm(c.view.srv) + (c.stale ? " (เงียบ)" : "") + "</td><td>" + (m ? KIND[m.kind] + " " + esc(m.text) : "") + "</td></tr>";
+      }).join("");
+      $("table").innerHTML = h + body;
+    }
+  }
+
+  $("bars").addEventListener("click", function (e) {
+    var ch = e.target.closest(".chev[data-act]");
+    if (!ch) return;
+    var a = ch.dataset.act;
+    if (openActs[a]) delete openActs[a]; else openActs[a] = true;
+    saveJson("farm-progress.open", openActs);
+    render();
+  });
+  $("msgs").addEventListener("click", function (e) {
+    var x = e.target.closest(".x"), li = e.target.closest("li[data-id]");
+    if (!x || !li) return;
+    var m = lastMsgs.filter(function (mm) { return mm.id === li.dataset.id; })[0];
+    if (m) setHandled(m, !isHidden(m));
+  });
+
+  /* hover / focus tooltip on a cell; a click pins it, and on a team asking for help it carries the "helped" button */
+  var tip = $("tip"), pinnedTeam = null;
+  function showTip(cell, pin) {
+    var team = cell.dataset.team, c = lastBoard && lastBoard.cells[team], m = lastMsgByTeam[team];
+    if (!c && !m) { tip.hidden = true; return; }
+    if (pin) { pinnedTeam = team; tip.classList.add("is-pinned"); } else if (pinnedTeam) return;
+    var lab = function (id) { return Progress.actLabel(id, lastBoard.names); };
+    var lines = "<b>ทีม " + esc(team) + "</b>";
+    if (c) {
+      var v = c.view, p = v.pages[page];
+      lines += (v.zone ? ' <span class="dim">โซน ' + esc(v.zone) + "</span>" : "") + ' <span class="dim">· ' + v.devs + " เครื่อง · ล่าสุด " + hhmm(v.srv) + "</span>";
+      if (p) {
+        lines += lastBoard.order.map(function (id) {
+          var a = p.acts[id]; if (!a) return "";
+          return '<div class="row"><span>' + esc(lab(id)) + "</span><span>" + a.done + "/" + a.total + " ติ๊ก" + (a.nf ? " · " + a.filled + "/" + a.nf + " ช่อง" : "") + "</span></div>";
+        }).join("");
+      } else lines += '<div class="dim">ยังไม่เปิดหน้านี้</div>';
+      if (v.last) lines += '<div class="dim">ติ๊กล่าสุด ' + hhmm(v.last.ts) + " " + esc(v.last.label || "") + "</div>";
+    }
+    if (m) lines += '<div class="' + (m.kind === "help" && !isHidden(m) ? "msg" : "dim") + '">' + KIND[m.kind] + " " + hhmm(m.ts) + " " + esc(m.text) + "</div>";
+    if (helpTeams[team]) {
+      lines += pin
+        ? '<button type="button" class="tip-btn" data-resolve="' + esc(team) + '">✓ ช่วยเหลือแล้ว</button>'
+        : '<div class="dim">กดที่ช่องเพื่อล้างสถานะขอความช่วยเหลือ</div>';
+    }
+    tip.innerHTML = lines; tip.hidden = false;
+    var r = cell.getBoundingClientRect(), w = tip.offsetWidth, h = tip.offsetHeight;
+    var x = Math.min(window.innerWidth - w - 8, Math.max(8, r.left)), y = r.bottom + 6;
+    if (y + h > window.innerHeight - 8) y = r.top - h - 6;
+    tip.style.left = x + "px"; tip.style.top = y + "px";
+  }
+  function unpin() { pinnedTeam = null; tip.classList.remove("is-pinned"); tip.hidden = true; }
+  $("grid").addEventListener("mouseover", function (e) { var c = e.target.closest(".cell"); if (c) showTip(c); });
+  $("grid").addEventListener("mouseout", function (e) { if (!pinnedTeam && (!e.relatedTarget || !e.relatedTarget.closest(".cell"))) tip.hidden = true; });
+  $("grid").addEventListener("focusin", function (e) { var c = e.target.closest(".cell"); if (c) showTip(c); });
+  $("grid").addEventListener("focusout", function () { if (!pinnedTeam) tip.hidden = true; });
+  $("grid").addEventListener("click", function (e) {
+    var c = e.target.closest(".cell");
+    if (!c) return;
+    e.stopPropagation();
+    if (pinnedTeam === c.dataset.team) { unpin(); return; }
+    showTip(c, true);
+  });
+  tip.addEventListener("click", function (e) {
+    e.stopPropagation();
+    var b = e.target.closest("[data-resolve]");
+    if (!b) return;
+    resolveTeamHelp(b.dataset.resolve);
+    unpin();
+  });
+  document.addEventListener("click", function () { if (pinnedTeam) unpin(); });
+  document.addEventListener("keydown", function (e) { if (e.key === "Escape" && pinnedTeam) unpin(); });
+
+  /* ---- export: everything this browser holds for the chosen day(s) ---- */
+  function exportJson() {
+    var merged = {}, all = combined();
+    Object.keys(all).forEach(function (team) { merged[team] = Progress.teamView(team, all[team]); });
+    var out = { kind: "iot-farm-progress", exported: new Date().toISOString(), days: days(), teams: merged,
+                messages: Progress.messageList(combinedMsgs()), hiddenLocally: Object.keys(hidden), raw: {}, rawMessages: {} };
+    days().forEach(function (d) { out.raw[d] = trees[d] || {}; out.rawMessages[d] = msgTrees[d] || {}; });
+    var blob = new Blob([JSON.stringify(out, null, 2)], { type: "application/json" });
+    var a = document.createElement("a");
+    a.href = URL.createObjectURL(blob); a.download = "farm-progress-" + day + (plus ? "-plus" : "") + ".json";
+    document.body.appendChild(a); a.click();
+    setTimeout(function () { URL.revokeObjectURL(a.href); a.remove(); }, 1500);
+  }
+
+  setInterval(render, 30000);        // the "quiet for 10 minutes" fade needs no event to appear
+  syncUrl();
+  reconnect();
+})();
+</script>
+</body>
+</html>

@@ -112,8 +112,42 @@
   /* ---- fillable worksheet ---- */
   var STORE = "farm-worksheet.v1";   // bump the suffix if the stored shape ever changes
   var ZONE_SLUG = { "แดง": "red", "เขียว": "green", "น้ำเงิน": "blue" };
+  var TEAM_MAX = 100;                // team numbers are 1..TEAM_MAX, stored as plain digits
+  var TEAM_RULE = "หมายเลขทีมต้องเป็นตัวเลข 1–" + TEAM_MAX;
   var store = emptyStore();
   var saveTimer;
+
+  /* ---- team number: "๑๗", " 17 ", "ทีม 17", "017" all mean team 17 ---- */
+  var THAI_DIGITS = "๐๑๒๓๔๕๖๗๘๙";
+
+  /* what the box may hold while typing: ASCII digits only, at most 3 of them */
+  function teamDigits(raw) {
+    return String(raw || "").replace(/[๐-๙]/g, function (c) { return THAI_DIGITS.indexOf(c); })
+      .replace(/\D+/g, "").slice(0, 3);
+  }
+
+  /* the canonical value, or "" if the text is not a team number */
+  function teamClean(raw) {
+    var d = teamDigits(raw).replace(/^0+/, "");
+    var n = parseInt(d, 10);
+    return (n >= 1 && n <= TEAM_MAX) ? String(n) : "";
+  }
+
+  function teamValid() {
+    var t = store.fields["team.no"];
+    return !t || String(t).trim() === "" || teamClean(t) !== "";
+  }
+
+  /* red underline + tooltip on every team.no box while the value is not a team number */
+  function markTeamBoxes() {
+    var bad = !teamValid();
+    document.querySelectorAll('.fld[data-k="team.no"]').forEach(function (el) {
+      el.classList.toggle("fld--bad", bad);
+      el.setAttribute("aria-invalid", bad ? "true" : "false");
+      el.title = bad ? TEAM_RULE : "";
+      if (typeof el.setCustomValidity === "function") el.setCustomValidity(bad ? TEAM_RULE : "");
+    });
+  }
 
   function emptyStore() { return { v: 1, fields: {}, checks: {} }; }
 
@@ -161,6 +195,191 @@
     }
   }
 
+  /* ---- progress tracker: each tick is sent to the instructor's dashboard (docs/progress.html) ----
+     Only counts travel: per activity, task boxes ticked / total and answer boxes filled / total,
+     plus the last tick. Answers themselves stay in this browser. The path is dated, so a
+     rehearsal or a later reader at home never lands on the workshop's board. Rules that accept
+     the write: database.rules.json. Nothing is sent until the team number is valid. */
+  var PROGRESS_DB = "https://iot-farm-workshop-default-rtdb.asia-southeast1.firebasedatabase.app";
+  var pushTimer, pushState = "", pushWhen;   // "" never tried · "ok" · "fail"
+
+  function pad2(n) { return ("0" + n).slice(-2); }
+  function today() { var d = new Date(); return d.getFullYear() + "-" + pad2(d.getMonth() + 1) + "-" + pad2(d.getDate()); }
+
+  /* one id per browser, so a phone and a laptop of the same team are two rows the dashboard merges */
+  function devId() {
+    if (!store.dev) store.dev = Math.random().toString(36).slice(2, 8);
+    return store.dev;
+  }
+
+  /* "session-1" on MkDocs (/session-1/), on a render (/renders/session-1.html), on the combined render (visible tab) */
+  function pageKey() {
+    var shown = document.querySelector(".ws-page:not([hidden])");
+    if (shown && shown.dataset.page) return shown.dataset.page;
+    var seg = location.pathname.replace(/\/(index\.html)?$/, "").split("/").pop() || "index";
+    return seg.replace(/\.html$/, "").replace(/[.#$\/\[\]]/g, "_");
+  }
+
+  /* the activity an element belongs to: the nearest heading above it. id "a5" (sub-section ids
+     a5-3, a2-1b fold in) and, for headings that are not numbered activities, the heading text --
+     slugs drop Thai vowels ("ก่อนเริ่ม" becomes "กอนเรม"), so the dashboard needs the words */
+  function actOf(el) {
+    var node = el.closest(".ws-tasks") || el.closest("li") || el;
+    while (node && !node.classList.contains("md-content__inner")) {
+      for (var p = node.previousElementSibling; p; p = p.previousElementSibling) {
+        if (/^H[234]$/.test(p.tagName) && p.id) {
+          var id = p.id.replace(/^[a-z0-9-]+--/, "")   // combined render prefixes ids with the page slug
+                       .replace(/^(a\d+)-.*$/, "$1")
+                       .replace(/[.#$\/\[\]]/g, "_");
+          var name = /^a\d+$/.test(id) ? "" : (p.textContent || "").replace(/[¶#]\s*$/, "").trim().slice(0, 40);
+          return { id: id, name: name };
+        }
+      }
+      node = node.parentElement;
+    }
+    return { id: "page", name: "" };
+  }
+  function actId(el) { return actOf(el).id; }
+
+  /* what a task box is about: "1.1 ต่อสวิตช์ลูกลอย" from the bold link in a task list; the first words otherwise */
+  function stepLabel(cb) {
+    var li = cb.closest("li");
+    if (!li) return "";
+    var s = li.closest(".ws-tasks") ? li.querySelector("strong") : null;
+    return (s || li).textContent.trim().replace(/\s+/g, " ").slice(0, 48);
+  }
+
+  /* counts per activity, the activities in page order (the database sorts keys, so order must
+     travel), the heading words for the unnumbered ones, and each task box's label and state */
+  function summarize() {
+    var acts = {}, order = [], names = {}, steps = {}, seen = {};
+    function act(el) {
+      var a = actOf(el);
+      if (!acts[a.id]) { acts[a.id] = { done: 0, total: 0, filled: 0, nf: 0 }; order.push(a.id); }
+      if (a.name && !names[a.id]) names[a.id] = a.name;
+      return a.id;
+    }
+    taskBoxes().forEach(function (cb) {
+      var id = act(cb);
+      acts[id].total++;
+      if (cb.checked) acts[id].done++;
+      (steps[id] = steps[id] || []).push({ l: stepLabel(cb), on: cb.checked ? 1 : 0 });
+    });
+    document.querySelectorAll(".md-typeset .fld").forEach(function (el) {
+      var k = el.dataset.k;
+      if (k === "team.no" || k === "team.zone") return;
+      var id = act(el);
+      if (seen[id + "|" + k]) return;                 // one key counts once per activity
+      seen[id + "|" + k] = 1;
+      acts[id].nf++;
+      if (String(store.fields[k] || "").trim() !== "") acts[id].filled++;
+    });
+    return { acts: acts, order: order, names: names, steps: steps };
+  }
+
+  /* Before the first report under a number, and before any change of number, make sure it is
+     ours: a wrong number paints another team's cell. store.sentAs is the number this browser
+     has reported as; a different valid number is verified (and confirmed) before anything is sent. */
+  var verifying = null;
+
+  function setTeamEverywhere(t) {
+    if (t) store.fields["team.no"] = t; else delete store.fields["team.no"];
+    fillFields(document);
+    saveNow();
+  }
+
+  function verifyTeam(team) {
+    if (verifying === team || document.hidden) return;        // one dialog at a time, and only in a visible tab
+    verifying = team;
+    var old = store.sentAs;
+    if (old && old !== team &&
+        !window.confirm("เบราว์เซอร์นี้เคยส่งความคืบหน้าในชื่อ ทีม " + old + " แล้ว\n\n" +
+                        "เปลี่ยนเป็น ทีม " + team + " ใช่ไหม?\n" +
+                        "กด OK ถ้าเราคือทีม " + team + " จริง ๆ (ข้อมูลของทีม " + old + " จากเครื่องนี้จะถูกย้ายมา)\n" +
+                        "กด Cancel เพื่อกลับไปใช้ ทีม " + old)) {
+      setTeamEverywhere(old);
+      verifying = null;
+      return;
+    }
+    var done = function (othersExist) {
+      verifying = null;
+      if (team !== teamClean(store.fields["team.no"])) return;    // the box changed meanwhile: that value gets its own check
+      if (othersExist &&
+          !window.confirm("หมายเลข ทีม " + team + " มีอุปกรณ์อีกเครื่องส่งความคืบหน้าอยู่แล้ววันนี้\n\n" +
+                          "ถ้าเป็นโทรศัพท์หรือแล็ปท็อปอีกเครื่องของทีมเรา กด OK\n" +
+                          "ถ้าไม่ใช่ทีมของเรา กด Cancel แล้วดูหมายเลขทีมบนบัตรประจำทีมอีกครั้ง")) {
+        setTeamEverywhere("");
+        var box = document.querySelector('#ws-bar .fld[data-k="team.no"]');
+        if (box) box.focus();
+        return;
+      }
+      store.sentAs = team;
+      saveNow();
+      if (old && old !== team) {                                  // this device's row moves to the new number
+        fetch(PROGRESS_DB + "/progress/" + today() + "/" + old + "/" + devId() + ".json?print=silent", { method: "DELETE", keepalive: true })
+          .catch(function () {});
+      }
+      pushNow();
+    };
+    fetch(PROGRESS_DB + "/progress/" + today() + "/" + team + ".json?shallow=true")
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (d) {
+        var others = d ? Object.keys(d).filter(function (k) { return k !== devId(); }) : [];
+        done(others.length > 0);
+      }, function () { done(false); });                           // offline: nothing to compare with, carry on
+  }
+
+  function pushNow(last) {
+    var team = teamClean(store.fields["team.no"]);
+    if (!team || !PROGRESS_DB || !hasFields(document)) return;
+    if (team !== store.sentAs) { verifyTeam(team); return; }      // nothing leaves until the number is confirmed
+    var page = pageKey(), now = Date.now();
+    store.prog = store.prog || {};
+    var sum = summarize();
+    store.prog[page] = { acts: sum.acts, order: sum.order, names: sum.names, steps: sum.steps, ts: now };
+    if (last) store.last = last;
+    saveSoon();                                   // the cache of other pages' counts rides along in the store
+    var doc = {
+      team: team, dev: devId(), ts: now, page: page,
+      srv: { ".sv": "timestamp" },                 // the database stamps its own clock; phones' clocks drift
+      zone: ZONE_SLUG[store.fields["team.zone"]] || "",
+      pages: store.prog, last: store.last || null
+    };
+    fetch(PROGRESS_DB + "/progress/" + today() + "/" + team + "/" + devId() + ".json?print=silent",   // no echo: download quota is the free tier's limit
+          { method: "PUT", body: JSON.stringify(doc), keepalive: true })
+      .then(function (r) { pushState = r.ok ? "ok" : "fail-" + r.status; if (r.ok) pushWhen = new Date(); setStatus(); },
+            function () { pushState = "fail"; setStatus(); });
+  }
+
+  function pushSoon() { clearTimeout(pushTimer); pushTimer = setTimeout(function () { pushNow(); }, 1500); }
+
+  /* ---- messages to the instructor: "ขอความช่วยเหลือ", "เสร็จแล้ว", or a short line of text ---- */
+  var MSG_MAX = 120, MSG_GAP = 5000, lastMsgAt = 0;
+  var MSG_EMOJIS = ["👍", "🎉", "🤔", "😅", "🙏", "🔥", "🌱", "💧"];   // useful and fun, in that order
+
+  function sendMessage(kind, text) {
+    text = String(text || "").replace(/\s+/g, " ").trim().slice(0, MSG_MAX);
+    if (!text || !PROGRESS_DB) return;
+    var team = teamNo();
+    if (!team) return;
+    if (Date.now() - lastMsgAt < MSG_GAP) { composerNote("รอสักครู่แล้วส่งใหม่", true); return; }
+    lastMsgAt = Date.now();
+    var doc = {
+      team: team, dev: devId(), kind: kind, text: text, page: pageKey(),
+      zone: ZONE_SLUG[store.fields["team.zone"]] || "", ts: Date.now(), srv: { ".sv": "timestamp" }
+    };
+    composerNote("กำลังส่ง…");
+    fetch(PROGRESS_DB + "/messages/" + today() + ".json?print=silent",          // POST: the database picks a time-ordered id
+          { method: "POST", body: JSON.stringify(doc), keepalive: true })
+      .then(function (r) {
+        if (r.ok) {
+          var f = document.querySelector("#ws-bar .ws-msg input[type=text]");
+          if (f) f.value = "";
+          composerNote(kind === "help" ? "แจ้งผู้สอนแล้ว กำลังไปหา 🙋" : "ส่งแล้ว ✓");
+        } else composerNote("ส่งไม่สำเร็จ ลองอีกครั้ง", true);
+      }, function () { composerNote("ส่งไม่สำเร็จ ลองอีกครั้ง", true); });
+  }
+
   function fillFields(root) {
     root.querySelectorAll(".fld").forEach(function (el) {
       var v = store.fields[el.dataset.k];
@@ -168,9 +387,15 @@
         el.checked = (v !== undefined && el.value === v);
         return;
       }
+      if (el.dataset.k === "team.no") {          // phones open the number keypad
+        el.inputMode = "numeric";
+        el.maxLength = 3;
+        el.autocomplete = "off";
+      }
       el.value = (v === undefined || v === null) ? "" : v;
       grow(el);
     });
+    markTeamBoxes();
     var pid = pageId();
     taskBoxes(root).forEach(function (cb, i) {
       cb.disabled = false;
@@ -189,35 +414,91 @@
     var bar = document.createElement("div");
     bar.id = "ws-bar";
     bar.innerHTML =
+      '<label class="ws-team">ทีมที่ <input class="fld" type="text" data-k="team.no" data-size="3" size="3" ' +
+        'inputmode="numeric" maxlength="3" autocomplete="off" spellcheck="false"></label>' +
       '<span class="ws-status"></span>' +
-      '<button type="button" class="ws-btn" data-act="export">ดาวน์โหลดคำตอบ</button>' +
-      '<button type="button" class="ws-btn" data-act="import">นำเข้าจากไฟล์</button>' +
-      '<button type="button" class="ws-btn" data-act="print">พิมพ์ / บันทึก PDF</button>' +
-      '<button type="button" class="ws-btn ws-btn--quiet" data-act="clear">ล้างคำตอบทั้งหมด</button>' +
-      '<input type="file" accept=".json,application/json" hidden>';
+      /* the file actions live in a menu: needed twice a day, not every minute */
+      '<details class="ws-tools"><summary class="ws-btn ws-btn--quiet" aria-label="เครื่องมือ">⋯ เครื่องมือ</summary>' +
+        '<div class="ws-menu" role="menu">' +
+          '<button type="button" class="ws-btn" data-act="export" role="menuitem">⬇ ดาวน์โหลดคำตอบ (ไฟล์ JSON)</button>' +
+          '<button type="button" class="ws-btn" data-act="import" role="menuitem">⬆ นำเข้าจากไฟล์</button>' +
+          '<button type="button" class="ws-btn" data-act="print" role="menuitem">🖨 พิมพ์ / บันทึก PDF</button>' +
+          '<button type="button" class="ws-btn ws-btn--danger" data-act="clear" role="menuitem">🗑 ล้างคำตอบทั้งหมด</button>' +
+        '</div></details>' +
+      '<input type="file" accept=".json,application/json" hidden>' +
+      (PROGRESS_DB ?
+        '<form class="ws-msg" autocomplete="off">' +
+          '<button type="button" class="ws-help" data-msg="help">🙋 ขอความช่วยเหลือ</button>' +
+          '<div class="ws-composer">' +
+            '<button type="button" class="ws-emoji-toggle" aria-expanded="false" aria-label="อีโมจิ">😊</button>' +
+            '<input type="text" maxlength="' + MSG_MAX + '" placeholder="พิมพ์ข้อความถึงผู้สอน…" aria-label="ข้อความถึงผู้สอน">' +
+            '<button type="submit" class="ws-send" aria-label="ส่ง"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11.5 21 3l-8.5 18-2.3-7.2z" fill="currentColor"/></svg></button>' +
+          '</div>' +
+          '<div class="ws-emojis" role="group" aria-label="ใส่อีโมจิ" hidden>' +
+            MSG_EMOJIS.map(function (e) { return '<button type="button" class="ws-emo" data-emoji="' + e + '" aria-label="' + e + '">' + e + '</button>'; }).join("") +
+          '</div>' +
+        '</form>' : "");
     var h1 = inner.querySelector("h1");
     if (h1) h1.insertAdjacentElement("afterend", bar); else inner.insertBefore(bar, inner.firstChild);
     bar.querySelector("input[type=file]").addEventListener("change", function (e) {
       if (e.target.files && e.target.files[0]) doImport(e.target.files[0]);
       e.target.value = "";
     });
+    var tools = bar.querySelector(".ws-tools");
+    document.addEventListener("click", function (e) {         // the menu closes on any click outside it
+      if (tools.open && !tools.contains(e.target)) tools.removeAttribute("open");
+    });
+    var form = bar.querySelector(".ws-msg");
+    if (form) {
+      form.addEventListener("submit", function (e) {
+        e.preventDefault();
+        sendMessage("note", form.querySelector("input[type=text]").value);
+      });
+      form.addEventListener("click", function (e) {
+        var box = form.querySelector("input[type=text]");
+        var t = e.target.closest && e.target.closest(".ws-emoji-toggle");
+        if (t) {
+          var strip = form.querySelector(".ws-emojis");
+          strip.hidden = !strip.hidden;
+          t.setAttribute("aria-expanded", String(!strip.hidden));
+          return;
+        }
+        var emo = e.target.closest && e.target.closest(".ws-emo");
+        if (emo) {                                   // emoji go into the box; the team still presses send
+          if (box.value.length < MSG_MAX - 2) box.value = (box.value + " " + emo.dataset.emoji).trim();
+          box.focus();
+          return;
+        }
+        var help = e.target.closest && e.target.closest(".ws-help");
+        if (help) sendMessage("help", "ขอความช่วยเหลือ");
+      });
+    }
     setStatus();
+  }
+
+  /* a short note inside the composer ("ส่งแล้ว ✓"), where the eye already is */
+  function composerNote(text, bad) {
+    var box = document.querySelector("#ws-bar .ws-composer");
+    if (!box) return;
+    box.dataset.note = text;
+    box.classList.toggle("is-bad", !!bad);
+    clearTimeout(box._noteTimer);
+    box._noteTimer = setTimeout(function () { delete box.dataset.note; box.classList.remove("is-bad"); }, 3500);
   }
 
   function setStatus(msg) {
     var el = document.querySelector("#ws-bar .ws-status");
     if (!el) return;
-    if (msg) { el.innerHTML = "<strong>" + msg + "</strong>"; return; }
-    var team = (store.fields["team.no"] || "").trim();
-    var n = Object.keys(store.fields).filter(function (k) { return String(store.fields[k]).trim() !== ""; }).length;
-    var when = "";
-    if (store.updated) {
-      var d = new Date(store.updated);
-      when = " · บันทึกล่าสุด " + d.getHours() + ":" + ("0" + d.getMinutes()).slice(-2);
-    }
-    el.innerHTML = (team ? "<strong>ทีม " + escapeHtml(team) + "</strong> · " : "") +
-      (n ? "กรอกแล้ว " + n + " ช่อง" : "ยังไม่มีคำตอบ") +
-      " · คำตอบเก็บอยู่ในเบราว์เซอร์นี้เท่านั้น" + when;
+    /* one short phrase at most: the team number box beside it says who we are */
+    if (msg) { el.innerHTML = '<span class="ws-note">' + msg + "</span>"; return; }
+    if (!teamValid()) { el.innerHTML = '<span class="ws-bad">' + TEAM_RULE + "</span>"; return; }
+    var team = teamClean(store.fields["team.no"]);
+    if (!PROGRESS_DB) { el.innerHTML = ""; return; }
+    if (!team) el.innerHTML = '<span class="ws-hint">← กรอกหมายเลขทีม</span>';
+    else if (team !== store.sentAs) el.innerHTML = '<span class="ws-live ws-live--off">● กำลังตรวจสอบหมายเลขทีม…</span>';
+    else if (pushState === "ok") el.innerHTML = '<span class="ws-live ws-live--ok" title="ความคืบหน้าของทีมส่งถึงผู้สอนแล้ว">● เชื่อมต่อผู้สอนแล้ว</span>';
+    else if (pushState) el.innerHTML = '<span class="ws-live ws-live--off" title="จะลองส่งใหม่เมื่อติ๊กครั้งถัดไป">● ยังส่งไม่ถึงผู้สอน</span>';
+    else el.innerHTML = '<span class="ws-live ws-live--off">● กำลังเชื่อมต่อ…</span>';
   }
 
   function escapeHtml(s) {
@@ -226,11 +507,16 @@
     });
   }
 
+  /* the team number, asking for one (and refusing a bad one) if the box is empty or wrong */
   function teamNo() {
-    var t = (store.fields["team.no"] || "").trim();
-    if (!t) {
-      t = (window.prompt("หมายเลขทีม (ใช้ตั้งชื่อไฟล์และให้ผู้สอนรู้ว่าเป็นของทีมใด)") || "").trim();
+    var t = teamClean(store.fields["team.no"]);
+    var ask = "หมายเลขทีม 1–" + TEAM_MAX + " (ใช้ตั้งชื่อไฟล์และให้ผู้สอนรู้ว่าเป็นของทีมใด)";
+    while (!t) {
+      var raw = window.prompt(ask);
+      if (raw === null) return "";                 // Cancel
+      t = teamClean(raw);
       if (t) { store.fields["team.no"] = t; fillFields(document); saveNow(); }
+      else ask = TEAM_RULE + " ลองอีกครั้ง";
     }
     return t;
   }
@@ -248,8 +534,7 @@
       fields: store.fields,
       checks: store.checks
     };
-    var name = "farm-team-" + t.replace(/[^\w฀-๿-]+/g, "") +
-      (ZONE_SLUG[zone] ? "-" + ZONE_SLUG[zone] : "") + ".json";
+    var name = "farm-team-" + t + (ZONE_SLUG[zone] ? "-" + ZONE_SLUG[zone] : "") + ".json";
     var blob = new Blob([JSON.stringify(out, null, 2)], { type: "application/json" });
     var a = document.createElement("a");
     a.href = URL.createObjectURL(blob);
@@ -270,6 +555,7 @@
         return;
       }
       var added = 0, conflicts = [];
+      if (d.fields["team.no"] !== undefined) d.fields["team.no"] = teamClean(d.fields["team.no"]);  // files from before validation
       Object.keys(d.fields).forEach(function (k) {
         var nv = d.fields[k], cur = store.fields[k];
         if (nv === undefined || nv === null || String(nv).trim() === "") return;
@@ -286,6 +572,7 @@
       Object.keys(d.checks || {}).forEach(function (k) { if (d.checks[k]) store.checks[k] = true; });
       saveNow();
       fillFields(document);
+      pushSoon();
       window.alert("นำเข้าแล้ว เติมช่องว่าง " + added + " ช่อง" +
         (overwritten ? " เขียนทับ " + overwritten + " ช่อง" : "") +
         (conflicts.length && !overwritten ? " คงค่าเดิม " + conflicts.length + " ช่อง" : ""));
@@ -305,12 +592,18 @@
     var el = e.target;
     if (!el.classList || !el.classList.contains("fld") || el.type === "radio") return;
     var k = el.dataset.k;
+    if (k === "team.no") {                        // letters and Thai digits never reach the store
+      var digits = teamDigits(el.value);
+      if (digits !== el.value) el.value = digits;
+    }
     store.fields[k] = el.value;
     grow(el);
     document.querySelectorAll('.fld[data-k="' + k + '"]').forEach(function (o) {
       if (o !== el && o.type !== "radio") { o.value = el.value; grow(o); }
     });
+    if (k === "team.no") { markTeamBoxes(); saveSoon(); return; }   // a half-typed number is not a team: checked on leaving the box
     saveSoon();
+    pushSoon();
   });
 
   document.addEventListener("change", function (e) {
@@ -318,6 +611,15 @@
     if (el.classList && el.classList.contains("fld") && el.type === "radio") {
       store.fields[el.dataset.k] = el.value;
       saveNow();
+      pushSoon();
+      return;
+    }
+    if (el.classList && el.classList.contains("fld") && el.dataset.k === "team.no") {
+      var t = teamClean(el.value);                 // leaving the box: "017" becomes "17"
+      if (t && t !== el.value) { store.fields["team.no"] = t; fillFields(document); }
+      markTeamBoxes();
+      saveNow();
+      pushNow();                                   // verifies the number first; the dot appears once it is confirmed
       return;
     }
     if (el.type === "checkbox" && el.closest && el.closest(".task-list-item")) {
@@ -326,12 +628,21 @@
       var key = pageId() + "#" + i;
       if (el.checked) store.checks[key] = true; else delete store.checks[key];
       saveNow();
+      pushNow({                                    // every tick reaches the dashboard at once
+        page: pageKey(), act: actId(el), on: !!el.checked, ts: Date.now(), label: stepLabel(el)
+      });
     }
   });
 
+  /* a phone that slept, or a laptop that lost WiFi, reports again as soon as it can */
+  document.addEventListener("visibilitychange", function () { if (!document.hidden) pushSoon(); });
+  window.addEventListener("online", pushSoon);
+
   document.addEventListener("click", function (e) {
-    var btn = e.target.closest && e.target.closest("#ws-bar .ws-btn");
+    var btn = e.target.closest && e.target.closest("#ws-bar .ws-btn[data-act]");
     if (!btn) return;
+    var menu = btn.closest(".ws-tools");
+    if (menu) menu.removeAttribute("open");
     var act = btn.dataset.act;
     if (act === "export") doExport();
     else if (act === "import") document.querySelector("#ws-bar input[type=file]").click();
@@ -351,8 +662,9 @@
     decorate(document);
     bindHover(document);
     store = loadStore();
+    buildBar();                                   // first, so the toolbar's team box is filled with the rest
     fillFields(document);
-    buildBar();
+    pushSoon();                                   // opening a page reports where the team stands
   }
 
   if (window.document$ && typeof window.document$.subscribe === "function") {

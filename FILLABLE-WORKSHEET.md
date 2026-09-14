@@ -14,7 +14,8 @@ replacing the one-per-team printed record sheet (which survives as the blank fal
 | Moving between devices | **นำเข้าจากไฟล์** merges a downloaded file into the current browser | The Recorder may type on a phone while the Driver holds the laptop; export on one, import on the other. Merge fills blanks and asks once before overwriting values that differ. |
 | Save timing | Every `input` event, debounced 300 ms; radios and checkboxes on `change` | Saving on blur loses the field being typed when the phone locks or the tab closes. |
 | Identity | Team number and zone only, no member names | Roger, 8 Sep 2026. Team number also names the export file. |
-| Where fields appear | Inline in the session pages at the moment of measurement **and** collected on the record sheet, sharing the same keys | Inline is where the team is when the number appears; the record sheet is the compact printable summary and the paper fallback. One key, two places, one value. |
+| Where fields appear | Inline in the session pages at the moment of measurement, **again** in the activity's task list at the top, **and** collected on the record sheet, all sharing the same keys | Inline is where the team is when the number appears; the task list is what the team works from; the record sheet is the compact printable summary and the paper fallback. One key, three places, one value. |
+| Activity task list | `### สิ่งที่ทีมต้องทำและตอบ { #a5 }` then `<div class="ws-tasks" markdown>` holding one `- [ ]` item per sub-section: a bold link to the sub-section (`#a5-3`), the question with its fields, and for step-only items the tick criterion. Each sub-section ends with `[↑ กลับไปที่รายการ](#a5){ .ws-back }` | Roger, 13 Sep 2026, after the TA workshop: teams listened to the instructor instead of reading the prose. A list of what to do and answer, with the steps one tap away, works alongside the talk. Step-only sub-sections are listed too, so jumping between questions cannot skip a rule-state change. Piloted on Session 2 Activity 5, then applied to Activities 1–4, 6–8 and Session 3's graph-reading block. Wide tables become one sub-bullet per row inside the item. Ids: `a<n>` for the list, `a<n>-<sub>` for headings, `a<n>-q` for the end question (a paragraph id via `{: #… }`); the graph-reading block uses `hist`. |
 | Authoring | Short `{{f:key}}` markers in Markdown, expanded by a build hook | Raw `<input>` HTML in Thai prose is unreadable and fragile in table cells. The marker survives the Pandoc path as visible text and never contains a `|` after expansion, so Markdown tables stay intact. |
 | Checklists | The `- [ ]` task lists are clickable and remembered per page | Free progress tracking; `pymdownx.tasklist: clickable_checkbox: true`. |
 
@@ -27,7 +28,9 @@ hooks/fields.py    MkDocs hook (on_page_markdown) → <input class="fld" data-k=
 docs/javascripts/extra.js
                    restore on load · save on input · sync same-key boxes on one page ·
                    grow boxes to content · toolbar (#ws-bar) · export / import / print / clear ·
-                   task-list checkbox memory · cross-tab refresh via the `storage` event
+                   task-list checkbox memory · cross-tab refresh via the `storage` event ·
+                   team-number validation · progress counts sent to the instructor's board
+                   (PROGRESS-DASHBOARD.md)
 docs/stylesheets/extra.css
                    field look (marigold underline on the record-panel tint), toolbar, @media print
 scripts/collect_answers.py
@@ -77,6 +80,7 @@ a quick check is to extract the markers from all four files and diff the key set
 
 - `fields` — key → string. Radios store the chosen label. Empty strings are written as typed.
 - `checks` — `"<pathname>#<index>": true` for ticked task-list boxes, index in page order. Editing a checklist shifts indexes; that is accepted for progress ticks.
+- `dev`, `prog`, `last` — the progress tracker's device id, per-page activity counts, and last tick (PROGRESS-DASHBOARD.md). Not part of the export file.
 - Bump the storage suffix (`v1` → `v2` in `extra.js`) only if the shape changes incompatibly; old data is then ignored, not migrated.
 
 ### Export file
@@ -122,14 +126,20 @@ the workshop is the paper fallback.
   live in that phone's browser. Before the end of each day: download on the phone, import on the
   laptop (or the other way round), so one device holds everything.
 - Do not use a private/incognito window for the worksheet.
-- The status line under the page title says how many boxes are filled and when it last saved.
+- The bar under the page title holds the team number, a dot that turns green once the
+  instructor's board has heard from this browser, the **⋯ เครื่องมือ** menu (download, import,
+  print, clear), and the message composer (PROGRESS-DASHBOARD.md). Saving is silent; the JSON
+  download is the proof.
 
 ## Known limits
 
 - One team per browser profile. A second team on the same laptop must **ล้างคำตอบทั้งหมด** first
   (the button asks for confirmation and suggests downloading first).
 - No history or undo beyond the browser's own field undo. The export file is the backup.
-- Team number is free text; the instructor script does not validate it.
+- Team number is validated in the browser only: an integer 1–100 (`TEAM_MAX` in extra.js), typed
+  in Thai or ASCII digits, stored as plain digits without leading zeros. A box holding anything
+  else gets a red underline and the toolbar says why; export and the progress tracker refuse it.
+  The toolbar carries a `team.no` box so the number can be typed on any page.
 - The table cells with many boxes (comparison, maintenance, design canvas) scroll horizontally
   on phones like any wide table in Material.
 - `size` is in characters; Thai glyphs are narrower than the browser's estimate, so boxes look

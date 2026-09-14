@@ -1,0 +1,30 @@
+{
+  "rules": {
+    ".read": false,
+    ".write": false,
+    "progress": {
+      "$day": {
+        ".read": "$day.matches(/^\\d{4}-\\d{2}-\\d{2}$/)",
+        "$team": {
+          "$dev": {
+            ".write": "$day.matches(/^\\d{4}-\\d{2}-\\d{2}$/) && $team.matches(/^([1-9]|[1-9][0-9]|[1-3][0-9][0-9]|400)$/) && $dev.matches(/^[a-z0-9]{4,12}$/)",
+            ".validate": "newData.hasChildren(['team', 'dev', 'ts', 'pages']) && newData.child('team').val() == $team && newData.child('dev').val() == $dev && newData.child('ts').isNumber()"
+          }
+        }
+      }
+    },
+    "messages": {
+      "$day": {
+        ".read": "$day.matches(/^\\d{4}-\\d{2}-\\d{2}$/)",
+        "$id": {
+          ".write": "!data.exists() && newData.exists() && $day.matches(/^\\d{4}-\\d{2}-\\d{2}$/)",
+          ".validate": "newData.hasChildren(['team', 'kind', 'text', 'ts']) && newData.child('team').val().matches(/^([1-9]|[1-9][0-9]|[1-3][0-9][0-9]|400)$/) && newData.child('kind').val().matches(/^(help|done|note)$/) && newData.child('text').isString() && newData.child('text').val().length >= 1 && newData.child('text').val().length <= 120 && newData.child('ts').isNumber()",
+          "handled": {
+            ".write": "data.parent().exists()",
+            ".validate": "newData.isNumber()"
+          }
+        }
+      }
+    }
+  }
+}

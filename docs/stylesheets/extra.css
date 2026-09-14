@@ -308,6 +308,60 @@
   border-color: var(--ag-green);
 }
 
+/* ---------- activity task list: <div class="ws-tasks" markdown> at the top of an activity ---------- */
+/* one item per sub-section: linked title on its own line, then the question and its boxes */
+.md-typeset .ws-tasks {
+  margin: 1em 0 2em;
+  padding: 0.8em 1.2em 0.3em;
+  border: 1px solid var(--ag-chip-border);
+  border-top: 4px solid var(--ag-marigold);
+  border-radius: 0.7em;
+  background: var(--ag-panel-record);
+}
+
+.md-typeset .ws-tasks > p:first-child {
+  font-size: 0.88em;
+  color: var(--md-default-fg-color--light);
+}
+
+.md-typeset .ws-tasks ul {
+  margin-left: 0;
+}
+
+.md-typeset .ws-tasks .task-list-item {
+  margin: 0;
+  padding-block: 0.55em;
+  border-top: 1px dashed var(--ag-chip-border);
+}
+
+.md-typeset .ws-tasks .task-list-item:first-child {
+  border-top: 0;
+}
+
+.md-typeset .ws-tasks .task-list-item > strong:first-of-type {
+  display: block;
+}
+
+/* the panel shares the record tint, so its boxes take the page ground to stay visible */
+.md-typeset .ws-tasks input.fld,
+.md-typeset .ws-tasks .fld-radio,
+.md-typeset .ws-tasks textarea.fld-ta {
+  background: var(--md-default-bg-color);
+}
+
+/* "back to the list" link closing each sub-section */
+.md-typeset a.ws-back {
+  font-size: 0.8em;
+  color: var(--md-default-fg-color--light);
+  text-decoration: none;
+}
+
+.md-typeset a.ws-back:hover,
+.md-typeset a.ws-back:focus-visible {
+  color: var(--md-typeset-a-color);
+  text-decoration: underline;
+}
+
 /* ---------- tables ---------- */
 .md-typeset table:not([class]) {
   font-size: 0.9em;
@@ -448,6 +502,138 @@
   box-shadow: 0 2px 0 var(--ag-green);
 }
 
+/* a team number outside 1..100 (extra.js sets the class; the tooltip says why) */
+.md-typeset input.fld.fld--bad,
+.md-typeset input.fld.fld--bad:focus {
+  border-bottom-color: var(--ag-tomato);
+  box-shadow: 0 2px 0 var(--ag-tomato);
+}
+
+#ws-bar .ws-bad { color: var(--ag-tomato); font-weight: 600; }
+#ws-bar .ws-hint { color: var(--ag-marigold-deep); font-weight: 500; }
+#ws-bar .ws-note { color: var(--md-typeset-color); font-weight: 500; }
+
+/* message row: a chat composer, the shape every phone user already knows -- 🙋 button, then
+   [ 😊 | type here… | ➤ ]; the emoji strip drops down under it */
+#ws-bar .ws-msg {
+  flex: 1 1 100%;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 0.6rem;
+  margin: 0.2rem 0 0;
+  padding-top: 0.6rem;
+  border-top: 1px dashed var(--ag-chip-border);
+}
+
+.ws-help {
+  font: 600 0.8rem/2.1 "Prompt", "Segoe UI", sans-serif;
+  padding: 0 0.9em;
+  border-radius: 999px;
+  border: 1.5px solid var(--ag-tomato);
+  background: var(--md-default-bg-color);
+  color: var(--ag-tomato);
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.ws-help:hover, .ws-help:focus-visible { background: var(--ag-tomato); color: #fff; outline: none; }
+
+#ws-bar .ws-composer {
+  position: relative;
+  flex: 1 1 14rem;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.2rem;
+  padding: 0.15rem 0.2rem 0.15rem 0.3rem;
+  border: 1px solid var(--ag-chip-border);
+  border-radius: 999px;
+  background: var(--md-default-bg-color);
+}
+
+#ws-bar .ws-composer:focus-within { border-color: var(--ag-green); box-shadow: 0 0 0 2px rgba(46, 125, 50, 0.15); }
+
+#ws-bar .ws-composer input[type=text] {
+  flex: 1 1 auto;
+  min-width: 0;
+  font: inherit;
+  font-size: 0.85rem;
+  padding: 0.25rem 0.3rem;
+  border: 0;
+  background: transparent;
+  color: var(--md-typeset-color);
+}
+
+#ws-bar .ws-composer input[type=text]:focus { outline: none; }
+
+/* the note ("ส่งแล้ว ✓") appears over the box for a moment */
+#ws-bar .ws-composer[data-note]::after {
+  content: attr(data-note);
+  position: absolute;
+  inset: 0 3rem 0 2.6rem;
+  display: flex;
+  align-items: center;
+  padding-left: 0.3rem;
+  border-radius: 999px;
+  background: var(--md-default-bg-color);
+  color: var(--ag-green);
+  font-size: 0.85rem;
+  font-weight: 500;
+  pointer-events: none;
+}
+
+#ws-bar .ws-composer.is-bad[data-note]::after { color: var(--ag-tomato); }
+
+.ws-emoji-toggle, .ws-send {
+  flex: none;
+  width: 2rem;
+  height: 2rem;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+
+.ws-emoji-toggle { font-size: 1.15rem; }
+.ws-emoji-toggle:hover, .ws-emoji-toggle:focus-visible, .ws-emoji-toggle[aria-expanded="true"] { background: var(--ag-panel-record); outline: none; }
+
+.ws-send { background: var(--ag-green); color: #fff; }
+.ws-send svg { width: 1rem; height: 1rem; margin-left: 0.1rem; }
+.ws-send:hover, .ws-send:focus-visible { background: var(--ag-green-deep); outline: none; }
+
+#ws-bar .ws-emojis {
+  flex: 1 1 100%;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.2rem;
+  padding: 0.1rem 0 0 0.2rem;
+}
+
+.ws-emo {
+  width: 2.3rem;
+  height: 2.3rem;
+  padding: 0;
+  border: 1px solid transparent;
+  border-radius: 50%;
+  background: transparent;
+  font-size: 1.35rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.ws-emo:hover, .ws-emo:focus-visible { background: var(--md-default-bg-color); border-color: var(--ag-chip-border); outline: none; }
+
+/* progress-tracker dot in the status line: green once the instructor's board has heard from us */
+#ws-bar .ws-live { font-size: 0.9em; }
+#ws-bar .ws-live--ok { color: var(--ag-green); }
+#ws-bar .ws-live--off { color: var(--md-default-fg-color--lighter); }
+
 /* multi-line box: full width, grows with the text (extra.js), no scrollbar ever */
 .md-typeset textarea.fld-ta {
   display: block;
@@ -525,6 +711,18 @@
   line-height: 1.5;
 }
 
+#ws-bar .ws-team {
+  font-weight: 600;
+  color: var(--ag-marigold-deep);
+  white-space: nowrap;
+}
+
+#ws-bar .ws-team input.fld {
+  font-size: 0.95rem;
+  text-align: center;
+  background: var(--md-default-bg-color);
+}
+
 #ws-bar .ws-status {
   flex: 1 1 16rem;
   color: var(--md-default-fg-color--light);
@@ -565,11 +763,49 @@
   border-color: var(--ag-tomato);
 }
 
+/* the ⋯ เครื่องมือ menu: download / import / print / clear, out of sight until needed */
+#ws-bar .ws-tools { position: relative; margin-left: auto; }
+#ws-bar .ws-tools summary { list-style: none; display: inline-block; user-select: none; }
+#ws-bar .ws-tools summary::-webkit-details-marker { display: none; }
+#ws-bar .ws-tools[open] summary { background: var(--ag-panel); color: var(--md-typeset-color); border-color: var(--ag-chip-border); }
+
+#ws-bar .ws-menu {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 0.35rem);
+  z-index: 5;
+  min-width: 15rem;
+  display: flex;
+  flex-direction: column;
+  padding: 0.35rem;
+  border: 1px solid var(--ag-chip-border);
+  border-radius: 0.7em;
+  background: var(--md-default-bg-color);
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.16);
+}
+
+#ws-bar .ws-menu .ws-btn {
+  text-align: left;
+  border-radius: 0.45em;
+  border-color: transparent;
+  background: transparent;
+  color: var(--md-typeset-color);
+  font-weight: 500;
+  line-height: 2.2;
+}
+
+#ws-bar .ws-menu .ws-btn:hover,
+#ws-bar .ws-menu .ws-btn:focus-visible { background: var(--ag-panel-record); color: var(--md-typeset-color); }
+#ws-bar .ws-menu .ws-btn--danger { color: var(--ag-tomato); }
+#ws-bar .ws-menu .ws-btn--danger:hover,
+#ws-bar .ws-menu .ws-btn--danger:focus-visible { background: rgba(216, 74, 42, 0.1); color: var(--ag-tomato); }
+
 /* ---------- print: a filled page reads like a completed paper form ---------- */
 @media print {
   #ws-bar,
   #shot-hover,
-  .md-typeset a.glightbox {
+  .md-typeset a.glightbox,
+  .md-typeset a.ws-back {
     display: none !important;
   }
 

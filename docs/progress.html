@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>กระดานความคืบหน้าของทีม</title>
+<title>กระดานความคืบหน้าของกลุ่ม</title>
 <meta name="robots" content="noindex">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -268,7 +268,7 @@
 <header class="top">
   <div class="wrap">
     <span class="brand">IoT ในฟาร์มอัจฉริยะ</span>
-    <h1>กระดานความคืบหน้าของทีม</h1>
+    <h1>กระดานความคืบหน้าของกลุ่ม</h1>
     <span class="live" id="live"><span class="dot"></span><span id="live-text">กำลังเชื่อมต่อ…</span></span>
   </div>
 </header>
@@ -278,7 +278,7 @@
     <div class="tabs" role="tablist" id="tabs"></div>
     <label>วันที่ <input type="date" id="day"></label>
     <label><input type="checkbox" id="plus"> รวมวันก่อนหน้า</label>
-    <label>จำนวนทีม <input type="number" id="max" min="1" max="400" step="1"></label>
+    <label>จำนวนกลุ่ม <input type="number" id="max" min="1" max="400" step="1"></label>
     <span class="spacer"></span>
     <button class="btn" id="export" type="button">ดาวน์โหลด JSON</button>
     <button class="btn btn--quiet" id="table-toggle" type="button" aria-pressed="false">ตาราง</button>
@@ -287,23 +287,23 @@
   </div>
 
   <div class="tiles">
-    <div class="tile"><div class="n"><span id="t-reported">0</span> <small>/ <span id="t-max">100</span></small></div><div class="l">ทีมที่รายงานเข้ามาแล้ว</div></div>
-    <div class="tile"><div class="n" id="t-current">–</div><div class="l" id="t-current-l">กิจกรรมที่ทีมส่วนใหญ่อยู่</div></div>
-    <div class="tile"><div class="n" id="t-done">0</div><div class="l">ทีมที่ทำครบทุกข้อของหน้านี้</div></div>
-    <div class="tile is-help"><div class="n" id="t-help">0</div><div class="l">ทีมที่ขอความช่วยเหลือ</div></div>
+    <div class="tile"><div class="n"><span id="t-reported">0</span> <small>/ <span id="t-max">100</span></small></div><div class="l">กลุ่มที่รายงานเข้ามาแล้ว</div></div>
+    <div class="tile"><div class="n" id="t-current">–</div><div class="l" id="t-current-l">กิจกรรมที่กลุ่มส่วนใหญ่อยู่</div></div>
+    <div class="tile"><div class="n" id="t-done">0</div><div class="l">กลุ่มที่ทำครบทุกข้อของหน้านี้</div></div>
+    <div class="tile is-help"><div class="n" id="t-help">0</div><div class="l">กลุ่มที่ขอความช่วยเหลือ</div></div>
     <div class="tile"><div class="n" id="t-stale">0</div><div class="l">เงียบเกิน 10 นาที</div></div>
   </div>
 
   <div class="panels">
     <div class="col main">
       <section class="panel panel--bars">
-        <h2>ทีมใดอยู่กิจกรรมใด <small id="bars-note"></small></h2>
+        <h2>กลุ่มใดอยู่กิจกรรมใด <small id="bars-note"></small></h2>
         <div class="bars" id="bars"></div>
-        <div class="empty" id="bars-empty" hidden>ยังไม่มีทีมรายงานหน้านี้</div>
+        <div class="empty" id="bars-empty" hidden>ยังไม่มีกลุ่มรายงานหน้านี้</div>
       </section>
 
       <section class="panel">
-        <h2>ทีมที่ขอความช่วยเหลือ และภาพรวมทีม 1–<span id="g-max">100</span> <small>กรอบแดง 🙋 = ขอความช่วยเหลือ · สีเข้มขึ้นตามกิจกรรมที่ไปถึง · เหลือง = ครบทุกข้อ · จาง = เงียบเกิน 10 นาที</small></h2>
+        <h2>กลุ่มที่ขอความช่วยเหลือ และภาพรวมกลุ่ม 1–<span id="g-max">100</span> <small>กรอบแดง 🙋 = ขอความช่วยเหลือ · สีเข้มขึ้นตามกิจกรรมที่ไปถึง · เหลือง = ครบทุกข้อ · จาง = เงียบเกิน 10 นาที</small></h2>
         <div class="grid" id="grid" aria-live="off"></div>
         <div class="legend" id="legend"></div>
         <div class="unknown" id="unknown" hidden></div>
@@ -318,16 +318,16 @@
 
     <aside class="col side">
       <section class="panel panel--msgs">
-        <h2>ข้อความจากทีม <small id="msgs-note"></small><span class="right"><button type="button" id="show-hidden">แสดงที่ซ่อนไว้</button></span></h2>
+        <h2>ข้อความจากกลุ่ม <small id="msgs-note"></small><span class="right"><button type="button" id="show-hidden">แสดงที่ซ่อนไว้</button></span></h2>
         <ul class="msgs" id="msgs"></ul>
-        <div class="empty" id="msgs-empty" hidden>ยังไม่มีข้อความ · ทีมส่งได้จากแถบบนใบงาน</div>
+        <div class="empty" id="msgs-empty" hidden>ยังไม่มีข้อความ · กลุ่มส่งได้จากแถบบนใบงาน</div>
       </section>
     </aside>
   </div>
 
   <div class="tablewrap" id="tablewrap" hidden><table id="table"></table></div>
 
-  <p class="foot">ข้อมูลมาจากใบงานของแต่ละทีมทันทีที่ติ๊ก กรอก หรือส่งข้อความ เก็บไว้ในเบราว์เซอร์นี้ด้วย
+  <p class="foot">ข้อมูลมาจากใบงานของแต่ละกลุ่มทันทีที่ติ๊ก กรอก หรือส่งข้อความ เก็บไว้ในเบราว์เซอร์นี้ด้วย
     (<code>localStorage</code>) จึงเปิดดูย้อนหลังได้แม้ขาดอินเทอร์เน็ต · ที่มา <code id="foot-url"></code></p>
 </main>
 
@@ -548,7 +548,7 @@
       .catch(function () {
         delete pending[m.id];
         render();
-        window.alert("บันทึกไม่สำเร็จ ทีม " + m.team + " ยังแสดงว่าขอความช่วยเหลือ\nตรวจการเชื่อมต่อแล้วลองอีกครั้ง");
+        window.alert("บันทึกไม่สำเร็จ กลุ่ม " + m.team + " ยังแสดงว่าขอความช่วยเหลือ\nตรวจการเชื่อมต่อแล้วลองอีกครั้ง");
       });
   }
   function resolveTeamHelp(team) {
@@ -588,7 +588,7 @@
       var hid = isHidden(m), fresh = !firstPaint && !seenMsg[m.id];
       nowSeen[m.id] = true;
       return '<li class="k-' + m.kind + (hid ? " is-hidden" : "") + (fresh ? " is-new" : "") + '" data-id="' + esc(m.id) + '">' +
-        '<span class="team">ทีม ' + esc(m.team) + '</span><span class="t">' + hhmm(m.ts) + '</span>' +
+        '<span class="team">กลุ่ม ' + esc(m.team) + '</span><span class="t">' + hhmm(m.ts) + '</span>' +
         '<span class="txt"><span class="k">' + KIND[m.kind] + '</span>' + esc(m.text) + '</span>' +
         '<button type="button" class="x" title="' + (hid ? "นำกลับมา" : "ซ่อน (จัดการแล้ว)") + '" aria-label="' + (hid ? "นำกลับมา" : "ซ่อน") + '">' + (hid ? "↺" : "×") + '</button></li>';
     }).join("");
@@ -609,9 +609,9 @@
     $("t-help").textContent = openHelp;
     var top = -1, topN = -1;
     b.counts.byPos.forEach(function (c, i) { if (c > topN) { topN = c; top = i; } });
-    if (b.counts.done > 0 && b.counts.done > topN) { $("t-current").textContent = "ครบแล้ว"; $("t-current-l").textContent = b.counts.done + " ทีมทำครบทุกข้อ"; }
-    else if (top >= 0 && topN > 0) { $("t-current").textContent = lab(b.order[top]); $("t-current-l").textContent = topN + " ทีมอยู่ที่นี่"; }
-    else { $("t-current").textContent = "–"; $("t-current-l").textContent = "ยังไม่มีทีมเริ่มหน้านี้"; }
+    if (b.counts.done > 0 && b.counts.done > topN) { $("t-current").textContent = "ครบแล้ว"; $("t-current-l").textContent = b.counts.done + " กลุ่มทำครบทุกข้อ"; }
+    else if (top >= 0 && topN > 0) { $("t-current").textContent = lab(b.order[top]); $("t-current-l").textContent = topN + " กลุ่มอยู่ที่นี่"; }
+    else { $("t-current").textContent = "–"; $("t-current-l").textContent = "ยังไม่มีกลุ่มเริ่มหน้านี้"; }
 
     // bars, each activity openable to its task boxes
     var denom = Math.max(1, b.reported);
@@ -637,7 +637,7 @@
     bars.push(row("ครบทุกข้อ", b.counts.done, "var(--done)", null));
     $("bars").innerHTML = bars.join("");
     $("bars-empty").hidden = b.reported > 0;
-    $("bars-note").textContent = b.reported ? "จำนวนทีม จาก " + b.reported + " ทีมที่รายงาน · กดลูกศรเพื่อดูรายข้อ" : "";
+    $("bars-note").textContent = b.reported ? "จำนวนกลุ่ม จาก " + b.reported + " กลุ่มที่รายงาน · กดลูกศรเพื่อดูรายข้อ" : "";
 
     // grid
     var cells = [];
@@ -651,7 +651,7 @@
         style = ' style="background:var(--p' + k + ');color:var(--p' + k + '-ink)"';
         sub = lab(s.act).replace("กิจกรรม ", "") + (s.a.total ? " · " + s.a.done + "/" + s.a.total : "");   // fields are in the tooltip
       } else { cls = "cell" + (c.stale ? " is-stale" : ""); sub = "เปิดแล้ว"; }
-      cells.push('<button type="button" class="' + cls + help + '" data-team="' + t + '"' + style + ' aria-label="ทีม ' + t + ' ' + esc(sub) + (help ? " ขอความช่วยเหลือ" : "") + '"><span class="no">' + t + '</span><span class="sub">' + esc(sub) + '</span></button>');
+      cells.push('<button type="button" class="' + cls + help + '" data-team="' + t + '"' + style + ' aria-label="กลุ่ม ' + t + ' ' + esc(sub) + (help ? " ขอความช่วยเหลือ" : "") + '"><span class="no">' + t + '</span><span class="sub">' + esc(sub) + '</span></button>');
     }
     $("grid").innerHTML = cells.join("");
 
@@ -664,7 +664,7 @@
     $("ticker-panel").hidden = !showTicker;
     if (showTicker) {
       $("ticker").innerHTML = b.ticks.map(function (x) {
-        return '<li><span class="t">' + hhmm(x.last.ts) + '</span><span class="team">ทีม ' + esc(x.team) + '</span>' +
+        return '<li><span class="t">' + hhmm(x.last.ts) + '</span><span class="team">กลุ่ม ' + esc(x.team) + '</span>' +
           '<span class="mark' + (x.last.on ? "" : " off") + '">' + (x.last.on ? "✓" : "✗") + '</span><span class="what">' + esc(x.last.label || lab(x.last.act)) + '</span></li>';
       }).join("");
       $("ticker-empty").hidden = b.ticks.length > 0;
@@ -674,7 +674,7 @@
     var unknown = b.unknown.map(function (v) { return v.team; }).sort(function (x, y) { return +x - +y; });
     $("unknown").hidden = unknown.length === 0;
     if (unknown.length) {
-      $("unknown").innerHTML = "<b>หมายเลขทีมที่ไม่อยู่ในช่วง 1–" + TEAM_MAX + ":</b> " + unknown.map(function (t) {
+      $("unknown").innerHTML = "<b>หมายเลขกลุ่มที่ไม่อยู่ในช่วง 1–" + TEAM_MAX + ":</b> " + unknown.map(function (t) {
         return '<button type="button" class="unk" data-team="' + esc(t) + '">' + esc(t) + "</button>";
       }).join(" ");
     }
@@ -682,7 +682,7 @@
     // table view
     $("tablewrap").hidden = !showTable;
     if (showTable) {
-      var h = "<tr><th>ทีม</th><th>โซน</th>" + b.order.map(function (id) { return "<th>" + esc(lab(id)) + "</th>"; }).join("") + "<th>ล่าสุด</th><th>ข้อความล่าสุด</th></tr>";
+      var h = "<tr><th>กลุ่ม</th><th>โซน</th>" + b.order.map(function (id) { return "<th>" + esc(lab(id)) + "</th>"; }).join("") + "<th>ล่าสุด</th><th>ข้อความล่าสุด</th></tr>";
       var body = Object.keys(b.cells).sort(function (a, c) { return +a - +c; }).map(function (team) {
         var c = b.cells[team], p = c.view.pages[page], m = lastMsgByTeam[team];
         return "<tr><td>" + team + "</td><td>" + esc(c.view.zone || "") + "</td>" + b.order.map(function (id) {
@@ -747,7 +747,7 @@
                    { method: "DELETE" })
         .then(function (r) { if (!r.ok) throw new Error(r.status); });
     })).catch(function () {
-      window.alert("ลบข้อมูลของ ทีม " + team + " ไม่สำเร็จ\nตรวจการเชื่อมต่อแล้วลองอีกครั้ง กระดานจะแสดงข้อมูลจริงจากฐานข้อมูล");
+      window.alert("ลบข้อมูลของ กลุ่ม " + team + " ไม่สำเร็จ\nตรวจการเชื่อมต่อแล้วลองอีกครั้ง กระดานจะแสดงข้อมูลจริงจากฐานข้อมูล");
       trees = {}; msgTrees = {};
       reconnect();                                                   // the database is the truth: reload it
     });
@@ -759,7 +759,7 @@
     var list = Progress.deviceList(team, rawDevices(team), page, lastBoard.order, Date.now());
     if (!list.length) return "";
     var lab = function (id) { return Progress.actLabel(id, lastBoard.names); };
-    return '<div class="devs"><div class="devs-h">อุปกรณ์ที่ส่งข้อมูลของทีมนี้</div>' + list.map(function (d) {
+    return '<div class="devs"><div class="devs-h">อุปกรณ์ที่ส่งข้อมูลของกลุ่มนี้</div>' + list.map(function (d) {
       var where = !d.onPage ? "ยังไม่เปิดหน้านี้"
         : d.done ? "ครบทุกข้อ"
         : d.pos < 0 ? "เปิดแล้ว"
@@ -769,7 +769,7 @@
         '<span class="info"><b>' + esc(devLabel(d)) + "</b> ล่าสุด " + hhmm(d.srv) + " · " + esc(where) + (d.stale ? " (เงียบ)" : "") + otherDay + "</span>" +
         '<button type="button" class="tip-mini" data-rm="' + esc(d.key) + '" data-team="' + esc(team) + '">ลบ</button></div>';
     }).join("") +
-    '<button type="button" class="tip-btn tip-btn--danger" data-reset="' + esc(team) + '">ล้างข้อมูลทีมนี้ทั้งหมด</button></div>';
+    '<button type="button" class="tip-btn tip-btn--danger" data-reset="' + esc(team) + '">ล้างข้อมูลกลุ่มนี้ทั้งหมด</button></div>';
   }
 
   /* hover / focus tooltip on a cell; a click pins it, with the "helped" button and the device controls */
@@ -779,7 +779,7 @@
     if (!c && !m) { tip.hidden = true; return; }
     if (pin) { pinnedTeam = team; pinnedEl = cell; tip.classList.add("is-pinned"); } else if (pinnedTeam) return;
     var lab = function (id) { return Progress.actLabel(id, lastBoard.names); };
-    var lines = "<b>ทีม " + esc(team) + "</b>";
+    var lines = "<b>กลุ่ม " + esc(team) + "</b>";
     if (c) {
       var v = c.view, p = v.pages[page];
       lines += (v.zone ? ' <span class="dim">โซน ' + esc(v.zone) + "</span>" : "") + ' <span class="dim">· ' + v.devs + " เครื่อง · ล่าสุด " + hhmm(v.srv) + "</span>";
@@ -796,7 +796,7 @@
       if (helpTeams[team]) lines += '<button type="button" class="tip-btn" data-resolve="' + esc(team) + '">✓ ช่วยเหลือแล้ว</button>';
       if (c) lines += devicesHtml(team);
     } else {
-      lines += '<div class="dim">' + (helpTeams[team] ? "กดที่ช่องเพื่อล้างสถานะขอความช่วยเหลือ หรือจัดการข้อมูลของทีม" : c ? "กดที่ช่องเพื่อจัดการข้อมูลของทีม" : "") + "</div>";
+      lines += '<div class="dim">' + (helpTeams[team] ? "กดที่ช่องเพื่อล้างสถานะขอความช่วยเหลือ หรือจัดการข้อมูลของกลุ่ม" : c ? "กดที่ช่องเพื่อจัดการข้อมูลของกลุ่ม" : "") + "</div>";
     }
     tip.innerHTML = lines; tip.hidden = false;
     var r = cell.getBoundingClientRect(), w = tip.offsetWidth, h = tip.offsetHeight;
@@ -838,9 +838,9 @@
     var rm = e.target.closest("[data-rm]");
     if (rm) {
       var team = rm.dataset.team, key = rm.dataset.rm, short = key.slice(key.indexOf("/") + 1, key.indexOf("/") + 5);
-      if (!window.confirm("ลบข้อมูลของเครื่อง " + short + " ออกจาก ทีม " + team + "?\n\n" +
+      if (!window.confirm("ลบข้อมูลของเครื่อง " + short + " ออกจาก กลุ่ม " + team + "?\n\n" +
                           "ความคืบหน้าจากเครื่องนี้จะหายจากกระดานทุกจอ\n" +
-                          "ถ้าเครื่องนี้ยังเปิดใบงานของทีมอยู่ ข้อมูลจะกลับมาเองเมื่อติ๊กครั้งถัดไป")) return;
+                          "ถ้าเครื่องนี้ยังเปิดใบงานของกลุ่มอยู่ ข้อมูลจะกลับมาเองเมื่อติ๊กครั้งถัดไป")) return;
       removeDevices(team, [key]);
       repin(team);
       return;
@@ -850,9 +850,9 @@
     if (reset) {
       var t = reset.dataset.reset, keys = Object.keys(rawDevices(t));
       if (!keys.length) { unpin(); return; }
-      if (!window.confirm("ล้างความคืบหน้าทั้งหมดของ ทีม " + t + " (" + keys.length + " เครื่อง)?\n\n" +
-                          "ช่องของทีมนี้จะว่างบนกระดานทุกจอ ข้อความและคำขอความช่วยเหลือไม่ถูกลบ\n" +
-                          "เครื่องที่ยังเปิดใบงานของทีมนี้อยู่จะส่งข้อมูลกลับมาเองเมื่อติ๊กครั้งถัดไป")) return;
+      if (!window.confirm("ล้างความคืบหน้าทั้งหมดของ กลุ่ม " + t + " (" + keys.length + " เครื่อง)?\n\n" +
+                          "ช่องของกลุ่มนี้จะว่างบนกระดานทุกจอ ข้อความและคำขอความช่วยเหลือไม่ถูกลบ\n" +
+                          "เครื่องที่ยังเปิดใบงานของกลุ่มนี้อยู่จะส่งข้อมูลกลับมาเองเมื่อติ๊กครั้งถัดไป")) return;
       removeDevices(t, keys);
       unpin();
     }

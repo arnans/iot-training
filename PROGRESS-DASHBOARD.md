@@ -44,11 +44,11 @@ A wrong number paints another team's cell, so nothing is sent until the number i
 number up (a shallow GET of `progress/<day>/<team>`), then asks **at most one** `confirm`,
 worded for whichever of these apply:
 
-1. **Changing a number that has already reported** ("เปลี่ยนหมายเลขทีมจาก ทีม 17 เป็น ทีม 23
+1. **Changing a number that has already reported** ("เปลี่ยนหมายเลขกลุ่มจาก กลุ่ม 17 เป็น กลุ่ม 23
    ใช่ไหม?"). Cancel puts the old number back; OK moves this device's row (the entry under the
    old number is deleted, so no ghost stays on the board).
-2. **A number another device already reports under today** ("ทีม 23 มีอุปกรณ์อีกเครื่องส่ง
-   ความคืบหน้าอยู่แล้ว ถ้าเป็นโทรศัพท์หรือแล็ปท็อปอีกเครื่องของทีมเรา กด OK"). The phone-and-laptop
+2. **A number another device already reports under today** ("กลุ่ม 23 มีอุปกรณ์อีกเครื่องส่ง
+   ความคืบหน้าอยู่แล้ว ถ้าเป็นโทรศัพท์หรือแล็ปท็อปอีกเครื่องของกลุ่มเรา กด OK"). The phone-and-laptop
    team answers once; a wrong number is cancelled and the box clears.
 3. **Both at once**: one combined question; Cancel goes back to the old number.
 
@@ -56,7 +56,7 @@ Offline, the lookup fails quietly and only case 1 can be asked. (Until 14 Sep 20
 were two dialogs in a row, which felt redundant.)
 
 Typing in the box does not trigger a report; leaving it does, so a half-typed "2" on the way
-to "23" is never checked. The status shows "● กำลังตรวจสอบหมายเลขทีม…" until the check passes.
+to "23" is never checked. The status shows "● กำลังตรวจสอบหมายเลขกลุ่ม…" until the check passes.
 
 ### Document (`progress/<day>/<team>/<dev>`)
 
@@ -121,13 +121,13 @@ otherwise the usual prompt appears first.
 
 `docs/progress.html?page=session-2&day=2026-09-20` (both default: session 1, today).
 `&plus=1` also streams the previous day and merges it, for the second workshop day.
-**จำนวนทีม** sets how many cells the grid shows (1–400; remembered in the browser and in the
+**จำนวนกลุ่ม** sets how many cells the grid shows (1–400; remembered in the browser and in the
 URL as `&max=`); teams above it are counted and listed rather than drawn. It only changes the display: the worksheet's own limit is `TEAM_MAX` in
 extra.js (100 for this workshop — change it per event), and the database rules accept 1–400 so
 that constant can move without another rules paste. Numbers above the dashboard's setting are
-listed under "หมายเลขทีมที่ไม่อยู่ในช่วง".
+listed under "หมายเลขกลุ่มที่ไม่อยู่ในช่วง".
 
-Layout (revised 14 Sep 2026, Roger's priorities): the **ทีมใดอยู่กิจกรรมใด** bars are the largest
+Layout (revised 14 Sep 2026, Roger's priorities): the **กลุ่มใดอยู่กิจกรรมใด** bars are the largest
 element and come first in the main column; the team grid sits under them, its first job being
 to show **who is asking for help** (heavy red ring and 🙋, pulsing when new) and only second the
 colour overview; messages run as a **sticky live feed down the right side**, newest on top,
@@ -140,7 +140,7 @@ new ones sliding in; the tick ticker is an admin view behind the **ติ๊ก�
 - **Bars** = how many teams currently stand at each activity — the pacing number. The chevron
   on an activity opens one bar per task box (1.1, 1.2, …): how many teams have ticked it.
   Open/closed state is remembered in the browser.
-- **ข้อความจากทีม** = every message of the day, newest first, across all pages; a fifth tile
+- **ข้อความจากกลุ่ม** = every message of the day, newest first, across all pages; a fifth tile
   counts teams with an unhidden call for help.
 - **Ticker** = the 20 most recent ticks for the page.
 - **ตาราง** toggles a table of the same numbers (the accessible view; also fine to screenshot).
@@ -197,10 +197,10 @@ Uploads are not metered.
 
 ### Removing a team's progress data
 
-Click a team's cell (or its number in "หมายเลขทีมที่ไม่อยู่ในช่วง") and the pinned popover lists
+Click a team's cell (or its number in "หมายเลขกลุ่มที่ไม่อยู่ในช่วง") and the pinned popover lists
 **the devices reporting for that team**: a short device id, last seen, where that device is on
 the current page, faded with "(เงียบ)" after 10 minutes of silence. Each has **ลบ**, and
-**ล้างข้อมูลทีมนี้ทั้งหมด** removes them all. Both confirm first. Each removal is a DELETE of
+**ล้างข้อมูลกลุ่มนี้ทั้งหมด** removes them all. Both confirm first. Each removal is a DELETE of
 `progress/<day>/<team>/<dev>` (the rules already allow it; deleting a whole team in one request
 is refused), and the cell updates on every screen through the stream. Messages and help
 calls are not touched.

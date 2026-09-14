@@ -48,7 +48,9 @@ that go wrong: Adapter 1 must be **Bridged** and set to the laptop's own WiFi ca
 reached at `http://<its IP>` — never `homeassistant.local`, because every team's VM answers to
 that name.
 
-Login: `TODO` / `TODO` (also printed on each team card).
+Login: `TODO` / `TODO`. **Not on the team card and not in the install guide** — project it at
+Activity 3.1, when teams first log in. Until then participants only check that the Login page
+loads (install guide step 3, and the pre-start check in Session 1).
 
 ---
 
@@ -103,7 +105,7 @@ team card as one matching set.
 
 ## 6. Running the activities
 
-Each activity in the worksheet opens with a checklist for the team, **สิ่งที่ทีมต้องทำและตอบ**: one item
+Each activity in the worksheet opens with a checklist for the group, **ใบงาน**: one item
 per sub-section, holding the question and its answer boxes, with a link down to the steps. This
 section follows the same items, so a TA looking at a team's screen can find the matching entry
 here. Each item gives **Done when** (what a finished answer looks like) and **If stuck** (what to
@@ -228,10 +230,12 @@ threshold, passing 3 of 3, and fast teams with a tested (and then disabled) `ป
 
 #### 3.1 Add both boards
 
-**Done when** both boards are added from the discovered cards, the last six characters match the names
-written down, and both devices are renamed for the team.
+**Done when** the representative's laptop is logged in with the credentials you project now, both
+boards are added from the discovered cards, the last six characters match the names written down,
+and both devices are renamed for the team.
 
-**If stuck** Every team in the zone sees every card. **Adding a neighbour's card looks like success**, but
+**If stuck** The Login page no longer loads: the VM's IP changed, so read it again from the VM
+window. Every team in the zone sees every card. **Adding a neighbour's card looks like success**, but
 the team then watches the neighbour's sensors and its automation drives the neighbour's pump. Check
 the six characters before adding. No card at all: *+ Add integration → ESPHome → Add device → Setup
 another instance of ESPHome*, then type the board name without `.local`.

@@ -215,7 +215,7 @@ figcaption {
   <header class="doc-head">
     <p class="kicker">Instructor & TA handbook</p>
     <h1>Instructor & TA resources</h1>
-    <p class="meta">IoT in Smart Farming workshop · Last updated 2026-09-14</p>
+    <p class="meta">IoT in Smart Farming workshop · Last updated 2026-09-15</p>
     <p class="disclosure">This document was compiled with Claude AI. Its content was designed and reviewed by those responsible, who certify that it reflects the intent of the preparing team in every respect.</p>
   </header>
   <p>Every file and link needed to prepare for and run the workshop, in one place.
@@ -291,7 +291,9 @@ figcaption {
   that go wrong: Adapter 1 must be <strong>Bridged</strong> and set to the laptop's own WiFi card, and the VM is
   reached at <code>http://&lt;its IP&gt;</code> — never <code>homeassistant.local</code>, because every team's VM answers to
   that name.</p>
-  <p>Login: <code>TODO</code> / <code>TODO</code> (also printed on each team card).</p>
+  <p>Login: <code>TODO</code> / <code>TODO</code>. <strong>Not on the team card and not in the install guide</strong> — project it at
+  Activity 3.1, when teams first log in. Until then participants only check that the Login page
+  loads (install guide step 3, and the pre-start check in Session 1).</p>
   <hr>
   <h2>3. Worksheets and printed material</h2>
   <div class="table-scroll"><table>
@@ -406,7 +408,7 @@ figcaption {
   </table></div>
   <hr>
   <h2>6. Running the activities</h2>
-  <p>Each activity in the worksheet opens with a checklist for the team, <strong>สิ่งที่ทีมต้องทำและตอบ</strong>: one item
+  <p>Each activity in the worksheet opens with a checklist for the group, <strong>ใบงาน</strong>: one item
   per sub-section, holding the question and its answer boxes, with a link down to the steps. This
   section follows the same items, so a TA looking at a team's screen can find the matching entry
   here. Each item gives <strong>Done when</strong> (what a finished answer looks like) and <strong>If stuck</strong> (what to
@@ -490,9 +492,11 @@ figcaption {
   garden lamp. They also leave with two automations, <code>มืด-เปิดไฟ</code> and <code>สว่าง-ปิดไฟ</code> on one shared
   threshold, passing 3 of 3, and fast teams with a tested (and then disabled) <code>ปิดไฟตามเวลา</code>.</p>
   <h4>3.1 Add both boards</h4>
-  <p><strong>Done when</strong> both boards are added from the discovered cards, the last six characters match the names
-  written down, and both devices are renamed for the team.</p>
-  <p><strong>If stuck</strong> Every team in the zone sees every card. <strong>Adding a neighbour's card looks like success</strong>, but
+  <p><strong>Done when</strong> the representative's laptop is logged in with the credentials you project now, both
+  boards are added from the discovered cards, the last six characters match the names written down,
+  and both devices are renamed for the team.</p>
+  <p><strong>If stuck</strong> The Login page no longer loads: the VM's IP changed, so read it again from the VM
+  window. Every team in the zone sees every card. <strong>Adding a neighbour's card looks like success</strong>, but
   the team then watches the neighbour's sensors and its automation drives the neighbour's pump. Check
   the six characters before adding. No card at all: <em>+ Add integration → ESPHome → Add device → Setup
   another instance of ESPHome</em>, then type the board name without <code>.local</code>.</p>

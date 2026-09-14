@@ -113,11 +113,11 @@
   var STORE = "farm-worksheet.v1";   // bump the suffix if the stored shape ever changes
   var ZONE_SLUG = { "แดง": "red", "เขียว": "green", "น้ำเงิน": "blue" };
   var TEAM_MAX = 100;                // team numbers are 1..TEAM_MAX, stored as plain digits
-  var TEAM_RULE = "หมายเลขทีมต้องเป็นตัวเลข 1–" + TEAM_MAX;
+  var TEAM_RULE = "หมายเลขกลุ่มต้องเป็นตัวเลข 1–" + TEAM_MAX;
   var store = emptyStore();
   var saveTimer;
 
-  /* ---- team number: "๑๗", " 17 ", "ทีม 17", "017" all mean team 17 ---- */
+  /* ---- team number: "๑๗", " 17 ", "กลุ่ม 17", "017" all mean team 17 ---- */
   var THAI_DIGITS = "๐๑๒๓๔๕๖๗๘๙";
 
   /* what the box may hold while typing: ASCII digits only, at most 3 of them */
@@ -292,22 +292,22 @@
   function teamQuestion(team, old, othersExist) {
     var changing = old && old !== team;
     if (changing && othersExist) {
-      return "เปลี่ยนหมายเลขทีมจาก ทีม " + old + " เป็น ทีม " + team + " ใช่ไหม?\n\n" +
-             "เบราว์เซอร์นี้เคยส่งความคืบหน้าในชื่อ ทีม " + old + " และ ทีม " + team +
+      return "เปลี่ยนหมายเลขกลุ่มจาก กลุ่ม " + old + " เป็น กลุ่ม " + team + " ใช่ไหม?\n\n" +
+             "เบราว์เซอร์นี้เคยส่งความคืบหน้าในชื่อ กลุ่ม " + old + " และ กลุ่ม " + team +
              " มีอุปกรณ์อีกเครื่องส่งความคืบหน้าอยู่แล้ววันนี้\n\n" +
-             "กด OK ถ้าเราคือทีม " + team + " จริง ๆ (อีกเครื่องเป็นโทรศัพท์หรือแล็ปท็อปของทีมเรา)\n" +
-             "กด Cancel เพื่อกลับไปใช้ ทีม " + old;
+             "กด OK ถ้าเราคือกลุ่ม " + team + " จริง ๆ (อีกเครื่องเป็นโทรศัพท์หรือแล็ปท็อปของกลุ่มเรา)\n" +
+             "กด Cancel เพื่อกลับไปใช้ กลุ่ม " + old;
     }
     if (changing) {
-      return "เปลี่ยนหมายเลขทีมจาก ทีม " + old + " เป็น ทีม " + team + " ใช่ไหม?\n\n" +
-             "เบราว์เซอร์นี้เคยส่งความคืบหน้าในชื่อ ทีม " + old + " แล้ว\n\n" +
-             "กด OK ถ้าเราคือทีม " + team + " จริง ๆ (ความคืบหน้าจากเครื่องนี้จะย้ายไปอยู่กับทีม " + team + ")\n" +
-             "กด Cancel เพื่อกลับไปใช้ ทีม " + old;
+      return "เปลี่ยนหมายเลขกลุ่มจาก กลุ่ม " + old + " เป็น กลุ่ม " + team + " ใช่ไหม?\n\n" +
+             "เบราว์เซอร์นี้เคยส่งความคืบหน้าในชื่อ กลุ่ม " + old + " แล้ว\n\n" +
+             "กด OK ถ้าเราคือกลุ่ม " + team + " จริง ๆ (ความคืบหน้าจากเครื่องนี้จะย้ายไปอยู่กับกลุ่ม " + team + ")\n" +
+             "กด Cancel เพื่อกลับไปใช้ กลุ่ม " + old;
     }
     if (othersExist) {
-      return "ทีม " + team + " มีอุปกรณ์อีกเครื่องส่งความคืบหน้าอยู่แล้ววันนี้\n\n" +
-             "ถ้าเป็นโทรศัพท์หรือแล็ปท็อปอีกเครื่องของทีมเรา กด OK\n" +
-             "ถ้าไม่ใช่ทีมของเรา กด Cancel แล้วดูหมายเลขทีมบนบัตรประจำทีมอีกครั้ง";
+      return "กลุ่ม " + team + " มีอุปกรณ์อีกเครื่องส่งความคืบหน้าอยู่แล้ววันนี้\n\n" +
+             "ถ้าเป็นโทรศัพท์หรือแล็ปท็อปอีกเครื่องของกลุ่มเรา กด OK\n" +
+             "ถ้าไม่ใช่กลุ่มของเรา กด Cancel แล้วดูหมายเลขกลุ่มบนบัตรประจำกลุ่มอีกครั้ง";
     }
     return null;
   }
@@ -429,7 +429,7 @@
     var bar = document.createElement("div");
     bar.id = "ws-bar";
     bar.innerHTML =
-      '<label class="ws-team">ทีมที่ <input class="fld" type="text" data-k="team.no" data-size="3" size="3" ' +
+      '<label class="ws-team">กลุ่มที่ <input class="fld" type="text" data-k="team.no" data-size="3" size="3" ' +
         'inputmode="numeric" maxlength="3" autocomplete="off" spellcheck="false"></label>' +
       '<span class="ws-status"></span>' +
       /* the file actions live in a menu: needed twice a day, not every minute */
@@ -509,9 +509,9 @@
     if (!teamValid()) { el.innerHTML = '<span class="ws-bad">' + TEAM_RULE + "</span>"; return; }
     var team = teamClean(store.fields["team.no"]);
     if (!PROGRESS_DB) { el.innerHTML = ""; return; }
-    if (!team) el.innerHTML = '<span class="ws-hint">← กรอกหมายเลขทีม</span>';
-    else if (team !== store.sentAs) el.innerHTML = '<span class="ws-live ws-live--off">● กำลังตรวจสอบหมายเลขทีม…</span>';
-    else if (pushState === "ok") el.innerHTML = '<span class="ws-live ws-live--ok" title="ความคืบหน้าของทีมส่งถึงผู้สอนแล้ว">● เชื่อมต่อผู้สอนแล้ว</span>';
+    if (!team) el.innerHTML = '<span class="ws-hint">← กรอกหมายเลขกลุ่ม</span>';
+    else if (team !== store.sentAs) el.innerHTML = '<span class="ws-live ws-live--off">● กำลังตรวจสอบหมายเลขกลุ่ม…</span>';
+    else if (pushState === "ok") el.innerHTML = '<span class="ws-live ws-live--ok" title="ความคืบหน้าของกลุ่มส่งถึงผู้สอนแล้ว">● เชื่อมต่อผู้สอนแล้ว</span>';
     else if (pushState) el.innerHTML = '<span class="ws-live ws-live--off" title="จะลองส่งใหม่เมื่อติ๊กครั้งถัดไป">● ยังส่งไม่ถึงผู้สอน</span>';
     else el.innerHTML = '<span class="ws-live ws-live--off">● กำลังเชื่อมต่อ…</span>';
   }
@@ -525,7 +525,7 @@
   /* the team number, asking for one (and refusing a bad one) if the box is empty or wrong */
   function teamNo() {
     var t = teamClean(store.fields["team.no"]);
-    var ask = "หมายเลขทีม 1–" + TEAM_MAX + " (ใช้ตั้งชื่อไฟล์และให้ผู้สอนรู้ว่าเป็นของทีมใด)";
+    var ask = "หมายเลขกลุ่ม 1–" + TEAM_MAX + " (ใช้ตั้งชื่อไฟล์และให้ผู้สอนรู้ว่าเป็นของกลุ่มใด)";
     while (!t) {
       var raw = window.prompt(ask);
       if (raw === null) return "";                 // Cancel

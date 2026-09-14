@@ -137,7 +137,7 @@
     return { pos: pos, done: allDone, act: pos >= 0 ? order[pos] : null, a: pos >= 0 ? p.acts[order[pos]] : null };
   }
 
-  /* the whole board for one page; teamMax is the dashboard's "จำนวนทีม" (default TEAM_MAX) */
+  /* the whole board for one page; teamMax is the dashboard's "จำนวนกลุ่ม" (default TEAM_MAX) */
   function board(tree, page, now, teamMax) {
     now = now || Date.now();
     teamMax = teamMax || TEAM_MAX;

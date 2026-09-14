@@ -57,7 +57,7 @@ PAGES = [
     ("session-3.md", "session-3", "ช่วงที่ 3", "แดชบอร์ดและออกแบบระบบ"),
     ("resources.md", "resources", "อ้างอิง", "รวมไฟล์และลิงก์"),
     ("reference.md", "reference", "อ้างอิง", "เมนูและวิธีแก้ปัญหา"),
-    ("record-sheet.md", "record-sheet", "อ้างอิง", "ใบบันทึกของทีม"),
+    ("record-sheet.md", "record-sheet", "อ้างอิง", "ใบบันทึกของกลุ่ม"),
 ]
 SLUGS = {p[1] for p in PAGES}
 

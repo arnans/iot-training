@@ -172,18 +172,40 @@ sensor:
   - platform: bh1750
     name: "ความสว่าง (light)"
     address: 0x23
-    # WORKSHOP: 1s, not the 5s used by the others. Session 2 teaches hysteresis by
-    # making the relay chatter while a hand hovers at the threshold. At 5s the
-    # chattering is invisible and the lesson fails. See TEST-PLAN.md test E.
+    # WORKSHOP: 1s, not the 5s default. Session 1 builds a dark->on / bright->off
+    # rule pair on one threshold and Session 2 teaches hysteresis by making the
+    # lamp chatter while a hand hovers at that threshold. At 5s the chattering is
+    # invisible and the lesson fails. See TEST-PLAN.md test E.
     update_interval: 1s
 
+  # WORKSHOP: polled at 1s, not 5s, so a breath on the board shows within about a
+  # second and session 2's blow-on-it watering loop feels immediate. The chip
+  # does this comfortably: a single-shot reading takes ~15ms, so self-heating
+  # is negligible. It does NOT make the reading itself faster — the SHT3x
+  # humidity element takes ~8s to cover 63% of a step, so the curve is only
+  # seen in more detail.
+  #
+  # Filters: at 1s the humidity noise changes the last decimal almost every
+  # reading, and each change is a row in Home Assistant's history. The `or`
+  # sends a reading when it has really moved (delta) and otherwise at least
+  # every 30s (throttle), so a still room costs fewer writes than the old 5s.
+  # Trade-off: the published value can sit up to one delta away from the
+  # true one, so a slow drift crosses a threshold up to that much late.
   - platform: sht3xd
     address: 0x44
-    update_interval: 5s
+    update_interval: 1s
     temperature:
       name: "อุณหภูมิ (temperature)"
+      filters:
+        - or:
+            - delta: 0.2      # °C
+            - throttle: 30s
     humidity:
       name: "ความชื้นอากาศ (humidity)"
+      filters:
+        - or:
+            - delta: 0.5      # %RH
+            - throttle: 30s
 
   - platform: spa06_i2c
     address: 0x77

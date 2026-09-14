@@ -1524,26 +1524,41 @@ body {
     saveNow();
   }
 
+  /* the one question to ask before reporting as `team`, or null if there is nothing to ask */
+  function teamQuestion(team, old, othersExist) {
+    var changing = old && old !== team;
+    if (changing && othersExist) {
+      return "เปลี่ยนหมายเลขทีมจาก ทีม " + old + " เป็น ทีม " + team + " ใช่ไหม?\n\n" +
+             "เบราว์เซอร์นี้เคยส่งความคืบหน้าในชื่อ ทีม " + old + " และ ทีม " + team +
+             " มีอุปกรณ์อีกเครื่องส่งความคืบหน้าอยู่แล้ววันนี้\n\n" +
+             "กด OK ถ้าเราคือทีม " + team + " จริง ๆ (อีกเครื่องเป็นโทรศัพท์หรือแล็ปท็อปของทีมเรา)\n" +
+             "กด Cancel เพื่อกลับไปใช้ ทีม " + old;
+    }
+    if (changing) {
+      return "เปลี่ยนหมายเลขทีมจาก ทีม " + old + " เป็น ทีม " + team + " ใช่ไหม?\n\n" +
+             "เบราว์เซอร์นี้เคยส่งความคืบหน้าในชื่อ ทีม " + old + " แล้ว\n\n" +
+             "กด OK ถ้าเราคือทีม " + team + " จริง ๆ (ความคืบหน้าจากเครื่องนี้จะย้ายไปอยู่กับทีม " + team + ")\n" +
+             "กด Cancel เพื่อกลับไปใช้ ทีม " + old;
+    }
+    if (othersExist) {
+      return "ทีม " + team + " มีอุปกรณ์อีกเครื่องส่งความคืบหน้าอยู่แล้ววันนี้\n\n" +
+             "ถ้าเป็นโทรศัพท์หรือแล็ปท็อปอีกเครื่องของทีมเรา กด OK\n" +
+             "ถ้าไม่ใช่ทีมของเรา กด Cancel แล้วดูหมายเลขทีมบนบัตรประจำทีมอีกครั้ง";
+    }
+    return null;
+  }
+
+  /* look the number up first, then ask at most once */
   function verifyTeam(team) {
     if (verifying === team || document.hidden) return;        // one dialog at a time, and only in a visible tab
     verifying = team;
     var old = store.sentAs;
-    if (old && old !== team &&
-        !window.confirm("เบราว์เซอร์นี้เคยส่งความคืบหน้าในชื่อ ทีม " + old + " แล้ว\n\n" +
-                        "เปลี่ยนเป็น ทีม " + team + " ใช่ไหม?\n" +
-                        "กด OK ถ้าเราคือทีม " + team + " จริง ๆ (ข้อมูลของทีม " + old + " จากเครื่องนี้จะถูกย้ายมา)\n" +
-                        "กด Cancel เพื่อกลับไปใช้ ทีม " + old)) {
-      setTeamEverywhere(old);
-      verifying = null;
-      return;
-    }
     var done = function (othersExist) {
       verifying = null;
       if (team !== teamClean(store.fields["team.no"])) return;    // the box changed meanwhile: that value gets its own check
-      if (othersExist &&
-          !window.confirm("หมายเลข ทีม " + team + " มีอุปกรณ์อีกเครื่องส่งความคืบหน้าอยู่แล้ววันนี้\n\n" +
-                          "ถ้าเป็นโทรศัพท์หรือแล็ปท็อปอีกเครื่องของทีมเรา กด OK\n" +
-                          "ถ้าไม่ใช่ทีมของเรา กด Cancel แล้วดูหมายเลขทีมบนบัตรประจำทีมอีกครั้ง")) {
+      var question = teamQuestion(team, old, othersExist);
+      if (question && !window.confirm(question)) {
+        if (old && old !== team) { setTeamEverywhere(old); return; }
         setTeamEverywhere("");
         var box = document.querySelector('#ws-bar .fld[data-k="team.no"]');
         if (box) box.focus();

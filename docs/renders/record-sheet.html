@@ -1155,17 +1155,17 @@ body {
 
 <p><strong>กล่องจ่ายไฟ</strong> (กิจกรรมที่ 2) จอแสดง <input class="fld" type="text" data-k="s1.psu.volt" data-size="5" size="5" inputmode="decimal" autocomplete="off" spellcheck="false"> V เมื่อเสียบอะแดปเตอร์ · ทีมต่อสายครบและถูกต้องในครั้งแรกหรือไม่ <span class="fld-radio" data-k="s1.wiring.first"><label><input class="fld" type="radio" name="s1.wiring.first" data-k="s1.wiring.first" value="ใช่"> ใช่</label><label><input class="fld" type="radio" name="s1.wiring.first" data-k="s1.wiring.first" value="ไม่ใช่"> ไม่ใช่</label></span> ข้อที่ต้องแก้ <input class="fld" type="text" data-k="s1.wiring.fix" data-size="20" size="20" autocomplete="off" spellcheck="false"></p>
 <p><strong>ตู้ควบคุมปั๊ม</strong> ถ้าเซนเซอร์เสียแต่พืชยังต้องการน้ำ ควรหมุนสวิตช์หน้าตู้ไปที่ <input class="fld" type="text" data-k="s1.box.pos" data-size="8" size="8" autocomplete="off" spellcheck="false"></p>
-<p><strong>คำถามท้ายกิจกรรมที่ 2</strong> ถ้าเปลี่ยนเป็นปั๊มบ่อ 220V ต้องเปลี่ยนอะไรบ้าง และใครควรเป็นคนต่อ</p>
+<p><strong>คำถามท้ายกิจกรรมที่ 2</strong> ถ้าเปลี่ยนหลอดไฟเป็นปั๊มบ่อ 220V ต้องเปลี่ยนอะไรบ้าง และใครควรเป็นคนต่อ</p>
 <textarea class="fld fld-ta" data-k="s1.q2" rows="2"></textarea>
 
-<p><strong>ลองตัดสินใจและสั่งงานด้วยตัวเอง</strong> (กิจกรรมที่ 3) ค่าเกณฑ์ความชื้นที่เลือก <input class="fld" type="text" data-k="s1.threshold" data-size="4" size="4" inputmode="decimal" autocomplete="off" spellcheck="false"> % · ตัดสินใจถูก <input class="fld" type="text" data-k="s1.manual.correct" data-size="3" size="3" inputmode="decimal" autocomplete="off" spellcheck="false"> ครั้งใน 5 นาที · ตอนยกลูกลอย ปิดปั๊มภายใน <input class="fld" type="text" data-k="s1.manual.stop" data-size="3" size="3" inputmode="decimal" autocomplete="off" spellcheck="false"> วินาที</p>
+<p><strong>ลองตัดสินใจและสั่งงานด้วยตัวเอง</strong> (กิจกรรมที่ 3) ค่าเกณฑ์ความสว่างที่เลือก <input class="fld" type="text" data-k="s1.light.on" data-size="4" size="4" inputmode="decimal" autocomplete="off" spellcheck="false"> · ครอบและเอามือออกรวม <input class="fld" type="text" data-k="s1.manual.rounds" data-size="2" size="2" inputmode="decimal" autocomplete="off" spellcheck="false"> รอบ · สั่งถูก <input class="fld" type="text" data-k="s1.manual.correct" data-size="2" size="2" inputmode="decimal" autocomplete="off" spellcheck="false"> รอบ</p>
 <p><strong>กฎที่เราใช้ตัดสินใจ</strong></p>
 <blockquote>
-<p>ความชื้น: ถ้า <input class="fld" type="text" data-k="s1.rule.hum.if" data-size="24" size="24" autocomplete="off" spellcheck="false"> ให้ <input class="fld" type="text" data-k="s1.rule.hum.then" data-size="24" size="24" autocomplete="off" spellcheck="false"></p>
-<p>ลูกลอย: ถ้า <input class="fld" type="text" data-k="s1.rule.float.if" data-size="24" size="24" autocomplete="off" spellcheck="false"> ให้ <input class="fld" type="text" data-k="s1.rule.float.then" data-size="24" size="24" autocomplete="off" spellcheck="false"></p>
+<p>มืด: ถ้า <input class="fld" type="text" data-k="s1.rule.dark.if" data-size="24" size="24" autocomplete="off" spellcheck="false"> ให้ <input class="fld" type="text" data-k="s1.rule.dark.then" data-size="24" size="24" autocomplete="off" spellcheck="false"></p>
+<p>สว่าง: ถ้า <input class="fld" type="text" data-k="s1.rule.bright.if" data-size="24" size="24" autocomplete="off" spellcheck="false"> ให้ <input class="fld" type="text" data-k="s1.rule.bright.then" data-size="24" size="24" autocomplete="off" spellcheck="false"></p>
 </blockquote>
-<p><strong>automation ข้อแรก</strong> ปั๊มหยุดเองเมื่อยกลูกลอย <input class="fld" type="text" data-k="s1.auto1.pass" data-size="2" size="2" inputmode="decimal" autocomplete="off" spellcheck="false"> จาก 3 ครั้ง</p>
-<p><strong>คำถามท้ายกิจกรรมที่ 3</strong> ยกลูกลอยค้างไว้ก่อน แล้วค่อยเปิดปั๊ม ปั๊มเดินหรือไม่ ทำไมกฎของเราจึงไม่ทำงาน</p>
+<p><strong>automation สองข้อแรก</strong> ครอบและเอามือออกสามรอบ ไฟติดและดับเองครบ <input class="fld" type="text" data-k="s1.auto.pass" data-size="2" size="2" inputmode="decimal" autocomplete="off" spellcheck="false"> จาก 3 รอบ · <strong>โจทย์เสริม ปิดไฟตามเวลา</strong> เวลาที่ตั้ง <input class="fld" type="text" data-k="s1.timer.at" data-size="5" size="5" autocomplete="off" spellcheck="false"> น. ผล <span class="fld-radio" data-k="s1.timer.ok"><label><input class="fld" type="radio" name="s1.timer.ok" data-k="s1.timer.ok" value="ดับตรงเวลา"> ดับตรงเวลา</label><label><input class="fld" type="radio" name="s1.timer.ok" data-k="s1.timer.ok" value="ไม่ดับ"> ไม่ดับ</label><label><input class="fld" type="radio" name="s1.timer.ok" data-k="s1.timer.ok" value="ไม่ได้ทำ"> ไม่ได้ทำ</label></span></p>
+<p><strong>คำถามท้ายกิจกรรมที่ 3</strong> ถ้าค่าแสงแกว่งอยู่ใกล้เกณฑ์พอดี เช่น เมฆลอยผ่านตอนพลบค่ำ กฎสองข้อของเราจะทำอะไร</p>
 <textarea class="fld fld-ta" data-k="s1.q3" rows="2"></textarea>
 
 <p><strong>สเปก</strong> (กิจกรรมที่ 4) ความแม่นยำเซนเซอร์ความชื้น ± <input class="fld" type="text" data-k="s1.spec.hum_acc" data-size="4" size="4" inputmode="decimal" autocomplete="off" spellcheck="false"> %RH อุณหภูมิ ± <input class="fld" type="text" data-k="s1.spec.temp_acc" data-size="4" size="4" inputmode="decimal" autocomplete="off" spellcheck="false"> °C · สวิตช์ลูกลอยทนได้ <input class="fld" type="text" data-k="s1.spec.float_a" data-size="4" size="4" inputmode="decimal" autocomplete="off" spellcheck="false"> A <input class="fld" type="text" data-k="s1.spec.float_v" data-size="4" size="4" inputmode="decimal" autocomplete="off" spellcheck="false"> V</p>
@@ -1200,11 +1200,11 @@ body {
 <h2 id="ชวงท-2">ช่วงที่ 2</h2>
 <p><strong>automation ข้อแรกของเรา (จากช่วงที่ 1)</strong> trigger <input class="fld" type="text" data-k="s2.auto1.trigger" data-size="18" size="18" autocomplete="off" spellcheck="false"> action <input class="fld" type="text" data-k="s2.auto1.action" data-size="18" size="18" autocomplete="off" spellcheck="false"> condition <input class="fld" type="text" data-k="s2.auto1.condition" data-size="10" size="10" autocomplete="off" spellcheck="false"></p>
 <h3 id="ระบบไฟสวน">ระบบไฟสวน</h3>
-<p><strong>เกณฑ์ความสว่าง</strong> เปิดไฟเมื่อต่ำกว่า <input class="fld" type="text" data-k="s2.light.on" data-size="4" size="4" inputmode="decimal" autocomplete="off" spellcheck="false"> ปิดไฟเมื่อสูงกว่า <input class="fld" type="text" data-k="s2.light.off" data-size="4" size="4" inputmode="decimal" autocomplete="off" spellcheck="false"></p>
+<p><strong>เกณฑ์ความสว่าง</strong> เปิดไฟเมื่อต่ำกว่า <input class="fld" type="text" data-k="s1.light.on" data-size="4" size="4" inputmode="decimal" autocomplete="off" spellcheck="false"> (จากช่วงที่ 1) ปิดไฟเมื่อสูงกว่า <input class="fld" type="text" data-k="s2.light.off" data-size="4" size="4" inputmode="decimal" autocomplete="off" spellcheck="false"></p>
 <p><strong>อาการกะพริบ</strong> ไฟติดดับกี่ครั้งใน 1 นาที ก่อนแก้ <input class="fld" type="text" data-k="s2.chatter.before" data-size="3" size="3" inputmode="decimal" autocomplete="off" spellcheck="false"> หลังแก้ <input class="fld" type="text" data-k="s2.chatter.after" data-size="3" size="3" inputmode="decimal" autocomplete="off" spellcheck="false"></p>
 <p><strong>เงื่อนไขเวลา</strong> รอบล่าสุดใน Traces หยุดที่ส่วนใด <input class="fld" type="text" data-k="s2.time.trace" data-size="16" size="16" autocomplete="off" spellcheck="false"> · เมื่อเพิ่ม trigger เวลาแล้ว ทำไมยังต้องตรวจค่าความสว่างในส่วน And if อีก <input class="fld" type="text" data-k="s2.time.why" data-size="30" size="30" autocomplete="off" spellcheck="false"></p>
 <h3 id="ระบบรดนำ">ระบบรดน้ำ</h3>
-<p><strong>เกณฑ์ความชื้นอากาศ</strong> เปิดปั๊มเมื่อต่ำกว่า <input class="fld" type="text" data-k="s2.hum.on" data-size="4" size="4" inputmode="decimal" autocomplete="off" spellcheck="false"> % ปิดปั๊มเมื่อสูงกว่า <input class="fld" type="text" data-k="s2.hum.off" data-size="4" size="4" inputmode="decimal" autocomplete="off" spellcheck="false"> % · หยุดเป่าแล้วปั๊มกลับมาเดินใน <input class="fld" type="text" data-k="s2.hum.restart" data-size="3" size="3" inputmode="decimal" autocomplete="off" spellcheck="false"> วินาที · ต่อปั๊มกลับเข้ารีเลย์เมื่อ <input class="fld" type="text" data-k="s2.pump_back_t" data-size="5" size="5" autocomplete="off" spellcheck="false"> น.</p>
+<p><strong>เกณฑ์ความชื้นอากาศ</strong> เปิดปั๊มเมื่อต่ำกว่า <input class="fld" type="text" data-k="s2.hum.on" data-size="4" size="4" inputmode="decimal" autocomplete="off" spellcheck="false"> % ปิดปั๊มเมื่อสูงกว่า <input class="fld" type="text" data-k="s2.hum.off" data-size="4" size="4" inputmode="decimal" autocomplete="off" spellcheck="false"> % · หยุดเป่าแล้วปั๊มกลับมาเดินใน <input class="fld" type="text" data-k="s2.hum.restart" data-size="3" size="3" inputmode="decimal" autocomplete="off" spellcheck="false"> วินาที · ต่อปั๊มเข้ารีเลย์แทนหลอดไฟเมื่อ <input class="fld" type="text" data-k="s2.pump_back_t" data-size="5" size="5" autocomplete="off" spellcheck="false"> น.</p>
 <p><strong>คำถามท้ายกิจกรรมที่ 5</strong> เกณฑ์เปิด–ปิดของไฟสวนคือเท่าไร ทำไมต้องต่างกัน และใช้กับระบบรดน้ำอย่างไร</p>
 <textarea class="fld fld-ta" data-k="s2.q5" rows="2"></textarea>
 
@@ -1976,26 +1976,41 @@ body {
     saveNow();
   }
 
+  /* the one question to ask before reporting as `team`, or null if there is nothing to ask */
+  function teamQuestion(team, old, othersExist) {
+    var changing = old && old !== team;
+    if (changing && othersExist) {
+      return "เปลี่ยนหมายเลขทีมจาก ทีม " + old + " เป็น ทีม " + team + " ใช่ไหม?\n\n" +
+             "เบราว์เซอร์นี้เคยส่งความคืบหน้าในชื่อ ทีม " + old + " และ ทีม " + team +
+             " มีอุปกรณ์อีกเครื่องส่งความคืบหน้าอยู่แล้ววันนี้\n\n" +
+             "กด OK ถ้าเราคือทีม " + team + " จริง ๆ (อีกเครื่องเป็นโทรศัพท์หรือแล็ปท็อปของทีมเรา)\n" +
+             "กด Cancel เพื่อกลับไปใช้ ทีม " + old;
+    }
+    if (changing) {
+      return "เปลี่ยนหมายเลขทีมจาก ทีม " + old + " เป็น ทีม " + team + " ใช่ไหม?\n\n" +
+             "เบราว์เซอร์นี้เคยส่งความคืบหน้าในชื่อ ทีม " + old + " แล้ว\n\n" +
+             "กด OK ถ้าเราคือทีม " + team + " จริง ๆ (ความคืบหน้าจากเครื่องนี้จะย้ายไปอยู่กับทีม " + team + ")\n" +
+             "กด Cancel เพื่อกลับไปใช้ ทีม " + old;
+    }
+    if (othersExist) {
+      return "ทีม " + team + " มีอุปกรณ์อีกเครื่องส่งความคืบหน้าอยู่แล้ววันนี้\n\n" +
+             "ถ้าเป็นโทรศัพท์หรือแล็ปท็อปอีกเครื่องของทีมเรา กด OK\n" +
+             "ถ้าไม่ใช่ทีมของเรา กด Cancel แล้วดูหมายเลขทีมบนบัตรประจำทีมอีกครั้ง";
+    }
+    return null;
+  }
+
+  /* look the number up first, then ask at most once */
   function verifyTeam(team) {
     if (verifying === team || document.hidden) return;        // one dialog at a time, and only in a visible tab
     verifying = team;
     var old = store.sentAs;
-    if (old && old !== team &&
-        !window.confirm("เบราว์เซอร์นี้เคยส่งความคืบหน้าในชื่อ ทีม " + old + " แล้ว\n\n" +
-                        "เปลี่ยนเป็น ทีม " + team + " ใช่ไหม?\n" +
-                        "กด OK ถ้าเราคือทีม " + team + " จริง ๆ (ข้อมูลของทีม " + old + " จากเครื่องนี้จะถูกย้ายมา)\n" +
-                        "กด Cancel เพื่อกลับไปใช้ ทีม " + old)) {
-      setTeamEverywhere(old);
-      verifying = null;
-      return;
-    }
     var done = function (othersExist) {
       verifying = null;
       if (team !== teamClean(store.fields["team.no"])) return;    // the box changed meanwhile: that value gets its own check
-      if (othersExist &&
-          !window.confirm("หมายเลข ทีม " + team + " มีอุปกรณ์อีกเครื่องส่งความคืบหน้าอยู่แล้ววันนี้\n\n" +
-                          "ถ้าเป็นโทรศัพท์หรือแล็ปท็อปอีกเครื่องของทีมเรา กด OK\n" +
-                          "ถ้าไม่ใช่ทีมของเรา กด Cancel แล้วดูหมายเลขทีมบนบัตรประจำทีมอีกครั้ง")) {
+      var question = teamQuestion(team, old, othersExist);
+      if (question && !window.confirm(question)) {
+        if (old && old !== team) { setTeamEverywhere(old); return; }
         setTeamEverywhere("");
         var box = document.querySelector('#ws-bar .fld[data-k="team.no"]');
         if (box) box.focus();

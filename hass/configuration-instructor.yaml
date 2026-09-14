@@ -5,12 +5,16 @@
 # matter enormously at this scale.
 #
 # The problem this file solves: 100 sensor boards, each publishing illuminance
-# every 1 s and vibration every 1 s, plus 5 s sensors. That is roughly 250 state
-# writes per second, on the order of 10 million rows across an overnight run.
-# Default SQLite will not cope, and the instance will be unusable exactly when
-# session 2 needs it.
+# every 1 s and vibration every 1 s, plus pressure at 5 s. That is roughly 220
+# state writes per second, on the order of 10 million rows across an overnight
+# run. Default SQLite will not cope, and the instance will be unusable exactly
+# when session 2 needs it.
 #
-# Strategy: record humidity and temperature from ALL boards (5 s, ~40 writes/s),
+# Temperature and humidity are polled at 1 s but filtered on the board: a
+# reading is sent on a 0.2 °C / 0.5 %RH change, otherwise every 30 s. In a still
+# room that is a few writes per second across all boards.
+#
+# Strategy: record humidity and temperature from ALL boards (filtered, cheap),
 # but illuminance from only a SAMPLE of boards. The lights-off trace is the
 # session 2 hook and one board's trace tells that story as well as a hundred.
 

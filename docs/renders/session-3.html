@@ -1150,7 +1150,7 @@ body {
 <p>ทำจากบนลงล่าง ตอบในช่อง แล้วติ๊กเมื่อทำข้อนั้นเสร็จ ถ้าไม่แน่ใจว่าต้องทำอย่างไร กดชื่อข้อเพื่อไปอ่านขั้นตอนและคำอธิบาย ช่องคำตอบในรายการนี้กับช่องในขั้นตอนเป็นช่องเดียวกัน กรอกที่ใดก็ได้</p>
 <ul class="task-list">
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> <strong><a href="#hist-1">เปิดกราฟย้อนหลัง</a></strong> ติ๊กเมื่อหน้า History แสดงความชื้นอากาศ แสง และสวิตช์ของบอร์ดรีเลย์ ตั้งแต่เริ่มช่วงที่ 2 ถึงปัจจุบัน</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> <strong><a href="#hist-2">หาจุดบนกราฟสามจุด</a></strong> จุดที่ทีมเชื่อมโยงกับสิ่งที่เราทำได้ แถบรีเลย์ก่อนเวลาที่ต่อปั๊มกลับ <input class="fld" type="text" data-k="s2.pump_back_t" data-size="5" size="5" autocomplete="off" spellcheck="false"> น. คือคำสั่งไปที่หลอดไฟ<ul>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> <strong><a href="#hist-2">หาจุดบนกราฟสามจุด</a></strong> จุดที่ทีมเชื่อมโยงกับสิ่งที่เราทำได้ แถบรีเลย์ก่อนเวลาที่ต่อปั๊ม <input class="fld" type="text" data-k="s2.pump_back_t" data-size="5" size="5" autocomplete="off" spellcheck="false"> น. คือคำสั่งไปที่หลอดไฟ<ul>
 <li>จุดที่ 1 เห็นอะไร <input class="fld" type="text" data-k="s3.hist.ev1.what" data-size="12" size="12" autocomplete="off" spellcheck="false"> เวลา <input class="fld" type="text" data-k="s3.hist.ev1.t" data-size="5" size="5" autocomplete="off" spellcheck="false"> น. · ตอนนั้นเราทำอะไร <input class="fld" type="text" data-k="s3.hist.ev1.cause" data-size="16" size="16" autocomplete="off" spellcheck="false"> · ถ้าเห็นในฟาร์มจริง ควรตรวจหรือปรับอะไร <input class="fld" type="text" data-k="s3.hist.ev1.action" data-size="22" size="22" autocomplete="off" spellcheck="false"></li>
 <li>จุดที่ 2 เห็นอะไร <input class="fld" type="text" data-k="s3.hist.ev2.what" data-size="12" size="12" autocomplete="off" spellcheck="false"> เวลา <input class="fld" type="text" data-k="s3.hist.ev2.t" data-size="5" size="5" autocomplete="off" spellcheck="false"> น. · ตอนนั้นเราทำอะไร <input class="fld" type="text" data-k="s3.hist.ev2.cause" data-size="16" size="16" autocomplete="off" spellcheck="false"> · ถ้าเห็นในฟาร์มจริง ควรตรวจหรือปรับอะไร <input class="fld" type="text" data-k="s3.hist.ev2.action" data-size="22" size="22" autocomplete="off" spellcheck="false"></li>
 <li>จุดที่ 3 เห็นอะไร <input class="fld" type="text" data-k="s3.hist.ev3.what" data-size="12" size="12" autocomplete="off" spellcheck="false"> เวลา <input class="fld" type="text" data-k="s3.hist.ev3.t" data-size="5" size="5" autocomplete="off" spellcheck="false"> น. · ตอนนั้นเราทำอะไร <input class="fld" type="text" data-k="s3.hist.ev3.cause" data-size="16" size="16" autocomplete="off" spellcheck="false"> · ถ้าเห็นในฟาร์มจริง ควรตรวจหรือปรับอะไร <input class="fld" type="text" data-k="s3.hist.ev3.action" data-size="22" size="22" autocomplete="off" spellcheck="false"></li>
@@ -1173,7 +1173,7 @@ body {
 <p><a class="ws-back" href="#hist">↑ กลับไปที่รายการ</a></p>
 <p id="hist-2"><strong>หาจุดบนกราฟสามจุด</strong> ที่ทีมเชื่อมโยงกับสิ่งที่เราทำในช่วงที่ 1 หรือช่วงที่ 2 ได้ จุดไหนก็ได้ที่ทีมอธิบายได้ว่าตอนนั้นเราทำอะไร แต่ละทีมทำกิจกรรมไม่เหมือนกันทุกอย่าง กราฟจึงไม่จำเป็นต้องเหมือนของทีมอื่น ตัวอย่างสิ่งที่อาจเห็น: ค่าความสว่างลดลงตอนเอามือครอบบอร์ด · แถบรีเลย์สลับถี่ก่อนใส่ hysteresis · เส้นขาดหายตอนบอร์ดโดนปิดสวิตช์หรือหลุดจากเครือข่าย · ความชื้นพุ่งขึ้นตอนเป่าลม · รีเลย์ถูกสั่ง On ตอนระบบรดน้ำเริ่มทำงานเอง</p>
 <blockquote>
-<p>แถบรีเลย์ On <strong>ไม่ได้แปลว่าปั๊มเดิน</strong> ช่วงหนึ่งของกิจกรรมที่ 5 รีเลย์ต่ออยู่กับหลอดไฟ (ต่อปั๊มกลับเมื่อ <input class="fld" type="text" data-k="s2.pump_back_t" data-size="5" size="5" autocomplete="off" spellcheck="false"> น.) และแม้หลังจากนั้น แถบก็บอกได้เพียงว่า Home Assistant <strong>สั่ง</strong> On ปั๊มเดินจริงหรือไม่ต้องดูจากค่าความสั่นสะเทือน เหมือนปัญหาที่ 4 ของช่วงที่ 2</p>
+<p>แถบรีเลย์ On <strong>ไม่ได้แปลว่าปั๊มเดิน</strong> ตั้งแต่ช่วงที่ 1 จนถึงข้อ 5.5 ของกิจกรรมที่ 5 รีเลย์ต่ออยู่กับหลอดไฟ (ต่อปั๊มเมื่อ <input class="fld" type="text" data-k="s2.pump_back_t" data-size="5" size="5" autocomplete="off" spellcheck="false"> น.) และแม้หลังจากนั้น แถบก็บอกได้เพียงว่า Home Assistant <strong>สั่ง</strong> On ปั๊มเดินจริงหรือไม่ต้องดูจากค่าความสั่นสะเทือน เหมือนปัญหาที่ 4 ของช่วงที่ 2</p>
 <p><strong>บันทึกผล</strong> แต่ละจุด: เห็นอะไรบนกราฟ · เวลาโดยประมาณ · ตอนนั้นเราทำอะไร · และถ้าเห็นลักษณะนี้ในฟาร์มจริงโดยไม่มีใครอยู่ที่แปลง เราควรตรวจสอบหรือปรับอะไร เช่น รีเลย์สลับถี่ชวนให้ทบทวนเกณฑ์เปิดปิด หรือข้อมูลขาดหายแปลว่าช่วงนั้นไม่มีหลักฐานว่าเกิดอะไรขึ้น ต้องหาสาเหตุที่การเชื่อมต่อ</p>
 </blockquote>
 <div class="table-wrap"><table>
@@ -1730,7 +1730,7 @@ body {
 <h3 id="คนอปกรณ">คืนอุปกรณ์</h3>
 <p>ทำตามลำดับต่อไปนี้ เพื่อป้องกันระบบสั่งเปิดปั๊มระหว่างเทน้ำและเก็บอุปกรณ์</p>
 <ul class="task-list">
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> <strong>Settings → Automations &amp; scenes</strong> ปิดสวิตช์ automation ทุกข้อที่สั่งรีเลย์ได้ (กฎรดน้ำสองข้อ กฎน้ำหมด และ fail-safe ทุกข้อ)</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> <strong>Settings → Automations &amp; scenes</strong> ปิดสวิตช์ automation ทุกข้อที่สั่งรีเลย์ได้ (กฎรดน้ำสองข้อ fail-safe ทุกข้อ และตรวจซ้ำว่ากฎไฟสวนกับกฎตั้งเวลาปิดอยู่)</li>
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> สั่งสวิตช์รีเลย์เป็น <strong>Off</strong> จากหน้าอุปกรณ์ แล้วดูว่าปั๊มหยุด</li>
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> ถอดสายตามลำดับ: สาย USB ของบอร์ดทั้งสองและสายโหลดออกจาก charge controller ก่อน แล้วจึงถอดอะแดปเตอร์ออกจากปลั๊กและจากคู่แบตเตอรี่ท้ายสุด ในฟาร์มจริงที่มีแผง ถอดแผงก่อนแบตเตอรี่</li>
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> เมื่อไม่มีไฟแล้ว เทน้ำออก เช็ดปั๊มและสายยางให้แห้ง ยกสวิตช์ลูกลอยออกจากใบ A เช็ดให้แห้ง</li>
@@ -2107,26 +2107,41 @@ body {
     saveNow();
   }
 
+  /* the one question to ask before reporting as `team`, or null if there is nothing to ask */
+  function teamQuestion(team, old, othersExist) {
+    var changing = old && old !== team;
+    if (changing && othersExist) {
+      return "เปลี่ยนหมายเลขทีมจาก ทีม " + old + " เป็น ทีม " + team + " ใช่ไหม?\n\n" +
+             "เบราว์เซอร์นี้เคยส่งความคืบหน้าในชื่อ ทีม " + old + " และ ทีม " + team +
+             " มีอุปกรณ์อีกเครื่องส่งความคืบหน้าอยู่แล้ววันนี้\n\n" +
+             "กด OK ถ้าเราคือทีม " + team + " จริง ๆ (อีกเครื่องเป็นโทรศัพท์หรือแล็ปท็อปของทีมเรา)\n" +
+             "กด Cancel เพื่อกลับไปใช้ ทีม " + old;
+    }
+    if (changing) {
+      return "เปลี่ยนหมายเลขทีมจาก ทีม " + old + " เป็น ทีม " + team + " ใช่ไหม?\n\n" +
+             "เบราว์เซอร์นี้เคยส่งความคืบหน้าในชื่อ ทีม " + old + " แล้ว\n\n" +
+             "กด OK ถ้าเราคือทีม " + team + " จริง ๆ (ความคืบหน้าจากเครื่องนี้จะย้ายไปอยู่กับทีม " + team + ")\n" +
+             "กด Cancel เพื่อกลับไปใช้ ทีม " + old;
+    }
+    if (othersExist) {
+      return "ทีม " + team + " มีอุปกรณ์อีกเครื่องส่งความคืบหน้าอยู่แล้ววันนี้\n\n" +
+             "ถ้าเป็นโทรศัพท์หรือแล็ปท็อปอีกเครื่องของทีมเรา กด OK\n" +
+             "ถ้าไม่ใช่ทีมของเรา กด Cancel แล้วดูหมายเลขทีมบนบัตรประจำทีมอีกครั้ง";
+    }
+    return null;
+  }
+
+  /* look the number up first, then ask at most once */
   function verifyTeam(team) {
     if (verifying === team || document.hidden) return;        // one dialog at a time, and only in a visible tab
     verifying = team;
     var old = store.sentAs;
-    if (old && old !== team &&
-        !window.confirm("เบราว์เซอร์นี้เคยส่งความคืบหน้าในชื่อ ทีม " + old + " แล้ว\n\n" +
-                        "เปลี่ยนเป็น ทีม " + team + " ใช่ไหม?\n" +
-                        "กด OK ถ้าเราคือทีม " + team + " จริง ๆ (ข้อมูลของทีม " + old + " จากเครื่องนี้จะถูกย้ายมา)\n" +
-                        "กด Cancel เพื่อกลับไปใช้ ทีม " + old)) {
-      setTeamEverywhere(old);
-      verifying = null;
-      return;
-    }
     var done = function (othersExist) {
       verifying = null;
       if (team !== teamClean(store.fields["team.no"])) return;    // the box changed meanwhile: that value gets its own check
-      if (othersExist &&
-          !window.confirm("หมายเลข ทีม " + team + " มีอุปกรณ์อีกเครื่องส่งความคืบหน้าอยู่แล้ววันนี้\n\n" +
-                          "ถ้าเป็นโทรศัพท์หรือแล็ปท็อปอีกเครื่องของทีมเรา กด OK\n" +
-                          "ถ้าไม่ใช่ทีมของเรา กด Cancel แล้วดูหมายเลขทีมบนบัตรประจำทีมอีกครั้ง")) {
+      var question = teamQuestion(team, old, othersExist);
+      if (question && !window.confirm(question)) {
+        if (old && old !== team) { setTeamEverywhere(old); return; }
         setTeamEverywhere("");
         var box = document.querySelector('#ws-bar .fld[data-k="team.no"]');
         if (box) box.focus();

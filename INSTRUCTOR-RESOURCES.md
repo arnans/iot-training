@@ -112,9 +112,10 @@ check first). Minutes are the design estimate, not a rehearsed timing.
 **How to run it.** Project the checklist and talk through it one item at a time; teams work down
 it while you talk. The prose under each item is for the team that falls behind or wants the reason.
 
-The two new questions added with the checklists, `s1.box.pos` and `s2.fs.none`, and the two
-from the Activity 5 pilot, `s2.time.trace` and `s2.time.why`, are on the record sheet like every
-other answer.
+The two new questions added with the checklists, `s1.box.pos` and `s2.fs.none`, the two
+from the Activity 5 pilot, `s2.time.trace` and `s2.time.why`, and the Session 1 lighting keys
+(`s1.light.on`, `s1.manual.rounds`, `s1.manual.correct`, `s1.rule.dark.*`, `s1.rule.bright.*`,
+`s1.auto.pass`, `s1.timer.at`, `s1.timer.ok`) are on the record sheet like every other answer.
 
 ### Session 1 · Activity 1 — Sense (35 min)
 
@@ -149,8 +150,8 @@ board, not on the internet.
 
 **Done when** each row has a room value and a test value that visibly differs from it: humidity rises
 when breathed on, light drops when covered, vibration rises from a few mg at rest when the table
-is knocked. The float reads **ON** floating and **OFF** lifted. The light value changes within
-about one to two seconds, because the board sends it roughly once a second. Session 2 uses the
+is knocked. The float reads **ON** floating and **OFF** lifted. The light and humidity values change within
+about one to two seconds, because the board reads them once a second. Session 2 uses the
 room and covered light numbers to set its thresholds.
 
 **If stuck** Humidity barely moves: breathe slowly for the full five seconds, close to the board. The float
@@ -164,8 +165,9 @@ not how much.
 
 ### Session 1 · Activity 2 — Act (40 min)
 
-Teams leave with the 12 V pump circuit wired by their own hands, the relay board powered from the
-charge controller's USB, and water recirculating in container A.
+Teams leave with the 12 V lamp circuit wired by their own hands, the relay board powered from the
+charge controller's USB, and the LED module lighting on command. No water in Session 1 beyond the
+float's glass; the pump is first wired in Session 2 (5.5).
 
 #### 2.1 Know the relay board
 
@@ -190,16 +192,19 @@ in the board.
 **Done when** all six steps are done and a second person has checked every screw. No bare ends touch, no
 wire is in **NC** or **7-60 Input / GND**, and the adapter is still unplugged.
 
-**If stuck** Check for a wire on NC instead of NO (the pump then runs whenever the relay is Off), and for the
-load pair and the battery pair swapped.
+**If stuck** Check for a wire on NC instead of NO (the LED is then lit whenever the relay is Off), and for the
+load pair and the battery pair swapped. The LED's red lead belongs on **NO** and the black lead on the
+negative row; a reversed LED stays dark but is not damaged.
 
-#### 2.2 Power on and run the pump
+#### 2.2 Power on and light the lamp
 
 **Done when** the charge controller screen shows about 12 V. The relay board lights and rejoins WiFi. The
-pump moves water from A to B on command, and the hose is then moved back into A.
+LED lights on On and darkens on Off, and its lenses point away from the GoGo-IoT board, at least
+30 cm off. A lamp shining onto the light sensor makes the Activity 3 rules fight themselves.
 
 **If stuck** Screen dark: unplug first, then check the adapter is on the middle pair, red to plus. Screen on
-but the relay board is dark: reseat its USB lead or try the other port. The page will not open after
+but the relay board is dark: reseat its USB lead or try the other port. Relay clicks but the LED stays
+dark: swap the LED's two leads. The page will not open after
 a minute: move the relay board's USB lead to the laptop briefly to read a new IP (the relay
 restarts Off), then move it back.
 
@@ -213,12 +218,13 @@ and Manual is a person running the pump when sensors or the network have failed.
 **A good answer** says a 220 V pump needs a relay or contactor rated for the pump's AC current,
 including its start-up surge. It also needs 220 V-rated wiring, an enclosure and protection
 (breaker, RCD), and an electrician to wire it, not the team.
-**Before the break** every relay is Off and every pump has stopped.
+**Before the break** every relay is Off and every lamp is dark.
 
 ### Session 1 · Activity 3 — Logic (40 min)
 
-Teams leave with both boards in their own Home Assistant and a "be the Logic yourself" round. They
-also leave with the first automation, `น้ำหมด หยุดปั๊ม`, passing 3 of 3.
+Teams leave with both boards in their own Home Assistant and a "be the Logic yourself" round on the
+garden lamp. They also leave with two automations, `มืด-เปิดไฟ` and `สว่าง-ปิดไฟ` on one shared
+threshold, passing 3 of 3, and fast teams with a tested (and then disabled) `ปิดไฟตามเวลา`.
 
 #### 3.1 Add both boards
 
@@ -232,8 +238,8 @@ another instance of ESPHome*, then type the board name without `.local`.
 
 #### 3.2 Current values, history, phone
 
-**Done when** the humidity history graph opens, and the relay toggles from the laptop and from a phone,
-with both screens agreeing.
+**Done when** the light history graph opens with a dip from a cupped hand, and the lamp toggles from the
+laptop and from a phone, with both screens agreeing.
 
 **If stuck** The phone must be on the zone WiFi, not mobile data, and must use the IP from the VM screen,
 never `homeassistant.local`. If it still fails, skip this step and flag it to a TA; the rest of the activity
@@ -241,25 +247,44 @@ does not need the phone.
 
 #### 3.3 Be the Logic yourself
 
-**Done when** the humidity threshold sits 2–3 % above the room reading, so room air counts as "dry" and
-breath counts as "wet enough". There is a count of correct decisions in five minutes, and a number
-of seconds from lifting the float to the pump stopping.
+**Done when** the light threshold sits roughly halfway between the room reading and the covered reading
+(82 and 6 → about 40), re-checked on the device page because the room may have changed since Activity 1.
+There is a count of cover/uncover rounds in three minutes and how many the laptop person got right.
+The scenario is the flower-farm night light: the LED is the lamp, a cupped hand is dusk.
 
-*Rules:* humidity: "if humidity is below the threshold, turn the pump on"; float: "if the
-float reads no water (Dry), turn the pump off".
+*Rules:* dark: "if light is below the threshold, turn the lamp on"; bright: "if light is above the
+threshold, turn the lamp off".
 
-#### 3.4 First automation: float Dry → pump off
+**If stuck** The value barely moves: the hand is not over the light sensor (right-hand group on the
+board). It never rises again: the lit LED is shining under the hand; turn it away.
 
-**Done when** the pump stops by itself three times out of three when the float is lifted. Putting the float
-back does not restart the pump, and that is expected.
+#### 3.4 Two automations: dark → on, bright → off
 
-**If stuck** The automation is switched off, the trigger's **To** is not **Dry**, or the trigger or action
-points at the neighbour's entity.
+**Done when** covering the board lights the lamp and uncovering darkens it, three rounds out of three,
+with nobody touching the switch. Both rules use the **same** threshold on purpose.
+
+**If stuck** Covering does nothing: the reading was already below the threshold when the rule was
+saved. A crossing trigger needs the value to go above, then below again, so uncover, set the relay Off
+and cover again. The board sends a light value about once a second, so hold the cover for two
+seconds. Check that the trigger entity is `ความสว่าง (light)` and the action is the team's own relay.
+The lamp flickers while the hand moves slowly: that is expected with one shared threshold, tell them to
+cover fully and quickly; it is the opening lesson of Session 2, not a fault.
+
+#### 3.5 Optional: lamp off at a chosen time
+
+**Done when** the lamp, switched On from the device page, goes off by itself at the minute the team
+chose, and the team has then **switched the rule off**. Left on, it fires every day at that time,
+including during Session 3 with the pump on the relay.
+
+**If stuck** Nothing happens: the chosen time is already past, so pick a new future minute. Home
+Assistant runs on Asia/Bangkok time; read the laptop clock. The lamp went off early: `สว่าง-ปิดไฟ`
+fired because the sensor was covered then uncovered; start with the sensor open.
 
 #### End-of-activity question
 
-**A good answer** says the pump runs. The trigger fires only when the float *changes* to Dry, and a
-float already Dry never changes. Leave it open: it is problem 1 of the Session 2 failure lab.
+**A good answer** says the lamp switches on and off repeatedly, because one value is both the on and the
+off line, so every wobble across it fires a rule. Leave it there: Session 2 opens by measuring it and
+fixing it with a second threshold.
 
 ### Session 1 · Activity 4 — Spec (15 min)
 
@@ -289,33 +314,26 @@ one exceeds the relay rating (change the relay or add a contactor), and one pass
 **A good answer** names the spec line that decided it, not "it worked on the table". Close with
 the five things to read on every spec: range, accuracy, interface, voltage and current, IP rating.
 
-### Session 2 · Activity 5 — automations and hysteresis (75 min)
+### Session 2 · Activity 5 — automations and hysteresis (70 min)
 
-Teams leave with five automations: the float rule and two watering rules **on**, two garden-lamp
-rules **off**. They also leave with their thresholds, two flicker counts and the written answer.
-Keys go into the team's JSON as `s2.light.*`, `s2.chatter.*`, `s2.time.*`, `s2.hum.*`, `s2.q5`.
+Teams leave with four automations (five if they did the Session 1 timer): two watering rules **on**,
+the two garden-lamp rules and the timer **off**, and the pump wired for the first time. They also leave
+with their thresholds, two flicker counts and the written answer. Keys go into the team's JSON as
+`s2.light.off`, `s2.chatter.*`, `s2.time.*`, `s2.pump_back_t`, `s2.hum.*`, `s2.q5`; the on-threshold is
+Session 1's `s1.light.on`.
 
-#### 5.2 Swap the pump for the lamp · ~5 min
+**During the recap** the lamp rules from Session 1 are live, so anyone shading the board lights the
+lamp. That is a free demo, not a fault.
 
-**Done when** relay On lights the LED and relay Off darkens it. The float rule was switched off and
-the relay set Off *before* any screw was touched.
+#### 5.1 State check · ~3 min
 
-**If stuck** The LED stays dark but the relay clicks: the red lead belongs on **NO** and the black lead on the
-negative row. A reversed LED stays dark but is not damaged. The LED is lit while the relay shows Off:
-the lead is on **NC**.
+**Done when** the LED is still on the relay, `มืด-เปิดไฟ` and `สว่าง-ปิดไฟ` are on with the same
+threshold, and `ปิดไฟตามเวลา` (if it exists) is off. Covering the board lights the lamp.
 
-#### 5.3 Dark → lamp on · ~15 min
+**If stuck** The lamp will not light: same as Session 1's 3.4 (no crossing yet, or the room got darker
+than the threshold overnight, so raise the threshold or add light).
 
-**Done when** the light readings from Session 1 have been re-checked (open and covered). The on-threshold
-sits roughly halfway between them (82 and 6 → about 40). Covering the board lights the lamp.
-Uncovering does **not** turn it off yet; that is expected, because no off rule exists.
-
-**If stuck** Covering does nothing: the reading was already below the threshold when the rule was
-saved. A crossing trigger needs the value to go above, then below again, so uncover, set the relay Off
-and cover again. The board sends a light value about once a second, so hold the cover for two
-seconds. Check that the trigger entity is `ความสว่าง (light)`.
-
-#### 5.4 Lamp flickers near the threshold · ~5 min
+#### 5.1 Lamp flickers near the threshold · ~5 min
 
 **Done when** the team has a one-minute count with the off rule at the *same* value as the on rule.
 It should be clearly higher than the count they get in 5.5. There is no fixed expected number:
@@ -325,7 +343,7 @@ TEST-PLAN test E still owes a bench count.
 value on the device page while another finds the height where it sits at the threshold, then waver
 there.
 
-#### 5.5 Separate the on and off thresholds · ~8 min
+#### 5.2 Separate the on and off thresholds · ~8 min
 
 **Done when** the off threshold sits above the on-threshold and below the room reading, about a quarter of
 the range above (82 / 6 / on 40 → off about 60). Self-check passes on all three: ≤ 2 switches in a
@@ -334,7 +352,7 @@ minute, cover → on, uncover → off.
 **If stuck** The lamp never goes off: the off threshold is above the room reading. It still flickers:
 widen the gap, and turn the LED so it does not shine onto the board's light sensor.
 
-#### 5.6 Time window, and "dark before the window opens" · ~12 min
+#### 5.3 Time window, and "dark before the window opens" · ~12 min tests, ~5 min fix
 
 **Done when**
 
@@ -349,38 +367,45 @@ again. The timed test does nothing: the chosen times are already past. Both **Af
 trigger's **At** must move to a future minute, and the same goes for Before and At on the off rule.
 Home Assistant runs on Asia/Bangkok time, so read the laptop clock.
 
-#### 5.7 Notification · stretch
+#### 5.4 Notification · ~4 min
 
 **Done when** a message appears under the bell icon, bottom-left, when `มืด-เปิดไฟ` runs.
 
-**If stuck** Covering does nothing now: the time window from 5.6 excludes the current time, so widen it.
+**If stuck** Covering does nothing now: the time window from 5.3 excludes the current time, so widen it.
 *Send a notification via mobile_app* is missing from the list: it only appears after a phone
 has logged in through the Companion app. Persistent notification is always available.
 
-#### 5.8 Back to watering · ~5 min rewiring, ~12 min rules
+#### 5.5 Wire the pump, set up the water · ~10 min, then ~12 min rules
 
-**Done when** both lamp rules are off, the relay is Off, the pump is back on NO, the float reads **Wet** and
-only then the float rule is back on. The changeover time is written down; Session 3 uses it to tell
-lamp commands from pump commands on the relay's history graph.
+**Done when** both lamp rules and the timer are off and the relay is Off *before* any screw is touched;
+the LED is off the relay and the pump's + is on NO, − on the negative row; container A is three-quarters
+full with the pump submerged and the float in it reading **Wet**; the pump has moved water A → B on a
+10-second command; the hose is back in A (recirculating); and the changeover time is written down.
+Session 3 uses it to tell lamp commands from pump commands on the relay's history graph.
+
+**If stuck** Relay clicks, pump silent: the + lead is on NC, or the − lead is not on the negative row, or
+the controller's load pair is off (its load mode; tell the instructor). Pump runs with the relay Off: lead
+on NC. The lamp turned the relay on during the swap: a lamp rule was left enabled. Nothing watches the
+float yet, and the worksheet says so; the float rule is built in 6.1.
 
 *Watering rules:* pump-on threshold a little above room humidity; off threshold 5–10 % above that.
 The pump does **not** start when the rule is saved. That is expected, because nothing crossed. Blowing on the board
 pushes humidity past the off threshold; when blowing stops and it falls back below the on
 threshold, the pump starts. The restart time depends on the room, and any measured number is fine.
 
-**If stuck** The pump stops the moment the float rule is re-enabled: the float read Dry, so seat it in
-the water and check for Wet first. The pump never restarts after blowing: the on-threshold is below the
+**If stuck** The pump never restarts after blowing: the on-threshold is below the
 room reading, so the value never crosses it on the way down.
 
-#### 5.9 Disable a rule, run the pump by hand · ~5 min
+#### 5.6 Disable a rule, run the pump by hand · ~5 min
 
 **Done when** with `รดน้ำ - เปิดปั๊ม` disabled and dry air, the pump stays still, but the relay's device
-page still runs it. The Automations list ends as: `น้ำหมด หยุดปั๊ม`, `รดน้ำ - เปิดปั๊ม`,
-`รดน้ำ - ปิดปั๊ม` **on**; `มืด-เปิดไฟ`, `สว่าง-ปิดไฟ` **off**.
+page still runs it. The Automations list ends as: `รดน้ำ - เปิดปั๊ม`, `รดน้ำ - ปิดปั๊ม` **on**;
+`มืด-เปิดไฟ`, `สว่าง-ปิดไฟ` and `ปิดไฟตามเวลา` **off**.
 
 **Check this list at every table before the break.** Activity 6's sabotage rounds assume exactly
-this state. A lamp rule left on switches the relay whenever the room light changes. That is the likeliest
-cause of a pump "running by itself" in the failure lab.
+this state. A lamp rule left on switches the relay whenever the room light changes, and a timer rule left on
+switches it off at the same minute every day. Those are the likeliest causes of a pump "running by
+itself" or stopping unexplained in the failure lab.
 
 #### End-of-activity question · ~3 min
 
@@ -388,7 +413,7 @@ cause of a pump "running by itself" in the failure lab.
 the output flicker whenever the reading hovers at it, and that watering applies the same fix: the
 off threshold is set 5–10 % above the on threshold.
 
-### Session 2 · Activity 6 — Failure lab (45 min)
+### Session 2 · Activity 6 — Failure lab (50 min)
 
 Every problem runs the same three steps: the paired team sabotages, our team fixes, the paired
 team sabotages again. While being sabotaged, the team watches **only its Home Assistant screen**. **Required:**
@@ -397,8 +422,9 @@ is explained live, not in the worksheet.
 
 #### Before every problem
 
-**Done when** the float rule and both watering rules are on, both lamp rules are off, both boards show
-values, and the two device pages are open in separate tabs.
+**Done when** both watering rules are on, both lamp rules and the timer are off, the float sits in
+container A reading Wet, both boards show values, and the two device pages are open in separate tabs.
+No float rule exists yet; problem 1 builds it.
 
 **If stuck** A pump started by hand keeps running because the room never reaches the off threshold. That is
 expected; do not let teams change the humidity thresholds to make the pump run.
@@ -406,10 +432,11 @@ expected; do not let teams change the humidity thresholds to make the pump run.
 #### 6.1 Problem 1 — water gone, pump still starts (Fail-safe 1)
 
 **Done when** the sabotage (float lifted until Dry, then the relay board's button pressed) runs the pump
-with nothing stopping it. After the fix the pump stops within about a second, with a notification,
-whether started from the button or the device page.
+with nothing stopping it, because no rule looks at the float at all. After the fix, `Fail-safe - น้ำหมด`
+(two triggers, one condition, two actions) stops the pump within about a second, with a notification,
+whether started from the button or the device page, and lifting the float mid-run stops it too.
 
-**If stuck** The second trigger must be *pump switch → On* with the condition *float → Dry*. The watering
+**If stuck** The first trigger is *float → Dry* (state, not numeric). The second trigger must be *pump switch → On* with the condition *float → Dry*. The watering
 rule's condition is *float → **Wet***, not "not Dry": a cut wire reads Dry and an offline board reads
 unavailable, and neither is Wet.
 
@@ -475,7 +502,7 @@ instructor's projected sample graph or a neighbour's screen; they carry on as no
 Any three the team can explain are fine; graphs differ between teams.
 
 **If stuck** A relay bar that is On is a **command**, not a running pump. Before the recorded changeover time
-(`s2.pump_back_t`) it was driving the lamp. Only vibration shows the pump actually ran.
+(`s2.pump_back_t`), from Session 1 until 5.5, it was driving the lamp. Only vibration shows the pump actually ran.
 
 #### Values the graph always gives
 
@@ -622,6 +649,9 @@ Nobody has produced these yet:
 - Slide decks for Sessions 1–3 and the three post-tests
 - Expected values that need a bench run: the Activity 5 flicker count (TEST-PLAN test E) and
   typical room readings for Activity 1
+- **The LED-module bench check now gates Day 1** (TEST-PLAN test L): it lights through the relay from
+  the 12 V rail, a reversed module is harmless, and a lit module 30 cm from the board does not lift
+  the light reading over a covered-board threshold
 - Real screenshots in the install guide (currently placeholders)
 - Bench tests against the built firmware — see
   [TEST-PLAN.md](https://github.com/arnans/iot-training/blob/main/TEST-PLAN.md) *(repo)*, especially

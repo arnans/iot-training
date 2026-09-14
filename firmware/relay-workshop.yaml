@@ -129,9 +129,10 @@ switch:
 # and no Home Assistant. With ~100 teams in one room, that is the support
 # question that matters most.
 #
-# Session 2's worksheet still holds: it tells teams the LED on the relay board
-# stands in for the garden lamp, and the relay's OWN indicator still lights
-# whenever the relay closes. Only the programmable LED changed jobs.
+# The garden lamp is the kit's 12 V LED module on the relay's NO terminal from
+# Session 1 Activity 2 onward (the pump replaces it in Session 2, 5.5); the
+# relay's OWN indicator still lights whenever the relay closes. Only the
+# programmable LED changed jobs.
 #
 # The grammar, chosen so the healthy state is the VISIBLE one:
 #   steady lit = on WiFi

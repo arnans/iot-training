@@ -13,19 +13,20 @@ bench session (adoption flow, overnight, sabotage cards, instructor machines, in
 | Network zoning | **Three logical zones** (red/green/blue), each a VLAN with a 2.4 GHz board SSID and a 5 GHz laptop SSID; all SSIDs on every AP; zones isolated from each other | Team card carries the zone colour; kits are colour-coded; the zone is in every board's hostname. Session 1 adds a "colour in the name matches your kit" check at the name-reading step |
 | Firmware per zone | **One source file per board, built three times** by `firmware/build-zones.py` (`esphome -s zone …`) | Six binaries in `firmware/dist/`. The only cross-zone risk is a wrong-coloured board at a table, and the board's own name reveals it |
 | Sensed input for watering | **Air humidity** (onboard) as a stand-in for soil moisture; **float switch** on GoGo-IoT port 1 as the reservoir-low guard | Worksheet says so explicitly ("จำลองสถานการณ์") rather than pretending humidity means soil |
-| Hysteresis teaching | **Light sensor → relay**, framed as night lighting for a flower farm (เบญจมาศ). Relay's own LED and click are the output | Session 2 runs two scenarios in sequence on the single relay: lighting first (ladder), then watering (apply the lesson) |
-| Session 1 shape | **Hardware first, Home Assistant last** (Roger, 7 Sep 2026). Activities: 1 Sense (board's own `web_server` page) · 2 Act (relay as a switch, then the load) · 3 Logic (adopt both boards, entity history, be-the-Logic, first automation = float → pump off) · 4 Spec (scenario-card game, the timing buffer). Sessions 2–3 activities renumbered 5–8 | No YAML / I2C reading. No dashboard cards in session 1 — history is read from the entity dialog. Auto/Off/Manual is a 2-min talking point in Activity 2 and an instructor demo in session 2, never a team build |
+| Hysteresis teaching | **Light sensor → relay → 12V LED module**, framed as night lighting for a flower farm (เบญจมาศ). Since 14 Sep 2026 the lamp is wired and the dark→on / bright→off pair is built in **Session 1**; Session 2 opens on the chatter they cause | Session 2 runs the ladder (chatter, hysteresis, time, notification) on the lamp, then wires the pump and applies the lesson to watering |
+| Session 1 shape | **Hardware first, Home Assistant last** (Roger, 7 Sep 2026). Activities: 1 Sense (board's own `web_server` page) · 2 Act (relay as a switch, then the load, which is the **LED module** since 14 Sep 2026) · 3 Logic (adopt both boards, entity history, be-the-Logic on the lamp, first automations = light → lamp on / off, optional time-trigger challenge) · 4 Spec (scenario-card game, the timing buffer). Sessions 2–3 activities renumbered 5–8 | No YAML / I2C reading. No dashboard cards in session 1 — history is read from the entity dialog. No pump and no water on Day 1 except the float's glass. Auto/Off/Manual is a 2-min talking point in Activity 2 and an instructor demo in session 2, never a team build |
 | Between-session data | **Dropped** (Roger, 7 Sep 2026). No instructor HA adopting participant nodes: not practical at 100 boards, and the payoff was one 15-min opener. The data teams read is what **their own HA** records across Day 2 morning | The history block moves out of session 2 and into session 3, rewritten around the team's own half-day trace (light dip from a cupped hand, chattering relay before hysteresis, gaps from the sabotage rounds). Session 2 now opens on an automation recap instead. Session 2's last checklist item: do not shut the VM down at lunch |
-| Session 2 shape | **Hysteresis first** (Roger, 7 Sep 2026). Automation recap (15 min) → Activity 5 (75 min) → break → Activity 6 (45 min) → debrief (15 min) | The trigger/condition/action table moves out of Activity 5 into the opener, anchored on the float automation built in session 1 |
-| Garden lamp in Activity 5 | **A 12V LED module joins the kit** (Roger, 8 Sep 2026): three-lens sign module, red/black leads, photo at `docs/images/led-module-12v.jpg`. The night-light ladder drives a real lamp instead of the relay indicator | Two load exchanges inside the 75-min activity, each a two-wire swap (pump + off NO and − off the negative row → LED red on NO, black on the negative row; reverse before the watering scenario), with the float rule disabled and the relay Off first. Not budgeted at a fixed 5 min: time it at rehearsal (8 Sep 2026 review). Session 2 has no slack, so the (c) time-trigger fix and (d) are the first casualties if the exchanges run long. Worksheet tells teams to aim the lenses away from the GoGo-IoT board so the lamp does not feed its own light sensor |
-| Charge controller | Wired by teams in Activity 2 as the kit's **12V source**: adapter → BATT pair; LOAD pair → terminal block → pump (+ via COM/NO, − direct). **Relay board runs on the controller's USB port, never its 7–60 V input** (Roger, 8 Sep 2026: splitting the 12 V rail to the board was the slow part). The second USB port powers the GoGo-IoT when the laptop leaves (overnight). Panel is added in session 3 | Session 1 calls it "กล่องจ่ายไฟ 12V" with one sentence of orientation; session 3 "เปิดกล่อง: พลังงาน" reads the three terminal pairs, sets battery type, connects the panel |
+| Session 2 shape | **Hysteresis first** (Roger, 7 Sep 2026). Automation recap (15 min) → Activity 5 (70 min) → break → Activity 6 (50 min) → debrief (15 min); 75/45 became 70/50 on 14 Sep 2026 | The trigger/condition/action table moves out of Activity 5 into the opener, anchored on the lamp automation built in session 1 |
+| Garden lamp | **A 12V LED module joins the kit** (Roger, 8 Sep 2026): three-lens sign module, red/black leads, photo at `docs/images/led-module-12v.jpg`. **It is the Session 1 load** (Roger, 14 Sep 2026): a lamp is easier to observe than a pump, which needs vibration sensing or someone watching water | One load exchange, in Session 2 §5.5: lamp off, pump on (two wires each), with every lighting rule and the optional timer disabled and the relay Off first. The "aim the lenses away from the GoGo-IoT board" line now lives in Session 1 §2.2, where the lamp is first lit |
+| Charge controller | Wired by teams in Activity 2 as the kit's **12V source**: adapter → BATT pair; LOAD pair → terminal block → LED module in Session 1 (+ via COM/NO, − direct), the pump from Session 2 §5.5. **Relay board runs on the controller's USB port, never its 7–60 V input** (Roger, 8 Sep 2026: splitting the 12 V rail to the board was the slow part). The second USB port powers the GoGo-IoT when the laptop leaves (overnight). Panel is added in session 3 | Session 1 calls it "กล่องจ่ายไฟ 12V" with one sentence of orientation; session 3 "เปิดกล่อง: พลังงาน" reads the three terminal pairs, sets battery type, connects the panel |
 | 18650 cell | **Stays in** (Roger, 8 Sep 2026). A charged cell keeps the board running when USB is pulled, so "power loss" is simulated with the board's **on/off switch**, never by pulling a cable | Sabotage card 1 and the Fail-safe 3 test say ปิดสวิตช์บนบอร์ด; the Session 3 adapter demo shows the sensor board surviving on its cell; `reference.md` lists the switch first under `unavailable` |
 | Plain ESP32-C3 nodemcu (item 2) | Spare, unmentioned | — |
+| Lamp first, pump second, float rule last | **Roger, 14 Sep 2026.** Session 1 wires the LED module and builds `มืด-เปิดไฟ` / `สว่าง-ปิดไฟ` on one threshold plus an optional `ปิดไฟตามเวลา` (Time trigger, tested, then disabled); the pump, water props and watering rules move to Session 2 §5.5; the float rule is built for the first time as Fail-safe 1 in Activity 6 (sabotage → build → sabotage again); Session 2 §5.2/§5.3 deleted and Activity 5 renumbered 5.1–5.6 | Activity 3's written question is now the threshold-hover hook (answered by §5.1's chatter count); the already-Dry puzzle is gone. Keys: `s1.light.on` (replaces `s1.threshold` and `s2.light.on`), `s1.manual.rounds/correct`, `s1.rule.dark.*`, `s1.rule.bright.*`, `s1.auto.pass`, `s1.timer.at/ok`. The timer rule must appear in every rule-state list, because left on it fires daily at the chosen minute, including in Session 3 with the pump on the relay |
 
 ## Firmware requirements the worksheet now depends on
 
-1. **Light sensor `update_interval` ≈ 1 s, no averaging filter.** Session 2's chattering demo has
-   the student *waver a hand* at the threshold and count toggles — it never depended on sensor
+1. **Light sensor `update_interval` ≈ 1 s, no averaging filter.** Session 1 §3.4 builds the on/off pair and
+   Session 2's chattering demo (§5.1) has the student *waver a hand* at the threshold and count toggles — it never depended on sensor
    noise, and the bench showed the BH1750 is stable anyway. 1 s is fast enough to follow a hand;
    at a 60 s default the demo silently fails. Other sensors can stay slower. See TEST-PLAN test E.
 2. **Float switch on port 1 as `binary_sensor`. Polarity now settled on the bench — write it into
@@ -65,8 +66,9 @@ bench session (adoption flow, overnight, sabotage cards, instructor machines, in
    test H.
 4. **`name_add_mac_suffix: true`, WiFi baked in, no API encryption**, `reboot_timeout: 0s`.
    No static IPs — see "Network and device provisioning" below. The light sensor's
-   `update_interval` overrides the 5s used by the other sensors in the current
-   `gogo-iot-node.yaml`.
+   and the temperature/humidity sensor's `update_interval` (1 s) override the 5s used in the
+   current `gogo-iot-node.yaml`; temperature/humidity also carry `delta` + `throttle` filters
+   to keep history writes down.
 5. ~~**Instructor HA adopts all GoGo-IoT nodes** before the end of session 1.~~ Dropped 7 Sep
    2026 with the between-session data block. Only the team's own laptop connects to a board, so
    the ESPHome `api:` connection budget is one client plus the occasional log stream.
@@ -89,12 +91,12 @@ bench session (adoption flow, overnight, sabotage cards, instructor machines, in
   connects, and holds the relay energised from the controller's USB output; that both USB ports
   supply at once (relay board + GoGo-IoT overnight); and that USB stays up regardless of the
   load-mode setting. Confirm the kit's USB-C cable reaches from the controller to the board.
-- **12V LED module** (added 8 Sep 2026): confirm on the bench that it lights from the kit's
-  12 V rail through the relay, that reversed polarity is harmless (the worksheet says so), and
-  that a lit module a hand's width from the GoGo-IoT board does not push the light reading
-  over a typical "dark" threshold — if it does, the worksheet's "aim it away" line needs a
-  distance. Time one full exchange (pump → LED → pump) with a colleague; the worksheet no longer
-  assumes 5 min each way, so this number sets the internal breakdown below.
+- **12V LED module — now gates Day 1** (added 8 Sep 2026; Session 1 load since 14 Sep 2026; TEST-PLAN
+  test L): confirm on the bench that it lights from the kit's 12 V rail through the relay, that reversed
+  polarity is harmless (the worksheet says so), and that a lit module 30 cm from the GoGo-IoT board,
+  lenses aimed away, does not push the light reading over a typical "dark" threshold under a cupped
+  hand — if it does, the worksheet's "aim it away" line needs a larger distance. Time the one exchange
+  (LED → pump, plus the water setup) with a colleague; it sets the 5.5 estimate below.
 - ~~**Relay board terminals.**~~ **Confirmed from the vendor datasheet**, extracted to
   `firmware/ESP32-C6-RELAY-X1.md`: terminals are **NO / COM / NC** as the worksheet assumed,
   power input is a separate 2-way block (7–60 V), relay is **GPIO19**, programmable LED
@@ -124,7 +126,8 @@ bench session (adoption flow, overnight, sabotage cards, instructor machines, in
   client (NETWORK-REQUIREMENTS item 2), not the laptop. Worksheet still tells teams to skip and flag
   it; `session-1.md`'s firewall line is **reworded** (same zone WiFi, same address, then flag it).
 - **Water props not on the kit list**: two containers, a glass for the float switch, drip tray,
-  towel. Worksheet says the instructor provides them at the table.
+  towel. Worksheet says the instructor provides them at the table. Since 14 Sep 2026 Session 1 needs
+  only the glass; the containers, hose and tray are first used in Session 2 §5.5.
 - **Handouts referenced but not written**: humidity sensor
   and float switch spec excerpts; equipment price sheet for the design challenge.
 - ~~**Worksheet adoption steps still say "IP from the team card"**~~ **Done, and revised again
@@ -379,10 +382,11 @@ fill-in lines (the exception to the web-Markdown conventions). Print from the re
   Set of at least three: one exceeds the onboard humidity–temperature accuracy, one exceeds the
   relay's printed DC rating (a 12V pump drawing more than 10 A, or a 220V load), one passes as-is.
   Answer key names the single part to change.
-- ~~**Session 2 knock-on**~~ **Reworked.** Fail-safe 1 now opens the session 1 automation,
-  renames it and adds the notification, then adds a float-**Wet** condition to `รดน้ำ - เปิดปั๊ม`
-  and tests the lifted-first case — which closes the Activity 3 written-question hook (trigger vs
-  condition) and makes `unavailable` fail safe, as TEST-PLAN test G required.
+- ~~**Session 2 knock-on**~~ **Reworked twice.** Since 14 Sep 2026 Fail-safe 1 **builds** the float rule
+  from scratch (`Fail-safe - น้ำหมด`: float→Dry trigger, pump→On trigger with float-Dry condition, off +
+  notification), then adds a float-**Wet** condition to `รดน้ำ - เปิดปั๊ม` and tests the lifted-first
+  case, which makes `unavailable` fail safe, as TEST-PLAN test G required. The Session 1 already-Dry
+  hook is gone; Session 1's written question now hooks the chatter lesson instead.
 - Scenario cards for Activity 8 (content is in `session-3.md`)
 - ~~Role cards~~ dropped 8 Sep 2026: no named roles, teams decide who does what (see COURSE-DESIGN.md)
 - Team cards: zone colour, zone laptop SSID + password, HA VM user/password. No instructor HA
@@ -423,10 +427,10 @@ Acted on, all in `docs/session-2.md` unless noted:
   may look at the physical pump after they have written what the screen showed, before the
   saboteur restores. Record sheet columns say หน้าอุปกรณ์, not แดชบอร์ด. COURSE-DESIGN and
   SESSION-OVERVIEW rows updated.
-- **Rule state at every transition** is now explicit: disable `น้ำหมด หยุดปั๊ม` before the lamp
-  (only rule that exists then), disable both lighting rules including their time triggers before
-  the pump returns, re-enable the float rule only after the float reads Wet, re-enable
-  `รดน้ำ - เปิดปั๊ม` after the disable exercise, and a stated Automations-list state before the
+- **Rule state at every transition** is now explicit (rewritten 14 Sep 2026): the two lighting rules
+  arrive from Session 1 on, the optional timer off; disable both lighting rules including their time
+  triggers and the timer before the pump is wired; no float rule exists until Activity 6; re-enable
+  `รดน้ำ - เปิดปั๊ม` after the disable exercise; and a stated Automations-list state before the
   Failure Lab. The lab starts the pump from the relay device page; no more "raise the threshold".
 - **Load exchange is two wires each way**, both directions, no fixed 5-min budget.
 - **Time-condition tests** reset from a known state, use the editor's Traces button (verified on
@@ -440,12 +444,15 @@ Acted on, all in `docs/session-2.md` unless noted:
 - Copy edits: กฎ, โดย, ชีวิตจริง, หลอดไฟ, เซนเซอร์.
 - COURSE-DESIGN Activity 4 now matches the worksheet (short form, never homework).
 
-**Activity 5 internal breakdown, estimate only, not timed:** exchange to lamp 5 · (ก) with
-screenshots 15 · chatter count 5 · (ข) 8 · (ค) tests 1–3 12 · exchange back and rule
-restore 5 · watering rules and test 12 · disable/enable exercise 5 · written question 3 = 70, leaving
-5 for the (ค) fix or (ง). Failure Lab: 4 rounds × 2 directions × ~2 min observe + restore ≈ 20,
-leaving ~25 for Fail-safes 1 and 2 with 3 and 4 as stretch. Both need a timed rehearsal before
-anyone calls them verified.
+**Activity 5 internal breakdown, estimate only, not timed (revised 14 Sep 2026, 70 min):** state check
+3 · chatter count 5 · hysteresis 8 · time-condition tests 12 · time-trigger fix 5 · notification 4 ·
+pump wiring, water setup, first run and changeover time 10 · watering rules and test 12 ·
+disable/enable exercise 5 · written question 3 = 67, leaving 3. The lamp swap (5) and the dark→on
+build with screenshots (15) moved to Session 1, which is what made the (ค) fix and (ง) core. Failure
+Lab (50 min): problem 1 now builds the float rule from scratch (~3 min more than the old upgrade).
+Session 1 Activity 3: adopt 8 · history + phone 6 · be-the-Logic and rules 7 · two automations 14 ·
+question 2 = 37 of 40, the optional timer ~5 for fast teams. All need a timed rehearsal before anyone
+calls them verified.
 
 Not acted on, decisions pending (review items 9–12): delivery materials and the take-home worked farm
 example — listed above. The cloud tool and the solar-demo disconnection order were settled by the

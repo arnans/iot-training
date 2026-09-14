@@ -105,8 +105,11 @@ queries, and 200 boards answer — see the zoning discussion in `NETWORK-REQUIRE
 
 ## The instructor recorder problem
 
-100 sensor boards × (illuminance at 1 s + vibration at 1 s + three sensors at 5 s) is roughly
-250 state writes per second, on the order of 10 million rows overnight. SQLite will not cope.
+100 sensor boards × (illuminance at 1 s + vibration at 1 s + pressure at 5 s) is roughly
+220 state writes per second, on the order of 10 million rows overnight. SQLite will not cope.
+Temperature and humidity are polled at 1 s but filtered on the board (send on a 0.2 °C / 0.5 %RH
+change, otherwise every 30 s), so in a still room they add only a few writes per second across
+all boards; a room-wide change such as doors opening spikes that briefly.
 `configuration-instructor.yaml` excludes vibration and diagnostics entirely and leaves one
 decision open: **illuminance from all boards, or from a sample of ten.** The lights-off trace is
 session 2's hook, and one board's trace tells that story as well as a hundred. Sample is

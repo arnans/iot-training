@@ -248,7 +248,7 @@ from the list, manual entry as fallback — see test C.)
 
 **This test's original premise was wrong, and the correction matters.** It assumed the lesson
 depends on the relay flickering *by itself* when a hand hovers near the threshold. It does not:
-[session-2.md:83](docs/session-2.md#L83) already has a student deliberately wave a hand up
+session-2.md §5.1 already has a student deliberately wave a hand up
 and down at the threshold for a minute — "เหมือนเมฆบางลอยผ่านตอนพลบค่ำ", like thin clouds drifting
 past at dusk — while a teammate counts toggles. The fluctuation is **manufactured by the student
 on purpose**, and the worksheet says so.
@@ -267,14 +267,16 @@ depended on ambient sensor noise would behave differently at all 100 tables depe
 lighting.
 
 1. In Home Assistant create one automation: light **Below** a threshold near room level →
-   switch **turn on**. And a second: **Above** the *same* value → **turn off**.
+   switch **turn on**. And a second: **Above** the *same* value → **turn off**. (Since 14 Sep 2026
+   teams build exactly this pair in Session 1 §3.4, driving the LED module; Session 2 §5.1 then
+   counts the chatter.)
 2. Hold a hand at the height where the reading sits right at the threshold and waver it.
 
 - [ ] With a hand **deliberately wavered** at the threshold, the relay toggles repeatedly
 - [ ] Count toggles per minute and write it down — the worksheet asks teams to do exactly this,
       and the number belongs on the record sheet
 - [ ] Now separate the thresholds, waver the hand the same way, and confirm the count drops.
-      The worksheet's pass mark is **≤2 toggles per minute** ([session-2.md:93](docs/session-2.md#L93))
+      The worksheet's pass mark is **≤2 toggles per minute** (session-2.md §5.2)
 
 **Question this answers, restated:** does a deliberately wavered hand produce clearly more than
 2 toggles a minute with both thresholds equal, and clearly ≤2 once a gap is opened? That is the
@@ -647,6 +649,44 @@ for the same reason the slash does: it forces URL interpretation.
 
 ---
 
+## L. LED module as the Session 1 load *(10 min)* — gates Day 1
+
+Added 14 Sep 2026: the 12 V LED module is now the **first** load teams wire (Session 1 §2.2) and the
+lamp the two Session 1 rules drive (§3.4), so the three open items from WORKSHEET-TODO are no longer
+optional. Wire it as the worksheet says: controller LOAD + → COM, NO → red lead, black lead → negative row.
+
+- [ ] Relay On lights the module from the 12 V rail; relay Off darkens it; the relay indicator follows
+- [ ] Leads reversed: module stays dark, nothing warms up, swapping back restores it
+- [ ] Module lit, lenses pointing away, 30 cm from the GoGo-IoT board: cover the board with a hand
+      and the light reading still drops well below a mid-range threshold (e.g. under 20 lx with a
+      40 lx threshold). Then point the lenses at the board from the same distance and record the
+      covered reading — if it crosses the threshold, the worksheet's "aim it away" line needs a
+      larger distance
+- [ ] With `มืด-เปิดไฟ` and `สว่าง-ปิดไฟ` on one threshold and the module aimed away, cover → on,
+      uncover → off, three rounds, no self-driven flicker while the hand is still
+
+## K. Temperature and humidity at 1 s *(10 min)*
+
+Added 14 Sep 2026: the SHT3x is polled every 1 s instead of 5 s, so a breath shows at once and
+session 2's blow-on-it watering loop (5.5) feels immediate. Temperature and humidity carry
+`or: [delta, throttle: 30s]` filters — a reading goes out on a 0.2 °C / 0.5 %RH change, otherwise
+every 30 s — so noise in the last decimal does not become a history row every second.
+
+1. Flash the new image and open the board's own page next to the device page in Home Assistant.
+2. Leave the board alone for two minutes, then breathe on it slowly for five seconds.
+3. In Home Assistant, open the humidity entity's history for those two minutes.
+
+- [ ] Breathing on the board: humidity starts rising on the page **within about 2 s**
+- [ ] Still room: humidity and temperature update roughly **every 30 s**, not every second — the
+      history graph shows steps, not a solid band of points
+- [ ] The rise and fall still cross the 5.5 thresholds cleanly: pump stops while blowing, and
+      restarts after. Write down the restart time; it is the figure the record sheet asks for and
+      should be no longer than it was at 5 s
+- [ ] Temperature reads the same as before (±0.2 °C against a 5 s build or a second board) — no
+      self-heating from the faster polling
+
+---
+
 ## Open risk found on the bench: `homeassistant.local` is not safe as a worksheet instruction
 
 Four worksheet files tell participants to open `http://homeassistant.local`
@@ -702,13 +742,14 @@ No port is needed — the OVA deliberately serves on **port 80, not 8123**
 | H relay board | ✅ | pins GPIO19/2/9 bench-confirmed · relay + button + LEDs OK · button works with HA down · `restore_mode: ALWAYS_OFF` ✅ · relay markings match `10A 250VAC` / `10A 30VDC` ✅ · **status LED: first version failed** — stayed lit out of range, because `inverted:` also inverts `status_led`'s 250/1250 ms blink; re-driven from an `interval:` as a symmetric 0.8 s blink on `wifi.connected` — **re-flashed and re-walked, works** · blink onset lags going out of range by several seconds (beacon timeout, accepted)  · **12 V-only boot ✅** — runs and connects on the screw terminal with USB unplugged, the day-of configuration · `restore_mode` re-confirmed on **both** supplies · **USB + 12 V together is harmless** — rails measured 5.04 V (USB) vs 5.12 V (12 V), 80 mV apart; board and serial port both fine, so the mistake costs nothing and a helper may plug in a laptop without unwiring the table |
 | I vibration calibration | ✅ | **signal is separable — verdict follows the real pump** · floor **3-8 mg**, running **~20-25 mg**, but measured on a deliberately soft mount · 25 / 12 kept as the **MEDIUM default** of a new three-level **sensitivity select** (high 15/10 · medium 25/12 · low 40/20), chosen in HA or on the board's web page · **re-flashed, selector works, choice survives a power cycle** |
 | J board web page | ✅ | live values ✅, relay control ✅, name-as-URL ✅ (trailing slash or `.local` required — bare name becomes a web search). `local: true` verified: 2 requests, both to the board, 13.2 kB page + SSE stream, no CDN — **works with no internet** |
+| K temp/humidity at 1 s | | seconds to first rise: · updates in a still room every: · pump restart time: |
 
 ## After the test
 
 Values from G and H are already in `firmware/*.yaml`. I's guessed thresholds survived contact
 with a real pump and became the MEDIUM default of a runtime sensitivity select, so a soft-mounted
-table can fix its own verdict without anyone reflashing. **Eight of the ten tests now pass; only E and F are
-open, and neither is a firmware question.** Of the two worksheet questions this plan existed to
+table can fix its own verdict without anyone reflashing. **Eight of the eleven tests now pass. E and F are
+open, and neither is a firmware question; K is new (14 Sep 2026) and waits for a reflash.** Of the two worksheet questions this plan existed to
 settle:
 
 - **B — settled.** The USB lookup is fast and unambiguous now that the name is an explicit

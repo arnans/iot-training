@@ -101,6 +101,13 @@ Do not change these without reading the reasoning:
   history graph.
 - **`update_interval: 1s` on the BH1750** — session 2's hysteresis lesson works by
   making the relay chatter. At the default 5s nothing visible happens.
+- **`update_interval: 1s` on the SHT3x, with `delta` + `throttle` filters** — a breath shows
+  within about a second, which makes session 2's blow-on-it watering loop feel immediate. The
+  sensor's own humidity response (~8 s to 63 %) is unchanged; only the lag before the first
+  reading goes. The filters are not optional: without them the last decimal changes nearly every
+  second and every change is a history row. With them a reading goes out when temperature moves
+  0.2 °C or humidity 0.5 %RH, and otherwise every 30 s. Network cost is a couple of ~13-byte API
+  messages a second per board, negligible.
 - **`restore_mode: ALWAYS_OFF`** on the relay — a pump must not restart itself after a
   power cut.
 - **No `friendly_name`** — so teams can tell 100 identical boards apart in Home Assistant.

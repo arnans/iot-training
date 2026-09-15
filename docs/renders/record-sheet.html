@@ -1233,7 +1233,7 @@ body {
 </table></div>
 <p><strong>เซนเซอร์ขาดการเชื่อมต่อ</strong> กลุ่มเลือกให้ปั๊ม <span class="fld-radio" data-k="s2.fs3.choice"><label><input class="fld" type="radio" name="s2.fs3.choice" data-k="s2.fs3.choice" value="เปิด"> เปิด</label><label><input class="fld" type="radio" name="s2.fs3.choice" data-k="s2.fs3.choice" value="ปิด"> ปิด</label><label><input class="fld" type="radio" name="s2.fs3.choice" data-k="s2.fs3.choice" value="คงสถานะเดิม"> คงสถานะเดิม</label></span> เพราะ <input class="fld" type="text" data-k="s2.fs3.why" data-size="30" size="30" autocomplete="off" spellcheck="false"></p>
 <p><strong>ปัญหาที่ไม่มีกฎข้อใดหยุดปั๊มได้</strong> <input class="fld" type="text" data-k="s2.fs.none" data-size="30" size="30" autocomplete="off" spellcheck="false"></p>
-<p><strong>คำถามท้ายกิจกรรมที่ 6</strong> ถ้าแล็ปท็อปดับ fail-safe เหล่านี้ยังทำงานหรือไม่ ถ้าไม่ ควรมีอะไรอยู่ที่ไหนอีก</p>
+<p><strong>คำถามท้ายกิจกรรมที่ 6</strong> ถ้า Home Assistant ดับหรือส่งคำสั่งไม่ได้ กฎป้องกันเหล่านี้ยังช่วยหยุดปั๊มได้หรือไม่ ควรเพิ่มการป้องกันไว้ที่ใด</p>
 <textarea class="fld fld-ta" data-k="s2.q6" rows="2"></textarea>
 
 <h3 id="ตารางบำรงรกษา">ตารางบำรุงรักษา</h3>
@@ -1360,7 +1360,7 @@ body {
 <p><strong>คำถามท้ายกิจกรรมที่ 7</strong> ผู้ทดลองใช้ตอบข้อไหนไม่ได้หรือใช้เวลานาน และเราปรับแดชบอร์ดอย่างไร</p>
 <textarea class="fld fld-ta" data-k="s3.q7" rows="2"></textarea>
 
-<h3 id="ตวเลอกท-1-ของแบบราง-เครอขายในฟารม">ตัวเลือกที่ 1 ของแบบร่าง: เครือข่ายในฟาร์ม</h3>
+<h3 id="เครอขายในฟารม">เครือข่ายในฟาร์ม</h3>
 <div class="table-wrap"><table>
 <thead>
 <tr>
@@ -1391,7 +1391,8 @@ body {
 </tr>
 </tbody>
 </table></div>
-<h3 id="ตวเลอกท-1-ของแบบราง-การเขาถงจากนอกฟารม">ตัวเลือกที่ 1 ของแบบร่าง: การเข้าถึงจากนอกฟาร์ม</h3>
+<h3 id="การเขาถงจากนอกฟารม">การเข้าถึงจากนอกฟาร์ม</h3>
+<p>สมมติว่าอินเทอร์เน็ตฟาร์มดับ แต่ไฟฟ้าและเครือข่ายภายในยังใช้ได้ ฝั่งคลาวด์ไม่มีระบบทำงานสำรองในฟาร์ม</p>
 <div class="table-wrap"><table>
 <thead>
 <tr>
@@ -1412,12 +1413,12 @@ body {
 <td><input class="fld" type="text" data-k="s3.cloud.farm.cloud" data-size="8" size="8" autocomplete="off" spellcheck="false"></td>
 </tr>
 <tr>
-<td>ดูแดชบอร์ดจากในเมือง</td>
+<td>ดูข้อมูลปัจจุบันจากนอกฟาร์ม</td>
 <td><input class="fld" type="text" data-k="s3.cloud.city.ours" data-size="8" size="8" autocomplete="off" spellcheck="false"></td>
 <td><input class="fld" type="text" data-k="s3.cloud.city.cloud" data-size="8" size="8" autocomplete="off" spellcheck="false"></td>
 </tr>
 <tr>
-<td>ข้อมูลย้อนหลังยังบันทึกหรือไม่</td>
+<td>ข้อมูลใหม่ยังบันทึกหรือไม่</td>
 <td><input class="fld" type="text" data-k="s3.cloud.log.ours" data-size="8" size="8" autocomplete="off" spellcheck="false"></td>
 <td><input class="fld" type="text" data-k="s3.cloud.log.cloud" data-size="8" size="8" autocomplete="off" spellcheck="false"></td>
 </tr>
@@ -1425,12 +1426,12 @@ body {
 </table></div>
 <p><strong>สาธิตดูจากนอกพื้นที่</strong> โทรศัพท์ของผู้สอนดูแดชบอร์ดผ่าน <span class="fld-radio" data-k="s3.remote.conn"><label><input class="fld" type="radio" name="s3.remote.conn" data-k="s3.remote.conn" value="อินเทอร์เน็ตมือถือ"> อินเทอร์เน็ตมือถือ</label><label><input class="fld" type="radio" name="s3.remote.conn" data-k="s3.remote.conn" value="WiFi ของโซน"> WiFi ของโซน</label></span> · ส่วนที่ตัดสินใจและบันทึกข้อมูลอยู่ที่ <span class="fld-radio" data-k="s3.remote.where"><label><input class="fld" type="radio" name="s3.remote.where" data-k="s3.remote.where" value="ในฟาร์ม (แล็ปท็อป)"> ในฟาร์ม (แล็ปท็อป)</label><label><input class="fld" type="radio" name="s3.remote.where" data-k="s3.remote.where" value="บนคลาวด์"> บนคลาวด์</label></span></p>
 <p><strong>ในโจทย์ของเรา</strong> เจ้าของต้อง <span class="fld-radio" data-k="s3.remote.need"><label><input class="fld" type="radio" name="s3.remote.need" data-k="s3.remote.need" value="เข้ามาดูและสั่งได้"> เข้ามาดูและสั่งได้</label><label><input class="fld" type="radio" name="s3.remote.need" data-k="s3.remote.need" value="แค่ได้รับแจ้งเตือน"> แค่ได้รับแจ้งเตือน</label><label><input class="fld" type="radio" name="s3.remote.need" data-k="s3.remote.need" value="ไม่ต้องเลย"> ไม่ต้องเลย</label></span> · ทางที่เลือก <input class="fld" type="text" data-k="s3.remote.method" data-size="16" size="16" autocomplete="off" spellcheck="false"> · ถ้าอินเทอร์เน็ตที่ฟาร์มดับ สิ่งที่หายไปคือ <input class="fld" type="text" data-k="s3.remote.lost" data-size="24" size="24" autocomplete="off" spellcheck="false"></p>
-<p><strong>คำถามท้ายตัวเลือกที่ 1</strong> ถ้าอินเทอร์เน็ตของฟาร์มดับแต่ Home Assistant ยังทำงาน อะไรในแบบร่างยังใช้ได้ และถ้าเครื่อง Home Assistant ดับ ต่างกันอย่างไร</p>
+<p><strong>คำถามเรื่องการสื่อสาร</strong> ถ้าอินเทอร์เน็ตดับ แต่ WiFi และ Home Assistant ในฟาร์มยังทำงาน อะไรยังใช้ได้ หาก Home Assistant ดับด้วย ผลต่างกันอย่างไร</p>
 <textarea class="fld fld-ta" data-k="s3.q.cloud" rows="2"></textarea>
 
-<h3 id="ตวเลอกท-2-ของแบบราง-พลงงาน">ตัวเลือกที่ 2 ของแบบร่าง: พลังงาน</h3>
+<h3 id="พลงงาน">พลังงาน</h3>
 <p><strong>ตัวควบคุมการชาร์จ</strong> แรงดันที่จอแสดง <input class="fld" type="text" data-k="s3.pwr.volt" data-size="5" size="5" inputmode="decimal" autocomplete="off" spellcheck="false"> V · ไอคอนแบตเตอรี่แสดงว่า <span class="fld-radio" data-k="s3.pwr.icon"><label><input class="fld" type="radio" name="s3.pwr.icon" data-k="s3.pwr.icon" value="เต็ม"> เต็ม</label><label><input class="fld" type="radio" name="s3.pwr.icon" data-k="s3.pwr.icon" value="ไม่เต็ม"> ไม่เต็ม</label></span></p>
-<p><strong>แผงกี่แผง แบตเตอรี่ต้องมีไหม</strong> (แผง 15 W ผลิตได้ประมาณ 60 Wh ต่อวัน)</p>
+<p><strong>คำนวณพลังงานและจำนวนแผง</strong> สมมติแผง 15 W ได้แดดเต็มกำลัง 4 ชั่วโมง ผลิตได้ 60 Wh/วัน ยังไม่หักการสูญเสีย จำนวนแผงปัดขึ้น และต้องตรวจให้จ่ายกำลังขณะใช้งานได้พอด้วย</p>
 <div class="table-wrap"><table>
 <thead>
 <tr>
@@ -1468,7 +1469,7 @@ body {
 <td><span class="fld-radio" data-k="s3.pwr.size.kitpump.bat"><label><input class="fld" type="radio" name="s3.pwr.size.kitpump.bat" data-k="s3.pwr.size.kitpump.bat" value="ต้องมี"> ต้องมี</label><label><input class="fld" type="radio" name="s3.pwr.size.kitpump.bat" data-k="s3.pwr.size.kitpump.bat" value="ไม่ต้อง"> ไม่ต้อง</label></span></td>
 </tr>
 <tr>
-<td>ปั๊มน้ำในฟาร์ม 1 แรงม้า</td>
+<td>ปั๊มฟาร์ม (สมมติกินไฟ 750 W)</td>
 <td>750 W</td>
 <td>3 ชั่วโมง</td>
 <td><input class="fld" type="text" data-k="s3.pwr.size.farmpump.wh" data-size="5" size="5" inputmode="decimal" autocomplete="off" spellcheck="false"></td>
@@ -1478,7 +1479,7 @@ body {
 </tbody>
 </table></div>
 <p><strong>หนึ่งคืน (12 ชั่วโมง)</strong> บอร์ดเซนเซอร์ใช้ <input class="fld" type="text" data-k="s3.pwr.size.night_node" data-size="4" size="4" inputmode="decimal" autocomplete="off" spellcheck="false"> Wh · ปั๊มฟาร์มถ้าเดินกลางคืน 3 ชั่วโมง ใช้ <input class="fld" type="text" data-k="s3.pwr.size.night_pump" data-size="5" size="5" inputmode="decimal" autocomplete="off" spellcheck="false"> Wh</p>
-<p><strong>คำถามท้ายตัวเลือกที่ 2</strong> โหลดใดเดินเฉพาะตอนมีแดด โหลดใดต้องมีแบตเตอรี่ และต้องรู้ตัวเลขอะไรจึงจะบอกได้ว่าอยู่ได้กี่วันเมื่อฟ้าครึ้ม</p>
+<p><strong>คำถามเรื่องพลังงาน</strong> อุปกรณ์ใดทำงานเฉพาะตอนมีแดดได้ อุปกรณ์ใดต้องมีไฟสำรอง ถ้าฟ้าครึ้มสามวัน ต้องรู้ค่าอะไรเพื่อคำนวณว่าจะทำงานต่อได้นานเท่าไร</p>
 <textarea class="fld fld-ta" data-k="s3.q.power" rows="2"></textarea>
 
 <hr />
@@ -1573,7 +1574,7 @@ body {
 </blockquote>
 <p><strong>ระบบประมวลผลและสั่งงานอยู่ที่ใด</strong> <span class="fld-radio" data-k="d.logic.where"><label><input class="fld" type="radio" name="d.logic.where" data-k="d.logic.where" value="ในฟาร์ม"> ในฟาร์ม</label><label><input class="fld" type="radio" name="d.logic.where" data-k="d.logic.where" value="บนคลาวด์"> บนคลาวด์</label><label><input class="fld" type="radio" name="d.logic.where" data-k="d.logic.where" value="ในบอร์ด"> ในบอร์ด</label></span> เพราะ <input class="fld" type="text" data-k="d.logic.why" data-size="24" size="24" autocomplete="off" spellcheck="false"></p>
 <h3 id="พลงงานและการสอสาร">พลังงานและการสื่อสาร</h3>
-<p><strong>แหล่งพลังงานของอุปกรณ์แต่ละจุด</strong> (ไฟบ้าน / โซลาร์ + แบตเตอรี่ / แบตเตอรี่อย่างเดียว) <input class="fld" type="text" data-k="d.power" data-size="36" size="36" autocomplete="off" spellcheck="false"></p>
+<p><strong>แหล่งพลังงานของอุปกรณ์แต่ละจุด</strong> (ไฟบ้าน / โซลาร์เฉพาะกลางวัน / โซลาร์ + แบตเตอรี่ / แบตเตอรี่อย่างเดียว) <input class="fld" type="text" data-k="d.power" data-size="36" size="36" autocomplete="off" spellcheck="false"></p>
 <div class="table-wrap"><table>
 <thead>
 <tr>

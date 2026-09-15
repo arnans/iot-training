@@ -33,8 +33,8 @@ function verify(w, expected) {
     }
   }
 }
-(async () => {
-  let dom = await open('session-1');
+async function testPage(slug) {
+  let dom = await open(slug);
   let w = dom.window;
   const expected = {};
   const keys = [...new Set([...w.document.querySelectorAll('input.fld,textarea.fld')].map(el => el.dataset.k))];
@@ -48,26 +48,36 @@ function verify(w, expected) {
   }
   await wait(350);
   verify(w, expected);
+  const checkCount = w.document.querySelectorAll('.task-list-item input[type=checkbox]').length;
   for (const el of w.document.querySelectorAll('.task-list-item input[type=checkbox]')) {
     el.checked = true;
     el.dispatchEvent(new w.Event('change', { bubbles: true }));
   }
   const saved = w.localStorage.getItem(storeKey);
-  assert.equal(Object.keys(JSON.parse(saved).checks).length, 30);
+  assert.equal(Object.keys(JSON.parse(saved).checks).length, checkCount);
   dom.window.close();
-  dom = await open('session-1', saved);
+  dom = await open(slug, saved);
   verify(dom.window, expected);
   assert([...dom.window.document.querySelectorAll('.task-list-item input[type=checkbox]')].every(el => el.checked));
-  // Change a repeated radio group from its second occurrence.
-  const choices = controls(dom.window, 's1.timer.ok');
-  choices[4].checked = true;
-  choices[4].dispatchEvent(new dom.window.Event('change', { bubbles: true }));
-  expected['s1.timer.ok'] = choices[4].value;
-  verify(dom.window, expected);
+  // Change every radio key, using the second copy when a field is repeated.
+  for (const key of keys) {
+    const choices = controls(dom.window, key).filter(el => el.type === 'radio');
+    if (!choices.length) continue;
+    const groups = [...new Set(choices.map(el => el.name))];
+    const copy = choices.filter(el => el.name === groups[Math.min(1, groups.length - 1)]);
+    const choice = copy[copy.length - 1];
+    choice.checked = true;
+    choice.dispatchEvent(new dom.window.Event('change', { bubbles: true }));
+    expected[key] = choice.value;
+    verify(dom.window, expected);
+  }
   const changed = dom.window.localStorage.getItem(storeKey);
   dom.window.close();
   dom = await open('record-sheet', changed);
   verify(dom.window, expected);
   dom.window.close();
-  console.log(`PASS: ${keys.length} answer keys, duplicate text/radio synchronization, save/restore, 30 checkboxes, and record-sheet transfer`);
+  console.log(`PASS ${slug}: ${keys.length} answer keys, duplicate text/radio synchronization, save/restore, ${checkCount} checkboxes, and record-sheet transfer`);
+}
+(async () => {
+  for (const slug of ['session-1', 'session-2', 'session-3', 'record-sheet']) await testPage(slug);
 })().catch(err => { console.error(err); process.exit(1); });

@@ -8,7 +8,7 @@ Companion to [FILLABLE-WORKSHEET.md](FILLABLE-WORKSHEET.md), which owns the work
 
 | Question | Decision | Why |
 |---|---|---|
-| Where do worksheet and dashboard live? | Both on GitHub Pages, as before | A server in the venue was considered and dropped: the worksheet is HTTPS, browsers block calls from an HTTPS page to a plain-HTTP LAN host, and the three WiFi zones are isolated from each other by design ([NETWORK-REQUIREMENTS.md](NETWORK-REQUIREMENTS.md) guideline 2). |
+| Where do worksheet and dashboard live? | Both on GitHub Pages, as before | A server in the venue was considered and dropped: the worksheet is HTTPS, browsers block calls from an HTTPS page to a plain-HTTP LAN host, and the three WiFi zones are isolated from each other by design ([NETWORK-REQUIREMENTS.md](../network/NETWORK-REQUIREMENTS.md) guideline 2). |
 | What carries the data? | Firebase Realtime Database, REST only — no SDK, no server code | Smallest possible hosted store: the worksheet does one `fetch(PUT)`, the dashboard opens one `EventSource`. Free tier is far above the load (100 teams, at most a couple of writes a second). The laptop SSIDs already have outbound 443. |
 | What is sent? | **Counts only**: per activity, task boxes ticked / total and answer boxes filled / total, plus the last tick and its label | Pacing needs position, not content. Answers stay in the browser and still travel by the JSON download. |
 | How is a write namespaced? | By calendar day: `progress/<YYYY-MM-DD>/<team>/<device>` | A rehearsal, the two workshop days, and someone reading the worksheet at home next month never land on the same board. No join code, no button. |
@@ -23,7 +23,7 @@ Companion to [FILLABLE-WORKSHEET.md](FILLABLE-WORKSHEET.md), which owns the work
 ```
 docs/javascripts/extra.js      summarize() counts the page · pushNow()/pushSoon() PUT the document ·
                                pushStatus() renders the dot in the #ws-bar status line
-database.rules.json            the rules (paste in the console's Rules tab, or firebase deploy)
+webapp/database.rules.json     the rules (paste in the console's Rules tab, or firebase deploy)
 docs/progress.html             the dashboard page: tabs per worksheet page, day picker, tiles,
                                bars, the 10x10 grid, ticker, table view, export
 docs/javascripts/progress.js   the dashboard's pure logic (stream events -> tree -> board)

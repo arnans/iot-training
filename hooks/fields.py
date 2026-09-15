@@ -10,7 +10,7 @@ parses it, so a marker works anywhere: in a table cell, a blockquote, a list ite
 
 `key` is the answer's permanent id ("s2.hum.on"). The same key on two pages is one
 answer shown twice; docs/javascripts/extra.js keeps them in sync and stores every
-answer in localStorage. Design notes and the key conventions: FILLABLE-WORKSHEET.md.
+answer in localStorage. Design notes and the key conventions: webapp/FILLABLE-WORKSHEET.md.
 
 Registered in mkdocs.yml under `hooks:`. No dependencies beyond MkDocs itself.
 """

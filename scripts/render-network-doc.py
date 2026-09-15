@@ -38,14 +38,14 @@ IMG_DIR = OUT_DIR / "images"
 DOCUMENTS = [
     # The kicker sits above the title, so keep it clear of the opening sentence,
     # which already names the audience in both editions.
-    ("NETWORK-REQUIREMENTS-th.md", "network-requirements.html", "th",
+    ("network/NETWORK-REQUIREMENTS-th.md", "network-requirements.html", "th",
      "เอกสารข้อกำหนดทางเทคนิค"),
-    ("NETWORK-REQUIREMENTS.md", "network-requirements-en.html", "en",
+    ("network/NETWORK-REQUIREMENTS.md", "network-requirements-en.html", "en",
      "Vendor specification"),
     # Not a vendor document, but the same shape: one standalone page, no worksheet
     # theme, readable by anyone with the link. Its links are absolute so the page
     # works from the repository and from GitHub Pages alike.
-    ("INSTRUCTOR-RESOURCES.md", "instructor-resources.html", "en",
+    ("planning/INSTRUCTOR-RESOURCES.md", "instructor-resources.html", "en",
      "Instructor & TA handbook"),
 ]
 
@@ -339,7 +339,7 @@ def render(md_name: str, out_name: str, lang: str, kicker: str) -> pathlib.Path:
                 + "</figcaption>\n  </figure>")
 
     html = re.sub(
-        r'<p><img alt="([^"]*)" src="docs/images/([a-z-]+)-' + lang + r'\.svg"\s*/?></p>',
+        r'<p><img alt="([^"]*)" src="(?:\.\./)?docs/images/([a-z-]+)-' + lang + r'\.svg"\s*/?></p>',
         _inline, html)
 
     # Wrap tables so wide ones scroll instead of breaking the page.
@@ -358,7 +358,7 @@ def render(md_name: str, out_name: str, lang: str, kicker: str) -> pathlib.Path:
         body=body,
         disclosure=DISCLOSURES[lang],
         meta=METAS[lang].format(date=date),
-        footer=FOOTERS[lang].format(src=md_name),
+        footer=FOOTERS[lang].format(src=md_name.rsplit("/", 1)[-1]),
     )
 
     out = OUT_DIR / out_name

@@ -75,9 +75,9 @@ The `renders/` pages are self-contained: open one once and it keeps working with
 
 | What | Link |
 |---|---|
-| What happens in each session, and why | [SESSION-OVERVIEW.md](https://github.com/arnans/iot-training/blob/main/SESSION-OVERVIEW.md) *(repo)* |
-| Full course design — timings, kit list, risks, open decisions | [COURSE-DESIGN.md](https://github.com/arnans/iot-training/blob/main/COURSE-DESIGN.md) *(repo)* |
-| Known gaps and assumptions in the worksheets | [WORKSHEET-TODO.md](https://github.com/arnans/iot-training/blob/main/WORKSHEET-TODO.md) *(repo)* |
+| What happens in each session, and why | [SESSION-OVERVIEW.md](https://github.com/arnans/iot-training/blob/main/planning/SESSION-OVERVIEW.md) *(repo)* |
+| Full course design — timings, kit list, risks, open decisions | [COURSE-DESIGN.md](https://github.com/arnans/iot-training/blob/main/planning/COURSE-DESIGN.md) *(repo)* |
+| Known gaps and assumptions in the worksheets | [WORKSHEET-TODO.md](https://github.com/arnans/iot-training/blob/main/planning/WORKSHEET-TODO.md) *(repo)* |
 | Network spec to hand the venue's provider — Thai | [network-requirements.html](https://arnans.github.io/iot-training/network-requirements.html) |
 | Network spec — English | [network-requirements-en.html](https://arnans.github.io/iot-training/network-requirements-en.html) |
 
@@ -646,7 +646,7 @@ Nobody has produced these yet:
   the light reading over a covered-board threshold
 - Real screenshots in the install guide (currently placeholders)
 - Bench tests against the built firmware — see
-  [TEST-PLAN.md](https://github.com/arnans/iot-training/blob/main/TEST-PLAN.md) *(repo)*, especially
+  [TEST-PLAN.md](https://github.com/arnans/iot-training/blob/main/planning/TEST-PLAN.md) *(repo)*, especially
   test B (the boot banner participants read) and test G (float switch polarity)
 
 ---

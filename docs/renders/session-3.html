@@ -1829,7 +1829,7 @@ body {
    3. Fillable worksheet: every <input class="fld"> / <textarea class="fld"> / radio group that
       hooks/fields.py generated, plus the task-list checkboxes, is saved to localStorage as the
       team types and restored on every page load. A toolbar under the page title offers
-      download (JSON), import (merge), print, and clear. Design notes: FILLABLE-WORKSHEET.md.
+      download (JSON), import (merge), print, and clear. Design notes: webapp/FILLABLE-WORKSHEET.md.
    Runs on every page load, including Material's instant navigation. */
 (function () {
   var ROLES = { Hardware: "hardware", Driver: "driver", Recorder: "recorder", Tester: "tester" };
@@ -2020,7 +2020,7 @@ body {
      Only counts travel: per activity, task boxes ticked / total and answer boxes filled / total,
      plus the last tick. Answers themselves stay in this browser. The path is dated, so a
      rehearsal or a later reader at home never lands on the workshop's board. Rules that accept
-     the write: database.rules.json. Nothing is sent until the team number is valid. */
+     the write: webapp/database.rules.json. Nothing is sent until the team number is valid. */
   var PROGRESS_DB = "https://iot-farm-workshop-default-rtdb.asia-southeast1.firebasedatabase.app";
   var pushTimer, pushState = "", pushWhen;   // "" never tried · "ok" · "fail"
 

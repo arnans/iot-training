@@ -161,7 +161,7 @@ step by step or teams will not find it): **+ Add integration** → type **ESPHom
 **without `.local`** (`gogo-iot-red-6749a4`). The bare name resolves; no suffix needed.
 
 Requirements this places on the network are written up in
-[NETWORK-REQUIREMENTS.md](NETWORK-REQUIREMENTS.md) for the provider. The two that most often
+[NETWORK-REQUIREMENTS.md](../network/NETWORK-REQUIREMENTS.md) for the provider. The two that most often
 fail by default: **mDNS forwarded between wireless clients**, and **two MAC addresses allowed
 per laptop** (the Home Assistant VM is bridged, so it has its own MAC and IP).
 

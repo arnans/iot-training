@@ -10,12 +10,12 @@ be restored. Nothing in `archive/` is published or rendered.
    `6. **เลือกอุปกรณ์ให้ตรงกับงาน** หากความต้องการเกินสเปก ต้องเปลี่ยนอุปกรณ์ให้เหมาะสม`
 2. **Record sheet** → `docs/record-sheet.md`, after the Activity 3 question (`{{ta:s1.q3}}`),
    before the `---` that opens `## ช่วงที่ 2`.
-3. **Run sheet** → `INSTRUCTOR-RESOURCES.md`, after Session 1 Activity 3, before
+3. **Run sheet** → `planning/INSTRUCTOR-RESOURCES.md`, after Session 1 Activity 3, before
    `### Session 2 · Activity 5`.
 4. Re-run `python scripts/render-worksheets.py` and `python scripts/render-network-doc.py`.
 
 The fields keep their original keys (`s1.spec.*`, `s1.card`, `s1.q4`), so answers exported
-before removal still import. Scenario cards and spec handouts are listed in `WORKSHEET-TODO.md`.
+before removal still import. Scenario cards and spec handouts are listed in `planning/WORKSHEET-TODO.md`.
 
 ---
 
@@ -100,7 +100,7 @@ before removal still import. Scenario cards and spec handouts are listed in `WOR
 
 ---
 
-## 3. Instructor run sheet (`INSTRUCTOR-RESOURCES.md`)
+## 3. Instructor run sheet (`planning/INSTRUCTOR-RESOURCES.md`)
 
 ### Session 1 · Activity 4 — Spec (15 min)
 

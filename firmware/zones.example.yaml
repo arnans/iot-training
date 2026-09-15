@@ -1,7 +1,7 @@
 # Copy to zones.yaml and fill in. zones.yaml is gitignored.
 #
 # Three logical zones. Each is a VLAN with its own 2.4 GHz SSID (boards) and 5 GHz
-# SSID (laptops). Team kits are colour-coded to match. See NETWORK-REQUIREMENTS.md.
+# SSID (laptops). Team kits are colour-coded to match. See network/NETWORK-REQUIREMENTS.md.
 #
 # These SSIDs and passwords are compiled into 200 boards and CANNOT change on the
 # day. They must be final one week before the workshop.

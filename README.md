@@ -4,25 +4,26 @@ Materials for the three hands-on sessions "IoT Systems in Smart Farming".
 
 First delivered inside the CMU Lifelong Education program *นวัตกรเกษตรอัจฉริยะ AIoT สำหรับเกษตรแม่นยำ*
 รุ่นที่ 1, 25–26 September 2026, Chiang Mai. The worksheets in `docs/` are written to be reusable
-across deliveries: no dates, venue names, or weekday references. `COURSE-DESIGN.md` remains
+across deliveries: no dates, venue names, or weekday references. `planning/COURSE-DESIGN.md` remains
 specific to that first delivery.
 
 ## Contents
 
 | Path | What it is |
 |---|---|
-| [INSTRUCTOR-RESOURCES.md](INSTRUCTOR-RESOURCES.md) | Links page for instructors and TAs: the six firmware images, the two OVAs, worksheets, and what to read before teaching. Participant-facing counterpart: [docs/resources.md](docs/resources.md) |
-| [SESSION-OVERVIEW.md](SESSION-OVERVIEW.md) | One-page summary of the three sessions: what teams do, objective, learning-goal alignment |
-| [COURSE-DESIGN.md](COURSE-DESIGN.md) | Full course design: session plans, goals, kit list, risks, production tasks |
-| [PART1-RECORDING-PREP.md](PART1-RECORDING-PREP.md) | Readiness notes for the optional narrated online decks |
-| [WORKSHEET-TODO.md](WORKSHEET-TODO.md) | Open items and assumptions in the worksheets |
-| [NETWORK-REQUIREMENTS.md](NETWORK-REQUIREMENTS.md) | Wireless network spec for the venue's network provider. Thai edition: [NETWORK-REQUIREMENTS-th.md](NETWORK-REQUIREMENTS-th.md). Both render to standalone HTML in `docs/` — see below |
-| `scripts/` | [render-network-doc.py](scripts/render-network-doc.py) turns the two network Markdown files into print-ready HTML. [render-worksheets.py](scripts/render-worksheets.py) renders the install guide and sessions 1–3 into self-contained HTML in `docs/renders/`, served by GitHub Pages at `arnans.github.io/iot-training/renders/<page>.html`. Pages serves the committed copies, so re-run the script and commit after editing a worksheet |
-| [TEST-PLAN.md](TEST-PLAN.md) | Bench test for the ESPHome provisioning flow, before committing the firmware image |
-| `firmware/` | The two workshop ESPHome images (sensor node, relay board) |
-| `hass/` | Home Assistant configuration for the team VM image (plus a now-unused instructor-server config) |
-| `archive/` | Worksheet content taken out but kept for restoring, each file with its own restore steps. Not published |
-| `docs/` | **Participant worksheets** — the website source (Thai), plus the two generated network-spec pages |
+| [docs/](docs/) | **Participant worksheets**, the website source (Thai), served as-is by GitHub Pages. Also holds the generated network-spec and instructor pages, the built firmware images and the standalone `renders/` |
+| [planning/](planning/) | Course design and running. [COURSE-DESIGN.md](planning/COURSE-DESIGN.md) full design: session plans, goals, kit list, risks, production tasks. [SESSION-OVERVIEW.md](planning/SESSION-OVERVIEW.md) one-page summary per session. [INSTRUCTOR-RESOURCES.md](planning/INSTRUCTOR-RESOURCES.md) links page and run sheet for instructors and TAs, rendered to `docs/instructor-resources.html`. [TEST-PLAN.md](planning/TEST-PLAN.md) bench tests for firmware and kit. [WORKSHEET-TODO.md](planning/WORKSHEET-TODO.md) open items, assumptions and the dated decision log. [PART1-RECORDING-PREP.md](planning/PART1-RECORDING-PREP.md) readiness notes for the optional narrated decks |
+| [network/](network/) | [NETWORK-REQUIREMENTS.md](network/NETWORK-REQUIREMENTS.md) wireless spec for the venue's network provider; Thai edition [NETWORK-REQUIREMENTS-th.md](network/NETWORK-REQUIREMENTS-th.md). Both render to standalone HTML in `docs/`, see below |
+| [webapp/](webapp/) | The web app layered on the worksheet site. [FILLABLE-WORKSHEET.md](webapp/FILLABLE-WORKSHEET.md) design of the fillable fields, localStorage and JSON export. [PROGRESS-DASHBOARD.md](webapp/PROGRESS-DASHBOARD.md) the instructor's live progress board on Firebase. `database.rules.json` the Firebase rules to paste |
+| [firmware/](firmware/) | The two workshop ESPHome sources (sensor node, relay board), built per zone colour |
+| [hass/](hass/) | Home Assistant configuration for the team VM image (plus a now-unused instructor-server config) and the OVA recipe |
+| [hooks/](hooks/) | `fields.py`, the MkDocs hook that expands `{{f:key}}` markers into form fields |
+| [scripts/](scripts/) | [render-worksheets.py](scripts/render-worksheets.py) renders the seven participant pages into self-contained HTML in `docs/renders/`. [render-network-doc.py](scripts/render-network-doc.py) renders the network specs and the instructor page into `docs/`. `collect_answers.py` merges team JSON files to CSV; `video_steps.py` cuts screen recordings into step stills; `test_worksheet_fields.cjs` and `test_progress.js` are the checks |
+| [reviews/](reviews/) | Dated review and handoff notes exchanged with AI assistants; what was acted on is summarised in `planning/WORKSHEET-TODO.md` |
+| [archive/](archive/) | Worksheet content taken out but kept for restoring, each file with its own restore steps. Not published |
+
+GitHub Pages serves `docs/` from `main`; re-run the two render scripts and commit after editing a
+worksheet, a network spec or the instructor page.
 
 ## Participant worksheet site
 
@@ -31,7 +32,7 @@ a phone or laptop during the workshop. The only printed artifact is `docs/record
 
 Sessions refer to each other as ช่วงที่ 1/2/3, never as days or times, so the same pages work
 whether the three sessions run over two days or some other shape. The one scheduling dependency
-is the gap between sessions 1 and 2 — see `WORKSHEET-TODO.md`.
+is the gap between sessions 1 and 2 — see `planning/WORKSHEET-TODO.md`.
 
 ```
 docs/
@@ -46,7 +47,7 @@ docs/
 ├── resources.md      every download and link participants need, in one place
 ├── network-requirements.html      generated — Thai network spec
 ├── network-requirements-en.html   generated — English network spec
-├── instructor-resources.html      generated — INSTRUCTOR-RESOURCES.md as a standalone page
+├── instructor-resources.html      generated — planning/INSTRUCTOR-RESOURCES.md as a standalone page
 ├── firmware/                      the six built ESP32 images, served for flashing
 ├── renders/                       generated — all seven participant pages as standalone HTML
 └── images/
@@ -72,7 +73,7 @@ fields. `site/` is generated and not tracked.
 ### The network spec pages
 
 The two `network-requirements*.html` files in `docs/` are **generated, not edited**. The
-Markdown at the repo root is the source; `scripts/render-network-doc.py` wraps it in a
+Markdown in `network/` is the source; `scripts/render-network-doc.py` wraps it in a
 standalone print-ready page and writes it into `docs/`. It also draws the two diagrams
 (`scripts/network_figures.py`) as SVG, one pair per language, and inlines them so the page
 stays self-contained; the Markdown keeps a plain image link so the diagrams also show on

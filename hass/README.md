@@ -5,7 +5,7 @@ Two `configuration.yaml` files, one per role. Neither is something a participant
 | File | Runs on | Purpose |
 |---|---|---|
 | `configuration.yaml` | each team's laptop VM | Minimal install: no `default_config`, no ssdp/dhcp/bluetooth/usb/cloud |
-| `configuration-instructor.yaml` | *(unused since 7 Sep 2026)* | Same diet plus **recorder limits** for 100 adopted boards. Written for an instructor server that adopted every team's sensor node; that plan was dropped — see WORKSHEET-TODO.md. Kept until the delete/keep call is made |
+| `configuration-instructor.yaml` | *(unused since 7 Sep 2026)* | Same diet plus **recorder limits** for 100 adopted boards. Written for an instructor server that adopted every team's sensor node; that plan was dropped — see planning/WORKSHEET-TODO.md. Kept until the delete/keep call is made |
 
 ## Decided: ship a pre-built VirtualBox OVA
 
@@ -62,12 +62,12 @@ participant even opens VirtualBox. See
     `ha supervisor info`. Covers Supervisor; check Core/OS/add-ons separately if you want
     everything pinned (each add-on has its own "Auto update" toggle on its own page).
 15. **Reachability check**: from another device on the same LAN, browse to `http://<IP>` (no
-    port). If refused, see `NETWORK-REQUIREMENTS.md` item 2 — two MACs behind one wireless client.
+    port). If refused, see `network/NETWORK-REQUIREMENTS.md` item 2 — two MACs behind one wireless client.
 16. **Export**: File → Export Appliance → the master OVA.
 17. **Test-import** on a second machine of the same architecture before trusting it.
 18. **Write the team card**: VM user/password, zone colour, laptop SSID and password.
 
-This also closes the two install-guide risks already in WORKSHEET-TODO: the bridged-vs-NAT
+This also closes the two install-guide risks already in planning/WORKSHEET-TODO: the bridged-vs-NAT
 adapter choice (baked in) and port 80 reachability from phones (the VM's firewall is ours).
 
 ### What the participant guide assumes about the image
@@ -101,7 +101,7 @@ What it does **not** remove: zeroconf's browse breadth. Home Assistant browses e
 in its generated discovery list so it can show "Discovered" cards, and that list does not shrink
 when integrations are left out. The ESPHome integration also depends on zeroconf, so it stays.
 The residual mDNS cost is therefore the **startup burst** when 100 instances come up and each
-queries, and 200 boards answer — see the zoning discussion in `NETWORK-REQUIREMENTS.md`.
+queries, and 200 boards answer — see the zoning discussion in `network/NETWORK-REQUIREMENTS.md`.
 
 ## The instructor recorder problem
 

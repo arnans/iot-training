@@ -8,7 +8,7 @@ row; each field key becomes one column. Team and zone come first, then the keys 
 order, which groups them by session and activity (s1.*, s2.*, s3.*, d.* for the design
 canvas). Written as UTF-8 with BOM so Excel opens the Thai text correctly.
 
-Key conventions and the storage format: FILLABLE-WORKSHEET.md.
+Key conventions and the storage format: webapp/FILLABLE-WORKSHEET.md.
 """
 import argparse
 import csv

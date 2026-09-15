@@ -70,7 +70,7 @@ esphome:
   # WORKSHOP: print the name as one unmistakable INFO line at boot, rather than
   # raising the whole logger to CONFIG just to surface it buried among every
   # other component's config dump. This is the line participants read at
-  # web.esphome.io. See TEST-PLAN.md test B.
+  # web.esphome.io. See planning/TEST-PLAN.md test B.
   on_boot:
     then:
       - logger.log:
@@ -175,7 +175,7 @@ sensor:
     # WORKSHOP: 1s, not the 5s default. Session 1 builds a dark->on / bright->off
     # rule pair on one threshold and Session 2 teaches hysteresis by making the
     # lamp chatter while a hand hovers at that threshold. At 5s the chattering is
-    # invisible and the lesson fails. See TEST-PLAN.md test E.
+    # invisible and the lesson fails. See planning/TEST-PLAN.md test E.
     update_interval: 1s
 
   # WORKSHOP: polled at 1s, not 5s, so a breath on the board shows within about a
@@ -409,7 +409,7 @@ binary_sensor:
   # the inversion here without checking which way the cylinder is mounted.
   #
   # There is no external pull-up anywhere on the switch or the adapter — the
-  # chip's internal one (~45k, weak) does the whole job. See TEST-PLAN.md test G.
+  # chip's internal one (~45k, weak) does the whole job. See planning/TEST-PLAN.md test G.
   #
   # FAIL-SAFE: this orientation is what makes the switch fail safe. A cut wire,
   # an unseated Grove plug, or no switch at all leaves the pin HIGH, which now

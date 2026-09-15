@@ -47,7 +47,7 @@ nav:
   - รวมไฟล์และลิงก์: resources.md
 
 hooks:
-  - hooks/fields.py   # {{f:key}} markers -> form fields, see FILLABLE-WORKSHEET.md
+  - hooks/fields.py   # {{f:key}} markers -> form fields, see webapp/FILLABLE-WORKSHEET.md
 
 plugins:
   - search

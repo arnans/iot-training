@@ -47,7 +47,7 @@ de-energised and off after a power cut.
 > its device name, then wire it to the 12 V rail. **The USB cable must come out before the
 > 12 V is connected.** The worksheet says so at that step.
 
-**Bench-measured, because ~100 teams means somebody will forget** (TEST-PLAN.md test H). The 5 V
+**Bench-measured, because ~100 teams means somebody will forget** (planning/TEST-PLAN.md test H). The 5 V
 rail reads **5.04 V on USB alone** and **5.12 V on the 12 V terminal alone** — only 80 mV apart, so
 the two sources share the rail rather than fight over it. Plugging USB into a board already running
 on 12 V was tried directly: the board ran normally and the serial port enumerated and worked.

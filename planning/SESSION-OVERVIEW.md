@@ -1,6 +1,6 @@
 # IoT Systems in Smart Farming — Session Overview
 
-A summary of the three hands-on sessions (150 min each), broken down by activity, and how each activity serves the six learning goals. The full plans, timings and rationale are in [COURSE-DESIGN.md](COURSE-DESIGN.md); the participant worksheets are in [docs/](docs/).
+A summary of the three hands-on sessions (150 min each), broken down by activity, and how each activity serves the six learning goals. The full plans, timings and rationale are in [COURSE-DESIGN.md](COURSE-DESIGN.md); the participant worksheets are in [docs/](../docs/).
 
 ## The six learning goals
 

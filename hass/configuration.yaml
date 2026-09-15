@@ -15,7 +15,7 @@
 # shrink that browse list. What it does remove: ssdp's periodic UPnP M-SEARCH
 # multicast, the dhcp sniffer, and the long tail of integrations that each add
 # their own startup traffic. Real, but the biggest lever on mDNS load is
-# elsewhere: the three-zone network -- see NETWORK-REQUIREMENTS.md, section 1.
+# elsewhere: the three-zone network -- see network/NETWORK-REQUIREMENTS.md, section 1.
 # (Phones cannot stay on mobile data: the dashboard lives in this VM, so they
 # join the zone's laptop SSID.)
 

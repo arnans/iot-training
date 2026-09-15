@@ -482,7 +482,7 @@ to damage anything. Plugging USB into a board already running on 12 V was then t
 **Consequences, and the second one is the useful one:**
 
 1. **The worksheet keeps one-supply-at-a-time as the normal practice, but no longer as a
-   prohibition.** [session-1.md:102](docs/session-1.md#L102) said `ห้ามต่อพร้อมกัน` ("do not connect
+   prohibition.** [session-1.md:102](../docs/session-1.md#L102) said `ห้ามต่อพร้อมกัน` ("do not connect
    both"); it now says the board is *designed* for one source, and adds that connecting both by
    accident is harmless — at most the board restarts. Same practice, no false alarm. A helper who
    finds a team with both connected says "tidy that up", not "you may have damaged the board".
@@ -690,8 +690,8 @@ every 30 s — so noise in the last decimal does not become a history row every 
 ## Open risk found on the bench: `homeassistant.local` is not safe as a worksheet instruction
 
 Four worksheet files tell participants to open `http://homeassistant.local`
-([session-1.md:16](docs/session-1.md#L16) and [:198](docs/session-1.md#L198),
-[session-2.md:12](docs/session-2.md#L12), [reference.md:54](docs/reference.md#L54)).
+([session-1.md:16](../docs/session-1.md#L16) and [:198](../docs/session-1.md#L198),
+[session-2.md:12](../docs/session-2.md#L12), [reference.md:54](../docs/reference.md#L54)).
 
 **Demonstrated broken during this session.** With a second Home Assistant on the bench network (a
 Raspberry Pi), `homeassistant.local` resolved to **the Pi**, not the bench VM. Hunting for a
@@ -717,11 +717,11 @@ correctly to prevent a problem they cannot see, and whose failure mode is the sa
 
 | File | Now says |
 |---|---|
-| [session-1.md:16](docs/session-1.md#L16) | wait for the VM screen to show the IP, **write it on the record sheet**, then browse to it |
-| [session-1.md:206](docs/session-1.md#L206) | the phone opens "the same address you wrote down" |
-| [session-2.md:12](docs/session-2.md#L12) | read the address off the VM screen again — **explicitly warns it may differ from yesterday** |
-| [reference.md:56](docs/reference.md#L56) | IP first; names `homeassistant.local` only to say **do not use it**, because it is duplicated room-wide |
-| [record-sheet.md:9](docs/record-sheet.md#L9) | new field: the team's HA address, with a **second blank for day 2** |
+| [session-1.md:16](../docs/session-1.md#L16) | wait for the VM screen to show the IP, **write it on the record sheet**, then browse to it |
+| [session-1.md:206](../docs/session-1.md#L206) | the phone opens "the same address you wrote down" |
+| [session-2.md:12](../docs/session-2.md#L12) | read the address off the VM screen again — **explicitly warns it may differ from yesterday** |
+| [reference.md:56](../docs/reference.md#L56) | IP first; names `homeassistant.local` only to say **do not use it**, because it is duplicated room-wide |
+| [record-sheet.md:9](../docs/record-sheet.md#L9) | new field: the team's HA address, with a **second blank for day 2** |
 
 No port is needed — the OVA deliberately serves on **port 80, not 8123**
 ([hass/README.md:48](hass/README.md#L48)), so a bare `http://<IP>` is the whole address.

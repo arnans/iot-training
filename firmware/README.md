@@ -95,7 +95,7 @@ Do not change these without reading the reasoning:
   web.esphome.io, and nothing else prints it. The hostname appears only in WiFi's config dump at
   `[C]`/CONFIG level, which `logger: level: INFO` filters out (ESPHome levels run
   `INFO < CONFIG < DEBUG`). Do not delete the banner, and do not "simplify" it by raising the log
-  level instead — CONFIG dumps every component and buries the name. See TEST-PLAN.md test B.
+  level instead — CONFIG dumps every component and buries the name. See planning/TEST-PLAN.md test B.
 - **`reboot_timeout: 0s`** on both `api:` and `wifi:` — otherwise boards reboot every
   15 minutes overnight when no Home Assistant is connected, wrecking the session 2
   history graph.
@@ -121,7 +121,7 @@ Do not change these without reading the reasoning:
   inverts that too — the bench saw a "steady" LED with a 250 ms wink and called it broken. The
   explicit interval gives a symmetric 0.8 s blink on WiFi loss and steady lit on WiFi. The API is
   deliberately not part of it: the board is meant to run overnight with no Home Assistant, and
-  `status_led:` would have blinked all night. See TEST-PLAN.md test H.
+  `status_led:` would have blinked all night. See planning/TEST-PLAN.md test H.
 - **Top-level keys go at the end of the file, never mid-list.** Inserting `select:` after
   `pump_running` silently re-parented the float switch (the next `- platform: gpio` item) under
   `select:` and failed with `Platform not found: 'select.gpio'`. YAML gives no other warning.
@@ -136,7 +136,7 @@ Do not change these without reading the reasoning:
   *down*; a kit assembled without the flip reads backwards — check the cylinder, not the YAML. The
   moisture device class makes Home Assistant show **Wet / Dry** rather than On / Off. Session 2's
   watering rule still requires **Wet** as a condition, so a dead board (`unavailable`) fails safe
-  too. TEST-PLAN.md test G.
+  too. planning/TEST-PLAN.md test G.
 - **Relay board pins GPIO19 (relay), GPIO2 (LED), GPIO9 (button)**, from the vendor datasheet and
   confirmed on hardware — `ESP32-C6-RELAY-X1.md`.
 - **`restore_mode: ALWAYS_OFF` holds on both supplies** (USB and 12 V): the relay is off after
@@ -154,7 +154,7 @@ The point is **commanded state versus actual state**: a relay can be closed whil
 seized, unprimed or unplugged. Raw acceleration is never streamed to Home Assistant; the three
 axis sensors are `internal`.
 
-Thresholds were calibrated against the real pump (TEST-PLAN.md test I: idle 3–8 mg, running
+Thresholds were calibrated against the real pump (planning/TEST-PLAN.md test I: idle 3–8 mg, running
 ~20–25 mg on a deliberately soft mount) and are now chosen at runtime from a three-level
 **`select`**, `ความไวตรวจจับปั๊ม (pump sensitivity)`:
 

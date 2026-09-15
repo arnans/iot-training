@@ -151,6 +151,10 @@ body {
 .md-typeset blockquote > :last-child { margin-bottom: 0; }
 .md-typeset img { max-width: 100%; height: auto; display: inline-block; }
 .md-typeset .table-wrap { overflow-x: auto; margin: 0 0 1.3em; }
+.md-typeset .video { margin: 0.4em 0 1.2em; max-width: 42rem; }
+.md-typeset .video-frame { position: relative; aspect-ratio: 16 / 9; border-radius: 0.6em; overflow: hidden; background: #000; }
+.md-typeset .video-frame iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+.md-typeset .video-link { font-size: 0.85em; margin: 0.35em 0 0; }
 .md-typeset table { border-collapse: separate; border-spacing: 0; width: 100%; }
 .md-typeset th, .md-typeset td { padding: 0.55em 0.9em; text-align: left; }
 .md-typeset td { font-variant-numeric: tabular-nums; }
@@ -1708,6 +1712,12 @@ body {
   }
 
   function fillFields(root) {
+    // Each visible copy needs its own radio group; data-k remains the shared answer key.
+    root.querySelectorAll('.fld-radio').forEach(function (group, i) {
+      group.querySelectorAll('input[type=radio]').forEach(function (el) {
+        el.name = el.dataset.k + '--copy-' + i;
+      });
+    });
     root.querySelectorAll(".fld").forEach(function (el) {
       var v = store.fields[el.dataset.k];
       if (el.type === "radio") {
@@ -1931,6 +1941,9 @@ body {
     var el = e.target;
     if (el.classList && el.classList.contains("fld") && el.type === "radio") {
       store.fields[el.dataset.k] = el.value;
+      document.querySelectorAll('input.fld[type=radio]').forEach(function (other) {
+        if (other.dataset.k === el.dataset.k) other.checked = other.value === el.value;
+      });
       saveNow();
       pushSoon();
       return;

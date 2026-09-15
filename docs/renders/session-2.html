@@ -151,6 +151,10 @@ body {
 .md-typeset blockquote > :last-child { margin-bottom: 0; }
 .md-typeset img { max-width: 100%; height: auto; display: inline-block; }
 .md-typeset .table-wrap { overflow-x: auto; margin: 0 0 1.3em; }
+.md-typeset .video { margin: 0.4em 0 1.2em; max-width: 42rem; }
+.md-typeset .video-frame { position: relative; aspect-ratio: 16 / 9; border-radius: 0.6em; overflow: hidden; background: #000; }
+.md-typeset .video-frame iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+.md-typeset .video-link { font-size: 0.85em; margin: 0.35em 0 0; }
 .md-typeset table { border-collapse: separate; border-spacing: 0; width: 100%; }
 .md-typeset th, .md-typeset td { padding: 0.55em 0.9em; text-align: left; }
 .md-typeset td { font-variant-numeric: tabular-nums; }
@@ -1094,7 +1098,7 @@ body {
 <main class="md-content__inner md-typeset" id="ws-main">
 <h1 id="ชวงท-2--ตรรกะควบคมอตโนมตและการออกแบบ-fail-safe-สำหรบฟารม">ช่วงที่ 2 — ตรรกะควบคุมอัตโนมัติและการออกแบบ Fail-safe สำหรับฟาร์ม</h1>
 <p><strong>ให้โปรแกรมตัดสินใจและสั่งงานแทนเรา</strong></p>
-<p>ช่วงที่ 1 เราได้ต่อหลอดไฟเข้ารีเลย์ ลองเปิด–ปิดไฟด้วยมือ แล้วสร้างกฎสองข้อให้ไฟสวนเปิดเองเมื่อมืดและปิดเองเมื่อสว่าง ในช่วงนี้จะดูว่ากฎสองข้อนั้นมีจุดอ่อนตรงไหนแล้วแก้ให้ทำงานได้จริง จากนั้นต่อปั๊มน้ำแทนหลอดไฟ และนำหลักเดียวกันมาใช้กับการรดน้ำ ช่วงหลังจะจับคู่กับกลุ่มข้าง ๆ เพื่อจำลองปัญหาที่อาจเกิดขึ้นในหน้างานจริงระหว่างใช้งาน สังเกตอาการ และเพิ่มวิธีป้องกันความเสียหาย (Fail-safe)</p>
+<p>ช่วงที่ 1 เราได้ต่อหลอดไฟเข้ารีเลย์ แล้วสร้างกฎสองข้อให้ไฟสวนเปิดเองเมื่อมืดและปิดเองเมื่อสว่าง ในช่วงนี้จะดูว่ากฎสองข้อนั้นมีจุดอ่อนตรงไหนแล้วแก้ให้ทำงานได้จริง จากนั้นต่อปั๊มน้ำแทนหลอดไฟ และนำหลักเดียวกันมาใช้กับการรดน้ำ ช่วงหลังจะจับคู่กับกลุ่มข้าง ๆ เพื่อจำลองปัญหาที่อาจเกิดขึ้นในหน้างานจริงระหว่างใช้งาน สังเกตอาการ และเพิ่มวิธีป้องกันความเสียหาย (Fail-safe)</p>
 <h2 id="กอนเรม">ก่อนเริ่ม</h2>
 <ul class="task-list">
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> ต่อแล็ปท็อปเข้า WiFi ของโซนเรา <code>farm-laptop-สี</code> เปิด VirtualBox กด Start รอจนหน้าจอแสดงที่อยู่ (IP) เปิดเบราว์เซอร์แล้วพิมพ์ที่อยู่ IP นั้น <strong>อาจไม่ใช่เลขเดิมกับช่วงที่ 1 ให้อ่านจากหน้าจอทุกครั้ง</strong> จดไว้ <code>http://</code><input class="fld" type="text" data-k="ha.ip2" data-size="15" size="15" autocomplete="off" spellcheck="false"> รอครึ่งนาที แล้วตรวจว่า entity ของบอร์ดทั้งสองกลับมาแสดงค่า (ต้องไม่ค้าง หรือ unavailable)</li>
@@ -1107,7 +1111,7 @@ body {
 <h2 id="ทบทวน-automation-มสามสวน">ทบทวน: automation มีสามส่วน</h2>
 <p><strong>15 นาที</strong></p>
 <p><strong>อุปกรณ์ที่ใช้</strong> แล็ปท็อป</p>
-<p>ช่วงที่ 1 เราใช้มนุษย์เป็นผู้ควบคุม แล้วปิดท้ายด้วย automation สองข้อ คือถ้ามืดให้เปิดไฟ ถ้าสว่างให้ปิดไฟ ช่วงนี้เราจะแก้กฎเดิมและสร้างกฎเพิ่มอีกหลายข้อ ขอให้เปิดกฎข้อแรกขึ้นมาทบทวนส่วนประกอบกันก่อน</p>
+<p>ช่วงที่ 1 เราปิดท้ายด้วย automation สองข้อ คือถ้ามืดให้เปิดไฟ ถ้าสว่างให้ปิดไฟ ช่วงนี้เราจะแก้กฎเดิมและสร้างกฎเพิ่มอีกหลายข้อ ขอให้เปิดกฎข้อแรกขึ้นมาทบทวนส่วนประกอบกันก่อน</p>
 <ol>
 <li><strong>Settings → Automations &amp; scenes</strong> กดที่ชื่อ <code>มืด-เปิดไฟ</code> ที่สร้างไว้ในช่วงที่ 1</li>
 <li>หาสามส่วนบนหน้าจอ <strong>When</strong> · <strong>And if</strong> · <strong>Then do</strong></li>
@@ -1965,6 +1969,12 @@ body {
   }
 
   function fillFields(root) {
+    // Each visible copy needs its own radio group; data-k remains the shared answer key.
+    root.querySelectorAll('.fld-radio').forEach(function (group, i) {
+      group.querySelectorAll('input[type=radio]').forEach(function (el) {
+        el.name = el.dataset.k + '--copy-' + i;
+      });
+    });
     root.querySelectorAll(".fld").forEach(function (el) {
       var v = store.fields[el.dataset.k];
       if (el.type === "radio") {
@@ -2188,6 +2198,9 @@ body {
     var el = e.target;
     if (el.classList && el.classList.contains("fld") && el.type === "radio") {
       store.fields[el.dataset.k] = el.value;
+      document.querySelectorAll('input.fld[type=radio]').forEach(function (other) {
+        if (other.dataset.k === el.dataset.k) other.checked = other.value === el.value;
+      });
       saveNow();
       pushSoon();
       return;

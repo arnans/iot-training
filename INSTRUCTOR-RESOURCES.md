@@ -114,10 +114,12 @@ check first). Minutes are the design estimate, not a rehearsed timing.
 **How to run it.** Project the checklist and talk through it one item at a time; teams work down
 it while you talk. The prose under each item is for the team that falls behind or wants the reason.
 
-The two new questions added with the checklists, `s1.box.pos` and `s2.fs.none`, the two
-from the Activity 5 pilot, `s2.time.trace` and `s2.time.why`, and the Session 1 lighting keys
-(`s1.light.on`, `s1.manual.rounds`, `s1.manual.correct`, `s1.rule.dark.*`, `s1.rule.bright.*`,
-`s1.auto.pass`, `s1.timer.at`, `s1.timer.ok`) are on the record sheet like every other answer.
+The question added with the checklists, `s2.fs.none`, the two from the Activity 5 pilot,
+`s2.time.trace` and `s2.time.why`, and the Session 1 lighting keys (`s1.light.on`,
+`s1.rule.dark.*`, `s1.rule.bright.*`, `s1.auto.pass`, `s1.timer.at`, `s1.timer.ok`) are on the
+record sheet like every other answer. Session 1 no longer records the supply voltage, the
+wired-right-first-time self-report, the control-box position or the manual-round counts
+(Roger, 15 Sep 2026).
 
 ### Session 1 · Activity 1 — Sense (35 min)
 
@@ -184,10 +186,11 @@ in the board.
 
 **If stuck** Same as 1.2. The **LED** blinking means no WiFi; a steady LED means connected.
 
-#### 2.2 The 12 V supply box
+#### 2.2 Charge controller parts and the relay circuit
 
 **Done when** the team can find the middle pair (battery symbol, where the adapter goes), the right pair
-(lamp symbol, the 12 V output) and the two USB ports.
+(lamp symbol, the 12 V output) and the two USB ports, and can say from the diagram why the
++12 V lead goes through **COM** and **NO** while the negative lead goes straight to the lamp.
 
 #### 2.2 Wire it
 
@@ -210,10 +213,9 @@ dark: swap the LED's two leads. The page will not open after
 a minute: move the relay board's USB lead to the laptop briefly to read a new IP (the relay
 restarts Off), then move it back.
 
-#### 2.2 The farm pump control box
-
-**Done when** the answer is **Manual**. Auto is the controller in charge, Off is maintenance or a leak,
-and Manual is a person running the pump when sensors or the network have failed.
+The **Auto / Off / Manual** control-box talk has no worksheet item any more (removed 15 Sep
+2026). If you give it, it is two minutes before the break with nothing to fill in; Session 2's
+debrief demo carries the idea.
 
 #### End-of-activity question
 
@@ -224,57 +226,53 @@ including its start-up surge. It also needs 220 V-rated wiring, an enclosure and
 
 ### Session 1 · Activity 3 — Logic (40 min)
 
-Teams leave with both boards in their own Home Assistant and a "be the Logic yourself" round on the
-garden lamp. They also leave with two automations, `มืด-เปิดไฟ` and `สว่าง-ปิดไฟ` on one shared
-threshold, passing 3 of 3, and fast teams with a tested (and then disabled) `ปิดไฟตามเวลา`.
+Teams leave with both boards in their own Home Assistant, a light threshold they chose, and two
+automations, `มืด-เปิดไฟ` and `สว่าง-ปิดไฟ` on one shared threshold, passing 3 of 3. Fast teams also
+leave with a tested (and then disabled) `ปิดไฟตามเวลา`. Cut on 15 Sep 2026 to reduce reading during
+the live session: no history graph (Session 3 opens on it) and no "be the Logic yourself" round; 3.3
+goes straight from threshold to rule sentences to the two automations.
 
 #### 3.1 Add both boards
 
-**Done when** the representative's laptop is logged in with the credentials you project now, both
-boards are added from the discovered cards, the last six characters match the names written down,
-and both devices are renamed for the team.
+**Done when** the representative's laptop is logged in with the credentials you project now, and both
+boards are added from the discovered cards with the last six characters matching the names written
+down. Renaming the devices is optional.
 
 **If stuck** The Login page no longer loads: the VM's IP changed, so read it again from the VM
 window. Every team in the zone sees every card. **Adding a neighbour's card looks like success**, but
-the team then watches the neighbour's sensors and its automation drives the neighbour's pump. Check
+the team then watches the neighbour's sensors and its automation drives the neighbour's lamp. Check
 the six characters before adding. No card at all: *+ Add integration → ESPHome → Add device → Setup
 another instance of ESPHome*, then type the board name without `.local`.
 
-#### 3.2 Current values, history, phone
+#### 3.2 Test the boards in Home Assistant
 
-**Done when** the light history graph opens with a dip from a cupped hand, and the lamp toggles from the
-laptop and from a phone, with both screens agreeing.
+**Done when** the GoGo-IoT device page shows the same entities as the board's web page and the light
+value drops under a cupped hand, and the lamp toggles from the laptop and from a phone, with both
+screens agreeing.
 
 **If stuck** The phone must be on the zone WiFi, not mobile data, and must use the IP from the VM screen,
 never `homeassistant.local`. If it still fails, skip this step and flag it to a TA; the rest of the activity
 does not need the phone.
 
-#### 3.3 Be the Logic yourself
+#### 3.3 Threshold, rule sentences, two automations
 
-**Done when** the light threshold sits roughly halfway between the room reading and the covered reading
-(82 and 6 → about 40), re-checked on the device page because the room may have changed since Activity 1.
-There is a count of cover/uncover rounds in three minutes and how many the laptop person got right.
-The scenario is the flower-farm night light: the LED is the lamp, a cupped hand is dusk.
-
-*Rules:* dark: "if light is below the threshold, turn the lamp on"; bright: "if light is above the
-threshold, turn the lamp off".
+**Done when** the threshold sits roughly halfway between the open and covered readings taken now on the
+device page (80 and 7 → about 40), not copied from Activity 1 because the room may have changed. The
+two sentences read: dark, "if the light sensor is below the threshold, turn the lamp on"; bright,
+"if it is above, turn the lamp off". Then covering the board lights the lamp and uncovering darkens it,
+three rounds out of three, with nobody touching the switch. Both rules use the **same** threshold on
+purpose. The scenario is the flower-farm night light: the LED is the lamp, a cupped hand is dusk.
 
 **If stuck** The value barely moves: the hand is not over the light sensor (right-hand group on the
-board). It never rises again: the lit LED is shining under the hand; turn it away.
+board). It never rises again: the lit LED is shining under the hand; turn it away. Covering does
+nothing: the reading was already below the threshold when the rule was saved. A crossing trigger
+needs the value to go above, then below again, so uncover, set the relay Off and cover again. The
+board sends a light value about once a second, so hold the cover for two seconds. Check that the
+trigger entity is `ความสว่าง (light)` and the action is the team's own relay. The lamp flickers while
+the hand moves slowly: that is expected with one shared threshold, tell them to cover fully and
+quickly; it is the opening lesson of Session 2, not a fault.
 
-#### 3.4 Two automations: dark → on, bright → off
-
-**Done when** covering the board lights the lamp and uncovering darkens it, three rounds out of three,
-with nobody touching the switch. Both rules use the **same** threshold on purpose.
-
-**If stuck** Covering does nothing: the reading was already below the threshold when the rule was
-saved. A crossing trigger needs the value to go above, then below again, so uncover, set the relay Off
-and cover again. The board sends a light value about once a second, so hold the cover for two
-seconds. Check that the trigger entity is `ความสว่าง (light)` and the action is the team's own relay.
-The lamp flickers while the hand moves slowly: that is expected with one shared threshold, tell them to
-cover fully and quickly; it is the opening lesson of Session 2, not a fault.
-
-#### 3.5 Optional: lamp off at a chosen time
+#### 3.4 Optional: lamp off at a chosen time
 
 **Done when** the lamp, switched On from the device page, goes off by itself at the minute the team
 chose, and the team has then **switched the rule off**. Left on, it fires every day at that time,
@@ -289,34 +287,6 @@ fired because the sensor was covered then uncovered; start with the sensor open.
 **A good answer** says the lamp switches on and off repeatedly, because one value is both the on and the
 off line, so every wobble across it fires a rule. Leave it there: Session 2 opens by measuring it and
 fixing it with a second threshold.
-
-### Session 1 · Activity 4 — Spec (15 min)
-
-Paper only. Never skipped: under 15 minutes left, run the short form (relay and pump only, one
-card, one pass/fail).
-
-#### 4.1 Sensor and float specs
-
-**Done when** the humidity and temperature accuracy and the float's current and voltage rating are copied
-from the handout. The humidity sensor on the board is a GXHT30C (SHT3x-compatible).
-
-#### 4.1 Relay and pump specs
-
-**Done when** the relay's printed ratings are read off the blue relay itself: `10A 30VDC` and `10A 250VAC`.
-The pump current comes from its spec, 18 W at 12 V, which is 1.5 A.
-
-**If stuck** Check the comparison uses the DC rating: our pump circuit is 12 V DC.
-
-#### 4.2 Compare with the card
-
-**Done when** each of the card's demands sits next to what the kit offers, with a pass or fail, and a failed card names the one
-part to change. The card set is built so one card exceeds the sensor accuracy (change the sensor),
-one exceeds the relay rating (change the relay or add a contactor), and one passes.
-
-#### End-of-activity question
-
-**A good answer** names the spec line that decided it, not "it worked on the table". Close with
-the five things to read on every spec: range, accuracy, interface, voltage and current, IP rating.
 
 ### Session 2 · Activity 5 — automations and hysteresis (70 min)
 

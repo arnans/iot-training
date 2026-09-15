@@ -21,6 +21,7 @@ specific to that first delivery.
 | [TEST-PLAN.md](TEST-PLAN.md) | Bench test for the ESPHome provisioning flow, before committing the firmware image |
 | `firmware/` | The two workshop ESPHome images (sensor node, relay board) |
 | `hass/` | Home Assistant configuration for the team VM image (plus a now-unused instructor-server config) |
+| `archive/` | Worksheet content taken out but kept for restoring, each file with its own restore steps. Not published |
 | `docs/` | **Participant worksheets** — the website source (Thai), plus the two generated network-spec pages |
 
 ## Participant worksheet site
@@ -87,3 +88,5 @@ with an `attr_list` width — `![alt](images/x.png){ width="60%" }` — because 
 page at a directory URL and rewrites only Markdown image paths, so a raw `<img src>` 404s on
 every page but the root. Blockquote callouts, relative cross-links, no page-break markers.
 `record-sheet.md` is the one exception — it is print-bound and uses dotted fill-in lines.
+A YouTube link alone on its own line becomes an embedded player in `docs/renders/` (the Markdown keeps
+the plain link).

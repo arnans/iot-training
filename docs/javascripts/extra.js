@@ -396,6 +396,12 @@
   }
 
   function fillFields(root) {
+    // Each visible copy needs its own radio group; data-k remains the shared answer key.
+    root.querySelectorAll('.fld-radio').forEach(function (group, i) {
+      group.querySelectorAll('input[type=radio]').forEach(function (el) {
+        el.name = el.dataset.k + '--copy-' + i;
+      });
+    });
     root.querySelectorAll(".fld").forEach(function (el) {
       var v = store.fields[el.dataset.k];
       if (el.type === "radio") {
@@ -625,6 +631,9 @@
     var el = e.target;
     if (el.classList && el.classList.contains("fld") && el.type === "radio") {
       store.fields[el.dataset.k] = el.value;
+      document.querySelectorAll('input.fld[type=radio]').forEach(function (other) {
+        if (other.dataset.k === el.dataset.k) other.checked = other.value === el.value;
+      });
       saveNow();
       pushSoon();
       return;

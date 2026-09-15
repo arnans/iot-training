@@ -237,6 +237,10 @@ body {
 .md-typeset blockquote > :last-child { margin-bottom: 0; }
 .md-typeset img { max-width: 100%; height: auto; display: inline-block; }
 .md-typeset .table-wrap { overflow-x: auto; margin: 0 0 1.3em; }
+.md-typeset .video { margin: 0.4em 0 1.2em; max-width: 42rem; }
+.md-typeset .video-frame { position: relative; aspect-ratio: 16 / 9; border-radius: 0.6em; overflow: hidden; background: #000; }
+.md-typeset .video-frame iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+.md-typeset .video-link { font-size: 0.85em; margin: 0.35em 0 0; }
 .md-typeset table { border-collapse: separate; border-spacing: 0; width: 100%; }
 .md-typeset th, .md-typeset td { padding: 0.55em 0.9em; text-align: left; }
 .md-typeset td { font-variant-numeric: tabular-nums; }
@@ -425,6 +429,24 @@ def data_uri(rel: str) -> str:
     return _uri_cache[rel]
 
 
+# a YouTube link alone on its own line (bare, or as a Markdown link) becomes a player; the link stays
+# underneath, because the player needs internet and a page opened from a local file may refuse to play
+YOUTUBE_LINE = re.compile(
+    r'<p>\s*(?:<a href="[^"]*">)?\s*'
+    r'(https?://(?:www\.)?(?:youtu\.be/|youtube\.com/watch\?v=|youtube\.com/shorts/)([A-Za-z0-9_-]{11})[^\s<"]*)'
+    r'\s*(?:</a>)?\s*</p>'
+)
+
+
+def youtube_embed(m: re.Match) -> str:
+    url, vid = html.unescape(m.group(1)), m.group(2)
+    return (f'<div class="video"><div class="video-frame">'
+            f'<iframe src="https://www.youtube-nocookie.com/embed/{vid}?rel=0" title="วิดีโอสาธิต" loading="lazy" '
+            f'allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" '
+            f'referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div>'
+            f'<p class="video-link"><a href="{html.escape(url)}" target="_blank" rel="noopener">▶ เปิดวิดีโอใน YouTube</a></p></div>')
+
+
 def render_page(src: str, slug: str, combined: bool) -> dict:
     text = (DOCS / src).read_text(encoding="utf-8")
     title = re.search(r"^# (.+)$", text, re.M).group(1).strip()
@@ -456,6 +478,7 @@ def render_page(src: str, slug: str, combined: bool) -> dict:
     body = re.sub(r'<a href="([a-z0-9-]+)\.md(#[^"]*)?">(.*?)</a>', link, body, flags=re.S)
     body = re.sub(r'(src|href)="(images/[^"]+)"', lambda m: f'{m.group(1)}="{data_uri(m.group(2))}"', body)
     body = body.replace("<table>", '<div class="table-wrap"><table>').replace("</table>", "</table></div>")
+    body = YOUTUBE_LINE.sub(youtube_embed, body)
 
     sections = [(prefix + t["id"], html.escape(html.unescape(t["name"])))
                 for t in _h2_tokens(md.toc_tokens)]

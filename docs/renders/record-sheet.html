@@ -151,6 +151,10 @@ body {
 .md-typeset blockquote > :last-child { margin-bottom: 0; }
 .md-typeset img { max-width: 100%; height: auto; display: inline-block; }
 .md-typeset .table-wrap { overflow-x: auto; margin: 0 0 1.3em; }
+.md-typeset .video { margin: 0.4em 0 1.2em; max-width: 42rem; }
+.md-typeset .video-frame { position: relative; aspect-ratio: 16 / 9; border-radius: 0.6em; overflow: hidden; background: #000; }
+.md-typeset .video-frame iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+.md-typeset .video-link { font-size: 0.85em; margin: 0.35em 0 0; }
 .md-typeset table { border-collapse: separate; border-spacing: 0; width: 100%; }
 .md-typeset th, .md-typeset td { padding: 0.55em 0.9em; text-align: left; }
 .md-typeset td { font-variant-numeric: tabular-nums; }
@@ -1143,58 +1147,28 @@ body {
 </tr>
 <tr>
 <td>สวิตช์ลูกลอย</td>
-<td>ลอยอยู่: <input class="fld" type="text" data-k="s1.float.rest" data-size="4" size="4" autocomplete="off" spellcheck="false"></td>
-<td>ยกขึ้น: <input class="fld" type="text" data-k="s1.float.lift" data-size="4" size="4" autocomplete="off" spellcheck="false"></td>
+<td>วางในน้ำ: <input class="fld" type="text" data-k="s1.float.rest" data-size="4" size="4" autocomplete="off" spellcheck="false"></td>
+<td>ยกพ้นน้ำ: <input class="fld" type="text" data-k="s1.float.lift" data-size="4" size="4" autocomplete="off" spellcheck="false"></td>
 <td>ยกขึ้นจากน้ำ</td>
 </tr>
 </tbody>
 </table></div>
 <p><strong>เวลาตอบสนอง</strong> หลังใช้มือครอบบอร์ด ค่าแสงบนหน้าเว็บเปลี่ยนภายใน <input class="fld" type="text" data-k="s1.light.delay" data-size="3" size="3" inputmode="decimal" autocomplete="off" spellcheck="false"> วินาที</p>
-<p><strong>คำถามท้ายกิจกรรมที่ 1</strong> ค่าใดใช้ตัดสินใจรดน้ำ และสวิตช์ลูกลอยมีไว้บอกอะไร</p>
+<p><strong>คำถามท้ายกิจกรรมที่ 1</strong> เราควรวัดค่าอะไรเพื่อช่วยตัดสินใจว่าจะรดน้ำเมื่อไร และสวิตช์ลูกลอยช่วยบอกข้อมูลอะไรได้บ้าง</p>
 <textarea class="fld fld-ta" data-k="s1.q1" rows="2"></textarea>
 
-<p><strong>กล่องจ่ายไฟ</strong> (กิจกรรมที่ 2) จอแสดง <input class="fld" type="text" data-k="s1.psu.volt" data-size="5" size="5" inputmode="decimal" autocomplete="off" spellcheck="false"> V เมื่อเสียบอะแดปเตอร์ · กลุ่มต่อสายครบและถูกต้องในครั้งแรกหรือไม่ <span class="fld-radio" data-k="s1.wiring.first"><label><input class="fld" type="radio" name="s1.wiring.first" data-k="s1.wiring.first" value="ใช่"> ใช่</label><label><input class="fld" type="radio" name="s1.wiring.first" data-k="s1.wiring.first" value="ไม่ใช่"> ไม่ใช่</label></span> ข้อที่ต้องแก้ <input class="fld" type="text" data-k="s1.wiring.fix" data-size="20" size="20" autocomplete="off" spellcheck="false"></p>
-<p><strong>ตู้ควบคุมปั๊ม</strong> ถ้าเซนเซอร์เสียแต่พืชยังต้องการน้ำ ควรหมุนสวิตช์หน้าตู้ไปที่ <input class="fld" type="text" data-k="s1.box.pos" data-size="8" size="8" autocomplete="off" spellcheck="false"></p>
-<p><strong>คำถามท้ายกิจกรรมที่ 2</strong> ถ้าเปลี่ยนหลอดไฟเป็นปั๊มบ่อ 220V ต้องเปลี่ยนอะไรบ้าง และใครควรเป็นคนต่อ</p>
+<p><strong>คำถามท้ายกิจกรรมที่ 2</strong> หากนำแนวคิดนี้ไปควบคุมปั๊มน้ำ 220V ในฟาร์มจริง ต้องพิจารณาอุปกรณ์และความปลอดภัยเรื่องใดบ้าง และควรให้ใครเป็นผู้ติดตั้ง</p>
 <textarea class="fld fld-ta" data-k="s1.q2" rows="2"></textarea>
 
-<p><strong>ลองตัดสินใจและสั่งงานด้วยตัวเอง</strong> (กิจกรรมที่ 3) ค่าเกณฑ์ความสว่างที่เลือก <input class="fld" type="text" data-k="s1.light.on" data-size="4" size="4" inputmode="decimal" autocomplete="off" spellcheck="false"> · ครอบและเอามือออกรวม <input class="fld" type="text" data-k="s1.manual.rounds" data-size="2" size="2" inputmode="decimal" autocomplete="off" spellcheck="false"> รอบ · สั่งถูก <input class="fld" type="text" data-k="s1.manual.correct" data-size="2" size="2" inputmode="decimal" autocomplete="off" spellcheck="false"> รอบ</p>
+<p><strong>ค่าเกณฑ์ความสว่าง</strong> (กิจกรรมที่ 3) ค่าเกณฑ์ที่กลุ่มเลือก <input class="fld" type="text" data-k="s1.light.on" data-size="4" size="4" inputmode="decimal" autocomplete="off" spellcheck="false"></p>
 <p><strong>กฎที่เราใช้ตัดสินใจ</strong></p>
 <blockquote>
-<p>มืด: ถ้า <input class="fld" type="text" data-k="s1.rule.dark.if" data-size="24" size="24" autocomplete="off" spellcheck="false"> ให้ <input class="fld" type="text" data-k="s1.rule.dark.then" data-size="24" size="24" autocomplete="off" spellcheck="false"></p>
-<p>สว่าง: ถ้า <input class="fld" type="text" data-k="s1.rule.bright.if" data-size="24" size="24" autocomplete="off" spellcheck="false"> ให้ <input class="fld" type="text" data-k="s1.rule.bright.then" data-size="24" size="24" autocomplete="off" spellcheck="false"></p>
+<p>มืด: ถ้าเซนเซอร์แสง <input class="fld" type="text" data-k="s1.rule.dark.if" data-size="24" size="24" autocomplete="off" spellcheck="false"> ให้ <input class="fld" type="text" data-k="s1.rule.dark.then" data-size="24" size="24" autocomplete="off" spellcheck="false"></p>
+<p>สว่าง: ถ้าเซนเซอร์แสง <input class="fld" type="text" data-k="s1.rule.bright.if" data-size="24" size="24" autocomplete="off" spellcheck="false"> ให้ <input class="fld" type="text" data-k="s1.rule.bright.then" data-size="24" size="24" autocomplete="off" spellcheck="false"></p>
 </blockquote>
-<p><strong>automation สองข้อแรก</strong> ครอบและเอามือออกสามรอบ ไฟติดและดับเองครบ <input class="fld" type="text" data-k="s1.auto.pass" data-size="2" size="2" inputmode="decimal" autocomplete="off" spellcheck="false"> จาก 3 รอบ · <strong>โจทย์เสริม ปิดไฟตามเวลา</strong> เวลาที่ตั้ง <input class="fld" type="text" data-k="s1.timer.at" data-size="5" size="5" autocomplete="off" spellcheck="false"> น. ผล <span class="fld-radio" data-k="s1.timer.ok"><label><input class="fld" type="radio" name="s1.timer.ok" data-k="s1.timer.ok" value="ดับตรงเวลา"> ดับตรงเวลา</label><label><input class="fld" type="radio" name="s1.timer.ok" data-k="s1.timer.ok" value="ไม่ดับ"> ไม่ดับ</label><label><input class="fld" type="radio" name="s1.timer.ok" data-k="s1.timer.ok" value="ไม่ได้ทำ"> ไม่ได้ทำ</label></span></p>
-<p><strong>คำถามท้ายกิจกรรมที่ 3</strong> ถ้าค่าแสงแกว่งอยู่ใกล้เกณฑ์พอดี เช่น เมฆลอยผ่านตอนพลบค่ำ กฎสองข้อของเราจะทำอะไร</p>
+<p><strong>กฎอัตโนมัติสองกฎแรก</strong> ครอบและเอามือออกสามรอบ ไฟติดและดับเองครบ <input class="fld" type="text" data-k="s1.auto.pass" data-size="2" size="2" inputmode="decimal" autocomplete="off" spellcheck="false"> จาก 3 รอบ · <strong>โจทย์เสริม ปิดไฟตามเวลา</strong> เวลาที่ตั้ง <input class="fld" type="text" data-k="s1.timer.at" data-size="5" size="5" autocomplete="off" spellcheck="false"> น. ผล <span class="fld-radio" data-k="s1.timer.ok"><label><input class="fld" type="radio" name="s1.timer.ok" data-k="s1.timer.ok" value="ดับตรงเวลา"> ดับตรงเวลา</label><label><input class="fld" type="radio" name="s1.timer.ok" data-k="s1.timer.ok" value="ไม่ดับ"> ไม่ดับ</label><label><input class="fld" type="radio" name="s1.timer.ok" data-k="s1.timer.ok" value="ไม่ได้ทำ"> ไม่ได้ทำ</label></span></p>
+<p><strong>คำถามท้ายกิจกรรมที่ 3</strong> ถ้าค่าแสงแกว่งอยู่ใกล้เกณฑ์พอดี เช่น เมฆลอยผ่านตอนพลบค่ำ ระบบจะเปิด–ปิดไฟอย่างไร</p>
 <textarea class="fld fld-ta" data-k="s1.q3" rows="2"></textarea>
-
-<p><strong>สเปก</strong> (กิจกรรมที่ 4) ความแม่นยำเซนเซอร์ความชื้น ± <input class="fld" type="text" data-k="s1.spec.hum_acc" data-size="4" size="4" inputmode="decimal" autocomplete="off" spellcheck="false"> %RH อุณหภูมิ ± <input class="fld" type="text" data-k="s1.spec.temp_acc" data-size="4" size="4" inputmode="decimal" autocomplete="off" spellcheck="false"> °C · สวิตช์ลูกลอยทนได้ <input class="fld" type="text" data-k="s1.spec.float_a" data-size="4" size="4" inputmode="decimal" autocomplete="off" spellcheck="false"> A <input class="fld" type="text" data-k="s1.spec.float_v" data-size="4" size="4" inputmode="decimal" autocomplete="off" spellcheck="false"> V</p>
-<p><strong>รีเลย์</strong> ทนได้ <input class="fld" type="text" data-k="s1.spec.relay_dc_a" data-size="3" size="3" inputmode="decimal" autocomplete="off" spellcheck="false"> A ที่ DC <input class="fld" type="text" data-k="s1.spec.relay_dc_v" data-size="3" size="3" inputmode="decimal" autocomplete="off" spellcheck="false"> V และ <input class="fld" type="text" data-k="s1.spec.relay_ac_a" data-size="3" size="3" inputmode="decimal" autocomplete="off" spellcheck="false"> A ที่ AC <input class="fld" type="text" data-k="s1.spec.relay_ac_v" data-size="3" size="3" inputmode="decimal" autocomplete="off" spellcheck="false"> V · ปั๊มใช้กระแส <input class="fld" type="text" data-k="s1.spec.pump_a" data-size="4" size="4" inputmode="decimal" autocomplete="off" spellcheck="false"> A</p>
-<p><strong>บัตรสถานการณ์หมายเลข</strong> <input class="fld" type="text" data-k="s1.card" data-size="3" size="3" autocomplete="off" spellcheck="false"></p>
-<div class="table-wrap"><table>
-<thead>
-<tr>
-<th>งานต้องการ (จากบัตร)</th>
-<th>ชุดเราให้ได้ (จากสเปก)</th>
-<th>ผ่าน / ไม่ผ่าน</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><input class="fld" type="text" data-k="s1.spec.need1" data-size="16" size="16" autocomplete="off" spellcheck="false"></td>
-<td><input class="fld" type="text" data-k="s1.spec.have1" data-size="16" size="16" autocomplete="off" spellcheck="false"></td>
-<td><span class="fld-radio" data-k="s1.spec.pass1"><label><input class="fld" type="radio" name="s1.spec.pass1" data-k="s1.spec.pass1" value="ผ่าน"> ผ่าน</label><label><input class="fld" type="radio" name="s1.spec.pass1" data-k="s1.spec.pass1" value="ไม่ผ่าน"> ไม่ผ่าน</label></span></td>
-</tr>
-<tr>
-<td><input class="fld" type="text" data-k="s1.spec.need2" data-size="16" size="16" autocomplete="off" spellcheck="false"></td>
-<td><input class="fld" type="text" data-k="s1.spec.have2" data-size="16" size="16" autocomplete="off" spellcheck="false"></td>
-<td><span class="fld-radio" data-k="s1.spec.pass2"><label><input class="fld" type="radio" name="s1.spec.pass2" data-k="s1.spec.pass2" value="ผ่าน"> ผ่าน</label><label><input class="fld" type="radio" name="s1.spec.pass2" data-k="s1.spec.pass2" value="ไม่ผ่าน"> ไม่ผ่าน</label></span></td>
-</tr>
-</tbody>
-</table></div>
-<p>ถ้าไม่ผ่าน ชิ้นที่ต้องเปลี่ยน <input class="fld" type="text" data-k="s1.spec.change" data-size="16" size="16" autocomplete="off" spellcheck="false"></p>
-<p><strong>คำถามท้ายกิจกรรมที่ 4</strong> ชุดเรารับงานในบัตรได้หรือไม่ เพราะสเปกข้อใด ถ้าไม่ผ่าน ต้องเปลี่ยนชิ้นใด</p>
-<textarea class="fld fld-ta" data-k="s1.q4" rows="2"></textarea>
 
 <hr />
 <h2 id="ชวงท-2">ช่วงที่ 2</h2>
@@ -2084,6 +2058,12 @@ body {
   }
 
   function fillFields(root) {
+    // Each visible copy needs its own radio group; data-k remains the shared answer key.
+    root.querySelectorAll('.fld-radio').forEach(function (group, i) {
+      group.querySelectorAll('input[type=radio]').forEach(function (el) {
+        el.name = el.dataset.k + '--copy-' + i;
+      });
+    });
     root.querySelectorAll(".fld").forEach(function (el) {
       var v = store.fields[el.dataset.k];
       if (el.type === "radio") {
@@ -2307,6 +2287,9 @@ body {
     var el = e.target;
     if (el.classList && el.classList.contains("fld") && el.type === "radio") {
       store.fields[el.dataset.k] = el.value;
+      document.querySelectorAll('input.fld[type=radio]').forEach(function (other) {
+        if (other.dataset.k === el.dataset.k) other.checked = other.value === el.value;
+      });
       saveNow();
       pushSoon();
       return;

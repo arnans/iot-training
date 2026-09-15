@@ -301,8 +301,12 @@ lamp. That is a free demo, not a fault.
 
 #### Before start (ก่อนเริ่ม) · ~3 min
 
-**Done when** the LED is still on the relay, `มืด-เปิดไฟ` and `สว่าง-ปิดไฟ` are on with the same
-threshold, and `ปิดไฟตามเวลา` (if it exists) is off. Covering the board lights the lamp.
+**Done when** the four worksheet checks are ticked (they report to the dashboard as one activity,
+15 Sep 2026): Home Assistant is up, the sensor board shows values, the relay board switches the
+LED, and the team has agreed to leave both boards and Home Assistant on for the half-day
+recording. Also confirm what the worksheet no longer asks: `มืด-เปิดไฟ` and `สว่าง-ปิดไฟ` are on
+with the same threshold, `ปิดไฟตามเวลา` (if it exists) is off, and covering the board lights the
+lamp. Today's VM IP is read off the screen; the record sheet still has a box for it.
 
 **If stuck** The lamp will not light: same as Session 1's 3.4 (no crossing yet, or the room got darker
 than the threshold overnight, so raise the threshold or add light).

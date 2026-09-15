@@ -515,3 +515,53 @@ Not acted on: the review's "readiness 5 min" and "recovery 10 min" rows — no r
 the time; the ก่อนเริ่ม checklist stays untimed and the 5-min revise slot is the buffer. The network
 block stays at 20 rather than the review's implied cut because it is กำพล's live block and now also
 carries the remote demo; confirm with them. Dashboard build time (25 min) still needs a novice timing.
+
+## Codex pass on Sessions 2 and 3, 15 Sep 2026 — accepted, with items to reconsider
+
+Codex rewrote `docs/session-2.md` and `docs/session-3.md` (commit 4abd1a0, "Simplify Sessions 2 and 3
+Thai worksheets and clarify teaching flow"). Roger kept the result as is. Claude rechecked it the same
+evening: renders regenerated, strict MkDocs build clean, the field-sync test passing on all four
+pages, every session key present on the record sheet, no broken anchors, images or links. The
+planning docs (INSTRUCTOR-RESOURCES, COURSE-DESIGN, SESSION-OVERVIEW, TEST-PLAN) were then brought
+into line with the new worksheet, including the renumbered sub-steps (5.1–5.8, 7.1–7.4, 8.1–8.11).
+
+**Codex changes that are improvements, now propagated to the run sheet**
+
+- 6.5: stop the pump with the relay board's button before turning WiFi back on. The old text
+  claimed Fail-safe 2 would cut the pump on reconnect; the failed service call is not retried.
+- 6.3: the 30 s cutoff may fire before the board is marked unavailable, so the sensor-lost rule is
+  judged by its Trace, not by which rule stopped the pump.
+- History: a VM shutdown or restart keeps the recorded history and only leaves a gap. The old
+  note said such a team has no Session 2 data.
+- 5.6: the pump's leads go onto the terminal block where the lamp's were, which matches how
+  Session 1 wired the lamp; the old text put the + lead directly on NO.
+
+**Codex changes Roger may want to reconsider** (none blocking; the run sheet covers each live)
+
+1. **Network table lost its range figures.** Step 8.3 asks teams to eliminate options by distance,
+   but the table no longer states any distance (WiFi 30–50 m, ESP-NOW 100–200 m, Zigbee 10–30 m per
+   hop, LoRa 1–10 km, RS-485 ~1 km). The 9 Sep handoff kept them pending กำพล's confirmation. The
+   instructor now gives them on screen (INSTRUCTOR-RESOURCES 8.3). Restoring one column to the table
+   would let the exercise stand on its own.
+2. **Remote-access menu went from five ways to four.** "Opening a door yourself" (port forwarding,
+   DDNS, a tunnel) was dropped, along with the Tailscale/WireGuard, LINE/Telegram examples.
+   Mentioned live; SESSION-OVERVIEW and COURSE-DESIGN now say four.
+3. **The take-home shopping table is gone** (Raspberry Pi / Home Assistant Green, ESP32 relay
+   module, capacitive soil probe, DC solar pump, VPN options) and nothing on `docs/resources.md`
+   replaces it. Cheapest fix: move that table to `resources.md`, which Session 3's closing already
+   links.
+4. **The feedback form is no longer mentioned anywhere on the site** (its QR placeholder was
+   removed with the other placeholders). Hand out or project.
+5. **6.6 table, stuck-float row:** now credits the 30 s run-time cutoff with catching a float stuck
+   floating, so the "no rule stops it" answer has one case (laptop / Home Assistant down) instead of
+   two. Defensible, and the run sheet says so, but it softens the maintenance point.
+6. **Session 2 debrief lost the watchdog discussion bullet;** 6.2 lost "10–20 min on a real farm";
+   the sizing answer lost the 18650 ≈ 9 Wh, 20 Ah and 400 W-panel remarks (kept in the run sheet).
+7. **Numbering:** the Session 2 recap is now headed กิจกรรมที่ 4, which is the number the archived
+   spec game held. Fine as long as the spec game stays archived.
+8. **Sub-step numbers changed** (5.3 split into 5.3/5.4, 5.5 into 5.6/5.7, 7.1 into 7.1/7.2, 8.2/8.3
+   into 8.2–8.8). Anchors were kept, so old links still land; only prose references had to move.
+
+Pre-existing, not from Codex: History is opened "from the start of Session 2", yet the gap
+question asks about the overnight break before it. Opening from the end of Session 1 would show the
+gap on the graph; as written the question is answered by reasoning, not by looking.

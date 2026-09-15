@@ -668,7 +668,7 @@ optional. Wire it as the worksheet says: controller LOAD + → COM, NO → red l
 ## K. Temperature and humidity at 1 s *(10 min)*
 
 Added 14 Sep 2026: the SHT3x is polled every 1 s instead of 5 s, so a breath shows at once and
-session 2's blow-on-it watering loop (5.5) feels immediate. Temperature and humidity carry
+session 2's blow-on-it watering loop (5.7) feels immediate. Temperature and humidity carry
 `or: [delta, throttle: 30s]` filters — a reading goes out on a 0.2 °C / 0.5 %RH change, otherwise
 every 30 s — so noise in the last decimal does not become a history row every second.
 
@@ -679,7 +679,7 @@ every 30 s — so noise in the last decimal does not become a history row every 
 - [ ] Breathing on the board: humidity starts rising on the page **within about 2 s**
 - [ ] Still room: humidity and temperature update roughly **every 30 s**, not every second — the
       history graph shows steps, not a solid band of points
-- [ ] The rise and fall still cross the 5.5 thresholds cleanly: pump stops while blowing, and
+- [ ] The rise and fall still cross the 5.7 thresholds cleanly: pump stops while blowing, and
       restarts after. Write down the restart time; it is the figure the record sheet asks for and
       should be no longer than it was at 5 s
 - [ ] Temperature reads the same as before (±0.2 °C against a 5 s build or a second board) — no

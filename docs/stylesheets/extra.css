@@ -395,6 +395,26 @@
   box-shadow: 0 3px 14px var(--ag-shadow);
 }
 
+/* Shallow activity illustrations separate sections without extending the reading flow. */
+.md-typeset img.activity-banner:not(.twemoji):not(.emojione) {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 6 / 1;
+  object-fit: cover;
+  object-position: center;
+  border-radius: 0.5rem;
+  box-shadow: none;
+  background: #fff6e3;
+  break-inside: avoid;
+}
+
+.md-typeset p:has(> img.activity-banner) {
+  margin: 0.65rem 0 1rem;
+  break-before: avoid;
+  break-after: avoid;
+}
+
 /* ---------- admonitions on the palette ---------- */
 .md-typeset .admonition,
 .md-typeset details {

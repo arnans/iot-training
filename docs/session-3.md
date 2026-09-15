@@ -84,6 +84,8 @@
 
 ## กิจกรรมที่ 7 — สร้างหน้าจอติดตามและควบคุมฟาร์ม (Dashboard)
 
+![](images/activity-banners/activity-07-dashboard.png){ .activity-banner width="1800" height="300" loading="lazy" decoding="async" }
+
 **35 นาที** วางแผน 5 นาที · สร้าง 25 นาที · ให้ผู้อื่นทดลองใช้ 5 นาที
 
 **อุปกรณ์ที่ใช้** ระบบทั้งหมด และโทรศัพท์ 1 เครื่อง
@@ -172,6 +174,8 @@
 ---
 
 ## กิจกรรมที่ 8 — ออกแบบระบบสำหรับฟาร์ม (Design)
+
+![](images/activity-banners/activity-08-design.png){ .activity-banner width="1800" height="300" loading="lazy" decoding="async" }
 
 **85 นาที** เลือกโจทย์ 5 · การสื่อสาร 20 · พลังงาน 15 · เติมแบบร่างให้ครบ 30 · แลกเปลี่ยนกับกลุ่มที่จับคู่กัน 10 · ปรับแก้และบันทึก 5
 

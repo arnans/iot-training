@@ -15,6 +15,8 @@
 
 ## กิจกรรมที่ 4 — ทบทวนส่วนประกอบของกฎอัตโนมัติ
 
+![](images/activity-banners/activity-04-review.png){ .activity-banner width="1800" height="300" loading="lazy" decoding="async" }
+
 **15 นาที**
 
 **อุปกรณ์ที่ใช้** แล็ปท็อป
@@ -39,6 +41,8 @@
 ---
 
 ## กิจกรรมที่ 5 — ตั้งกฎให้ระบบทำงานอัตโนมัติ (Think)
+
+![](images/activity-banners/activity-05-irrigation.png){ .activity-banner width="1800" height="300" loading="lazy" decoding="async" }
 
 **70 นาที** รวมต่อปั๊มแทนหลอดไฟ
 
@@ -180,6 +184,8 @@
 ---
 
 ## กิจกรรมที่ 6 — จำลองปัญหาและเพิ่มระบบป้องกัน (Failure lab)
+
+![](images/activity-banners/activity-06-protection.png){ .activity-banner width="1800" height="300" loading="lazy" decoding="async" }
 
 **50 นาที**
 

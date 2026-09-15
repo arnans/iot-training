@@ -22,6 +22,8 @@
 
 ## กิจกรรมที่ 1 — รู้จักและทดลองอ่านค่าเซนเซอร์ (Sense)
 
+![](images/activity-banners/activity-01-sensors.png){ .activity-banner width="1800" height="300" loading="lazy" decoding="async" }
+
 **35 นาที**
 
 **อุปกรณ์ที่ใช้** บอร์ด GoGo-IoT, สวิตช์ลูกลอยพร้อมตัวแปลงและสาย Grove, แก้วน้ำ, สาย USB-C, แล็ปท็อป
@@ -136,6 +138,8 @@
 
 ## กิจกรรมที่ 2 — ต่อวงจรและสั่งงานหลอดไฟ (Act)
 
+![](images/activity-banners/activity-02-led.png){ .activity-banner width="1800" height="300" loading="lazy" decoding="async" }
+
 **40 นาที**
 
 **อุปกรณ์ที่ใช้** บอร์ดรีเลย์, กล่องจ่ายไฟ (charge controller), อะแดปเตอร์ 12V, สาย USB-C, แล็ปท็อป, สายไฟ, เต๋าต่อสาย, หลอด LED 12V, ไขควง
@@ -235,6 +239,8 @@
 ---
 
 ## กิจกรรมที่ 3 — สร้างกฎควบคุมระบบ (Logic)
+
+![](images/activity-banners/activity-03-rules.png){ .activity-banner width="1800" height="300" loading="lazy" decoding="async" }
 
 **40 นาที**
 

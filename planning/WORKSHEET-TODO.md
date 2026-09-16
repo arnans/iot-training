@@ -21,6 +21,9 @@ bench session (adoption flow, overnight, sabotage cards, instructor machines, in
 | Charge controller | Wired by teams in Activity 2 as the kit's **12V source**: adapter → BATT pair; LOAD pair → terminal block → LED module in Session 1 (+ via COM/NO, − direct), the pump from Session 2 §5.5. **Relay board runs on the controller's USB port, never its 7–60 V input** (Roger, 8 Sep 2026: splitting the 12 V rail to the board was the slow part). The second USB port powers the GoGo-IoT when the laptop leaves (overnight). Panel is added in session 3 | Session 1 calls it "กล่องจ่ายไฟ 12V" with one sentence of orientation; session 3 "เปิดกล่อง: พลังงาน" reads the three terminal pairs, sets battery type, connects the panel |
 | 18650 cell | **Stays in** (Roger, 8 Sep 2026). A charged cell keeps the board running when USB is pulled, so "power loss" is simulated with the board's **on/off switch**, never by pulling a cable | Sabotage card 1 and the Fail-safe 3 test say ปิดสวิตช์บนบอร์ด; the Session 3 adapter demo shows the sensor board surviving on its cell; `reference.md` lists the switch first under `unavailable` |
 | Dry pump, no recap | **Roger, 16 Sep 2026.** The pump runs dry: no hose, no containers, no tray, no water pumped; the float keeps its Session 1 glass. The recap (Activity 4 at the time) is cut (a warm-up repeating Session 1 does not earn its own section); Session 2 opens on the four checks, then 5.1. Activities renumbered 4–7 the same day (Roger: do not skip 4) | §4.6 is the two-wire swap plus a 10-second dry run heard and felt; the failure lab reads the pump by sound and vibration; `s2.auto1.*` keys removed from the worksheet and record sheet; index.md kit and safety lines, Session 3 pre-start and pack-up, COURSE-DESIGN kit list and risk register, the run sheet and SESSION-OVERVIEW updated the same day. 4.4 was kept and rebuilt by Roger the same day as predict → fix → test (two predictions with reasons, `s2.time.dark_after/_before(_why)`, and `s2.time.fixed`); 4.8 was rebuilt by Roger the same day as the Auto / Manual mode toggle: `Pump Auto Mode` helper, an Overview (Legacy) dashboard to show it, a *Switch is on* condition on `รดน้ำ - เปิดปั๊ม` only, keys `s2.mode.off/on`; the rule-state reset moved into 5.0, which now also requires the toggle on; Session 3's dashboard table gained a Tile for it |
+| Activity 5 shape | **Roger, 16 Sep 2026.** Four problems, none optional: the laptop-off-WiFi round is cut ("I don't see it as significant"), and 3 and 4 stop being optional — the instructor decides live whether a table skips one | Worksheet 5.1–5.4 are the problems and 5.5 is the summary table (was 5.6); keys `s2.sab.5.*` dropped from the worksheet and the record sheet; the summary table keeps its laptop/HA-down row, which is still the answer to `s2.fs.none` and to the end-of-activity question, so the point is discussed rather than staged; the run sheet keeps the WiFi-off procedure as an optional demo for tables that finish early |
+| Rule-state wording | **Roger, 16 Sep 2026.** State of a rule reads `กฎ xx เปิดอยู่` / `กฎ yy ปิดไว้`, never bare เปิด / ปิด | Applied across sessions 2 and 3; the bare verbs stay where the text is an instruction to turn a rule on or off |
+| Failure-lab order | **Roger, 16 Sep 2026.** Problems 2 and 4 swap: the vibration / command-is-not-result problem runs second and the 30 s run-time cutoff last, because the run-time problem gives the paired team nothing to sabotage — they start the pump and wait — and a flat round should not land second | Worksheet 5.2 is now the unscrewed pump lead and 5.4 the run-time cutoff; `s2.sab.N.*` keys stay bound to **position**, so only the record-sheet row labels swapped; the 15 s rule now forward-references the 30 s one instead of back; 5.3's caveat names the vibration rule, and that round is cleaner because no cutoff exists yet (with the board off `pump running` reads unavailable, not Off); the summary table names the rules (กฎน้ำหมด / กฎจำกัดเวลา / กฎเซนเซอร์หาย / กฎสั่งแล้วไม่เดิน) instead of numbering them by problem, and the "if you built it" conditionals are gone now that nothing is optional |
 | Plain ESP32-C3 nodemcu (item 2) | Spare, unmentioned | — |
 | Lamp first, pump second, float rule last | **Roger, 14 Sep 2026.** Session 1 wires the LED module and builds `มืด-เปิดไฟ` / `สว่าง-ปิดไฟ` on one threshold plus an optional `ปิดไฟตามเวลา` (Time trigger, tested, then disabled); the pump, water props and watering rules move to Session 2 §4.5; the float rule is built for the first time as Fail-safe 1 in Activity 5 (sabotage → build → sabotage again); Session 2 §4.2/§4.3 deleted and Activity 4 renumbered 4.1–4.6 | Activity 3's written question is now the threshold-hover hook (answered by §4.1's chatter count); the already-Dry puzzle is gone. Keys: `s1.light.on` (replaces `s1.threshold` and `s2.light.on`), `s1.manual.rounds/correct`, `s1.rule.dark.*`, `s1.rule.bright.*`, `s1.auto.pass`, `s1.timer.at/ok`. The timer rule must appear in every rule-state list, because left on it fires daily at the chosen minute, including in Session 3 with the pump on the relay |
 
@@ -204,7 +207,7 @@ Raw axes stay `internal`.
   board's page — bench-confirmed, including survival across a power cycle.
 - ~~**Not yet in the worksheets.**~~ **In three places now:** session 1's sensor table (tap the
   table → `ความสั่นสะเทือน`, so the entity is familiar before it matters); session 2 **Fail-safe 4**
-  (*เมื่อมีเวลา*): commanded-on for 15 s (not 30, so it fires before Fail-safe 2 and the test is
+  (required since 16 Sep 2026; it was optional until then): commanded-on for 15 s (not 30, so it fires before Fail-safe 2 and the test is
   unambiguous) with `ปั๊มกำลังทำงาน` Off → pump off + notification, tested
   by unscrewing the pump lead — the same act as sabotage card 3, which is the point; and the
   `reference.md` "pump won't run" row. The design-canvas prompt in `record-sheet.md` stays.
@@ -272,7 +275,7 @@ is now **five problems, each sabotage → fix → sabotage again**: every proble
 the fix steps, and ถือว่าแก้ได้เมื่อ (repeat the act; stated pass criterion). Every team is
 sabotaged on every problem, so all see the failure before building the rule. The four cards became
 problems 1 (float + button → Fail-safe 1), 3 (board off → Fail-safe 3), 4 (NO lead → Fail-safe 4)
-and 5 (laptop WiFi off → no fix in HA, feeds the end question); problem 2 (pump left running →
+and 5 (laptop WiFi off → no fix in HA, feeds the end question; **cut 16 Sep 2026**, see the Activity 5 row); problem 2 (pump left running →
 Fail-safe 2) is new so the run-time cutoff also answers a failure the team watched. Record per
 problem: จำลองสำเร็จ / เกิดอะไรขึ้น / แก้ได้แล้ว / หมายเหตุ (`s2.sab.<n>.ok|what|fixed|note`); the
 old `s2.sab.*.seen/pump/cause/time`, pair/correct/card and `s2.fs*.stop` keys are removed (no
@@ -528,7 +531,7 @@ into line with the new worksheet, including the renumbered sub-steps (4.1–4.8,
 
 **Codex changes that are improvements, now propagated to the run sheet**
 
-- 5.5: stop the pump with the relay board's button before turning WiFi back on. The old text
+- 5.5 (the laptop-WiFi round, cut 16 Sep 2026; the note is kept for the run sheet's optional demo): stop the pump with the relay board's button before turning WiFi back on. The old text
   claimed Fail-safe 2 would cut the pump on reconnect; the failed service call is not retried.
 - 5.3: the 30 s cutoff may fire before the board is marked unavailable, so the sensor-lost rule is
   judged by its Trace, not by which rule stopped the pump.
@@ -553,7 +556,7 @@ into line with the new worksheet, including the renumbered sub-steps (4.1–4.8,
    links.
 4. **The feedback form is no longer mentioned anywhere on the site** (its QR placeholder was
    removed with the other placeholders). Hand out or project.
-5. **5.6 table, stuck-float row:** now credits the 30 s run-time cutoff with catching a float stuck
+5. **Summary-table (5.6 then, 5.5 now) stuck-float row:** now credits the 30 s run-time cutoff with catching a float stuck
    floating, so the "no rule stops it" answer has one case (laptop / Home Assistant down) instead of
    two. Defensible, and the run sheet says so, but it softens the maintenance point.
 6. **Session 2 debrief lost the watchdog discussion bullet;** 5.2 lost "10–20 min on a real farm";

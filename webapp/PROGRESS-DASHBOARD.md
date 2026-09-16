@@ -73,6 +73,9 @@ to "23" is never checked. The status shows "● กำลังตรวจส�
 }
 ```
 
+- An **optional** task item carries `(ไม่บังคับทำ)` inside its **bold** link text, so the marker
+  travels into `label` and into the step list and is visible on the dashboard. Put the marker
+  outside the bold only when just one step inside a required item is optional.
 - `acts` keys are the id of the nearest heading above the item (`### … { #a5 }` gives `a5`);
   sub-section ids `a5-3`, `a2-1b` fold into their activity; anything before the first activity
   lands under the heading it sits below. Slugs drop Thai vowels (`ก่อนเริ่ม` → `กอนเรม`), so each

@@ -1198,7 +1198,7 @@ body {
 <p><strong>เงื่อนไขเวลา</strong> รอบล่าสุดใน Traces หยุดที่ส่วนใด <input class="fld" type="text" data-k="s2.time.trace" data-size="16" size="16" autocomplete="off" spellcheck="false"> · ทำนาย ฟ้ามืดหลัง 18.30 น. ไฟ <span class="fld-radio" data-k="s2.time.dark_after"><label><input class="fld" type="radio" name="s2.time.dark_after" data-k="s2.time.dark_after" value="ติด"> ติด</label><label><input class="fld" type="radio" name="s2.time.dark_after" data-k="s2.time.dark_after" value="ไม่ติด"> ไม่ติด</label></span> เพราะ <input class="fld" type="text" data-k="s2.time.dark_after_why" data-size="16" size="16" autocomplete="off" spellcheck="false"> · ฟ้ามืดก่อน 18.30 น. ไฟ <span class="fld-radio" data-k="s2.time.dark_before"><label><input class="fld" type="radio" name="s2.time.dark_before" data-k="s2.time.dark_before" value="ติด"> ติด</label><label><input class="fld" type="radio" name="s2.time.dark_before" data-k="s2.time.dark_before" value="ไม่ติด"> ไม่ติด</label></span> เพราะ <input class="fld" type="text" data-k="s2.time.dark_before_why" data-size="16" size="16" autocomplete="off" spellcheck="false"></p>
 <p><strong>Trigger เวลา</strong> ฟ้ามืดก่อนเวลาแล้วไฟติดเมื่อถึงเวลาหรือไม่ <span class="fld-radio" data-k="s2.time.fixed"><label><input class="fld" type="radio" name="s2.time.fixed" data-k="s2.time.fixed" value="ติด"> ติด</label><label><input class="fld" type="radio" name="s2.time.fixed" data-k="s2.time.fixed" value="ไม่ติด"> ไม่ติด</label></span> · เมื่อเพิ่ม trigger เวลาแล้ว ทำไมยังต้องตรวจค่าความสว่างในส่วน And if อีก <input class="fld" type="text" data-k="s2.time.why" data-size="30" size="30" autocomplete="off" spellcheck="false"></p>
 <h3 id="ระบบรดนำ">ระบบรดน้ำ</h3>
-<p><strong>เกณฑ์ความชื้นอากาศ</strong> เปิดปั๊มเมื่อต่ำกว่า <input class="fld" type="text" data-k="s2.hum.on" data-size="4" size="4" inputmode="decimal" autocomplete="off" spellcheck="false"> % ปิดปั๊มเมื่อสูงกว่า <input class="fld" type="text" data-k="s2.hum.off" data-size="4" size="4" inputmode="decimal" autocomplete="off" spellcheck="false"> % · หยุดเป่าแล้วปั๊มกลับมาเดินใน <input class="fld" type="text" data-k="s2.hum.restart" data-size="3" size="3" inputmode="decimal" autocomplete="off" spellcheck="false"> วินาที · ต่อปั๊มเข้ารีเลย์แทนหลอดไฟเมื่อ <input class="fld" type="text" data-k="s2.pump_back_t" data-size="5" size="5" autocomplete="off" spellcheck="false"> น.</p>
+<p><strong>เกณฑ์ความชื้นอากาศ</strong> เปิดปั๊มเมื่อต่ำกว่า <input class="fld" type="text" data-k="s2.hum.on" data-size="4" size="4" inputmode="decimal" autocomplete="off" spellcheck="false"> % ปิดปั๊มเมื่อสูงกว่า <input class="fld" type="text" data-k="s2.hum.off" data-size="4" size="4" inputmode="decimal" autocomplete="off" spellcheck="false"> % · ต่อปั๊มเข้ารีเลย์แทนหลอดไฟเมื่อ <input class="fld" type="text" data-k="s2.pump_back_t" data-size="5" size="5" autocomplete="off" spellcheck="false"> น.</p>
 <p><strong>โหมด Auto / Manual</strong> ปิด <code>Pump Auto Mode</code> แล้วปั๊มเริ่มเอง <span class="fld-radio" data-k="s2.mode.off"><label><input class="fld" type="radio" name="s2.mode.off" data-k="s2.mode.off" value="ไม่เริ่ม"> ไม่เริ่ม</label><label><input class="fld" type="radio" name="s2.mode.off" data-k="s2.mode.off" value="เริ่ม"> เริ่ม</label></span> · เปิดแล้วปั๊มเริ่มเอง <span class="fld-radio" data-k="s2.mode.on"><label><input class="fld" type="radio" name="s2.mode.on" data-k="s2.mode.on" value="เริ่ม"> เริ่ม</label><label><input class="fld" type="radio" name="s2.mode.on" data-k="s2.mode.on" value="ไม่เริ่ม"> ไม่เริ่ม</label></span></p>
 <p><strong>คำถามท้ายกิจกรรมที่ 4</strong> เกณฑ์เปิด–ปิดของไฟสวนคือเท่าไร ทำไมต้องต่างกัน และใช้กับระบบรดน้ำอย่างไร</p>
 <textarea class="fld fld-ta" data-k="s2.q4" rows="2"></textarea>
@@ -1223,7 +1223,7 @@ body {
 <td><input class="fld" type="text" data-k="s2.sab.1.note" data-size="12" size="12" autocomplete="off" spellcheck="false"></td>
 </tr>
 <tr>
-<td>2 ปั๊มเดินไม่หยุด</td>
+<td>2 สั่งแล้วปั๊มไม่เดิน</td>
 <td><span class="fld-radio" data-k="s2.sab.2.ok"><label><input class="fld" type="radio" name="s2.sab.2.ok" data-k="s2.sab.2.ok" value="สำเร็จ"> สำเร็จ</label><label><input class="fld" type="radio" name="s2.sab.2.ok" data-k="s2.sab.2.ok" value="ไม่สำเร็จ"> ไม่สำเร็จ</label></span></td>
 <td><input class="fld" type="text" data-k="s2.sab.2.what" data-size="14" size="14" autocomplete="off" spellcheck="false"></td>
 <td><span class="fld-radio" data-k="s2.sab.2.fixed"><label><input class="fld" type="radio" name="s2.sab.2.fixed" data-k="s2.sab.2.fixed" value="แก้ได้"> แก้ได้</label><label><input class="fld" type="radio" name="s2.sab.2.fixed" data-k="s2.sab.2.fixed" value="ยังไม่ได้"> ยังไม่ได้</label></span></td>
@@ -1237,18 +1237,11 @@ body {
 <td><input class="fld" type="text" data-k="s2.sab.3.note" data-size="12" size="12" autocomplete="off" spellcheck="false"></td>
 </tr>
 <tr>
-<td>4 สั่งแล้วปั๊มไม่เดิน</td>
+<td>4 ปั๊มเดินไม่หยุด</td>
 <td><span class="fld-radio" data-k="s2.sab.4.ok"><label><input class="fld" type="radio" name="s2.sab.4.ok" data-k="s2.sab.4.ok" value="สำเร็จ"> สำเร็จ</label><label><input class="fld" type="radio" name="s2.sab.4.ok" data-k="s2.sab.4.ok" value="ไม่สำเร็จ"> ไม่สำเร็จ</label></span></td>
 <td><input class="fld" type="text" data-k="s2.sab.4.what" data-size="14" size="14" autocomplete="off" spellcheck="false"></td>
 <td><span class="fld-radio" data-k="s2.sab.4.fixed"><label><input class="fld" type="radio" name="s2.sab.4.fixed" data-k="s2.sab.4.fixed" value="แก้ได้"> แก้ได้</label><label><input class="fld" type="radio" name="s2.sab.4.fixed" data-k="s2.sab.4.fixed" value="ยังไม่ได้"> ยังไม่ได้</label></span></td>
 <td><input class="fld" type="text" data-k="s2.sab.4.note" data-size="12" size="12" autocomplete="off" spellcheck="false"></td>
-</tr>
-<tr>
-<td>5 แล็ปท็อปหลุดจาก WiFi</td>
-<td><span class="fld-radio" data-k="s2.sab.5.ok"><label><input class="fld" type="radio" name="s2.sab.5.ok" data-k="s2.sab.5.ok" value="สำเร็จ"> สำเร็จ</label><label><input class="fld" type="radio" name="s2.sab.5.ok" data-k="s2.sab.5.ok" value="ไม่สำเร็จ"> ไม่สำเร็จ</label></span></td>
-<td><input class="fld" type="text" data-k="s2.sab.5.what" data-size="14" size="14" autocomplete="off" spellcheck="false"></td>
-<td><span class="fld-radio" data-k="s2.sab.5.fixed"><label><input class="fld" type="radio" name="s2.sab.5.fixed" data-k="s2.sab.5.fixed" value="แก้ได้"> แก้ได้</label><label><input class="fld" type="radio" name="s2.sab.5.fixed" data-k="s2.sab.5.fixed" value="ยังไม่ได้"> ยังไม่ได้</label></span></td>
-<td><input class="fld" type="text" data-k="s2.sab.5.note" data-size="12" size="12" autocomplete="off" spellcheck="false"></td>
 </tr>
 </tbody>
 </table></div>

@@ -366,7 +366,8 @@ has logged in through the Companion app. Persistent notification is always avail
 the LED's two leads are off the terminal block and the pump's leads sit on the same two points, + on the block terminal fed from **NO**, − on the negative terminal; the float sits in its glass
 reading **Wet**; the pump has run dry on a 10-second command, heard and felt, and stopped on Off; and
 the changeover time is written down. No hose, containers or tray: the pump runs dry all morning
-(16 Sep 2026), so keep every run short. Fail-safe 2's 30 s cutoff now also protects the pump.
+(16 Sep 2026), so keep every run short. The 30 s cutoff that used to backstop this is built last in
+Activity 5 since the 16 Sep reorder, so until then the only limit is the person watching the clock.
 Session 3 uses it to tell lamp commands from pump commands on the relay's history graph.
 
 **If stuck** Relay clicks, pump silent: the + lead went to a terminal fed from NC, or the − lead is not on the negative terminal, or
@@ -379,7 +380,8 @@ float yet, and the worksheet says so; the float rule is built in 6.1.
 **Done when** the pump-on threshold sits a little above room humidity; off threshold 5–10 % above that.
 The pump does **not** start when the rule is saved. That is expected, because nothing crossed. Blowing on the board
 pushes humidity past the off threshold; when blowing stops and it falls back below the on
-threshold, the pump starts. The restart time depends on the room, and any measured number is fine.
+threshold, the pump starts. How long that takes depends on the room; the worksheet stopped timing it
+on 16 Sep 2026 (Roger), so there is no number to record.
 
 **If stuck** The pump never restarts after blowing: the on-threshold is below the
 room reading, so the value never crosses it on the way down.
@@ -417,13 +419,15 @@ off threshold is set 5–10 % above the on threshold.
 
 Every problem runs the same three steps: the paired team sabotages, our team fixes, the paired
 team sabotages again. While being sabotaged, the team watches **only its Home Assistant screen**. **Required:**
-problems 1, 2 and 5 seen, 1 and 2 fixed and re-tested. Problems 3 and 4 when time allows. Pairing
+all four problems seen, fixed and re-tested — nothing is optional since 16 Sep 2026, and the
+instructor decides live whether a slow table drops one. Four problems in 50 min is tighter than the
+old three-required shape, so watch the clock at problem 2 and keep 5.5 to a read-and-answer. Pairing
 is explained live, not in the worksheet.
 
 #### Before every problem
 
-**Done when** both watering rules are on, both lamp rules and the timer are off, the float sits in
-its glass reading Wet, both boards show values, and the two device pages are open in separate tabs.
+**Done when** both watering rules are on, `Pump Auto Mode` is on, both lamp rules and the timer are
+off, the float sits in its glass reading Wet, both boards show values, and the two device pages are open in separate tabs.
 No float rule exists yet; problem 1 builds it.
 
 **If stuck** A pump started by hand keeps running because the room never reaches the off threshold. That is
@@ -440,49 +444,52 @@ whether started from the button or the device page, and lifting the float mid-ru
 rule's condition is *float → **Wet***, not "not Dry": a cut wire reads Dry and an offline board reads
 unavailable, and neither is Wet.
 
-#### 5.2 Problem 2 — pump never stops (Fail-safe 2)
-
-**Done when** a pump started by hand and left alone runs on, and after the fix it stops by itself at about
-30 s with a notification.
-
-**If stuck** The trigger needs **For** 30 seconds on *pump → On*. After the cutoff the pump does not
-come back by itself; that is by design, and it is why the notification matters.
-
-#### 5.3 Problem 3 — sensor board off (Fail-safe 3) · when time allows
-
-**Done when** the team has chosen open, close or hold, with a reason; *off* is the defensible choice for
-a pump. When the board is switched off, its entities go unavailable while the pump runs on. After the
-fix, the Traces page of `Fail-safe - เซนเซอร์หาย` shows a run when humidity went unavailable, with the Off and the notification. The 30 s cutoff often stops the pump first, because the board can take longer than that to be marked unavailable; the worksheet accepts that (15 Sep 2026), so judge by Traces, not by which rule stopped the pump.
-
-**If stuck** Pulling USB does nothing because the 18650 cell keeps the board alive, so use the board's
-**ON/OFF switch**. If the pump stopped at 30 s, that was Fail-safe 2; the sensor-lost rule still counts as working
-when its Trace shows a run. Restart the pump before re-testing so the 30 s timer starts
-fresh.
-
-#### 5.4 Problem 4 — commanded but not running (Fail-safe 4) · when time allows
+#### 5.2 Problem 2 — commanded but not running (Fail-safe 4)
 
 **Done when** with the pump lead unscrewed from NO, the relay clicks and the screen says On but the pump is
 silent and still. After the fix the switch turns itself off within 15 s. With the lead back, the pump runs past
-15 s.
+15 s. Moved here from fourth place on 16 Sep 2026 (Roger: unscrewing a lead is a real sabotage act, and
+the wait-and-watch problem should not come second).
 
 **If stuck** The rule cuts a pump that *is* running: the sensor board is not touching the pump, or
-`ความไวตรวจจับปั๊ม` is too low, so set it to high. The 15 s is deliberately shorter than Fail-safe 2
-so the two rules can be told apart.
+`ความไวตรวจจับปั๊ม` is too low, so set it to high. The 15 s is deliberately shorter than the 30 s
+run-time cutoff built in 5.4, so the two rules can be told apart — but that cutoff does not exist yet at
+this point, which is fine: nothing else competes to stop the pump here.
 
-#### 5.5 Problem 5 — laptop off WiFi
+#### 5.3 Problem 3 — sensor board off (Fail-safe 3)
 
-**Done when** the team has seen the pump run on with every fail-safe silent. There is no fix inside Home
-Assistant. Stop the pump with the relay board's button *before* turning WiFi back on: the Off that
-Fail-safe 2 tried to send while the link was down failed and is not retried, so waiting for a rule
-after reconnecting leaves the pump running. One person watches the pump; cap the run at about 40 s.
+**Done when** the team has chosen open, close or hold, with a reason; *off* is the defensible choice for
+a pump. When the board is switched off, its entities go unavailable while the pump runs on. After the
+fix, the Traces page of `Fail-safe - เซนเซอร์หาย` shows a run when humidity went unavailable, with the Off and the notification. Judge by Traces, not by which rule stopped the pump (15 Sep 2026). Since the reorder of 16 Sep 2026 the 30 s cutoff does not exist yet, so this round is cleaner than it was: with the board off, `ปั๊มกำลังทำงาน` reads unavailable rather than Off, so 5.2's rule does not fire either, and nothing but the new rule stops the pump.
 
-#### 5.6 Which rule stops which problem
+**If stuck** Pulling USB does nothing because the 18650 cell keeps the board alive, so use the board's
+**ON/OFF switch**. If the pump stopped at about 15 s, that was `Fail-safe - สั่งแล้วไม่เดิน` reading the
+pump as not running; the sensor-lost rule still counts as working when its Trace shows a run.
+
+#### 5.4 Problem 4 — pump never stops (Fail-safe 2)
+
+**Done when** a pump started by hand and left alone runs on, and after the fix it stops by itself at about
+30 s with a notification. It runs last since 16 Sep 2026, because there is nothing for the paired team to
+sabotage here — they start the pump and wait — and that makes a weak second round.
+
+**If stuck** The trigger needs **For** 30 seconds on *pump → On*. After the cutoff the pump does not
+come back by itself; that is by design, and it is why the notification matters. **The sabotage is cut at
+about 15 s instead:** `Fail-safe - สั่งแล้วไม่เดิน` from 5.2 decided the pump is not running, so fix the
+board's placement or raise `ความไวตรวจจับปั๊ม` before trying again.
+
+#### 5.5 Which rule stops which problem
 
 **Done when** the "no rule" answer names the laptop or Home Assistant down or off WiFi. Since 15 Sep
 2026 the worksheet's table credits the 30 s cutoff with catching a float stuck floating (reads Wet
 with the tank empty), so that row is no longer a "no rule" case, though it still needs a person to go
-and look. The self-check (1, 2, 5 seen; 1, 2 fixed)
-is ticked.
+and look. The self-check (all four problems seen, fixed and re-tested) is ticked.
+
+**The laptop-off-WiFi round was cut on 16 Sep 2026** (Roger). No team now *sees* the pump run on with
+every fail-safe silent; they read it off the last row of this table instead. If a table finishes
+early and asks, the demonstration still works: pump On, laptop WiFi off, watch for up to 40 s with
+someone at the pump, then stop it with the relay board's **button before** WiFi comes back — the Off
+that Fail-safe 2 tried to send while the link was down failed and is not retried, so waiting for a
+rule after reconnecting leaves the pump running.
 
 #### End-of-activity question
 

@@ -114,7 +114,7 @@ check first). Minutes are the design estimate, not a rehearsed timing.
 **How to run it.** Project the checklist and talk through it one item at a time; teams work down
 it while you talk. The prose under each item is for the team that falls behind or wants the reason.
 
-The question added with the checklists, `s2.fs.none`, the two from the Activity 5 pilot,
+The question added with the checklists, `s2.fs.none`, the two from the Activity 4 pilot,
 `s2.time.trace` and `s2.time.why`, and the Session 1 lighting keys (`s1.light.on`,
 `s1.rule.dark.*`, `s1.rule.bright.*`, `s1.auto.pass`, `s1.timer.at`, `s1.timer.ok`) are on the
 record sheet like every other answer. Session 1 no longer records the supply voltage, the
@@ -171,7 +171,7 @@ not how much.
 
 Teams leave with the 12 V lamp circuit wired by their own hands, the relay board powered from the
 charge controller's USB, and the LED module lighting on command. No water in Session 1 beyond the
-float's glass; the pump is first wired in Session 2 (5.6).
+float's glass; the pump is first wired in Session 2 (4.6).
 
 #### 2.1 Know the relay board
 
@@ -288,16 +288,17 @@ fired because the sensor was covered then uncovered; start with the sensor open.
 off line, so every wobble across it fires a rule. Leave it there: Session 2 opens by measuring it and
 fixing it with a second threshold.
 
-### Session 2 · Activity 5 — automations and hysteresis (70 min)
+### Session 2 · Activity 4 — automations and hysteresis (70 min)
 
 Teams leave with four automations (five if they did the Session 1 timer): two watering rules **on**,
 the two garden-lamp rules and the timer **off**, and the pump wired for the first time. They also leave
 with their thresholds, two flicker counts and the written answer. Keys go into the team's JSON as
-`s2.light.off`, `s2.chatter.*`, `s2.time.*`, `s2.pump_back_t`, `s2.hum.*`, `s2.q5`; the on-threshold is
+`s2.light.off`, `s2.chatter.*`, `s2.time.*`, `s2.pump_back_t`, `s2.hum.*`, `s2.mode.*`, `s2.q4`; the on-threshold is
 Session 1's `s1.light.on`.
 
-**During the recap** the lamp rules from Session 1 are live, so anyone shading the board lights the
-lamp. That is a free demo, not a fault.
+**At the start** the lamp rules from Session 1 are live, so anyone shading the board lights the
+lamp. That is a free demo, not a fault. There is no recap activity any more (cut 16 Sep 2026): the
+session goes from the four checks straight into 5.1.
 
 #### Before start (ก่อนเริ่ม) · ~3 min
 
@@ -311,7 +312,7 @@ lamp. Today's VM IP is read off the screen; the record sheet still has a box for
 **If stuck** The lamp will not light: same as Session 1's 3.4 (no crossing yet, or the room got darker
 than the threshold overnight, so raise the threshold or add light).
 
-#### 5.1 Lamp flickers near the threshold · ~5 min
+#### 4.1 Lamp flickers near the threshold · ~5 min
 
 **Done when** the team has a one-minute count with the off rule at the *same* value as the on rule.
 It should be clearly higher than the count they get in 5.2. There is no fixed expected number:
@@ -321,7 +322,7 @@ TEST-PLAN test E still owes a bench count.
 value on the device page while another finds the height where it sits at the threshold, then waver
 there.
 
-#### 5.2 Separate the on and off thresholds · ~8 min
+#### 4.2 Separate the on and off thresholds · ~8 min
 
 **Done when** the off threshold sits above the on-threshold and below the room reading, about a quarter of
 the range above (82 / 6 / on 40 → off about 60). Self-check passes on all three: ≤ 2 switches in a
@@ -330,12 +331,18 @@ minute, cover → on, uncover → off.
 **If stuck** The lamp never goes off: the off threshold is above the room reading. It still flickers:
 widen the gap, and turn the LED so it does not shine onto the board's light sensor.
 
-#### 5.3 Time window · 5.4 Lamp on when the time arrives · ~12 min tests, ~5 min fix
+#### 4.3 Time window · 4.4 Lamp on when the time arrives · ~12 min tests, ~5 min fix
 
 **Done when**
 
 - *Traces answer:* the latest run stopped at the condition (the **And if** / Time box). The
   trigger fired but was blocked.
+- *Predictions (added 16 Sep 2026, window 18:30–07:30):* dark **after** 18:30 → the lamp comes on
+  (the crossing fires inside the window). Dark **before** 18:30 → it stays off: the crossing fired
+  outside the window and was blocked, and nothing fires again at 18:30. The second answer is the
+  reason 4.4 exists.
+- *After the fix:* with the sensor covered before the start time, the lamp comes on at the start
+  time (`s2.time.fixed` = ติด).
 - *Why re-check light in And if:* the time trigger fires whether or not it is dark. Without the
   light condition the lamp would switch on at the start time in daylight.
 - *Tick:* with the sensor kept covered, the lamp turns on at After and off at Before.
@@ -345,20 +352,21 @@ again. The timed test does nothing: the chosen times are already past. Both **Af
 trigger's **At** must move to a future minute, and the same goes for Before and At on the off rule.
 Home Assistant runs on Asia/Bangkok time, so read the laptop clock.
 
-#### 5.5 Notification · ~4 min
+#### 4.5 Notification · ~4 min
 
 **Done when** a message appears under the bell icon, bottom-left, when `มืด-เปิดไฟ` runs.
 
-**If stuck** Covering does nothing now: the time window from 5.3 excludes the current time, so widen it.
+**If stuck** Covering does nothing now: the time window from 4.3 excludes the current time, so widen it.
 *Send a notification via mobile_app* is missing from the list: it only appears after a phone
 has logged in through the Companion app. Persistent notification is always available.
 
-#### 5.6 Wire the pump, set up the water · ~10 min
+#### 4.6 Wire the pump, run it dry · ~8 min
 
 **Done when** both lamp rules and the timer are off and the relay is Off *before* any screw is touched;
-the LED's two leads are off the terminal block and the pump's leads sit on the same two points, + on the block terminal fed from **NO**, − on the negative terminal; container A is three-quarters
-full with the pump submerged and the float in it reading **Wet**; the pump has moved water A → B on a
-10-second command; the hose is back in A (recirculating); and the changeover time is written down.
+the LED's two leads are off the terminal block and the pump's leads sit on the same two points, + on the block terminal fed from **NO**, − on the negative terminal; the float sits in its glass
+reading **Wet**; the pump has run dry on a 10-second command, heard and felt, and stopped on Off; and
+the changeover time is written down. No hose, containers or tray: the pump runs dry all morning
+(16 Sep 2026), so keep every run short. Fail-safe 2's 30 s cutoff now also protects the pump.
 Session 3 uses it to tell lamp commands from pump commands on the relay's history graph.
 
 **If stuck** Relay clicks, pump silent: the + lead went to a terminal fed from NC, or the − lead is not on the negative terminal, or
@@ -366,7 +374,7 @@ the controller's load pair is off (its load mode; tell the instructor). Pump run
 on NC. The lamp turned the relay on during the swap: a lamp rule was left enabled. Nothing watches the
 float yet, and the worksheet says so; the float rule is built in 6.1.
 
-#### 5.7 Watering rules · ~12 min
+#### 4.7 Watering rules · ~12 min
 
 **Done when** the pump-on threshold sits a little above room humidity; off threshold 5–10 % above that.
 The pump does **not** start when the rule is saved. That is expected, because nothing crossed. Blowing on the board
@@ -376,13 +384,25 @@ threshold, the pump starts. The restart time depends on the room, and any measur
 **If stuck** The pump never restarts after blowing: the on-threshold is below the
 room reading, so the value never crosses it on the way down.
 
-#### 5.8 Disable a rule, run the pump by hand · ~5 min
+#### 4.8 Auto / Manual mode toggle · ~12 min
 
-**Done when** with `รดน้ำ - เปิดปั๊ม` disabled and dry air, the pump stays still, but the relay's device
-page still runs it. The Automations list ends as: `รดน้ำ - เปิดปั๊ม`, `รดน้ำ - ปิดปั๊ม` **on**;
-`มืด-เปิดไฟ`, `สว่าง-ปิดไฟ` and `ปิดไฟตามเวลา` **off**.
+**Done when** a Toggle helper `Pump Auto Mode` exists, shows on a dashboard the team added
+(**Overview (Legacy)**, any name, on the sidebar), and `รดน้ำ - เปิดปั๊ม` carries the condition
+*Switch is on* for it. With the toggle off, the blow-and-wait test from 4.7 no longer starts the
+pump while the relay's device page still runs it; with the toggle on, the pump starts again
+(`s2.mode.off` = ไม่เริ่ม, `s2.mode.on` = เริ่ม). Rebuilt by Roger on 16 Sep 2026 from "disable a
+rule, run the pump by hand": same point, a software Auto / Manual switch, and it mirrors the
+control-box demo at the end of the session. The Automations list ends as: `รดน้ำ - เปิดปั๊ม`,
+`รดน้ำ - ปิดปั๊ม` **on**; `มืด-เปิดไฟ`, `สว่าง-ปิดไฟ` and `ปิดไฟตามเวลา` **off**; `Pump Auto Mode` **on**.
 
-**Check this list at every table before the break.** Activity 6's sabotage rounds assume exactly
+**If stuck** The toggle is not on the new dashboard: check the team picked **Overview (Legacy)**, which
+lists every entity, and scroll. The default Overview of current Home Assistant releases does not show
+helpers, which is the whole reason 4.8 adds the legacy dashboard. The condition search finds nothing: **Create** was
+not pressed, so the helper does not exist. Only `รดน้ำ - เปิดปั๊ม` gets the condition; the fail-safes
+built in Activity 5 must work in every mode, so they never check it. A team that gated
+`รดน้ำ - ปิดปั๊ม` too has done no harm, but say why the off rule is better left free.
+
+**Check this list at every table before the break.** Activity 5's sabotage rounds assume exactly
 this state. A lamp rule left on switches the relay whenever the room light changes, and a timer rule left on
 switches it off at the same minute every day. Those are the likeliest causes of a pump "running by
 itself" or stopping unexplained in the failure lab.
@@ -393,7 +413,7 @@ itself" or stopping unexplained in the failure lab.
 the output flicker whenever the reading hovers at it, and that watering applies the same fix: the
 off threshold is set 5–10 % above the on threshold.
 
-### Session 2 · Activity 6 — Failure lab (50 min)
+### Session 2 · Activity 5 — Failure lab (50 min)
 
 Every problem runs the same three steps: the paired team sabotages, our team fixes, the paired
 team sabotages again. While being sabotaged, the team watches **only its Home Assistant screen**. **Required:**
@@ -403,13 +423,13 @@ is explained live, not in the worksheet.
 #### Before every problem
 
 **Done when** both watering rules are on, both lamp rules and the timer are off, the float sits in
-container A reading Wet, both boards show values, and the two device pages are open in separate tabs.
+its glass reading Wet, both boards show values, and the two device pages are open in separate tabs.
 No float rule exists yet; problem 1 builds it.
 
 **If stuck** A pump started by hand keeps running because the room never reaches the off threshold. That is
 expected; do not let teams change the humidity thresholds to make the pump run.
 
-#### 6.1 Problem 1 — water gone, pump still starts (Fail-safe 1)
+#### 5.1 Problem 1 — water gone, pump still starts (Fail-safe 1)
 
 **Done when** the sabotage (float lifted until Dry, then the pump commanded On from the board's button or the device page) runs the pump
 with nothing stopping it, because no rule looks at the float at all. After the fix, `Fail-safe - น้ำหมด`
@@ -420,7 +440,7 @@ whether started from the button or the device page, and lifting the float mid-ru
 rule's condition is *float → **Wet***, not "not Dry": a cut wire reads Dry and an offline board reads
 unavailable, and neither is Wet.
 
-#### 6.2 Problem 2 — pump never stops (Fail-safe 2)
+#### 5.2 Problem 2 — pump never stops (Fail-safe 2)
 
 **Done when** a pump started by hand and left alone runs on, and after the fix it stops by itself at about
 30 s with a notification.
@@ -428,7 +448,7 @@ unavailable, and neither is Wet.
 **If stuck** The trigger needs **For** 30 seconds on *pump → On*. After the cutoff the pump does not
 come back by itself; that is by design, and it is why the notification matters.
 
-#### 6.3 Problem 3 — sensor board off (Fail-safe 3) · when time allows
+#### 5.3 Problem 3 — sensor board off (Fail-safe 3) · when time allows
 
 **Done when** the team has chosen open, close or hold, with a reason; *off* is the defensible choice for
 a pump. When the board is switched off, its entities go unavailable while the pump runs on. After the
@@ -439,24 +459,24 @@ fix, the Traces page of `Fail-safe - เซนเซอร์หาย` shows a 
 when its Trace shows a run. Restart the pump before re-testing so the 30 s timer starts
 fresh.
 
-#### 6.4 Problem 4 — commanded but not running (Fail-safe 4) · when time allows
+#### 5.4 Problem 4 — commanded but not running (Fail-safe 4) · when time allows
 
-**Done when** with the pump lead unscrewed from NO, the relay clicks and the screen says On but no water
-flows. After the fix the switch turns itself off within 15 s. With the lead back, the pump runs past
+**Done when** with the pump lead unscrewed from NO, the relay clicks and the screen says On but the pump is
+silent and still. After the fix the switch turns itself off within 15 s. With the lead back, the pump runs past
 15 s.
 
 **If stuck** The rule cuts a pump that *is* running: the sensor board is not touching the pump, or
 `ความไวตรวจจับปั๊ม` is too low, so set it to high. The 15 s is deliberately shorter than Fail-safe 2
 so the two rules can be told apart.
 
-#### 6.5 Problem 5 — laptop off WiFi
+#### 5.5 Problem 5 — laptop off WiFi
 
 **Done when** the team has seen the pump run on with every fail-safe silent. There is no fix inside Home
 Assistant. Stop the pump with the relay board's button *before* turning WiFi back on: the Off that
 Fail-safe 2 tried to send while the link was down failed and is not retried, so waiting for a rule
 after reconnecting leaves the pump running. One person watches the pump; cap the run at about 40 s.
 
-#### 6.6 Which rule stops which problem
+#### 5.6 Which rule stops which problem
 
 **Done when** the "no rule" answer names the laptop or Home Assistant down or off WiFi. Since 15 Sep
 2026 the worksheet's table credits the 30 s cutoff with catching a float stuck floating (reads Wet
@@ -488,7 +508,7 @@ so in its answer, and carries on.
 Any three the team can explain are fine; graphs differ between teams.
 
 **If stuck** A relay bar that is On is a **command**, not a running pump. Before the recorded changeover time
-(`s2.pump_back_t`), from Session 1 until 5.6, it was driving the lamp. Only vibration shows the pump actually ran.
+(`s2.pump_back_t`), from Session 1 until 4.6, it was driving the lamp. Only vibration shows the pump actually ran.
 
 #### Values the graph always gives
 
@@ -498,25 +518,25 @@ Any three the team can explain are fine; graphs differ between teams.
 
 **A good answer** says there is no data from the break after Session 1 because the laptop running Home Assistant (the
 recorder) was closed or taken away; the board kept measuring, but nobody recorded it. A farm needs
-a machine that stays on, with power through the night. This feeds the power step in Activity 8.
+a machine that stays on, with power through the night. This feeds the power step in Activity 7.
 
-### Session 3 · Activity 7 — Dashboard (35 min)
+### Session 3 · Activity 6 — Dashboard (35 min)
 
 Plan 5 · build 25 · test with someone else 5.
 
-#### 7.1 The user · 7.2 What they see and control
+#### 6.1 The user · 6.2 What they see and control
 
 **Done when** one named user is chosen (owner on a phone, worker on a tablet, manager on a big screen).
 There are three things the user must *see* and two they must *control*, written in the user's words
 ("air humidity", "is the water up to the float?", "start the pump"), not entity names.
 
-#### 7.3 Build
+#### 6.3 Build
 
 **Done when** the four minimum cards are on the dashboard: humidity **Gauge**, float **Tile** named for the
 user (the worksheet suggests `ระดับน้ำที่ลูกลอย`), pump **Tile** (`สั่งปั๊ม`), and an **Entities** card listing the automations. History graph,
 severity colours and icons come only after that.
 
-#### 7.4 Someone else tries it
+#### 6.4 Someone else tries it
 
 **Done when** someone who did not build the dashboard (a member of the paired team, or a teammate who took no part) answers all
 three questions within 30 seconds on a phone: what is the humidity, is the water up to the float,
@@ -530,23 +550,23 @@ under the name the team gave it, not under *Overview*.
 **A good answer** names the question the tester struggled with and the specific change made:
 moving a card up, renaming a tile, adding a colour.
 
-### Session 3 · Activity 8 — Design challenge (85 min)
+### Session 3 · Activity 7 — Design challenge (85 min)
 
 Pick 5 · network 20 · power 15 · fill the canvas 30 · exchange 10 · revise 5. The design canvas
 itself is at the end of the team record sheet; the checklist holds the decision steps.
 
-#### 8.1 Pick the scenario
+#### 7.1 Pick the scenario
 
 **Done when** a scenario is written down (card A–E) and the farm and its problem are written at the
 top of the canvas. Recommend **E** (a member's own farm) when one exists. C and D are advanced; teams
 choosing them may put the specialist parts under "not sure yet".
 
-#### 8.2 The network we already use
+#### 7.2 The network we already use
 
 **Done when** the team has found `ssid`, `name_add_mac_suffix` and `api` in the ESPHome file, and has opened the board's page
 from the IP entity Home Assistant shows. There is no fixed IP in the file: the router hands it out.
 
-#### 8.3 Choose the farm network
+#### 7.3 Choose the farm network
 
 **Done when** both links have a distance, whether the far end has power, what was eliminated and why, and what
 remains. The instructor models card B on screen (400 m, no mains: WiFi and Zigbee out on distance,
@@ -561,19 +581,19 @@ before the elimination: WiFi about 30–50 m from the router in the open, ESP-NO
 board, Zigbee 10–30 m per hop, LoRa 1–10 km, RS-485 up to about 1 km of cable, cellular wherever
 there is signal. General estimates; กำพล to confirm against what they teach.
 
-#### 8.4 If the internet goes down
+#### 7.4 If the internet goes down
 
 **Done when**
 
 - *Our system:* automations yes, dashboard on the farm WiFi yes, live data from outside no, new data still logged yes.
 - *Cloud-run system:* automations no, farm dashboard no, live data from outside no, nothing new logged.
 
-#### 8.5 Home Assistant Cloud demo
+#### 7.5 Home Assistant Cloud demo
 
 **Done when** the answers are *mobile internet* and *on the farm (laptop)*. The cloud service is only a
 door in; the farm's Home Assistant still decides and records.
 
-#### 8.6 Choose remote access for the team's farm
+#### 7.6 Choose remote access for the team's farm
 
 **Done when** need, method and "what is lost if the farm's internet dies" are consistent. For example,
 notifications only means only messages are lost; the farm keeps running. The canvas's third
@@ -589,13 +609,13 @@ tunnel) was cut; mention it live if a team asks, with the warning that a bad set
 while remote viewing and notifications stop. With Home Assistant down, automations, logging and the
 dashboard all stop. Only protection in the board or the wiring, and the manual switch, remain.
 
-#### 8.7 The supply box
+#### 7.7 The supply box
 
 **Done when** the screen reads about 12 V and the battery icon reads **not full**. A charged lead-acid
 battery sits at 12.7–13.0 V. The controller judges only from the voltage it measures, just like Home
 Assistant.
 
-#### 8.8 How many panels, and a battery?
+#### 7.8 How many panels, and a battery?
 
 **Done when** the table matches the answer table folded under ตรวจคำตอบ on the worksheet (Wh/day
 and panels only since 15 Sep 2026; the battery remarks below are talking points):
@@ -615,19 +635,19 @@ and panels only since 15 Sep 2026; the battery remarks below are talking points)
 Wh per day, the usable battery capacity (about half the rated capacity), and what the panels still
 produce under cloud.
 
-#### 8.9 Fill the canvas
+#### 7.9 Fill the canvas
 
 **Done when** every canvas section has something: Input, Output (with how the team knows it actually runs),
 Logic, at least one fail-safe plus a manual override, care and budget, the first pilot, and what the team is not
 sure of yet.
 
-#### 8.10 Paired exchange and revise
+#### 7.10 Paired exchange and revise
 
 **Done when** both teams have pitched in one minute and given three minutes of feedback on two points:
 the best-reasoned decision, and the part with no answer to "what happens if it fails". One change is
 recorded in `d.revise`. There is no plenary.
 
-#### 8.11 Check against the rubric
+#### 7.11 Check against the rubric
 
 **Done when** the team has walked its canvas down the rubric: parts chosen from specs, with real prices;
 network chosen on all four factors; power source per location; at least one fail-safe and a manual override; a named
@@ -643,7 +663,7 @@ Nobody has produced these yet:
   to participants with Apple Silicon Macs. The x86-64 image is built and hosted on Google Drive
 - The install-guide details participants need: VM login, file size, verification form, help channel
 - Slide decks for Sessions 1–3 and the three post-tests
-- Expected values that need a bench run: the Activity 5 flicker count (TEST-PLAN test E) and
+- Expected values that need a bench run: the Activity 4 flicker count (TEST-PLAN test E) and
   typical room readings for Activity 1
 - **The LED-module bench check now gates Day 1** (TEST-PLAN test L): it lights through the relay from
   the 12 V rail, a reversed module is harmless, and a lit module 30 cm from the board does not lift

@@ -14,19 +14,20 @@ bench session (adoption flow, overnight, sabotage cards, instructor machines, in
 | Firmware per zone | **One source file per board, built three times** by `firmware/build-zones.py` (`esphome -s zone …`) | Six binaries in `firmware/dist/`. The only cross-zone risk is a wrong-coloured board at a table, and the board's own name reveals it |
 | Sensed input for watering | **Air humidity** (onboard) as a stand-in for soil moisture; **float switch** on GoGo-IoT port 1 as the reservoir-low guard | Worksheet says so explicitly ("จำลองสถานการณ์") rather than pretending humidity means soil |
 | Hysteresis teaching | **Light sensor → relay → 12V LED module**, framed as night lighting for a flower farm (เบญจมาศ). Since 14 Sep 2026 the lamp is wired and the dark→on / bright→off pair is built in **Session 1**; Session 2 opens on the chatter they cause | Session 2 runs the ladder (chatter, hysteresis, time, notification) on the lamp, then wires the pump and applies the lesson to watering |
-| Session 1 shape | **Hardware first, Home Assistant last** (Roger, 7 Sep 2026). Activities: 1 Sense (board's own `web_server` page) · 2 Act (relay as a switch, then the load, which is the **LED module** since 14 Sep 2026) · 3 Logic (adopt both boards, entity history, be-the-Logic on the lamp, first automations = light → lamp on / off, optional time-trigger challenge) · 4 Spec (scenario-card game, the timing buffer). Sessions 2–3 activities renumbered 5–8 | No YAML / I2C reading. No dashboard cards in session 1 — history is read from the entity dialog. No pump and no water on Day 1 except the float's glass. Auto/Off/Manual is a 2-min talking point in Activity 2 and an instructor demo in session 2, never a team build |
+| Session 1 shape | **Hardware first, Home Assistant last** (Roger, 7 Sep 2026). Activities: 1 Sense (board's own `web_server` page) · 2 Act (relay as a switch, then the load, which is the **LED module** since 14 Sep 2026) · 3 Logic (adopt both boards, entity history, be-the-Logic on the lamp, first automations = light → lamp on / off, optional time-trigger challenge) · 4 Spec (scenario-card game, the timing buffer). Sessions 2–3 activities renumbered 5–8, then 4–7 on 16 Sep 2026 when the Session 2 recap went | No YAML / I2C reading. No dashboard cards in session 1 — history is read from the entity dialog. No pump and no water on Day 1 except the float's glass. Auto/Off/Manual is a 2-min talking point in Activity 2 and an instructor demo in session 2, never a team build |
 | Between-session data | **Dropped** (Roger, 7 Sep 2026). No instructor HA adopting participant nodes: not practical at 100 boards, and the payoff was one 15-min opener. The data teams read is what **their own HA** records across Day 2 morning | The history block moves out of session 2 and into session 3, rewritten around the team's own half-day trace (light dip from a cupped hand, chattering relay before hysteresis, gaps from the sabotage rounds). Session 2 now opens on an automation recap instead. Session 2's last checklist item: do not shut the VM down at lunch |
-| Session 2 shape | **Hysteresis first** (Roger, 7 Sep 2026). Automation recap (15 min) → Activity 5 (70 min) → break → Activity 6 (50 min) → debrief (15 min); 75/45 became 70/50 on 14 Sep 2026 | The trigger/condition/action table moves out of Activity 5 into the opener, anchored on the lamp automation built in session 1 |
-| Garden lamp | **A 12V LED module joins the kit** (Roger, 8 Sep 2026): three-lens sign module, red/black leads, photo at `docs/images/led-module-12v.jpg`. **It is the Session 1 load** (Roger, 14 Sep 2026): a lamp is easier to observe than a pump, which needs vibration sensing or someone watching water | One load exchange, in Session 2 §5.5: lamp off, pump on (two wires each), with every lighting rule and the optional timer disabled and the relay Off first. The "aim the lenses away from the GoGo-IoT board" line now lives in Session 1 §2.2, where the lamp is first lit |
+| Session 2 shape | **Hysteresis first** (Roger, 7 Sep 2026). Automation recap (15 min) → Activity 4 (70 min) → break → Activity 5 (50 min) → debrief (15 min); 75/45 became 70/50 on 14 Sep 2026; the recap was cut on 16 Sep 2026 (see the dry-pump row) | The trigger/condition/action table moves out of Activity 4 into the opener, anchored on the lamp automation built in session 1; since 16 Sep 2026 the opener is gone and condition / And if is one sentence at the top of §4.3 |
+| Garden lamp | **A 12V LED module joins the kit** (Roger, 8 Sep 2026): three-lens sign module, red/black leads, photo at `docs/images/led-module-12v.jpg`. **It is the Session 1 load** (Roger, 14 Sep 2026): a lamp is easier to observe than a pump, which needs vibration sensing or someone watching water | One load exchange, in Session 2 §4.5: lamp off, pump on (two wires each), with every lighting rule and the optional timer disabled and the relay Off first. The "aim the lenses away from the GoGo-IoT board" line now lives in Session 1 §2.2, where the lamp is first lit |
 | Charge controller | Wired by teams in Activity 2 as the kit's **12V source**: adapter → BATT pair; LOAD pair → terminal block → LED module in Session 1 (+ via COM/NO, − direct), the pump from Session 2 §5.5. **Relay board runs on the controller's USB port, never its 7–60 V input** (Roger, 8 Sep 2026: splitting the 12 V rail to the board was the slow part). The second USB port powers the GoGo-IoT when the laptop leaves (overnight). Panel is added in session 3 | Session 1 calls it "กล่องจ่ายไฟ 12V" with one sentence of orientation; session 3 "เปิดกล่อง: พลังงาน" reads the three terminal pairs, sets battery type, connects the panel |
 | 18650 cell | **Stays in** (Roger, 8 Sep 2026). A charged cell keeps the board running when USB is pulled, so "power loss" is simulated with the board's **on/off switch**, never by pulling a cable | Sabotage card 1 and the Fail-safe 3 test say ปิดสวิตช์บนบอร์ด; the Session 3 adapter demo shows the sensor board surviving on its cell; `reference.md` lists the switch first under `unavailable` |
+| Dry pump, no recap | **Roger, 16 Sep 2026.** The pump runs dry: no hose, no containers, no tray, no water pumped; the float keeps its Session 1 glass. The recap (Activity 4 at the time) is cut (a warm-up repeating Session 1 does not earn its own section); Session 2 opens on the four checks, then 5.1. Activities renumbered 4–7 the same day (Roger: do not skip 4) | §4.6 is the two-wire swap plus a 10-second dry run heard and felt; the failure lab reads the pump by sound and vibration; `s2.auto1.*` keys removed from the worksheet and record sheet; index.md kit and safety lines, Session 3 pre-start and pack-up, COURSE-DESIGN kit list and risk register, the run sheet and SESSION-OVERVIEW updated the same day. 4.4 was kept and rebuilt by Roger the same day as predict → fix → test (two predictions with reasons, `s2.time.dark_after/_before(_why)`, and `s2.time.fixed`); 4.8 was rebuilt by Roger the same day as the Auto / Manual mode toggle: `Pump Auto Mode` helper, an Overview (Legacy) dashboard to show it, a *Switch is on* condition on `รดน้ำ - เปิดปั๊ม` only, keys `s2.mode.off/on`; the rule-state reset moved into 5.0, which now also requires the toggle on; Session 3's dashboard table gained a Tile for it |
 | Plain ESP32-C3 nodemcu (item 2) | Spare, unmentioned | — |
-| Lamp first, pump second, float rule last | **Roger, 14 Sep 2026.** Session 1 wires the LED module and builds `มืด-เปิดไฟ` / `สว่าง-ปิดไฟ` on one threshold plus an optional `ปิดไฟตามเวลา` (Time trigger, tested, then disabled); the pump, water props and watering rules move to Session 2 §5.5; the float rule is built for the first time as Fail-safe 1 in Activity 6 (sabotage → build → sabotage again); Session 2 §5.2/§5.3 deleted and Activity 5 renumbered 5.1–5.6 | Activity 3's written question is now the threshold-hover hook (answered by §5.1's chatter count); the already-Dry puzzle is gone. Keys: `s1.light.on` (replaces `s1.threshold` and `s2.light.on`), `s1.manual.rounds/correct`, `s1.rule.dark.*`, `s1.rule.bright.*`, `s1.auto.pass`, `s1.timer.at/ok`. The timer rule must appear in every rule-state list, because left on it fires daily at the chosen minute, including in Session 3 with the pump on the relay |
+| Lamp first, pump second, float rule last | **Roger, 14 Sep 2026.** Session 1 wires the LED module and builds `มืด-เปิดไฟ` / `สว่าง-ปิดไฟ` on one threshold plus an optional `ปิดไฟตามเวลา` (Time trigger, tested, then disabled); the pump, water props and watering rules move to Session 2 §4.5; the float rule is built for the first time as Fail-safe 1 in Activity 5 (sabotage → build → sabotage again); Session 2 §4.2/§4.3 deleted and Activity 4 renumbered 4.1–4.6 | Activity 3's written question is now the threshold-hover hook (answered by §4.1's chatter count); the already-Dry puzzle is gone. Keys: `s1.light.on` (replaces `s1.threshold` and `s2.light.on`), `s1.manual.rounds/correct`, `s1.rule.dark.*`, `s1.rule.bright.*`, `s1.auto.pass`, `s1.timer.at/ok`. The timer rule must appear in every rule-state list, because left on it fires daily at the chosen minute, including in Session 3 with the pump on the relay |
 
 ## Firmware requirements the worksheet now depends on
 
 1. **Light sensor `update_interval` ≈ 1 s, no averaging filter.** Session 1 §3.4 builds the on/off pair and
-   Session 2's chattering demo (§5.1) has the student *waver a hand* at the threshold and count toggles — it never depended on sensor
+   Session 2's chattering demo (§4.1) has the student *waver a hand* at the threshold and count toggles — it never depended on sensor
    noise, and the bench showed the BH1750 is stable anyway. 1 s is fast enough to follow a hand;
    at a 60 s default the demo silently fails. Other sensors can stay slower. See TEST-PLAN test E.
 2. **Float switch on port 1 as `binary_sensor`. Polarity now settled on the bench — write it into
@@ -96,7 +97,7 @@ bench session (adoption flow, overnight, sabotage cards, instructor machines, in
   polarity is harmless (the worksheet says so), and that a lit module 30 cm from the GoGo-IoT board,
   lenses aimed away, does not push the light reading over a typical "dark" threshold under a cupped
   hand — if it does, the worksheet's "aim it away" line needs a larger distance. Time the one exchange
-  (LED → pump, plus the water setup) with a colleague; it sets the 5.5 estimate below.
+  (LED → pump, plus the water setup) with a colleague; it sets the 4.5 estimate below.
 - ~~**Relay board terminals.**~~ **Confirmed from the vendor datasheet**, extracted to
   `firmware/ESP32-C6-RELAY-X1.md`: terminals are **NO / COM / NC** as the worksheet assumed,
   power input is a separate 2-way block (7–60 V), relay is **GPIO19**, programmable LED
@@ -125,9 +126,9 @@ bench session (adoption flow, overnight, sabotage cards, instructor machines, in
   right port was used. The residual risk is the AP's handling of two MACs behind one wireless
   client (NETWORK-REQUIREMENTS item 2), not the laptop. Worksheet still tells teams to skip and flag
   it; `session-1.md`'s firewall line is **reworded** (same zone WiFi, same address, then flag it).
-- **Water props not on the kit list**: two containers, a glass for the float switch, drip tray,
-  towel. Worksheet says the instructor provides them at the table. Since 14 Sep 2026 Session 1 needs
-  only the glass; the containers, hose and tray are first used in Session 2 §5.5.
+- **Water props not on the kit list**: a glass for the float switch, provided at the table. Since
+  16 Sep 2026 that is the only water on the table: the pump runs dry, so the containers, hose and tray
+  are gone.
 - **Handouts referenced but not written**: humidity sensor
   and float switch spec excerpts; equipment price sheet for the design challenge.
 - ~~**Worksheet adoption steps still say "IP from the team card"**~~ **Done, and revised again
@@ -265,7 +266,7 @@ sentence in the worksheet; the facilitator run sheet still owns the water and ti
 
 **Revised again, 8 Sep 2026 (Roger, after reading the page).** The blind card round is gone. Too
 much logistics prose made the worksheet unattractive, the sabotage procedure was unclear, and the
-record (what did you see / what do you think caused it / seconds to notice) was vague. Activity 6
+record (what did you see / what do you think caused it / seconds to notice) was vague. Activity 5
 is now **five problems, each sabotage → fix → sabotage again**: every problem opens with
 วิธีจำลองปัญหา (the exact act), ถ้าจำลองสำเร็จ (the symptom, and which other rule may mask it),
 the fix steps, and ถือว่าแก้ได้เมื่อ (repeat the act; stated pass criterion). Every team is
@@ -378,7 +379,7 @@ fill-in lines (the exception to the web-Markdown conventions). Print from the re
 
 ## Not yet written
 
-- **Scenario cards for Activity 4 (spec game)** — one job per card with the numbers it needs.
+- **Scenario cards for the archived spec game (Session 1 Activity 4 until 15 Sep 2026)** — one job per card with the numbers it needs.
   Set of at least three: one exceeds the onboard humidity–temperature accuracy, one exceeds the
   relay's printed DC rating (a 12V pump drawing more than 10 A, or a 220V load), one passes as-is.
   Answer key names the single part to change.
@@ -387,7 +388,7 @@ fill-in lines (the exception to the web-Markdown conventions). Print from the re
   notification), then adds a float-**Wet** condition to `รดน้ำ - เปิดปั๊ม` and tests the lifted-first
   case, which makes `unavailable` fail safe, as TEST-PLAN test G required. The Session 1 already-Dry
   hook is gone; Session 1's written question now hooks the chatter lesson instead.
-- Scenario cards for Activity 8 (content is in `session-3.md`)
+- Scenario cards for Activity 7 (content is in `session-3.md`)
 - ~~Role cards~~ dropped 8 Sep 2026: no named roles, teams decide who does what (see COURSE-DESIGN.md)
 - Team cards: zone colour, zone laptop SSID + password, HA VM user/password. No instructor HA
   address, no board names or IPs (read from the board), no encryption key
@@ -429,7 +430,7 @@ Acted on, all in `docs/session-2.md` unless noted:
   SESSION-OVERVIEW rows updated.
 - **Rule state at every transition** is now explicit (rewritten 14 Sep 2026): the two lighting rules
   arrive from Session 1 on, the optional timer off; disable both lighting rules including their time
-  triggers and the timer before the pump is wired; no float rule exists until Activity 6; re-enable
+  triggers and the timer before the pump is wired; no float rule exists until Activity 5; re-enable
   `รดน้ำ - เปิดปั๊ม` after the disable exercise; and a stated Automations-list state before the
   Failure Lab. The lab starts the pump from the relay device page; no more "raise the threshold".
 - **Load exchange is two wires each way**, both directions, no fixed 5-min budget.
@@ -442,9 +443,9 @@ Acted on, all in `docs/session-2.md` unless noted:
   Wet condition prevents a new start only; vibration = motor moving, not water delivered;
   Fail-safe 3 test restarts the pump first and checks which rule's notification fired.
 - Copy edits: กฎ, โดย, ชีวิตจริง, หลอดไฟ, เซนเซอร์.
-- COURSE-DESIGN Activity 4 now matches the worksheet (short form, never homework).
+- COURSE-DESIGN's spec game (Session 1 Activity 4 at the time) now matches the worksheet (short form, never homework).
 
-**Activity 5 internal breakdown, estimate only, not timed (revised 14 Sep 2026, 70 min):** state check
+**Activity 4 internal breakdown, estimate only, not timed (revised 14 Sep 2026, 70 min):** state check
 3 · chatter count 5 · hysteresis 8 · time-condition tests 12 · time-trigger fix 5 · notification 4 ·
 pump wiring, water setup, first run and changeover time 10 · watering rules and test 12 ·
 disable/enable exercise 5 · written question 3 = 67, leaving 3. The lamp swap (5) and the dark→on
@@ -523,25 +524,25 @@ Thai worksheets and clarify teaching flow"). Roger kept the result as is. Claude
 evening: renders regenerated, strict MkDocs build clean, the field-sync test passing on all four
 pages, every session key present on the record sheet, no broken anchors, images or links. The
 planning docs (INSTRUCTOR-RESOURCES, COURSE-DESIGN, SESSION-OVERVIEW, TEST-PLAN) were then brought
-into line with the new worksheet, including the renumbered sub-steps (5.1–5.8, 7.1–7.4, 8.1–8.11).
+into line with the new worksheet, including the renumbered sub-steps (4.1–4.8, 6.1–6.4, 7.1–7.11).
 
 **Codex changes that are improvements, now propagated to the run sheet**
 
-- 6.5: stop the pump with the relay board's button before turning WiFi back on. The old text
+- 5.5: stop the pump with the relay board's button before turning WiFi back on. The old text
   claimed Fail-safe 2 would cut the pump on reconnect; the failed service call is not retried.
-- 6.3: the 30 s cutoff may fire before the board is marked unavailable, so the sensor-lost rule is
+- 5.3: the 30 s cutoff may fire before the board is marked unavailable, so the sensor-lost rule is
   judged by its Trace, not by which rule stopped the pump.
 - History: a VM shutdown or restart keeps the recorded history and only leaves a gap. The old
   note said such a team has no Session 2 data.
-- 5.6: the pump's leads go onto the terminal block where the lamp's were, which matches how
+- 4.6: the pump's leads go onto the terminal block where the lamp's were, which matches how
   Session 1 wired the lamp; the old text put the + lead directly on NO.
 
 **Codex changes Roger may want to reconsider** (none blocking; the run sheet covers each live)
 
-1. **Network table lost its range figures.** Step 8.3 asks teams to eliminate options by distance,
+1. **Network table lost its range figures.** Step 7.3 asks teams to eliminate options by distance,
    but the table no longer states any distance (WiFi 30–50 m, ESP-NOW 100–200 m, Zigbee 10–30 m per
    hop, LoRa 1–10 km, RS-485 ~1 km). The 9 Sep handoff kept them pending กำพล's confirmation. The
-   instructor now gives them on screen (INSTRUCTOR-RESOURCES 8.3). Restoring one column to the table
+   instructor now gives them on screen (INSTRUCTOR-RESOURCES 7.3). Restoring one column to the table
    would let the exercise stand on its own.
 2. **Remote-access menu went from five ways to four.** "Opening a door yourself" (port forwarding,
    DDNS, a tunnel) was dropped, along with the Tailscale/WireGuard, LINE/Telegram examples.
@@ -552,15 +553,18 @@ into line with the new worksheet, including the renumbered sub-steps (5.1–5.8,
    links.
 4. **The feedback form is no longer mentioned anywhere on the site** (its QR placeholder was
    removed with the other placeholders). Hand out or project.
-5. **6.6 table, stuck-float row:** now credits the 30 s run-time cutoff with catching a float stuck
+5. **5.6 table, stuck-float row:** now credits the 30 s run-time cutoff with catching a float stuck
    floating, so the "no rule stops it" answer has one case (laptop / Home Assistant down) instead of
    two. Defensible, and the run sheet says so, but it softens the maintenance point.
-6. **Session 2 debrief lost the watchdog discussion bullet;** 6.2 lost "10–20 min on a real farm";
+6. **Session 2 debrief lost the watchdog discussion bullet;** 5.2 lost "10–20 min on a real farm";
    the sizing answer lost the 18650 ≈ 9 Wh, 20 Ah and 400 W-panel remarks (kept in the run sheet).
-7. **Numbering:** the Session 2 recap is now headed กิจกรรมที่ 4, which is the number the archived
-   spec game held. Fine as long as the spec game stays archived.
-8. **Sub-step numbers changed** (5.3 split into 5.3/5.4, 5.5 into 5.6/5.7, 7.1 into 7.1/7.2, 8.2/8.3
-   into 8.2–8.8). Anchors were kept, so old links still land; only prose references had to move.
+7. **Numbering:** the Session 2 recap was headed กิจกรรมที่ 4, the number the archived spec game
+   held. Since 16 Sep 2026 the recap is gone too and the activities are renumbered 4–7 (Roger: do not
+   skip 4). Anchors (`#a4…#a7`), banner files, `s2.q4`, `s2.q5`, `s3.q6` and every reference in the
+   planning docs moved with them; every number in this file was rewritten to the new scheme, including
+   entries dated before 16 Sep. Step-image filenames such as `s2-a5-04-add-trigger.png` were left alone.
+8. **Sub-step numbers changed** (4.3 split into 4.3/4.4, 4.5 into 4.6/4.7, 6.1 into 6.1/6.2, 7.2/7.3
+   into 7.2–7.8). Anchors were kept, so old links still land; only prose references had to move.
 
 Pre-existing, not from Codex: History is opened "from the start of Session 2", yet the gap
 question asks about the overnight break before it. Opening from the end of Session 1 would show the

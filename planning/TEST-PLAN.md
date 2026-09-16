@@ -248,7 +248,7 @@ from the list, manual entry as fallback — see test C.)
 
 **This test's original premise was wrong, and the correction matters.** It assumed the lesson
 depends on the relay flickering *by itself* when a hand hovers near the threshold. It does not:
-session-2.md §5.1 already has a student deliberately wave a hand up
+session-2.md §4.1 already has a student deliberately wave a hand up
 and down at the threshold for a minute — "เหมือนเมฆบางลอยผ่านตอนพลบค่ำ", like thin clouds drifting
 past at dusk — while a teammate counts toggles. The fluctuation is **manufactured by the student
 on purpose**, and the worksheet says so.
@@ -268,7 +268,7 @@ lighting.
 
 1. In Home Assistant create one automation: light **Below** a threshold near room level →
    switch **turn on**. And a second: **Above** the *same* value → **turn off**. (Since 14 Sep 2026
-   teams build exactly this pair in Session 1 §3.4, driving the LED module; Session 2 §5.1 then
+   teams build exactly this pair in Session 1 §3.4, driving the LED module; Session 2 §4.1 then
    counts the chatter.)
 2. Hold a hand at the height where the reading sits right at the threshold and waver it.
 
@@ -276,7 +276,7 @@ lighting.
 - [ ] Count toggles per minute and write it down — the worksheet asks teams to do exactly this,
       and the number belongs on the record sheet
 - [ ] Now separate the thresholds, waver the hand the same way, and confirm the count drops.
-      The worksheet's pass mark is **≤2 toggles per minute** (session-2.md §5.2)
+      The worksheet's pass mark is **≤2 toggles per minute** (session-2.md §4.2)
 
 **Question this answers, restated:** does a deliberately wavered hand produce clearly more than
 2 toggles a minute with both thresholds equal, and clearly ≤2 once a gap is opened? That is the
@@ -668,7 +668,7 @@ optional. Wire it as the worksheet says: controller LOAD + → COM, NO → red l
 ## K. Temperature and humidity at 1 s *(10 min)*
 
 Added 14 Sep 2026: the SHT3x is polled every 1 s instead of 5 s, so a breath shows at once and
-session 2's blow-on-it watering loop (5.7) feels immediate. Temperature and humidity carry
+session 2's blow-on-it watering loop (4.7) feels immediate. Temperature and humidity carry
 `or: [delta, throttle: 30s]` filters — a reading goes out on a 0.2 °C / 0.5 %RH change, otherwise
 every 30 s — so noise in the last decimal does not become a history row every second.
 
@@ -679,7 +679,7 @@ every 30 s — so noise in the last decimal does not become a history row every 
 - [ ] Breathing on the board: humidity starts rising on the page **within about 2 s**
 - [ ] Still room: humidity and temperature update roughly **every 30 s**, not every second — the
       history graph shows steps, not a solid band of points
-- [ ] The rise and fall still cross the 5.7 thresholds cleanly: pump stops while blowing, and
+- [ ] The rise and fall still cross the 4.7 thresholds cleanly: pump stops while blowing, and
       restarts after. Write down the restart time; it is the figure the record sheet asks for and
       should be no longer than it was at 5 s
 - [ ] Temperature reads the same as before (±0.2 °C against a 5 s build or a second board) — no

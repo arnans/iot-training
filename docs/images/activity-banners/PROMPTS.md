@@ -14,22 +14,18 @@ Use case: illustration-story. Create one polished decorative activity banner for
 
 Use case: illustration-story. Create one polished decorative activity banner for an adult Thai smart-farming workbook. Flat editorial illustration, clean charcoal outlines, muted sage greens, warm cream #fff6e3, amber highlights, subtle shadows, cohesive restrained palette. Represent an actual farm APPLICATION, not a workshop experiment or technical instruction. No circuit boards, breadboards, wiring diagrams, instructional arrows, icons floating in air, words, letters, numbers, logos or watermark. Wide shallow panoramic scene with one clear visual focus. Requested canvas 1800x300, aspect 6:1. If canvas must be 3:1, compose the ENTIRE farm scene as a continuous narrow horizontal band within the central 50% of image height; top and bottom quarters plain solid warm cream. All people and greenhouse roofs must fit inside that central band. Spread scenery across the whole width. Distant panoramic viewpoint, small complete human figures, simple shapes recognizable at shallow banner size. Scene: A flower greenhouse at sunset, its overhead growing lights coming on as daylight fades. Changing sky and warm lights make the automatic response clear.
 
-## activity-04-review.png
-
-Use case: illustration-story. Decorative adult Thai smart farming workbook banner. Editorial illustration with clean charcoal outlines, muted sage greens, warm cream #fff6e3 and amber highlights. Represent actual farm APPLICATION, no workshop devices or wiring diagrams. No text, numbers, logos or floating icons. Wide shallow panoramic scene. Requested 6:1 canvas. If output 3:1 compose all meaningful artwork in central half height with plain cream upper and lower quarters, so display center cropped to 6:1. Distant panoramic viewpoint, complete small figures. Scene: A farmer surveying a small greenhouse where open roof vents, overhead lighting and drip watering work together around the crop. Broad view of the growing environment.
-
-## activity-05-irrigation.png
+## activity-04-irrigation.png
 
 Use case: illustration-story. Decorative adult Thai smart farming workbook banner. Editorial illustration with clean charcoal outlines, muted sage greens, warm cream #fff6e3 and amber highlights. Represent actual farm APPLICATION, no workshop devices or wiring diagrams. No text, numbers, logos or floating icons. Wide shallow panoramic scene. Requested 6:1 canvas. If output 3:1 compose all meaningful artwork in central half height with plain cream upper and lower quarters, so display center cropped to 6:1. Distant panoramic viewpoint, complete small figures. Scene: Water flowing along irrigation furrows between rows of young corn, a storage tank at field edge. Corn and flowing water are the focus.
 
-## activity-06-protection.png
+## activity-05-protection.png
 
 Use case: illustration-story. Decorative adult Thai smart farming workbook banner. Editorial illustration with clean charcoal outlines, muted sage greens, warm cream #fff6e3 and amber highlights. Represent actual farm APPLICATION, no workshop devices or wiring diagrams. No text, numbers, logos or floating icons. Wide shallow panoramic scene. Requested 6:1 canvas. If output 3:1 compose all meaningful artwork in central half height with plain cream upper and lower quarters, so display center cropped to 6:1. Distant panoramic viewpoint, complete small figures. Scene: A farmer inspecting a nearly empty open irrigation tank beside a cornfield. Water level visibly low and outlet dry, suggesting watering has stopped until supply is restored.
 
-## activity-07-dashboard.png
+## activity-06-dashboard.png
 
 Use case: illustration-story. Decorative adult Thai smart farming workbook banner. Editorial illustration with clean charcoal outlines, muted sage greens, warm cream #fff6e3 and amber highlights. Represent actual farm APPLICATION, no workshop devices or wiring diagrams. No text, numbers, logos or floating icons. Wide shallow panoramic scene. Requested 6:1 canvas. If output 3:1 compose all meaningful artwork in central half height with plain cream upper and lower quarters, so display center cropped to 6:1. Distant panoramic viewpoint, complete small figures. Scene: A farmer in the shade checking a phone while looking across a greenhouse and irrigated field. Simple colored shapes on phone screen suggest farm status.
 
-## activity-08-design.png
+## activity-07-design.png
 
 Use case: illustration-story. Decorative adult Thai smart farming workbook banner. Editorial illustration with clean charcoal outlines, muted sage greens, warm cream #fff6e3 and amber highlights. Represent actual farm APPLICATION, no workshop devices or wiring diagrams. No text, numbers, logos or floating icons. Wide shallow panoramic scene. Requested 6:1 canvas. If output 3:1 compose all meaningful artwork in central half height with plain cream upper and lower quarters, so display center cropped to 6:1. Distant panoramic viewpoint, complete small figures. Scene: Two farmers planning together over a paper farm map on a low table, vegetable beds, greenhouse and water tank behind them. Practical farm planning.

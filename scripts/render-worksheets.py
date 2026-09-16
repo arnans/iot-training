@@ -452,7 +452,7 @@ def render_page(src: str, slug: str, combined: bool) -> dict:
     title = re.search(r"^# (.+)$", text, re.M).group(1).strip()
     text = FIELDS.MARKER.sub(FIELDS._render, text)
     md = markdown.Markdown(
-        extensions=["admonition", "attr_list", "md_in_html", "tables", "toc", "pymdownx.tasklist"],
+        extensions=["admonition", "attr_list", "md_in_html", "tables", "sane_lists", "toc", "pymdownx.tasklist"],
         extension_configs={
             "toc": {"slugify": slugs.slugify(case="lower")},
             "pymdownx.tasklist": {"custom_checkbox": True, "clickable_checkbox": True},

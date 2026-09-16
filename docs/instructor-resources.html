@@ -215,7 +215,7 @@ figcaption {
   <header class="doc-head">
     <p class="kicker">Instructor & TA handbook</p>
     <h1>Instructor & TA resources</h1>
-    <p class="meta">IoT in Smart Farming workshop · Last updated 2026-09-15</p>
+    <p class="meta">IoT in Smart Farming workshop · Last updated 2026-09-16</p>
     <p class="disclosure">This document was compiled with Claude AI. Its content was designed and reviewed by those responsible, who certify that it reflects the intent of the preparing team in every respect.</p>
   </header>
   <p>Every file and link needed to prepare for and run the workshop, in one place.
@@ -415,7 +415,7 @@ figcaption {
   check first). Minutes are the design estimate, not a rehearsed timing.</p>
   <p><strong>How to run it.</strong> Project the checklist and talk through it one item at a time; teams work down
   it while you talk. The prose under each item is for the team that falls behind or wants the reason.</p>
-  <p>The question added with the checklists, <code>s2.fs.none</code>, the two from the Activity 5 pilot,
+  <p>The question added with the checklists, <code>s2.fs.none</code>, the two from the Activity 4 pilot,
   <code>s2.time.trace</code> and <code>s2.time.why</code>, and the Session 1 lighting keys (<code>s1.light.on</code>,
   <code>s1.rule.dark.*</code>, <code>s1.rule.bright.*</code>, <code>s1.auto.pass</code>, <code>s1.timer.at</code>, <code>s1.timer.ok</code>) are on the
   record sheet like every other answer. Session 1 no longer records the supply voltage, the
@@ -454,7 +454,7 @@ figcaption {
   <h3>Session 1 · Activity 2 — Act (40 min)</h3>
   <p>Teams leave with the 12 V lamp circuit wired by their own hands, the relay board powered from the
   charge controller's USB, and the LED module lighting on command. No water in Session 1 beyond the
-  float's glass; the pump is first wired in Session 2 (5.6).</p>
+  float's glass; the pump is first wired in Session 2 (4.6).</p>
   <h4>2.1 Know the relay board</h4>
   <p><strong>Done when</strong> every member can point at <strong>COM</strong> and <strong>NO</strong> (used) and at <strong>7-60 Input / GND</strong> (never
   used) on the real board.</p>
@@ -538,14 +538,15 @@ figcaption {
   <p><strong>A good answer</strong> says the lamp switches on and off repeatedly, because one value is both the on and the
   off line, so every wobble across it fires a rule. Leave it there: Session 2 opens by measuring it and
   fixing it with a second threshold.</p>
-  <h3>Session 2 · Activity 5 — automations and hysteresis (70 min)</h3>
+  <h3>Session 2 · Activity 4 — automations and hysteresis (70 min)</h3>
   <p>Teams leave with four automations (five if they did the Session 1 timer): two watering rules <strong>on</strong>,
   the two garden-lamp rules and the timer <strong>off</strong>, and the pump wired for the first time. They also leave
   with their thresholds, two flicker counts and the written answer. Keys go into the team's JSON as
-  <code>s2.light.off</code>, <code>s2.chatter.*</code>, <code>s2.time.*</code>, <code>s2.pump_back_t</code>, <code>s2.hum.*</code>, <code>s2.q5</code>; the on-threshold is
+  <code>s2.light.off</code>, <code>s2.chatter.*</code>, <code>s2.time.*</code>, <code>s2.pump_back_t</code>, <code>s2.hum.*</code>, <code>s2.q4</code>; the on-threshold is
   Session 1's <code>s1.light.on</code>.</p>
-  <p><strong>During the recap</strong> the lamp rules from Session 1 are live, so anyone shading the board lights the
-  lamp. That is a free demo, not a fault.</p>
+  <p><strong>At the start</strong> the lamp rules from Session 1 are live, so anyone shading the board lights the
+  lamp. That is a free demo, not a fault. There is no recap activity any more (cut 16 Sep 2026): the
+  session goes from the four checks straight into 5.1.</p>
   <h4>Before start (ก่อนเริ่ม) · ~3 min</h4>
   <p><strong>Done when</strong> the four worksheet checks are ticked (they report to the dashboard as one activity,
   15 Sep 2026): Home Assistant is up, the sensor board shows values, the relay board switches the
@@ -555,24 +556,30 @@ figcaption {
   lamp. Today's VM IP is read off the screen; the record sheet still has a box for it.</p>
   <p><strong>If stuck</strong> The lamp will not light: same as Session 1's 3.4 (no crossing yet, or the room got darker
   than the threshold overnight, so raise the threshold or add light).</p>
-  <h4>5.1 Lamp flickers near the threshold · ~5 min</h4>
+  <h4>4.1 Lamp flickers near the threshold · ~5 min</h4>
   <p><strong>Done when</strong> the team has a one-minute count with the off rule at the <em>same</em> value as the on rule.
   It should be clearly higher than the count they get in 5.2. There is no fixed expected number:
   TEST-PLAN test E still owes a bench count.</p>
   <p><strong>If stuck</strong> A count of 0–2 means the hand is not crossing the threshold. Have one person watch the
   value on the device page while another finds the height where it sits at the threshold, then waver
   there.</p>
-  <h4>5.2 Separate the on and off thresholds · ~8 min</h4>
+  <h4>4.2 Separate the on and off thresholds · ~8 min</h4>
   <p><strong>Done when</strong> the off threshold sits above the on-threshold and below the room reading, about a quarter of
   the range above (82 / 6 / on 40 → off about 60). Self-check passes on all three: ≤ 2 switches in a
   minute, cover → on, uncover → off.</p>
   <p><strong>If stuck</strong> The lamp never goes off: the off threshold is above the room reading. It still flickers:
   widen the gap, and turn the LED so it does not shine onto the board's light sensor.</p>
-  <h4>5.3 Time window · 5.4 Lamp on when the time arrives · ~12 min tests, ~5 min fix</h4>
+  <h4>4.3 Time window · 4.4 Lamp on when the time arrives · ~12 min tests, ~5 min fix</h4>
   <p><strong>Done when</strong></p>
   <ul>
   <li><em>Traces answer:</em> the latest run stopped at the condition (the <strong>And if</strong> / Time box). The
     trigger fired but was blocked.</li>
+  <li><em>Predictions (added 16 Sep 2026, window 18:30–07:30):</em> dark <strong>after</strong> 18:30 → the lamp comes on
+    (the crossing fires inside the window). Dark <strong>before</strong> 18:30 → it stays off: the crossing fired
+    outside the window and was blocked, and nothing fires again at 18:30. The second answer is the
+    reason 4.4 exists.</li>
+  <li><em>After the fix:</em> with the sensor covered before the start time, the lamp comes on at the start
+    time (<code>s2.time.fixed</code> = ติด).</li>
   <li><em>Why re-check light in And if:</em> the time trigger fires whether or not it is dark. Without the
     light condition the lamp would switch on at the start time in daylight.</li>
   <li><em>Tick:</em> with the sensor kept covered, the lamp turns on at After and off at Before.</li>
@@ -581,33 +588,34 @@ figcaption {
   again. The timed test does nothing: the chosen times are already past. Both <strong>After</strong> and the
   trigger's <strong>At</strong> must move to a future minute, and the same goes for Before and At on the off rule.
   Home Assistant runs on Asia/Bangkok time, so read the laptop clock.</p>
-  <h4>5.5 Notification · ~4 min</h4>
+  <h4>4.5 Notification · ~4 min</h4>
   <p><strong>Done when</strong> a message appears under the bell icon, bottom-left, when <code>มืด-เปิดไฟ</code> runs.</p>
-  <p><strong>If stuck</strong> Covering does nothing now: the time window from 5.3 excludes the current time, so widen it.
+  <p><strong>If stuck</strong> Covering does nothing now: the time window from 4.3 excludes the current time, so widen it.
   <em>Send a notification via mobile_app</em> is missing from the list: it only appears after a phone
   has logged in through the Companion app. Persistent notification is always available.</p>
-  <h4>5.6 Wire the pump, set up the water · ~10 min</h4>
+  <h4>4.6 Wire the pump, run it dry · ~8 min</h4>
   <p><strong>Done when</strong> both lamp rules and the timer are off and the relay is Off <em>before</em> any screw is touched;
-  the LED's two leads are off the terminal block and the pump's leads sit on the same two points, + on the block terminal fed from <strong>NO</strong>, − on the negative terminal; container A is three-quarters
-  full with the pump submerged and the float in it reading <strong>Wet</strong>; the pump has moved water A → B on a
-  10-second command; the hose is back in A (recirculating); and the changeover time is written down.
+  the LED's two leads are off the terminal block and the pump's leads sit on the same two points, + on the block terminal fed from <strong>NO</strong>, − on the negative terminal; the float sits in its glass
+  reading <strong>Wet</strong>; the pump has run dry on a 10-second command, heard and felt, and stopped on Off; and
+  the changeover time is written down. No hose, containers or tray: the pump runs dry all morning
+  (16 Sep 2026), so keep every run short. Fail-safe 2's 30 s cutoff now also protects the pump.
   Session 3 uses it to tell lamp commands from pump commands on the relay's history graph.</p>
   <p><strong>If stuck</strong> Relay clicks, pump silent: the + lead went to a terminal fed from NC, or the − lead is not on the negative terminal, or
   the controller's load pair is off (its load mode; tell the instructor). Pump runs with the relay Off: lead
   on NC. The lamp turned the relay on during the swap: a lamp rule was left enabled. Nothing watches the
   float yet, and the worksheet says so; the float rule is built in 6.1.</p>
-  <h4>5.7 Watering rules · ~12 min</h4>
+  <h4>4.7 Watering rules · ~12 min</h4>
   <p><strong>Done when</strong> the pump-on threshold sits a little above room humidity; off threshold 5–10 % above that.
   The pump does <strong>not</strong> start when the rule is saved. That is expected, because nothing crossed. Blowing on the board
   pushes humidity past the off threshold; when blowing stops and it falls back below the on
   threshold, the pump starts. The restart time depends on the room, and any measured number is fine.</p>
   <p><strong>If stuck</strong> The pump never restarts after blowing: the on-threshold is below the
   room reading, so the value never crosses it on the way down.</p>
-  <h4>5.8 Disable a rule, run the pump by hand · ~5 min</h4>
+  <h4>4.8 Disable a rule, run the pump by hand · ~5 min</h4>
   <p><strong>Done when</strong> with <code>รดน้ำ - เปิดปั๊ม</code> disabled and dry air, the pump stays still, but the relay's device
   page still runs it. The Automations list ends as: <code>รดน้ำ - เปิดปั๊ม</code>, <code>รดน้ำ - ปิดปั๊ม</code> <strong>on</strong>;
   <code>มืด-เปิดไฟ</code>, <code>สว่าง-ปิดไฟ</code> and <code>ปิดไฟตามเวลา</code> <strong>off</strong>.</p>
-  <p><strong>Check this list at every table before the break.</strong> Activity 6's sabotage rounds assume exactly
+  <p><strong>Check this list at every table before the break.</strong> Activity 5's sabotage rounds assume exactly
   this state. A lamp rule left on switches the relay whenever the room light changes, and a timer rule left on
   switches it off at the same minute every day. Those are the likeliest causes of a pump "running by
   itself" or stopping unexplained in the failure lab.</p>
@@ -615,18 +623,18 @@ figcaption {
   <p><strong>A good answer</strong> gives the team's own on and off light thresholds. It says that one shared value makes
   the output flicker whenever the reading hovers at it, and that watering applies the same fix: the
   off threshold is set 5–10 % above the on threshold.</p>
-  <h3>Session 2 · Activity 6 — Failure lab (50 min)</h3>
+  <h3>Session 2 · Activity 5 — Failure lab (50 min)</h3>
   <p>Every problem runs the same three steps: the paired team sabotages, our team fixes, the paired
   team sabotages again. While being sabotaged, the team watches <strong>only its Home Assistant screen</strong>. <strong>Required:</strong>
   problems 1, 2 and 5 seen, 1 and 2 fixed and re-tested. Problems 3 and 4 when time allows. Pairing
   is explained live, not in the worksheet.</p>
   <h4>Before every problem</h4>
   <p><strong>Done when</strong> both watering rules are on, both lamp rules and the timer are off, the float sits in
-  container A reading Wet, both boards show values, and the two device pages are open in separate tabs.
+  its glass reading Wet, both boards show values, and the two device pages are open in separate tabs.
   No float rule exists yet; problem 1 builds it.</p>
   <p><strong>If stuck</strong> A pump started by hand keeps running because the room never reaches the off threshold. That is
   expected; do not let teams change the humidity thresholds to make the pump run.</p>
-  <h4>6.1 Problem 1 — water gone, pump still starts (Fail-safe 1)</h4>
+  <h4>5.1 Problem 1 — water gone, pump still starts (Fail-safe 1)</h4>
   <p><strong>Done when</strong> the sabotage (float lifted until Dry, then the pump commanded On from the board's button or the device page) runs the pump
   with nothing stopping it, because no rule looks at the float at all. After the fix, <code>Fail-safe - น้ำหมด</code>
   (two triggers, one condition, two actions) stops the pump within about a second, with a notification,
@@ -634,12 +642,12 @@ figcaption {
   <p><strong>If stuck</strong> The first trigger is <em>float → Dry</em> (state, not numeric). The second trigger must be <em>pump switch → On</em> with the condition <em>float → Dry</em>. The watering
   rule's condition is <em>float → </em><em>Wet</em>**, not "not Dry": a cut wire reads Dry and an offline board reads
   unavailable, and neither is Wet.</p>
-  <h4>6.2 Problem 2 — pump never stops (Fail-safe 2)</h4>
+  <h4>5.2 Problem 2 — pump never stops (Fail-safe 2)</h4>
   <p><strong>Done when</strong> a pump started by hand and left alone runs on, and after the fix it stops by itself at about
   30 s with a notification.</p>
   <p><strong>If stuck</strong> The trigger needs <strong>For</strong> 30 seconds on <em>pump → On</em>. After the cutoff the pump does not
   come back by itself; that is by design, and it is why the notification matters.</p>
-  <h4>6.3 Problem 3 — sensor board off (Fail-safe 3) · when time allows</h4>
+  <h4>5.3 Problem 3 — sensor board off (Fail-safe 3) · when time allows</h4>
   <p><strong>Done when</strong> the team has chosen open, close or hold, with a reason; <em>off</em> is the defensible choice for
   a pump. When the board is switched off, its entities go unavailable while the pump runs on. After the
   fix, the Traces page of <code>Fail-safe - เซนเซอร์หาย</code> shows a run when humidity went unavailable, with the Off and the notification. The 30 s cutoff often stops the pump first, because the board can take longer than that to be marked unavailable; the worksheet accepts that (15 Sep 2026), so judge by Traces, not by which rule stopped the pump.</p>
@@ -647,19 +655,19 @@ figcaption {
   <strong>ON/OFF switch</strong>. If the pump stopped at 30 s, that was Fail-safe 2; the sensor-lost rule still counts as working
   when its Trace shows a run. Restart the pump before re-testing so the 30 s timer starts
   fresh.</p>
-  <h4>6.4 Problem 4 — commanded but not running (Fail-safe 4) · when time allows</h4>
-  <p><strong>Done when</strong> with the pump lead unscrewed from NO, the relay clicks and the screen says On but no water
-  flows. After the fix the switch turns itself off within 15 s. With the lead back, the pump runs past
+  <h4>5.4 Problem 4 — commanded but not running (Fail-safe 4) · when time allows</h4>
+  <p><strong>Done when</strong> with the pump lead unscrewed from NO, the relay clicks and the screen says On but the pump is
+  silent and still. After the fix the switch turns itself off within 15 s. With the lead back, the pump runs past
   15 s.</p>
   <p><strong>If stuck</strong> The rule cuts a pump that <em>is</em> running: the sensor board is not touching the pump, or
   <code>ความไวตรวจจับปั๊ม</code> is too low, so set it to high. The 15 s is deliberately shorter than Fail-safe 2
   so the two rules can be told apart.</p>
-  <h4>6.5 Problem 5 — laptop off WiFi</h4>
+  <h4>5.5 Problem 5 — laptop off WiFi</h4>
   <p><strong>Done when</strong> the team has seen the pump run on with every fail-safe silent. There is no fix inside Home
   Assistant. Stop the pump with the relay board's button <em>before</em> turning WiFi back on: the Off that
   Fail-safe 2 tried to send while the link was down failed and is not retried, so waiting for a rule
   after reconnecting leaves the pump running. One person watches the pump; cap the run at about 40 s.</p>
-  <h4>6.6 Which rule stops which problem</h4>
+  <h4>5.6 Which rule stops which problem</h4>
   <p><strong>Done when</strong> the "no rule" answer names the laptop or Home Assistant down or off WiFi. Since 15 Sep
   2026 the worksheet's table credits the 30 s cutoff with catching a float stuck floating (reads Wet
   with the tank empty), so that row is no longer a "no rule" case, though it still needs a person to go
@@ -681,24 +689,24 @@ figcaption {
   <p><strong>Done when</strong> each point has what was seen, a time, what the team was doing, and what a farm would check.
   Any three the team can explain are fine; graphs differ between teams.</p>
   <p><strong>If stuck</strong> A relay bar that is On is a <strong>command</strong>, not a running pump. Before the recorded changeover time
-  (<code>s2.pump_back_t</code>), from Session 1 until 5.6, it was driving the lamp. Only vibration shows the pump actually ran.</p>
+  (<code>s2.pump_back_t</code>), from Session 1 until 4.6, it was driving the lamp. Only vibration shows the pump actually ran.</p>
   <h4>Values the graph always gives</h4>
   <p><strong>Done when</strong> the lowest and highest humidity since Session 2 are written down, each with its time.</p>
   <h4>The question the graph cannot answer</h4>
   <p><strong>A good answer</strong> says there is no data from the break after Session 1 because the laptop running Home Assistant (the
   recorder) was closed or taken away; the board kept measuring, but nobody recorded it. A farm needs
-  a machine that stays on, with power through the night. This feeds the power step in Activity 8.</p>
-  <h3>Session 3 · Activity 7 — Dashboard (35 min)</h3>
+  a machine that stays on, with power through the night. This feeds the power step in Activity 7.</p>
+  <h3>Session 3 · Activity 6 — Dashboard (35 min)</h3>
   <p>Plan 5 · build 25 · test with someone else 5.</p>
-  <h4>7.1 The user · 7.2 What they see and control</h4>
+  <h4>6.1 The user · 6.2 What they see and control</h4>
   <p><strong>Done when</strong> one named user is chosen (owner on a phone, worker on a tablet, manager on a big screen).
   There are three things the user must <em>see</em> and two they must <em>control</em>, written in the user's words
   ("air humidity", "is the water up to the float?", "start the pump"), not entity names.</p>
-  <h4>7.3 Build</h4>
+  <h4>6.3 Build</h4>
   <p><strong>Done when</strong> the four minimum cards are on the dashboard: humidity <strong>Gauge</strong>, float <strong>Tile</strong> named for the
   user (the worksheet suggests <code>ระดับน้ำที่ลูกลอย</code>), pump <strong>Tile</strong> (<code>สั่งปั๊ม</code>), and an <strong>Entities</strong> card listing the automations. History graph,
   severity colours and icons come only after that.</p>
-  <h4>7.4 Someone else tries it</h4>
+  <h4>6.4 Someone else tries it</h4>
   <p><strong>Done when</strong> someone who did not build the dashboard (a member of the paired team, or a teammate who took no part) answers all
   three questions within 30 seconds on a phone: what is the humidity, is the water up to the float,
   where is the pump control.</p>
@@ -707,17 +715,17 @@ figcaption {
   <h4>End-of-activity question</h4>
   <p><strong>A good answer</strong> names the question the tester struggled with and the specific change made:
   moving a card up, renaming a tile, adding a colour.</p>
-  <h3>Session 3 · Activity 8 — Design challenge (85 min)</h3>
+  <h3>Session 3 · Activity 7 — Design challenge (85 min)</h3>
   <p>Pick 5 · network 20 · power 15 · fill the canvas 30 · exchange 10 · revise 5. The design canvas
   itself is at the end of the team record sheet; the checklist holds the decision steps.</p>
-  <h4>8.1 Pick the scenario</h4>
+  <h4>7.1 Pick the scenario</h4>
   <p><strong>Done when</strong> a scenario is written down (card A–E) and the farm and its problem are written at the
   top of the canvas. Recommend <strong>E</strong> (a member's own farm) when one exists. C and D are advanced; teams
   choosing them may put the specialist parts under "not sure yet".</p>
-  <h4>8.2 The network we already use</h4>
+  <h4>7.2 The network we already use</h4>
   <p><strong>Done when</strong> the team has found <code>ssid</code>, <code>name_add_mac_suffix</code> and <code>api</code> in the ESPHome file, and has opened the board's page
   from the IP entity Home Assistant shows. There is no fixed IP in the file: the router hands it out.</p>
-  <h4>8.3 Choose the farm network</h4>
+  <h4>7.3 Choose the farm network</h4>
   <p><strong>Done when</strong> both links have a distance, whether the far end has power, what was eliminated and why, and what
   remains. The instructor models card B on screen (400 m, no mains: WiFi and Zigbee out on distance,
   cellular out on power; ESP-NOW, LoRa and RS-485 remain). The two canvas rows are filled from the
@@ -728,16 +736,16 @@ figcaption {
   before the elimination: WiFi about 30–50 m from the router in the open, ESP-NOW 100–200 m board to
   board, Zigbee 10–30 m per hop, LoRa 1–10 km, RS-485 up to about 1 km of cable, cellular wherever
   there is signal. General estimates; กำพล to confirm against what they teach.</p>
-  <h4>8.4 If the internet goes down</h4>
+  <h4>7.4 If the internet goes down</h4>
   <p><strong>Done when</strong></p>
   <ul>
   <li><em>Our system:</em> automations yes, dashboard on the farm WiFi yes, live data from outside no, new data still logged yes.</li>
   <li><em>Cloud-run system:</em> automations no, farm dashboard no, live data from outside no, nothing new logged.</li>
   </ul>
-  <h4>8.5 Home Assistant Cloud demo</h4>
+  <h4>7.5 Home Assistant Cloud demo</h4>
   <p><strong>Done when</strong> the answers are <em>mobile internet</em> and <em>on the farm (laptop)</em>. The cloud service is only a
   door in; the farm's Home Assistant still decides and records.</p>
-  <h4>8.6 Choose remote access for the team's farm</h4>
+  <h4>7.6 Choose remote access for the team's farm</h4>
   <p><strong>Done when</strong> need, method and "what is lost if the farm's internet dies" are consistent. For example,
   notifications only means only messages are lost; the farm keeps running. The canvas's third
   communication row and "where the logic runs" are filled.</p>
@@ -748,11 +756,11 @@ figcaption {
   <p><strong>A good answer</strong> says that with the internet down, local automations, the dashboard on the farm WiFi and logging carry on,
   while remote viewing and notifications stop. With Home Assistant down, automations, logging and the
   dashboard all stop. Only protection in the board or the wiring, and the manual switch, remain.</p>
-  <h4>8.7 The supply box</h4>
+  <h4>7.7 The supply box</h4>
   <p><strong>Done when</strong> the screen reads about 12 V and the battery icon reads <strong>not full</strong>. A charged lead-acid
   battery sits at 12.7–13.0 V. The controller judges only from the voltage it measures, just like Home
   Assistant.</p>
-  <h4>8.8 How many panels, and a battery?</h4>
+  <h4>7.8 How many panels, and a battery?</h4>
   <p><strong>Done when</strong> the table matches the answer table folded under ตรวจคำตอบ on the worksheet (Wh/day
   and panels only since 15 Sep 2026; the battery remarks below are talking points):</p>
   <ul>
@@ -768,15 +776,15 @@ figcaption {
   (sensors, network, controller). For three cloudy days it names the numbers needed: each load's
   Wh per day, the usable battery capacity (about half the rated capacity), and what the panels still
   produce under cloud.</p>
-  <h4>8.9 Fill the canvas</h4>
+  <h4>7.9 Fill the canvas</h4>
   <p><strong>Done when</strong> every canvas section has something: Input, Output (with how the team knows it actually runs),
   Logic, at least one fail-safe plus a manual override, care and budget, the first pilot, and what the team is not
   sure of yet.</p>
-  <h4>8.10 Paired exchange and revise</h4>
+  <h4>7.10 Paired exchange and revise</h4>
   <p><strong>Done when</strong> both teams have pitched in one minute and given three minutes of feedback on two points:
   the best-reasoned decision, and the part with no answer to "what happens if it fails". One change is
   recorded in <code>d.revise</code>. There is no plenary.</p>
-  <h4>8.11 Check against the rubric</h4>
+  <h4>7.11 Check against the rubric</h4>
   <p><strong>Done when</strong> the team has walked its canvas down the rubric: parts chosen from specs, with real prices;
   network chosen on all four factors; power source per location; at least one fail-safe and a manual override; a named
   carer and schedule; a budget that fits the farm; open questions and how they will be checked.</p>
@@ -788,7 +796,7 @@ figcaption {
     to participants with Apple Silicon Macs. The x86-64 image is built and hosted on Google Drive</li>
   <li>The install-guide details participants need: VM login, file size, verification form, help channel</li>
   <li>Slide decks for Sessions 1–3 and the three post-tests</li>
-  <li>Expected values that need a bench run: the Activity 5 flicker count (TEST-PLAN test E) and
+  <li>Expected values that need a bench run: the Activity 4 flicker count (TEST-PLAN test E) and
     typical room readings for Activity 1</li>
   <li><strong>The LED-module bench check now gates Day 1</strong> (TEST-PLAN test L): it lights through the relay from
     the 12 V rail, a reversed module is harmless, and a lit module 30 cm from the board does not lift

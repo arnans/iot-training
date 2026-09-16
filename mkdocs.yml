@@ -68,6 +68,7 @@ markdown_extensions:
   - attr_list
   - md_in_html
   - tables
+  - sane_lists
   - toc:
       permalink: true
   - pymdownx.tasklist:

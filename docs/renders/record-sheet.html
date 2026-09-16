@@ -1110,7 +1110,7 @@ body {
 <header class="ws-top">
   <div class="ws-top__inner">
     <span class="ws-brand">IoT ในฟาร์มอัจฉริยะ</span>
-    <span class="ws-draft">ฉบับร่างสำหรับทดลองใช้ · 2026-09-15</span>
+    <span class="ws-draft">ฉบับร่างสำหรับทดลองใช้ · 2026-09-16</span>
   </div>
 </header>
 <div class="ws-shell">
@@ -1192,15 +1192,16 @@ body {
 
 <hr />
 <h2 id="ชวงท-2">ช่วงที่ 2</h2>
-<p><strong>automation ข้อแรกของเรา (จากช่วงที่ 1)</strong> trigger <input class="fld" type="text" data-k="s2.auto1.trigger" data-size="18" size="18" autocomplete="off" spellcheck="false"> action <input class="fld" type="text" data-k="s2.auto1.action" data-size="18" size="18" autocomplete="off" spellcheck="false"> condition <input class="fld" type="text" data-k="s2.auto1.condition" data-size="10" size="10" autocomplete="off" spellcheck="false"></p>
 <h3 id="ระบบไฟสวน">ระบบไฟสวน</h3>
 <p><strong>เกณฑ์ความสว่าง</strong> เปิดไฟเมื่อต่ำกว่า <input class="fld" type="text" data-k="s1.light.on" data-size="4" size="4" inputmode="decimal" autocomplete="off" spellcheck="false"> (จากช่วงที่ 1) ปิดไฟเมื่อสูงกว่า <input class="fld" type="text" data-k="s2.light.off" data-size="4" size="4" inputmode="decimal" autocomplete="off" spellcheck="false"></p>
 <p><strong>อาการกะพริบ</strong> ไฟติดดับกี่ครั้งใน 1 นาที ก่อนแก้ <input class="fld" type="text" data-k="s2.chatter.before" data-size="3" size="3" inputmode="decimal" autocomplete="off" spellcheck="false"> หลังแก้ <input class="fld" type="text" data-k="s2.chatter.after" data-size="3" size="3" inputmode="decimal" autocomplete="off" spellcheck="false"></p>
-<p><strong>เงื่อนไขเวลา</strong> รอบล่าสุดใน Traces หยุดที่ส่วนใด <input class="fld" type="text" data-k="s2.time.trace" data-size="16" size="16" autocomplete="off" spellcheck="false"> · เมื่อเพิ่ม trigger เวลาแล้ว ทำไมยังต้องตรวจค่าความสว่างในส่วน And if อีก <input class="fld" type="text" data-k="s2.time.why" data-size="30" size="30" autocomplete="off" spellcheck="false"></p>
+<p><strong>เงื่อนไขเวลา</strong> รอบล่าสุดใน Traces หยุดที่ส่วนใด <input class="fld" type="text" data-k="s2.time.trace" data-size="16" size="16" autocomplete="off" spellcheck="false"> · ทำนาย ฟ้ามืดหลัง 18.30 น. ไฟ <span class="fld-radio" data-k="s2.time.dark_after"><label><input class="fld" type="radio" name="s2.time.dark_after" data-k="s2.time.dark_after" value="ติด"> ติด</label><label><input class="fld" type="radio" name="s2.time.dark_after" data-k="s2.time.dark_after" value="ไม่ติด"> ไม่ติด</label></span> เพราะ <input class="fld" type="text" data-k="s2.time.dark_after_why" data-size="16" size="16" autocomplete="off" spellcheck="false"> · ฟ้ามืดก่อน 18.30 น. ไฟ <span class="fld-radio" data-k="s2.time.dark_before"><label><input class="fld" type="radio" name="s2.time.dark_before" data-k="s2.time.dark_before" value="ติด"> ติด</label><label><input class="fld" type="radio" name="s2.time.dark_before" data-k="s2.time.dark_before" value="ไม่ติด"> ไม่ติด</label></span> เพราะ <input class="fld" type="text" data-k="s2.time.dark_before_why" data-size="16" size="16" autocomplete="off" spellcheck="false"></p>
+<p><strong>Trigger เวลา</strong> ฟ้ามืดก่อนเวลาแล้วไฟติดเมื่อถึงเวลาหรือไม่ <span class="fld-radio" data-k="s2.time.fixed"><label><input class="fld" type="radio" name="s2.time.fixed" data-k="s2.time.fixed" value="ติด"> ติด</label><label><input class="fld" type="radio" name="s2.time.fixed" data-k="s2.time.fixed" value="ไม่ติด"> ไม่ติด</label></span> · เมื่อเพิ่ม trigger เวลาแล้ว ทำไมยังต้องตรวจค่าความสว่างในส่วน And if อีก <input class="fld" type="text" data-k="s2.time.why" data-size="30" size="30" autocomplete="off" spellcheck="false"></p>
 <h3 id="ระบบรดนำ">ระบบรดน้ำ</h3>
 <p><strong>เกณฑ์ความชื้นอากาศ</strong> เปิดปั๊มเมื่อต่ำกว่า <input class="fld" type="text" data-k="s2.hum.on" data-size="4" size="4" inputmode="decimal" autocomplete="off" spellcheck="false"> % ปิดปั๊มเมื่อสูงกว่า <input class="fld" type="text" data-k="s2.hum.off" data-size="4" size="4" inputmode="decimal" autocomplete="off" spellcheck="false"> % · หยุดเป่าแล้วปั๊มกลับมาเดินใน <input class="fld" type="text" data-k="s2.hum.restart" data-size="3" size="3" inputmode="decimal" autocomplete="off" spellcheck="false"> วินาที · ต่อปั๊มเข้ารีเลย์แทนหลอดไฟเมื่อ <input class="fld" type="text" data-k="s2.pump_back_t" data-size="5" size="5" autocomplete="off" spellcheck="false"> น.</p>
-<p><strong>คำถามท้ายกิจกรรมที่ 5</strong> เกณฑ์เปิด–ปิดของไฟสวนคือเท่าไร ทำไมต้องต่างกัน และใช้กับระบบรดน้ำอย่างไร</p>
-<textarea class="fld fld-ta" data-k="s2.q5" rows="2"></textarea>
+<p><strong>โหมด Auto / Manual</strong> ปิด <code>Pump Auto Mode</code> แล้วปั๊มเริ่มเอง <span class="fld-radio" data-k="s2.mode.off"><label><input class="fld" type="radio" name="s2.mode.off" data-k="s2.mode.off" value="ไม่เริ่ม"> ไม่เริ่ม</label><label><input class="fld" type="radio" name="s2.mode.off" data-k="s2.mode.off" value="เริ่ม"> เริ่ม</label></span> · เปิดแล้วปั๊มเริ่มเอง <span class="fld-radio" data-k="s2.mode.on"><label><input class="fld" type="radio" name="s2.mode.on" data-k="s2.mode.on" value="เริ่ม"> เริ่ม</label><label><input class="fld" type="radio" name="s2.mode.on" data-k="s2.mode.on" value="ไม่เริ่ม"> ไม่เริ่ม</label></span></p>
+<p><strong>คำถามท้ายกิจกรรมที่ 4</strong> เกณฑ์เปิด–ปิดของไฟสวนคือเท่าไร ทำไมต้องต่างกัน และใช้กับระบบรดน้ำอย่างไร</p>
+<textarea class="fld fld-ta" data-k="s2.q4" rows="2"></textarea>
 
 <h3 id="จำลองปญหาและ-fail-safe">จำลองปัญหาและ Fail-safe</h3>
 <div class="table-wrap"><table>
@@ -1253,8 +1254,8 @@ body {
 </table></div>
 <p><strong>เซนเซอร์ขาดการเชื่อมต่อ</strong> กลุ่มเลือกให้ปั๊ม <span class="fld-radio" data-k="s2.fs3.choice"><label><input class="fld" type="radio" name="s2.fs3.choice" data-k="s2.fs3.choice" value="เปิด"> เปิด</label><label><input class="fld" type="radio" name="s2.fs3.choice" data-k="s2.fs3.choice" value="ปิด"> ปิด</label><label><input class="fld" type="radio" name="s2.fs3.choice" data-k="s2.fs3.choice" value="คงสถานะเดิม"> คงสถานะเดิม</label></span> เพราะ <input class="fld" type="text" data-k="s2.fs3.why" data-size="30" size="30" autocomplete="off" spellcheck="false"></p>
 <p><strong>ปัญหาที่ไม่มีกฎข้อใดหยุดปั๊มได้</strong> <input class="fld" type="text" data-k="s2.fs.none" data-size="30" size="30" autocomplete="off" spellcheck="false"></p>
-<p><strong>คำถามท้ายกิจกรรมที่ 6</strong> ถ้า Home Assistant ดับหรือส่งคำสั่งไม่ได้ กฎป้องกันเหล่านี้ยังช่วยหยุดปั๊มได้หรือไม่ ควรเพิ่มการป้องกันไว้ที่ใด</p>
-<textarea class="fld fld-ta" data-k="s2.q6" rows="2"></textarea>
+<p><strong>คำถามท้ายกิจกรรมที่ 5</strong> ถ้า Home Assistant ดับหรือส่งคำสั่งไม่ได้ กฎป้องกันเหล่านี้ยังช่วยหยุดปั๊มได้หรือไม่ ควรเพิ่มการป้องกันไว้ที่ใด</p>
+<textarea class="fld fld-ta" data-k="s2.q5" rows="2"></textarea>
 
 <h3 id="ตารางบำรงรกษา">ตารางบำรุงรักษา</h3>
 <div class="table-wrap"><table>
@@ -1377,8 +1378,8 @@ body {
 </tr>
 </tbody>
 </table></div>
-<p><strong>คำถามท้ายกิจกรรมที่ 7</strong> ผู้ทดลองใช้ตอบข้อไหนไม่ได้หรือใช้เวลานาน และเราปรับแดชบอร์ดอย่างไร</p>
-<textarea class="fld fld-ta" data-k="s3.q7" rows="2"></textarea>
+<p><strong>คำถามท้ายกิจกรรมที่ 6</strong> ผู้ทดลองใช้ตอบข้อไหนไม่ได้หรือใช้เวลานาน และเราปรับแดชบอร์ดอย่างไร</p>
+<textarea class="fld fld-ta" data-k="s3.q6" rows="2"></textarea>
 
 <h3 id="เครอขายในฟารม">เครือข่ายในฟาร์ม</h3>
 <div class="table-wrap"><table>

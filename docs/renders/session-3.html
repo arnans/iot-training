@@ -1114,96 +1114,50 @@ body {
   </div>
 </header>
 <div class="ws-shell">
-<nav class="ws-side" aria-label="หน้าในชุดใบงาน"><ul class="ws-pages"><li data-page="install"><a href="install.html"><span class="ws-n">ก่อนการอบรม</span><span class="ws-t">เตรียมแล็ปท็อป</span></a></li><li data-page="session-1"><a href="session-1.html"><span class="ws-n">ช่วงที่ 1</span><span class="ws-t">รับรู้ ตัดสินใจ สั่งการ</span></a></li><li data-page="session-2"><a href="session-2.html"><span class="ws-n">ช่วงที่ 2</span><span class="ws-t">ควบคุมอัตโนมัติและ Fail-safe</span></a></li><li data-page="session-3" class="is-current"><a href="session-3.html" aria-current="page"><span class="ws-n">ช่วงที่ 3</span><span class="ws-t">แดชบอร์ดและออกแบบระบบ</span></a><ul class="ws-toc"><li><a href="#กอนเรม">ก่อนเริ่ม</a></li><li><a href="#อานขอมลทบนทกไวตงแตชวงท-2">อ่านข้อมูลที่บันทึกไว้ตั้งแต่ช่วงที่ 2</a></li><li><a href="#กจกรรมท-6--สรางหนาจอตดตามและควบคมฟารม-dashboard">กิจกรรมที่ 6 — สร้างหน้าจอติดตามและควบคุมฟาร์ม (Dashboard)</a></li><li><a href="#กจกรรมท-7--ออกแบบระบบสำหรบฟารม-design">กิจกรรมที่ 7 — ออกแบบระบบสำหรับฟาร์ม (Design)</a></li><li><a href="#สรปทงหลกสตร">สรุปทั้งหลักสูตร</a></li><li><a href="#นำไปใชทฟารมอยางไร">นำไปใช้ที่ฟาร์มอย่างไร</a></li></ul></li><li data-page="resources"><a href="resources.html"><span class="ws-n">อ้างอิง</span><span class="ws-t">รวมไฟล์และลิงก์</span></a></li><li data-page="reference"><a href="reference.html"><span class="ws-n">อ้างอิง</span><span class="ws-t">เมนูและวิธีแก้ปัญหา</span></a></li><li data-page="record-sheet"><a href="record-sheet.html"><span class="ws-n">อ้างอิง</span><span class="ws-t">ใบบันทึกของกลุ่ม</span></a></li></ul></nav>
+<nav class="ws-side" aria-label="หน้าในชุดใบงาน"><ul class="ws-pages"><li data-page="install"><a href="install.html"><span class="ws-n">ก่อนการอบรม</span><span class="ws-t">เตรียมแล็ปท็อป</span></a></li><li data-page="session-1"><a href="session-1.html"><span class="ws-n">ช่วงที่ 1</span><span class="ws-t">รับรู้ ตัดสินใจ สั่งการ</span></a></li><li data-page="session-2"><a href="session-2.html"><span class="ws-n">ช่วงที่ 2</span><span class="ws-t">ควบคุมอัตโนมัติและ Fail-safe</span></a></li><li data-page="session-3" class="is-current"><a href="session-3.html" aria-current="page"><span class="ws-n">ช่วงที่ 3</span><span class="ws-t">แดชบอร์ดและออกแบบระบบ</span></a><ul class="ws-toc"><li><a href="#กอนเรม">ก่อนเริ่ม</a></li><li><a href="#การอานขอมลทบนทกไวยอนหลง">การอ่านข้อมูลที่บันทึกไว้ย้อนหลัง</a></li><li><a href="#กจกรรมท-6--สรางหนาจอตดตามและควบคมฟารม-dashboard">กิจกรรมที่ 6 — สร้างหน้าจอติดตามและควบคุมฟาร์ม (Dashboard)</a></li><li><a href="#กจกรรมท-7--ออกแบบระบบสำหรบฟารม-design">กิจกรรมที่ 7 — ออกแบบระบบสำหรับฟาร์ม (Design)</a></li><li><a href="#สรปทงหลกสตร">สรุปทั้งหลักสูตร</a></li><li><a href="#นำไปใชทฟารมอยางไร">นำไปใช้ที่ฟาร์มอย่างไร</a></li></ul></li><li data-page="resources"><a href="resources.html"><span class="ws-n">อ้างอิง</span><span class="ws-t">รวมไฟล์และลิงก์</span></a></li><li data-page="reference"><a href="reference.html"><span class="ws-n">อ้างอิง</span><span class="ws-t">เมนูและวิธีแก้ปัญหา</span></a></li><li data-page="record-sheet"><a href="record-sheet.html"><span class="ws-n">อ้างอิง</span><span class="ws-t">ใบบันทึกของกลุ่ม</span></a></li></ul></nav>
 <main class="md-content__inner md-typeset" id="ws-main">
 <h1 id="ชวงท-3--โครงสรางระบบ-iot-การสอสาร-คลาวด-แดชบอรด-และการออกแบบระบบ">ช่วงที่ 3 — โครงสร้างระบบ IoT: การสื่อสาร คลาวด์ แดชบอร์ด และการออกแบบระบบ</h1>
-<p><strong>ย้อนดูข้อมูล สร้างแดชบอร์ด แล้ววางแผนระบบที่เหมาะกับฟาร์มของเรา</strong></p>
-<p>ช่วงนี้เราจะอ่านกราฟจากการทดลอง สร้างแดชบอร์ด แล้วออกแบบระบบทดลองหนึ่งจุดในฟาร์ม โดยเลือกทั้งวิธีสื่อสารและแหล่งจ่ายไฟ</p>
-<blockquote>
-<p><strong>ผลงานเมื่อจบช่วงนี้:</strong> อ่านกราฟและอธิบายเหตุการณ์ได้ · แดชบอร์ดที่ผู้อื่นใช้ได้ · แบบร่างระบบพร้อมเหตุผล งบประมาณ และสิ่งที่ต้องตรวจสอบต่อ</p>
-</blockquote>
-<div class="table-wrap"><table>
-<thead>
-<tr>
-<th>ช่วงเวลา</th>
-<th>กิจกรรม</th>
-<th style="text-align: right;">นาที</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>ก่อนพัก</td>
-<td>อ่านข้อมูลที่บันทึกไว้ตั้งแต่ช่วงที่ 2</td>
-<td style="text-align: right;">20</td>
-</tr>
-<tr>
-<td></td>
-<td>กิจกรรมที่ 6 — แดชบอร์ด</td>
-<td style="text-align: right;">35</td>
-</tr>
-<tr>
-<td>พัก</td>
-<td></td>
-<td style="text-align: right;">15</td>
-</tr>
-<tr>
-<td>หลังพัก</td>
-<td>กิจกรรมที่ 7 — ออกแบบระบบสำหรับฟาร์ม</td>
-<td style="text-align: right;">85</td>
-</tr>
-<tr>
-<td></td>
-<td>สรุป เก็บคำตอบ คืนอุปกรณ์</td>
-<td style="text-align: right;">10</td>
-</tr>
-</tbody>
-</table></div>
+<p><strong>การย้อนดูข้อมูล สร้างแดชบอร์ด และออกแบบระบบที่เหมาะกับฟาร์มของเรา</strong></p>
 <h2 id="กอนเรม">ก่อนเริ่ม</h2>
 <ul class="task-list">
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> เปิด Home Assistant ของกลุ่ม แล้วตรวจว่า entity ของบอร์ดทั้งสองยังแสดงค่าได้ตามปกติ</li>
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> ตรวจว่าปั๊มยังต่อกับรีเลย์ และวางลูกลอยในแก้วน้ำให้แสดง Wet จากนั้นเปิดกฎ <code>รดน้ำ - เปิดปั๊ม</code> ตรวจว่ากฎรดน้ำและกฎป้องกันที่สร้างไว้เปิดอยู่</li>
 </ul>
 <hr />
-<h2 id="อานขอมลทบนทกไวตงแตชวงท-2">อ่านข้อมูลที่บันทึกไว้ตั้งแต่ช่วงที่ 2</h2>
+<h2 id="การอานขอมลทบนทกไวยอนหลง">การอ่านข้อมูลที่บันทึกไว้ย้อนหลัง</h2>
 <p><strong>20 นาที</strong></p>
 <p><strong>อุปกรณ์ที่ใช้</strong> แล็ปท็อป</p>
-<p>เปิดข้อมูลที่บันทึกในช่วงที่ 2 หาว่าการเปลี่ยนแปลงบนกราฟตรงกับการทดลองใด แล้วคิดว่าถ้าเกิดในฟาร์มจริงควรตรวจอะไร</p>
+<p>เปิดข้อมูลที่เริ่มบันทึกไว้ตั้งแต่ช่วงที่ 2 ที่ผ่านมา หาว่าการเปลี่ยนแปลงบนกราฟตรงกับการทดลองใด แล้วคิดว่าถ้าเกิดในฟาร์มจริงควรตรวจอะไร</p>
 <h3 id="hist">ใบงาน</h3>
 <div class="ws-tasks">
-<p>คลิกหัวข้อเพื่อดูวิธีทำ ทำเสร็จแล้วทำเครื่องหมายและบันทึกผล</p>
+<p>คลิกที่หัวข้อเพื่อดูวิธีทำ เมื่อทำเสร็จแล้วขอให้ทำเครื่องหมายและตอบคำถามด้วย</p>
 <ul class="task-list">
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> <strong><a href="#hist-1">เปิดกราฟย้อนหลัง</a></strong> เปิดหน้า History ให้แสดงความชื้นอากาศ แสง และสวิตช์ของบอร์ดรีเลย์ ตั้งแต่เริ่มช่วงที่ 2 ถึงปัจจุบัน</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> <strong><a href="#hist-2">เชื่อมกราฟกับการทดลอง</a></strong> จุดที่กลุ่มเชื่อมโยงกับสิ่งที่เราทำได้ แถบรีเลย์ก่อนเวลาที่ต่อปั๊ม <input class="fld" type="text" data-k="s2.pump_back_t" data-size="5" size="5" autocomplete="off" spellcheck="false"> น. คือคำสั่งไปที่หลอดไฟ<ul>
-<li>จุดที่ 1 เห็นอะไร <input class="fld" type="text" data-k="s3.hist.ev1.what" data-size="12" size="12" autocomplete="off" spellcheck="false"> เวลา <input class="fld" type="text" data-k="s3.hist.ev1.t" data-size="5" size="5" autocomplete="off" spellcheck="false"> น. · ตอนนั้นเราทำอะไร <input class="fld" type="text" data-k="s3.hist.ev1.cause" data-size="16" size="16" autocomplete="off" spellcheck="false"> · ถ้าเห็นในฟาร์มจริง ควรตรวจหรือปรับอะไร <input class="fld" type="text" data-k="s3.hist.ev1.action" data-size="22" size="22" autocomplete="off" spellcheck="false"></li>
-<li>จุดที่ 2 เห็นอะไร <input class="fld" type="text" data-k="s3.hist.ev2.what" data-size="12" size="12" autocomplete="off" spellcheck="false"> เวลา <input class="fld" type="text" data-k="s3.hist.ev2.t" data-size="5" size="5" autocomplete="off" spellcheck="false"> น. · ตอนนั้นเราทำอะไร <input class="fld" type="text" data-k="s3.hist.ev2.cause" data-size="16" size="16" autocomplete="off" spellcheck="false"> · ถ้าเห็นในฟาร์มจริง ควรตรวจหรือปรับอะไร <input class="fld" type="text" data-k="s3.hist.ev2.action" data-size="22" size="22" autocomplete="off" spellcheck="false"></li>
-<li>จุดที่ 3 เห็นอะไร <input class="fld" type="text" data-k="s3.hist.ev3.what" data-size="12" size="12" autocomplete="off" spellcheck="false"> เวลา <input class="fld" type="text" data-k="s3.hist.ev3.t" data-size="5" size="5" autocomplete="off" spellcheck="false"> น. · ตอนนั้นเราทำอะไร <input class="fld" type="text" data-k="s3.hist.ev3.cause" data-size="16" size="16" autocomplete="off" spellcheck="false"> · ถ้าเห็นในฟาร์มจริง ควรตรวจหรือปรับอะไร <input class="fld" type="text" data-k="s3.hist.ev3.action" data-size="22" size="22" autocomplete="off" spellcheck="false"></li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> <strong><a href="#hist-2">เชื่อมกราฟกับการทดลอง</a></strong> ลองดูกราฟแล้วทบทวนว่าสามารถเชื่อมโยงการเปลี่ยนแปลงใดในกราฟที่เกิดจากกิจกรรมก่อนหน้านี้บ้าง  เลือกอธิบาย 3 จุด<ul>
+<li>จุดที่ 1 เห็นอะไร <input class="fld" type="text" data-k="s3.hist.ev1.what" data-size="12" size="12" autocomplete="off" spellcheck="false"> เวลา <input class="fld" type="text" data-k="s3.hist.ev1.t" data-size="5" size="5" autocomplete="off" spellcheck="false"> น. · ตอนนั้นเราทำอะไร <input class="fld" type="text" data-k="s3.hist.ev1.cause" data-size="16" size="16" autocomplete="off" spellcheck="false"> </li>
+<li>จุดที่ 2 เห็นอะไร <input class="fld" type="text" data-k="s3.hist.ev2.what" data-size="12" size="12" autocomplete="off" spellcheck="false"> เวลา <input class="fld" type="text" data-k="s3.hist.ev2.t" data-size="5" size="5" autocomplete="off" spellcheck="false"> น. · ตอนนั้นเราทำอะไร <input class="fld" type="text" data-k="s3.hist.ev2.cause" data-size="16" size="16" autocomplete="off" spellcheck="false"> </li>
+<li>จุดที่ 3 เห็นอะไร <input class="fld" type="text" data-k="s3.hist.ev3.what" data-size="12" size="12" autocomplete="off" spellcheck="false"> เวลา <input class="fld" type="text" data-k="s3.hist.ev3.t" data-size="5" size="5" autocomplete="off" spellcheck="false"> น. · ตอนนั้นเราทำอะไร <input class="fld" type="text" data-k="s3.hist.ev3.cause" data-size="16" size="16" autocomplete="off" spellcheck="false"> </li>
 </ul>
 </li>
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> <strong><a href="#hist-3">อ่านค่าต่ำสุด–สูงสุด</a></strong> ความชื้นอากาศตั้งแต่ช่วงที่ 2 ต่ำสุด <input class="fld" type="text" data-k="s3.hist.hum_min" data-size="4" size="4" inputmode="decimal" autocomplete="off" spellcheck="false"> % ตอน <input class="fld" type="text" data-k="s3.hist.hum_min_t" data-size="5" size="5" autocomplete="off" spellcheck="false"> น. สูงสุด <input class="fld" type="text" data-k="s3.hist.hum_max" data-size="4" size="4" inputmode="decimal" autocomplete="off" spellcheck="false"> % ตอน <input class="fld" type="text" data-k="s3.hist.hum_max_t" data-size="5" size="5" autocomplete="off" spellcheck="false"> น.</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> <strong><a href="#hist-4">หาสาเหตุของข้อมูลที่ขาดหาย</a></strong> ช่วงพักหลังช่วงที่ 1 บอร์ดยังอ่านค่าอยู่ แต่กราฟไม่มีข้อมูลช่วงนั้น เพราะอะไร <input class="fld" type="text" data-k="s3.hist.why_gap" data-size="30" size="30" autocomplete="off" spellcheck="false"> ถ้าเป็นฟาร์มจริงต้องเปลี่ยนอะไร <input class="fld" type="text" data-k="s3.hist.farm_change" data-size="30" size="30" autocomplete="off" spellcheck="false"></li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> <strong><a href="#hist-4">หาสาเหตุของข้อมูลที่ขาดหาย</a></strong> หากมีบางช่วงที่กราฟขาดหาย อธิบายได้ไหมว่าเกิดจากอะไร <input class="fld" type="text" data-k="s3.hist.why_gap" data-size="30" size="30" autocomplete="off" spellcheck="false"> ถ้าเกิดกับฟาร์มจริง ๆ อาจต้องแก้ไขอย่างไร <input class="fld" type="text" data-k="s3.hist.farm_change" data-size="30" size="30" autocomplete="off" spellcheck="false"></li>
 </ul>
 </div>
-<h3 id="hist-1">เปิดกราฟย้อนหลัง</h3>
+<h3 id="hist-1">การเปิดกราฟดูข้อมูลย้อนหลัง</h3>
 <p><strong>เลือกข้อมูลและช่วงเวลา</strong></p>
 <ol>
 <li>เปิด <strong>History</strong> จากเมนูด้านซ้าย</li>
 <li>กด <strong>+ Choose entity</strong> แล้วเลือกความชื้นอากาศ แสง และ <strong>สวิตช์ของบอร์ดรีเลย์</strong></li>
 <li>เลือกช่วงเวลาตั้งแต่เริ่มช่วงที่ 2 จนถึงปัจจุบัน กราฟแสดงได้เฉพาะช่วงที่มีข้อมูลบันทึกไว้</li>
 </ol>
-<blockquote>
-<p><strong>ถ้าข้อมูลไม่ครบ:</strong> ตรวจช่วงเวลาที่เลือกก่อน การปิดหรือรีสตาร์ต VM ไม่ได้ลบประวัติเดิม แต่อาจมีช่องว่างระหว่างหยุดทำงาน หากข้อมูลไม่พอ ให้ดูตัวอย่างของผู้สอนหรือกลุ่มข้าง ๆ และระบุแหล่งที่ใช้ในคำตอบ</p>
-</blockquote>
 <!-- Recorder persists history in the database: https://www.home-assistant.io/integrations/recorder/ -->
 
 <p><a class="ws-back" href="#hist">↑ กลับไปที่ใบงาน</a></p>
 <h3 id="hist-2">เชื่อมกราฟกับการทดลอง</h3>
 <p><strong>จับคู่กราฟกับเหตุการณ์</strong></p>
 <ol>
-<li>เลือกสามจุดที่อธิบายได้ เช่น แสงลดตอนครอบบอร์ด ความชื้นเพิ่มตอนเป่าลม หรือข้อมูลขาดตอนปิดบอร์ด บันทึกเหตุการณ์ เวลา และสิ่งที่ควรตรวจหากพบในฟาร์มจริง</li>
+<li>เลือกสามจุดที่สามารถอธิบายสาเหตุการเปลี่ยนแปลงของค่ากราฟได้ เช่น แสงลดตอนครอบบอร์ด ความชื้นเพิ่มตอนเป่าลม หรือข้อมูลขาดตอนปิดบอร์ด บันทึกเหตุการณ์ เวลา และสิ่งที่ควรตรวจหากพบในฟาร์มจริง</li>
 </ol>
-<blockquote>
-<p><strong>On ของรีเลย์ไม่ได้ยืนยันว่าปั๊มเดิน</strong> ก่อนเวลาต่อปั๊ม <input class="fld" type="text" data-k="s2.pump_back_t" data-size="5" size="5" autocomplete="off" spellcheck="false"> น. รีเลย์ควบคุมหลอดไฟ หลังจากนั้นต้องใช้หลักฐานอื่น เช่น การสั่นหรือน้ำไหล เพื่อยืนยันการทำงานของปั๊ม</p>
-</blockquote>
 <div class="table-wrap"><table>
 <thead>
 <tr>
@@ -1254,20 +1208,20 @@ body {
 <p>สร้างแดชบอร์ดที่คนซึ่งไม่ได้ร่วมทำระบบกับเราเปิดแล้วเข้าใจได้ว่า ตอนนี้ฟาร์มเป็นอย่างไร และจะสั่งงานอุปกรณ์ใดได้บ้าง</p>
 <h3 id="a6">ใบงาน</h3>
 <div class="ws-tasks">
-<p>คลิกหัวข้อเพื่อดูวิธีทำ ทำเสร็จแล้วทำเครื่องหมายและบันทึกผล</p>
+<p>คลิกหัวข้อเพื่อดูวิธีทำ ทำเสร็จแล้วทำเครื่องหมายและตอบคำถาม</p>
 <ul class="task-list">
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> <strong><a href="#a6-1">6.1 เลือกผู้ใช้หลัก</a></strong> เราออกแบบให้ใครใช้ <input class="fld" type="text" data-k="s3.dash.user" data-size="20" size="20" autocomplete="off" spellcheck="false"></li>
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> <strong><a href="#a6-plan">6.2 เลือกข้อมูลและปุ่มควบคุม</a></strong> เขียนเป็นภาษาของผู้ใช้ ไม่ใช่ชื่อ entity<ul>
-<li>ต้องเห็น <input class="fld" type="text" data-k="s3.dash.show.1" data-size="30" size="30" autocomplete="off" spellcheck="false"></li>
-<li>ต้องเห็น <input class="fld" type="text" data-k="s3.dash.show.2" data-size="30" size="30" autocomplete="off" spellcheck="false"></li>
-<li>ต้องเห็น <input class="fld" type="text" data-k="s3.dash.show.3" data-size="30" size="30" autocomplete="off" spellcheck="false"></li>
-<li>ต้องสั่งได้ <input class="fld" type="text" data-k="s3.dash.control.1" data-size="30" size="30" autocomplete="off" spellcheck="false"></li>
-<li>ต้องสั่งได้ <input class="fld" type="text" data-k="s3.dash.control.2" data-size="30" size="30" autocomplete="off" spellcheck="false"></li>
+<li>ต้องเห็นค่าอะไร <input class="fld" type="text" data-k="s3.dash.show.1" data-size="30" size="30" autocomplete="off" spellcheck="false"></li>
+<li>ต้องเห็นค่าอะไร <input class="fld" type="text" data-k="s3.dash.show.2" data-size="30" size="30" autocomplete="off" spellcheck="false"></li>
+<li>ต้องเห็นค่าอะไร <input class="fld" type="text" data-k="s3.dash.show.3" data-size="30" size="30" autocomplete="off" spellcheck="false"></li>
+<li>ต้องสั่งงานอะไรได้ <input class="fld" type="text" data-k="s3.dash.control.1" data-size="30" size="30" autocomplete="off" spellcheck="false"></li>
+<li>ต้องสั่งงานอะไรได้ <input class="fld" type="text" data-k="s3.dash.control.2" data-size="30" size="30" autocomplete="off" spellcheck="false"></li>
 </ul>
 </li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> <strong><a href="#a6-2">6.3 สร้างแดชบอร์ด</a></strong> เพิ่ม Gauge ความชื้นอากาศ · Tile ลูกลอย · Tile สั่งปั๊ม · Entities กฎอัตโนมัติ (กราฟและสีไม่บังคับทำ)</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> <strong><a href="#a6-3">6.4 ให้ผู้อื่นทดลองใช้</a></strong> ให้คนที่ไม่ได้ช่วยสร้างหาใน 30 วินาที: ความชื้นเท่าไร · น้ำถึงระดับลูกลอยหรือไม่ · ปุ่มสั่งปั๊มอยู่ไหน</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> <strong><a href="#a6-q">คำถามท้ายกิจกรรม</a></strong> ผู้ทดลองใช้ตอบข้อใดไม่ได้หรือต้องใช้เวลาหาคำตอบนาน กลุ่มปรับแดชบอร์ดเพื่อให้ใช้ง่ายขึ้นอย่างไร <textarea class="fld fld-ta" data-k="s3.q6" rows="2"></textarea></li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> <strong><a href="#a6-2">6.3 สร้างแดชบอร์ด</a></strong> เพิ่ม Gauge ความชื้นอากาศ · Tile ลูกลอย · Tile สั่งปั๊ม · Toggle โหมดการทำงาน Auto / Manual</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> <strong><a href="#a6-3">6.4 ให้ผู้อื่นทดลองใช้</a></strong> ลองว่าเขาเข้าใจส่วนประกอบต่าง ๆ บน Dashboard หรือไม่</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> <strong><a href="#a6-q">คำถามท้ายกิจกรรม</a></strong> ถ้ามีเวลาเพิ่ม จะปรับ Dashboard อย่างไร เพื่อให้เหมาะสมกับการนำไปใช้งานจริง <textarea class="fld fld-ta" data-k="s3.q6" rows="2"></textarea></li>
 </ul>
 </div>
 <h3 id="a6-1">6.1 เลือกผู้ใช้หลัก</h3>
@@ -1280,7 +1234,7 @@ body {
 <h3 id="a6-plan">6.2 เลือกข้อมูลและปุ่มควบคุม</h3>
 <p><strong>เลือกข้อมูลและคำสั่ง</strong></p>
 <ol>
-<li>กรอกสิ่งที่ผู้ใช้ต้องเห็น 3 อย่างและสั่งได้ 2 อย่างในตาราง ใช้คำที่เข้าใจง่าย เช่น “ความชื้นอากาศ” “น้ำถึงระดับลูกลอยหรือไม่” “เปิดปั๊ม”</li>
+<li>กรอกสิ่งที่ผู้ใช้ต้องเห็น 3 อย่างและสั่งได้ 2 อย่างในตาราง ใช้คำที่เข้าใจง่าย เช่น “ความชื้นอากาศ” “น้ำถึงระดับลูกลอยหรือไม่” “เปิดปั๊ม” “สลับโหมด Auto / Manual”</li>
 </ol>
 <div class="table-wrap"><table>
 <thead>
@@ -1363,12 +1317,7 @@ body {
 <tr>
 <td><strong>Tile</strong></td>
 <td><code>Pump Auto Mode</code> (จากช่วงที่ 2)</td>
-<td>โหมดอัตโนมัติ</td>
-</tr>
-<tr>
-<td><strong>Entities</strong></td>
-<td>กฎรดน้ำและกฎป้องกันที่สร้างไว้</td>
-<td>กฎอัตโนมัติ</td>
+<td>โหมด Auto / Manual</td>
 </tr>
 </tbody>
 </table></div>
@@ -1376,9 +1325,9 @@ body {
 <ol start="3">
 <li>จัดการ์ดสำคัญไว้ด้านบน แล้วกด <strong>Done</strong></li>
 </ol>
-<p><strong>(ไม่บังคับทำ) เพิ่มกราฟหรือสี</strong></p>
+<p><strong>(ไม่บังคับทำ) เพิ่มการ์ดอื่น</strong></p>
 <ol start="4">
-<li>เพิ่ม <strong>History graph</strong> ตั้ง <strong>Hours to show: 24</strong> หรือปรับสี Gauge ตามเกณฑ์ของกลุ่ม</li>
+<li>เพิ่มการ์ด <strong>Entities</strong> รวมกฎรดน้ำและกฎป้องกันที่สร้างไว้ เพิ่ม <strong>History graph</strong> ตั้ง <strong>Hours to show: 24</strong> หรือปรับสี Gauge ตามเกณฑ์ของกลุ่ม</li>
 </ol>
 <blockquote>
 <p>ลูกลอยแสดงได้ว่าน้ำถึงจุดติดตั้งหรือไม่ ส่วนสวิตช์ปั๊มแสดงสถานะรีเลย์ ตั้งชื่อไม่ให้ผู้ใช้เข้าใจว่าเป็นปริมาตรน้ำหรือหลักฐานว่าปั๊มเดินจริง</p>
@@ -1388,14 +1337,14 @@ body {
 <p><strong>ให้ผู้อื่นลองใช้</strong></p>
 <ol>
 <li>เปิดแดชบอร์ดบนโทรศัพท์ ให้คนจากกลุ่มข้าง ๆ หรือคนที่ไม่ได้ช่วยสร้างทดลองดู โดยยังไม่อธิบาย</li>
-<li>ให้หาใน 30 วินาที: <strong>ความชื้นเท่าไร · น้ำถึงระดับลูกลอยหรือไม่ · ปุ่มสั่งปั๊มอยู่ไหน</strong></li>
+<li>ให้เขาอธิบายทีละการ์ดว่าแสดงอะไรหรือสั่งอะไร แล้วลองถาม: <strong>ความชื้นเท่าไร · น้ำถึงระดับลูกลอยหรือไม่ · ปุ่มสั่งปั๊มอยู่ไหน · ตอนนี้เป็นโหมด Auto หรือ Manual</strong></li>
 </ol>
 <p><strong>ปรับปรุงและทดสอบซ้ำ</strong></p>
 <ol start="3">
-<li>หากหาไม่เจอ ให้ปรับชื่อหรือตำแหน่ง แล้วลองใหม่ บันทึกสิ่งที่ปรับในคำถามท้ายกิจกรรม</li>
+<li>หากตอบไม่ได้หรือเข้าใจผิด ให้ปรับชื่อหรือตำแหน่งการ์ด แล้วให้ลองใหม่</li>
 </ol>
 <p><a class="ws-back" href="#a6">↑ กลับไปที่ใบงาน</a></p>
-<p id="a6-q"><strong>คำถามท้ายกิจกรรม</strong> ผู้ทดลองใช้ตอบข้อใดไม่ได้หรือต้องใช้เวลาหาคำตอบนาน กลุ่มปรับแดชบอร์ดเพื่อให้ใช้ง่ายขึ้นอย่างไร</p>
+<p id="a6-q"><strong>คำถามท้ายกิจกรรม</strong> ถ้ามีเวลาเพิ่ม จะปรับ Dashboard อย่างไร เพื่อให้เหมาะสมกับการนำไปใช้งานจริง</p>
 <textarea class="fld fld-ta" data-k="s3.q6" rows="2"></textarea>
 
 <blockquote>

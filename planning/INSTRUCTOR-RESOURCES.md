@@ -114,8 +114,7 @@ check first). Minutes are the design estimate, not a rehearsed timing.
 **How to run it.** Project the checklist and talk through it one item at a time; teams work down
 it while you talk. The prose under each item is for the team that falls behind or wants the reason.
 
-The question added with the checklists, `s2.fs.none`, the two from the Activity 4 pilot,
-`s2.time.trace` and `s2.time.why`, and the Session 1 lighting keys (`s1.light.on`,
+The two questions from the Activity 4 pilot, `s2.time.trace` and `s2.time.why`, and the Session 1 lighting keys (`s1.light.on`,
 `s1.rule.dark.*`, `s1.rule.bright.*`, `s1.auto.pass`, `s1.timer.at`, `s1.timer.ok`) are on the
 record sheet like every other answer. Session 1 no longer records the supply voltage, the
 wired-right-first-time self-report, the control-box position or the manual-round counts
@@ -477,14 +476,21 @@ come back by itself; that is by design, and it is why the notification matters. 
 about 15 s instead:** `Fail-safe - สั่งแล้วไม่เดิน` from 5.2 decided the pump is not running, so fix the
 board's placement or raise `ความไวตรวจจับปั๊ม` before trying again.
 
-#### 5.5 Which rule stops which problem
+#### 5.5 Maintenance plan · ~5 min
 
-**Done when** the "no rule" answer names the laptop or Home Assistant down or off WiFi. Since 15 Sep
-2026 the worksheet's table credits the 30 s cutoff with catching a float stuck floating (reads Wet
-with the tank empty), so that row is no longer a "no rule" case, though it still needs a person to go
-and look. The self-check (all four problems seen, fixed and re-tested) is ticked.
+**Done when** all five rows carry a named person, a frequency and a thing to check. Moved here from
+the debrief on 16 Sep 2026 so Activity 5 ends on something the group writes, not a table it reads.
+A good row is concrete: the float gets lifted and wiped weekly by whoever feeds the fish; the pump
+strainer is cleared monthly; someone notices within a day when the network or Home Assistant is
+down, because nothing else will tell them. Weak rows say "everyone" and "sometimes".
 
-**The laptop-off-WiFi round was cut on 16 Sep 2026** (Roger). No team now *sees* the pump run on with
+**If stuck** Start from the four problems just staged: each one names a part that failed and a
+person who had to intervene.
+
+**The limits table left the worksheet on 16 Sep 2026** with the laptop-off-WiFi round; both were
+reading, not doing. The end-of-activity question still asks the question the table answered, and
+the model answer below carries the table for you. The WiFi-off demonstration still works for a
+table that finishes early: No team now *sees* the pump run on with
 every fail-safe silent; they read it off the last row of this table instead. If a table finishes
 early and asks, the demonstration still works: pump On, laptop WiFi off, watch for up to 40 s with
 someone at the pump, then stop it with the relay board's **button before** WiFi comes back — the Off
@@ -495,8 +501,35 @@ rule after reconnecting leaves the pump running.
 
 **A good answer** says no: every fail-safe lives in Home Assistant, so they all stop with it.
 Real safety needs something that works without it: a float wired to cut pump power directly, a
-limit built into the board's own firmware, and a manual Auto / Off / Manual switch. The
-control-box demo in the debrief answers this.
+**A good answer** says no: every fail-safe lives in Home Assistant, so they all stop with it.
+Real safety needs something that works without it: a float wired to cut pump power directly, a
+limit built into the board's own firmware, and a manual Auto / Off / Manual switch. Since 16 Sep
+2026 the worksheet no longer prints the limits table, so this is the facilitator's copy of it:
+
+| Failure | What Home Assistant sees | What stops the pump |
+|---|---|---|
+| Float wire cut, or float stuck down | float **Dry** | น้ำหมด rule (stops a pump that may still have water: safe, but someone must go and look) |
+| Float stuck floating (algae, tank wall) | float still **Wet** with the tank empty | น้ำหมด rule cannot see it; the 30 s cutoff still cuts each run; the float needs checking |
+| Tank already empty, pump started from the device page or the board button | switch On while float **Dry** | น้ำหมด rule, second trigger |
+| GoGo-IoT switched off, cell flat, or off WiFi | every entity of the board **unavailable** | เซนเซอร์หาย rule, or the cutoff; the watering rule cannot start a new run without Wet |
+| Commanded On, pump does not run | switch On, `pump running` Off | สั่งแล้วไม่เดิน rule |
+| Pump runs abnormally long, any cause | switch On too long | จำกัดเวลา rule |
+| Laptop off WiFi, or Home Assistant down | it cannot see or command the pump | **nothing** — the pump stays in its last state |
+
+#### Wrap-up · ~10 min
+
+**Done when** every table has walked the lunch checklist: **the VM stays running** (Session 3's
+history block reads this morning), `รดน้ำ - เปิดปั๊ม` is off and the relay is Off so a dry pump cannot
+run unattended, both boards keep power, answers downloaded. The five learning points are read, not
+taught. The worksheet no longer scripts a debrief discussion or the control-box demo (Roger, 16 Sep
+2026: instructor-run, may not happen as written).
+
+**The control-box demo, when you run it.** A real Auto / Off / Manual pump box wired to the
+instructor kit: flip it while the watering automation runs and the pump obeys the switch, not Home
+Assistant. Then one layer down: with Home Assistant shut down, the relay board's own button still
+toggles the relay (bench-verified), an override that lives in the board rather than the wiring. It
+is the answer to the end-of-activity question and links back to the Session 1 seed; it needs no
+worksheet item.
 
 ### Session 3 · Reading the recorded data (20 min)
 

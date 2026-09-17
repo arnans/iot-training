@@ -193,8 +193,9 @@ body {
     padding-block: 2rem;
   }
   .ws-pages { display: block; }
-  /* sidebar: a session is a heading with a rule above; its pages hang off a tree line, each
-     activity with its number as a badge, the unnumbered pages with a hollow one */
+  /* sidebar: a session is a heading with a rule above; under it each activity with its number
+     as a badge, the unnumbered pages with a hollow one; only the open page's sub-activity
+     list gets a tree line */
   .ws-g, .ws-n { display: none; }
   .ws-pages > li[data-page]:not(.in-group), .ws-pages > li.ws-group.in-group { display: block; }
   .ws-pages > li.ws-group > a, .ws-pages > li.ws-group > a:hover {
@@ -209,11 +210,7 @@ body {
     color: var(--ag-green-deep);
   }
   .ws-pages > li.ws-group:first-child > a { margin-top: 0; padding-top: 0; border-top: 0; }
-  .ws-pages > li[data-page] {
-    margin: 0 0 0.15rem 0.45rem;
-    padding-left: 0.55rem;
-    border-left: 2px solid var(--ag-rule);
-  }
+  .ws-pages > li[data-page] { margin: 0 0 0.15rem 0.2rem; }
   .ws-pages > li[data-page] > a {
     display: flex;
     align-items: baseline;

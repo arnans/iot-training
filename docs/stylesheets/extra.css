@@ -114,7 +114,7 @@
   font-weight: 600;
 }
 
-/* course structure: a session is a heading with a rule above, its pages hang off a tree line */
+/* course structure: a session is a heading with a rule above its pages */
 .md-nav--primary .md-nav__item--section {
   margin-top: 1.3rem;
   padding-top: 0.55rem;
@@ -126,12 +126,6 @@
   font-size: 0.8rem;
   font-weight: 700;
   color: var(--ag-green-deep);
-}
-
-.md-nav--primary .md-nav__item--section > .md-nav > .md-nav__list {
-  margin-left: 0.25rem;
-  padding-left: 0.6rem;
-  border-left: 2px solid var(--ag-rule);
 }
 
 [data-md-color-scheme="slate"] .md-nav--primary .md-nav__item--section > .md-nav__link {

@@ -179,11 +179,24 @@ body {
 .ws-pages > li[data-page]:not(.in-group) { display: none; }
 .ws-pages > li.ws-group.in-group { display: none; }
 .ws-pages > li.in-group .ws-g { display: none; }
-.ws-pager { display: flex; justify-content: space-between; gap: 1rem; margin: 3rem 0 1rem; padding-top: 1rem; border-top: 1px solid var(--ag-rule); font-size: 0.9rem; }
-.ws-pager a { text-decoration: none; color: var(--md-typeset-a-color); }
-.ws-pager a:hover, .ws-pager a:focus-visible { text-decoration: underline; }
-.ws-pager .ws-next { margin-left: auto; text-align: right; font-weight: 600; }
-.ws-disclosure { margin: 2.5rem 0 0; padding-top: 0.8rem; border-top: 1px solid var(--ag-rule); font-size: 0.78rem; line-height: 1.5; color: var(--md-default-fg-color--light); }
+/* previous / next: two buttons, the next one filled so it reads as the way forward */
+.ws-pager { display: flex; flex-wrap: wrap; gap: 0.8rem; margin: 3.5rem 0 0; font-size: 0.92rem; }
+.ws-pager a {
+  flex: 1 1 14rem;
+  display: block;
+  padding: 0.7rem 1rem;
+  border: 2px solid var(--ag-green);
+  border-radius: 0.6rem;
+  color: var(--ag-green-deep);
+  text-decoration: none;
+  line-height: 1.4;
+}
+.ws-pager .ws-next { margin-left: auto; text-align: right; background: var(--ag-green); color: #ffffff; }
+.ws-pager__k { display: block; font-size: 0.74rem; font-weight: 500; opacity: 0.85; }
+.ws-pager__t { display: block; font-weight: 700; }
+.ws-pager a:hover, .ws-pager a:focus-visible { border-color: var(--ag-green-deep); box-shadow: 0 2px 8px var(--ag-shadow); }
+.ws-pager .ws-next:hover, .ws-pager .ws-next:focus-visible { background: var(--ag-green-deep); }
+.ws-disclosure { margin: 4rem 0 0; padding-top: 0.8rem; border-top: 1px solid var(--ag-rule); font-size: 0.74rem; line-height: 1.5; color: var(--md-default-fg-color--lighter); }
 .ws-side a:focus-visible, .ws-top a:focus-visible { outline: 2px solid var(--ag-marigold); outline-offset: 2px; }
 
 @media (min-width: 64rem) {
@@ -602,13 +615,13 @@ def pager(slug: str, combined: bool) -> str:
     idx = next((i for i, p in enumerate(COURSE) if p[1] == slug), None)
     if idx is None:
         return ""
-    def link(p, cls, arrow_l, arrow_r):
+    def link(p, cls, kicker):
         _, s, grp, eyebrow, name = p
         text = f"{eyebrow} · {html.escape(name)}" if eyebrow else html.escape(name)
         href = f'href="#{s}" data-goto="{s}"' if combined else f'href="{s}.html"'
-        return f'<a class="{cls}" {href}>{arrow_l}{text}{arrow_r}</a>'
-    prev = link(COURSE[idx - 1], "ws-prev", "← ", "") if idx > 0 else ""
-    nxt = link(COURSE[idx + 1], "ws-next", "ถัดไป: ", " →") if idx + 1 < len(COURSE) else ""
+        return f'<a class="{cls}" {href}><span class="ws-pager__k">{kicker}</span><span class="ws-pager__t">{text}</span></a>'
+    prev = link(COURSE[idx - 1], "ws-prev", "← ก่อนหน้า") if idx > 0 else ""
+    nxt = link(COURSE[idx + 1], "ws-next", "ถัดไป →") if idx + 1 < len(COURSE) else ""
     return f'<nav class="ws-pager" aria-label="หน้าก่อนหน้าและถัดไป">{prev}{nxt}</nav>' if prev or nxt else ""
 
 

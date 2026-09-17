@@ -75,11 +75,24 @@ body {
 .ws-pages > li[data-page]:not(.in-group) { display: none; }
 .ws-pages > li.ws-group.in-group { display: none; }
 .ws-pages > li.in-group .ws-g { display: none; }
-.ws-pager { display: flex; justify-content: space-between; gap: 1rem; margin: 3rem 0 1rem; padding-top: 1rem; border-top: 1px solid var(--ag-rule); font-size: 0.9rem; }
-.ws-pager a { text-decoration: none; color: var(--md-typeset-a-color); }
-.ws-pager a:hover, .ws-pager a:focus-visible { text-decoration: underline; }
-.ws-pager .ws-next { margin-left: auto; text-align: right; font-weight: 600; }
-.ws-disclosure { margin: 2.5rem 0 0; padding-top: 0.8rem; border-top: 1px solid var(--ag-rule); font-size: 0.78rem; line-height: 1.5; color: var(--md-default-fg-color--light); }
+/* previous / next: two buttons, the next one filled so it reads as the way forward */
+.ws-pager { display: flex; flex-wrap: wrap; gap: 0.8rem; margin: 3.5rem 0 0; font-size: 0.92rem; }
+.ws-pager a {
+  flex: 1 1 14rem;
+  display: block;
+  padding: 0.7rem 1rem;
+  border: 2px solid var(--ag-green);
+  border-radius: 0.6rem;
+  color: var(--ag-green-deep);
+  text-decoration: none;
+  line-height: 1.4;
+}
+.ws-pager .ws-next { margin-left: auto; text-align: right; background: var(--ag-green); color: #ffffff; }
+.ws-pager__k { display: block; font-size: 0.74rem; font-weight: 500; opacity: 0.85; }
+.ws-pager__t { display: block; font-weight: 700; }
+.ws-pager a:hover, .ws-pager a:focus-visible { border-color: var(--ag-green-deep); box-shadow: 0 2px 8px var(--ag-shadow); }
+.ws-pager .ws-next:hover, .ws-pager .ws-next:focus-visible { background: var(--ag-green-deep); }
+.ws-disclosure { margin: 4rem 0 0; padding-top: 0.8rem; border-top: 1px solid var(--ag-rule); font-size: 0.74rem; line-height: 1.5; color: var(--md-default-fg-color--lighter); }
 .ws-side a:focus-visible, .ws-top a:focus-visible { outline: 2px solid var(--ag-marigold); outline-offset: 2px; }
 
 @media (min-width: 64rem) {
@@ -1264,22 +1277,22 @@ body {
 <p><img alt="" class="activity-banner" decoding="async" height="300" loading="lazy" src="../images/activity-banners/activity-06-dashboard.png" width="1800" /></p>
 <p><strong>35 นาที</strong> วางแผน 5 นาที · สร้าง 25 นาที · ให้ผู้อื่นทดลองใช้ 5 นาที</p>
 <p><strong>อุปกรณ์ที่ใช้</strong> ระบบทั้งหมด และโทรศัพท์ 1 เครื่อง</p>
-<p>สร้างแดชบอร์ดที่คนซึ่งไม่ได้ร่วมทำระบบกับเราเปิดแล้วเข้าใจได้ว่า ตอนนี้ฟาร์มเป็นอย่างไร และจะสั่งงานอุปกรณ์ใดได้บ้าง</p>
+<p>สร้างแดชบอร์ดที่ ช่วยให้การสังเกตุการณ์และควบคุมการทำงานอุปกรณ์ในฟาร์มทำได้คล่องตัวขึ้น </p>
 <h3 id="a6">ใบงาน</h3>
 <div class="ws-tasks">
 <p>คลิกหัวข้อเพื่อดูวิธีทำ ทำเสร็จแล้วทำเครื่องหมายและตอบคำถาม</p>
 <ul class="task-list">
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> <strong><a href="#a6-1">6.1 เลือกผู้ใช้หลัก</a></strong> เราออกแบบให้ใครใช้ <input class="fld" type="text" data-k="s3.dash.user" data-size="20" size="20" autocomplete="off" spellcheck="false"></li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> <strong><a href="#a6-plan">6.2 เลือกข้อมูลและปุ่มควบคุม</a></strong> เขียนเป็นภาษาของผู้ใช้ ไม่ใช่ชื่อ entity<ul>
-<li>ต้องเห็นค่าอะไร <input class="fld" type="text" data-k="s3.dash.show.1" data-size="30" size="30" autocomplete="off" spellcheck="false"></li>
-<li>ต้องเห็นค่าอะไร <input class="fld" type="text" data-k="s3.dash.show.2" data-size="30" size="30" autocomplete="off" spellcheck="false"></li>
-<li>ต้องเห็นค่าอะไร <input class="fld" type="text" data-k="s3.dash.show.3" data-size="30" size="30" autocomplete="off" spellcheck="false"></li>
-<li>ต้องสั่งงานอะไรได้ <input class="fld" type="text" data-k="s3.dash.control.1" data-size="30" size="30" autocomplete="off" spellcheck="false"></li>
-<li>ต้องสั่งงานอะไรได้ <input class="fld" type="text" data-k="s3.dash.control.2" data-size="30" size="30" autocomplete="off" spellcheck="false"></li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> <strong><a href="#a6-1">6.1 ใครจะใช้งานแดชบอร์ด</a></strong> มีใครบ้างที่จะใช้ <input class="fld" type="text" data-k="s3.dash.user" data-size="20" size="20" autocomplete="off" spellcheck="false"></li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> <strong><a href="#a6-plan">6.2 เลือกข้อมูลที่จะแสดงและควบคุม</a></strong> <ul>
+<li>ค่าที่จะแสดง <input class="fld" type="text" data-k="s3.dash.show.1" data-size="30" size="30" autocomplete="off" spellcheck="false"></li>
+<li>ค่าที่จะแสดง <input class="fld" type="text" data-k="s3.dash.show.2" data-size="30" size="30" autocomplete="off" spellcheck="false"></li>
+<li>ค่าที่จะแสดง <input class="fld" type="text" data-k="s3.dash.show.3" data-size="30" size="30" autocomplete="off" spellcheck="false"></li>
+<li>สิ่งที่จะควบคุม <input class="fld" type="text" data-k="s3.dash.control.1" data-size="30" size="30" autocomplete="off" spellcheck="false"></li>
+<li>สิ่งที่จะควบคุม <input class="fld" type="text" data-k="s3.dash.control.2" data-size="30" size="30" autocomplete="off" spellcheck="false"></li>
 </ul>
 </li>
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> <strong><a href="#a6-2">6.3 สร้างแดชบอร์ด</a></strong> เพิ่ม Gauge ความชื้นอากาศ · Tile ลูกลอย · Tile สั่งปั๊ม · Toggle โหมดการทำงาน Auto / Manual</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> <strong><a href="#a6-3">6.4 ให้ผู้อื่นทดลองใช้</a></strong> ลองว่าเขาเข้าใจส่วนประกอบต่าง ๆ บน Dashboard หรือไม่</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> <strong><a href="#a6-3">6.4 ทดสอบ - ให้ผู้อื่นทดลองใช้</a></strong> ลองว่าเขาเข้าใจส่วนประกอบต่าง ๆ บน Dashboard หรือไม่</li>
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> <strong><a href="#a6-q">คำถามท้ายกิจกรรม</a></strong> ถ้าเรามีเวลาเพิ่มแล้วจะนำ Dashboard นี้ไปใช้งานจริง ควรปรับส่วนใดบ้างให้เหมาะกับผู้ใช้ <textarea class="fld fld-ta" data-k="s3.q6" rows="2"></textarea></li>
 </ul>
 </div>
@@ -1408,7 +1421,7 @@ body {
 
 <blockquote>
 <p>ตอนนี้เราดูแดชบอร์ดได้เมื่อเชื่อมต่อ WiFi ของโซนเราเท่านั้น ในกิจกรรมที่ 7 กลุ่มจะได้พิจารณาว่าจำเป็นต้องดูข้อมูลจากนอกฟาร์มหรือไม่ และจะใช้วิธีใด</p>
-</blockquote><nav class="ws-pager" aria-label="หน้าก่อนหน้าและถัดไป"><a class="ws-prev" href="session-3-history.html">← อ่านข้อมูลย้อนหลัง</a><a class="ws-next" href="activity-7.html">ถัดไป: กิจกรรม 7 · ออกแบบระบบฟาร์ม (Design) →</a></nav>
+</blockquote><nav class="ws-pager" aria-label="หน้าก่อนหน้าและถัดไป"><a class="ws-prev" href="session-3-history.html"><span class="ws-pager__k">← ก่อนหน้า</span><span class="ws-pager__t">อ่านข้อมูลย้อนหลัง</span></a><a class="ws-next" href="activity-7.html"><span class="ws-pager__k">ถัดไป →</span><span class="ws-pager__t">กิจกรรม 7 · ออกแบบระบบฟาร์ม (Design)</span></a></nav>
 <footer class="ws-disclosure">เอกสารนี้เรียบเรียงขึ้นด้วย AI (Fable 5.1 และ GPT-6 Astra) ภายใต้การกำกับอย่างใกล้ชิดของผู้จัดทำ และรับรองว่าเนื้อหาเป็นไปตามเจตนาของผู้จัดทำทุกประการ</footer>
 </main>
 </div>

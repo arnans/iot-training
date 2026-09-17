@@ -188,9 +188,11 @@ body {
     position: sticky;
     top: 0;
     align-self: start;
+    min-height: 100vh;
     max-height: 100vh;
     overflow-y: auto;
-    padding-block: 2rem;
+    padding: 2rem 1rem 2rem 0.5rem;
+    background: var(--ag-nav-bg);   /* its own surface, apart from the page */
   }
   .ws-pages { display: block; }
   /* sidebar: a session is a heading with a rule above; under it each activity with its number
@@ -227,8 +229,8 @@ body {
     width: 1.45rem;
     height: 1.45rem;
     border-radius: 50%;
-    background: var(--ag-step-bg);
-    color: var(--ag-step-fg);
+    background: var(--ag-badge-bg);
+    color: var(--ag-badge-fg);
     font-size: 0.72rem;
     font-weight: 700;
     line-height: 1.45rem;
@@ -243,7 +245,7 @@ body {
     background: transparent;
     border: 2px solid var(--ag-rule);
   }
-  .ws-pages > li.is-current > a { background: var(--ag-panel); color: var(--md-typeset-a-color); font-weight: 700; }
+  .ws-pages > li.is-current > a { background: var(--md-default-bg-color); color: var(--md-typeset-a-color); font-weight: 700; }
   .ws-t { display: block; }
   .ws-pages > li.is-current .ws-toc {
     display: block;

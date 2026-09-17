@@ -87,9 +87,11 @@ body {
     position: sticky;
     top: 0;
     align-self: start;
+    min-height: 100vh;
     max-height: 100vh;
     overflow-y: auto;
-    padding-block: 2rem;
+    padding: 2rem 1rem 2rem 0.5rem;
+    background: var(--ag-nav-bg);   /* its own surface, apart from the page */
   }
   .ws-pages { display: block; }
   /* sidebar: a session is a heading with a rule above; under it each activity with its number
@@ -126,8 +128,8 @@ body {
     width: 1.45rem;
     height: 1.45rem;
     border-radius: 50%;
-    background: var(--ag-step-bg);
-    color: var(--ag-step-fg);
+    background: var(--ag-badge-bg);
+    color: var(--ag-badge-fg);
     font-size: 0.72rem;
     font-weight: 700;
     line-height: 1.45rem;
@@ -142,7 +144,7 @@ body {
     background: transparent;
     border: 2px solid var(--ag-rule);
   }
-  .ws-pages > li.is-current > a { background: var(--ag-panel); color: var(--md-typeset-a-color); font-weight: 700; }
+  .ws-pages > li.is-current > a { background: var(--md-default-bg-color); color: var(--md-typeset-a-color); font-weight: 700; }
   .ws-t { display: block; }
   .ws-pages > li.is-current .ws-toc {
     display: block;
@@ -241,8 +243,11 @@ body {
   --ag-chip-bg: #fff1d6;
   --ag-chip-fg: #7a4a00;
   --ag-chip-border: #f2cf86;
-  --ag-step-bg: var(--ag-green);
-  --ag-step-fg: #ffffff;
+  --ag-badge-bg: var(--ag-green);
+  --ag-badge-fg: #ffffff;
+  --ag-step-bg: #e2eedb;
+  --ag-step-fg: var(--ag-green-deep);
+  --ag-nav-bg: #f3f7ef;
   --ag-rule: var(--ag-leaf);
   --ag-shadow: rgba(30, 42, 31, 0.14);
 }
@@ -288,6 +293,13 @@ body {
 .md-nav__item--active > .md-nav__link {
   color: var(--md-typeset-a-color);
   font-weight: 600;
+}
+
+/* the nav is its own surface: a tint sets it apart from the page */
+.md-sidebar--primary .md-sidebar__scrollwrap {
+  background: var(--ag-nav-bg);
+  border-radius: 0.5rem;
+  padding: 0.6rem 0.2rem;
 }
 
 /* course structure: a session is a heading with a rule above its pages */
@@ -358,8 +370,8 @@ body {
   margin-right: 0.55em;
   padding: 0.05em 0.5em;
   border-radius: 0.4rem;
-  background: var(--ag-step-bg);
-  color: var(--ag-step-fg);
+  background: var(--ag-badge-bg);
+  color: var(--ag-badge-fg);
   font-size: 1.05em;
   font-weight: 700;
   line-height: 1.5;
@@ -1101,8 +1113,11 @@ body {
   --ag-chip-bg: #3a2e14;
   --ag-chip-fg: #f5c971;
   --ag-chip-border: #5a4620;
-  --ag-step-bg: var(--ag-leaf);
-  --ag-step-fg: #14201a;
+  --ag-badge-bg: var(--ag-leaf);
+  --ag-badge-fg: #14201a;
+  --ag-step-bg: #263a2c;
+  --ag-step-fg: #bfe0a8;
+  --ag-nav-bg: #172219;
   --ag-rule: #4e7d2c;
   --ag-shadow: rgba(0, 0, 0, 0.45);
   color-scheme: dark;
@@ -1128,8 +1143,11 @@ body {
   --ag-chip-bg: #3a2e14;
   --ag-chip-fg: #f5c971;
   --ag-chip-border: #5a4620;
-  --ag-step-bg: var(--ag-leaf);
-  --ag-step-fg: #14201a;
+  --ag-badge-bg: var(--ag-leaf);
+  --ag-badge-fg: #14201a;
+  --ag-step-bg: #263a2c;
+  --ag-step-fg: #bfe0a8;
+  --ag-nav-bg: #172219;
   --ag-rule: #4e7d2c;
   --ag-shadow: rgba(0, 0, 0, 0.45);
   color-scheme: dark;

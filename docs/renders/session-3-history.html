@@ -302,9 +302,29 @@ body {
   border-top: 3px solid var(--ag-rule);
 }
 
+/* sub-activities (4.4, 4.5 ...) are the units a group works through, so each H3 starts a
+   visibly new section: a rule above, room, and its number as a badge (hooks/headings.py) */
 .md-typeset h3 {
   font-size: 1.25em;
-  margin-top: 1.8em;
+  margin-top: 2.6em;
+  padding-top: 1em;
+  border-top: 1px solid var(--ag-rule);
+}
+
+.md-typeset h3 .sub-num {
+  display: inline-block;
+  min-width: 2.4em;
+  margin-right: 0.5em;
+  padding: 0 0.45em;
+  border-radius: 0.35rem;
+  background: var(--ag-panel);
+  color: var(--md-typeset-a-color);
+  font-size: 0.8em;
+  font-weight: 700;
+  line-height: 1.75;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+  vertical-align: 0.12em;
 }
 
 .md-typeset h4 {
@@ -506,6 +526,12 @@ body {
 }
 
 /* "back to the list" link closing each sub-section */
+/* the back link closes a sub-activity: a right-aligned footer line */
+.md-typeset p:has(> a.ws-back:only-child) {
+  margin: 1.4em 0 0;
+  text-align: right;
+}
+
 .md-typeset a.ws-back {
   font-size: 0.8em;
   color: var(--md-default-fg-color--light);
@@ -1201,6 +1227,7 @@ body {
 <ol>
 <li>อ่านและกรอกค่าความชื้นอากาศในช่วงที่เลือก: ต่ำสุด <input class="fld" type="text" data-k="s3.hist.hum_min" data-size="4" size="4" inputmode="decimal" autocomplete="off" spellcheck="false"> % เวลา <input class="fld" type="text" data-k="s3.hist.hum_min_t" data-size="5" size="5" autocomplete="off" spellcheck="false"> น. สูงสุด <input class="fld" type="text" data-k="s3.hist.hum_max" data-size="4" size="4" inputmode="decimal" autocomplete="off" spellcheck="false"> % เวลา <input class="fld" type="text" data-k="s3.hist.hum_max_t" data-size="5" size="5" autocomplete="off" spellcheck="false"> น. ถ้ากราฟอ่านได้ไม่ละเอียด ให้ใช้ค่าโดยประมาณ</li>
 </ol>
+<p><a class="ws-back" href="#hist">↑ กลับไปที่ใบงาน</a></p>
 <h3 id="hist-4">หาสาเหตุของข้อมูลที่ขาดหาย</h3>
 <p><strong>วิเคราะห์ช่องว่างของข้อมูล</strong></p>
 <ol>

@@ -302,9 +302,29 @@ body {
   border-top: 3px solid var(--ag-rule);
 }
 
+/* sub-activities (4.4, 4.5 ...) are the units a group works through, so each H3 starts a
+   visibly new section: a rule above, room, and its number as a badge (hooks/headings.py) */
 .md-typeset h3 {
   font-size: 1.25em;
-  margin-top: 1.8em;
+  margin-top: 2.6em;
+  padding-top: 1em;
+  border-top: 1px solid var(--ag-rule);
+}
+
+.md-typeset h3 .sub-num {
+  display: inline-block;
+  min-width: 2.4em;
+  margin-right: 0.5em;
+  padding: 0 0.45em;
+  border-radius: 0.35rem;
+  background: var(--ag-panel);
+  color: var(--md-typeset-a-color);
+  font-size: 0.8em;
+  font-weight: 700;
+  line-height: 1.75;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+  vertical-align: 0.12em;
 }
 
 .md-typeset h4 {
@@ -506,6 +526,12 @@ body {
 }
 
 /* "back to the list" link closing each sub-section */
+/* the back link closes a sub-activity: a right-aligned footer line */
+.md-typeset p:has(> a.ws-back:only-child) {
+  margin: 1.4em 0 0;
+  text-align: right;
+}
+
 .md-typeset a.ws-back {
   font-size: 0.8em;
   color: var(--md-default-fg-color--light);
@@ -1147,7 +1173,7 @@ body {
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> <strong><a href="#a2-q">คำถามท้ายกิจกรรม</a></strong> หากนำแนวคิดนี้ไปควบคุมปั๊มน้ำ 220V ในฟาร์มจริง ต้องพิจารณาอุปกรณ์และความปลอดภัยเรื่องใดบ้าง และควรให้ใครเป็นผู้ติดตั้ง <textarea class="fld fld-ta" data-k="s1.q2" rows="2"></textarea> ก่อนพัก สั่งรีเลย์เป็น <strong>Off</strong> แล้วดูว่าหลอดดับจริง</li>
 </ul>
 </div>
-<h3 id="a2-1">2.1 รู้จักบอร์ดรีเลย์</h3>
+<h3 id="a2-1"><span class="sub-num">2.1</span>รู้จักบอร์ดรีเลย์</h3>
 <p>บอร์ดรีเลย์เป็นบอร์ดคนละตัวกับบอร์ดเซนเซอร์ มีคอนโทรลเลอร์ของตัวเอง (ESP32-C6) และมีขั้วต่อสองกลุ่ม ดูตำแหน่งขั้วต่อจากแผนภาพนี้ก่อนต่อสาย</p>
 <p><img alt="แผนภาพบอร์ดรีเลย์ ESP32-C6 ชี้ตำแหน่งขั้ว NO COM NC ทางซ้าย ขั้วไฟเข้า 7-60 Input และ GND ทางขวา ช่อง USB Type-C ปุ่มบนบอร์ด ไฟ LED และไฟแสดงสถานะรีเลย์" src="../images/relay-board-terminals.png" width="100%" /></p>
 <p><strong>สำรวจขั้วต่อบนบอร์ด</strong></p>
@@ -1196,7 +1222,7 @@ body {
 </tbody>
 </table></div>
 <p><a class="ws-back" href="#a2">↑ กลับไปที่ใบงาน</a></p>
-<h3 id="a2-1b">2.2 อ่านชื่อและหมายเลข IP แล้วลองสั่งรีเลย์</h3>
+<h3 id="a2-1b"><span class="sub-num">2.2</span>อ่านชื่อและหมายเลข IP แล้วลองสั่งรีเลย์</h3>
 <p><strong>อ่านข้อมูลบอร์ด</strong></p>
 <ol>
 <li>เสียบสาย USB-C จากบอร์ดรีเลย์เข้าแล็ปท็อป (ยังไม่ต่ออย่างอื่นทั้งสิ้น)</li>
@@ -1216,7 +1242,7 @@ body {
 <p>เสียงคลิกเกิดจากหน้าสัมผัสของรีเลย์เปลี่ยนตำแหน่งเพื่อเปิดหรือปิดวงจร ขณะนี้ยังไม่ได้ต่ออุปกรณ์ที่ขั้วรีเลย์ จึงได้ยินเพียงเสียงคลิก <strong>รีเลย์ทำหน้าที่เป็นสวิตช์</strong> ไม่ได้จ่ายไฟให้หลอดไฟเอง เราจะต่อแหล่งจ่ายไฟและหลอดไฟในข้อ 2.4</p>
 </blockquote>
 <p><a class="ws-back" href="#a2">↑ กลับไปที่ใบงาน</a></p>
-<h3 id="a2-2">2.3 รู้จักกล่องจ่ายไฟและวงจรหลอดไฟ</h3>
+<h3 id="a2-2"><span class="sub-num">2.3</span>รู้จักกล่องจ่ายไฟและวงจรหลอดไฟ</h3>
 <p><strong>สำรวจขั้วต่อและทางเดินไฟ</strong></p>
 <p>ชุดทดลองใช้ <strong>charge controller เป็นกล่องจ่ายไฟ</strong> ให้หลอดไฟและบอร์ด</p>
 <ol>
@@ -1225,7 +1251,7 @@ body {
 <p>หลอด LED ใช้ไฟ 12V หากต่อตรงกับแหล่งจ่ายไฟ หลอดจะติดตลอดที่มีไฟเข้า เราจึงต่อสายบวกผ่านขั้ว <strong>COM</strong> และ <strong>NO</strong> ของรีเลย์ เมื่อสั่ง On หน้าสัมผัสจะต่อถึงกัน วงจรจึงครบและหลอดติด เมื่อสั่ง Off หน้าสัมผัสจะแยกออกและหลอดดับ</p>
 <p><img alt="แผนภาพวงจร: ไฟ +12V จาก charge controller ผ่านขั้ว COM และ NO ของรีเลย์ไปยังหลอด LED ส่วนสายลบต่อตรง" src="../images/activity2-2-relay-wiring-diagram.png" width="85%" /></p>
 <p><a class="ws-back" href="#a2">↑ กลับไปที่ใบงาน</a></p>
-<h3 id="a2-2b">2.4 ต่อสายวงจรหลอดไฟ</h3>
+<h3 id="a2-2b"><span class="sub-num">2.4</span>ต่อสายวงจรหลอดไฟ</h3>
 <p><strong>ยังไม่เสียบปลั๊กอะแดปเตอร์ระหว่างต่อสาย</strong> และตรวจว่าถอดสาย USB ของบอร์ดรีเลย์ออกจากแล็ปท็อปแล้ว ต่อสายตามแผนภาพ แล้วให้สมาชิกอีกคนช่วยตรวจในข้อ 6</p>
 <p><strong>ต่อสายไฟและหลอด LED</strong></p>
 <ol>
@@ -1247,7 +1273,7 @@ body {
 <p><strong>ทำไมรีเลย์ต่ออยู่ที่สายบวกเพียงเส้นเดียว</strong> กระแสไฟจะไหลได้เมื่อวงจรครบ การเปิดหน้าสัมผัสรีเลย์ที่จุดเดียวจึงทำให้หลอดดับได้ ในวงจร 12V นี้ เราให้รีเลย์ตัดต่อสายบวก ส่วนสายลบต่อกลับไปยังกล่องจ่ายไฟโดยตรง</p>
 </blockquote>
 <p><a class="ws-back" href="#a2">↑ กลับไปที่ใบงาน</a></p>
-<h3 id="a2-2c">2.5 จ่ายไฟและทดสอบหลอดไฟ</h3>
+<h3 id="a2-2c"><span class="sub-num">2.5</span>จ่ายไฟและทดสอบหลอดไฟ</h3>
 <p><strong>จัดอุปกรณ์และจ่ายไฟ</strong></p>
 <ol>
 <li>วางหลอด LED ให้เลนส์หันออกจากบอร์ด GoGo-IoT และห่างจากบอร์ดอย่างน้อย 30 ซม. ไม่อย่างนั้นแสงจากหลอดจะย้อนเข้าเซนเซอร์แสงของบอร์ด และทำให้ระบบสั่งเปิด–ปิดไฟสลับไปมาในกิจกรรมที่ 3</li>

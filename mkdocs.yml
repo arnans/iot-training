@@ -59,6 +59,7 @@ nav:
 hooks:
   - hooks/fields.py   # {{f:key}} markers -> form fields, see webapp/FILLABLE-WORKSHEET.md
   - hooks/steps.py    # seed the CSS step counter so numbering continues past action-group breaks
+  - hooks/headings.py # "4.4" at the start of a sub-activity heading becomes a badge
 
 plugins:
   - search

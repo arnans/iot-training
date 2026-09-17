@@ -302,9 +302,29 @@ body {
   border-top: 3px solid var(--ag-rule);
 }
 
+/* sub-activities (4.4, 4.5 ...) are the units a group works through, so each H3 starts a
+   visibly new section: a rule above, room, and its number as a badge (hooks/headings.py) */
 .md-typeset h3 {
   font-size: 1.25em;
-  margin-top: 1.8em;
+  margin-top: 2.6em;
+  padding-top: 1em;
+  border-top: 1px solid var(--ag-rule);
+}
+
+.md-typeset h3 .sub-num {
+  display: inline-block;
+  min-width: 2.4em;
+  margin-right: 0.5em;
+  padding: 0 0.45em;
+  border-radius: 0.35rem;
+  background: var(--ag-panel);
+  color: var(--md-typeset-a-color);
+  font-size: 0.8em;
+  font-weight: 700;
+  line-height: 1.75;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+  vertical-align: 0.12em;
 }
 
 .md-typeset h4 {
@@ -506,6 +526,12 @@ body {
 }
 
 /* "back to the list" link closing each sub-section */
+/* the back link closes a sub-activity: a right-aligned footer line */
+.md-typeset p:has(> a.ws-back:only-child) {
+  margin: 1.4em 0 0;
+  text-align: right;
+}
+
 .md-typeset a.ws-back {
   font-size: 0.8em;
   color: var(--md-default-fg-color--light);
@@ -1154,7 +1180,7 @@ body {
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> <strong><a href="#a1-q">คำถามท้ายกิจกรรม</a></strong> หากจะสร้างระบบรดน้ำ เราควรวัดค่าอะไรเพื่อช่วยตัดสินใจว่าจะรดน้ำเมื่อไร และสวิตช์ลูกลอยช่วยบอกข้อมูลอะไรได้บ้าง <textarea class="fld fld-ta" data-k="s1.q1" rows="2"></textarea></li>
 </ul>
 </div>
-<h3 id="a1-1">1.1 รู้จักบอร์ดและต่อสวิตช์ลูกลอย</h3>
+<h3 id="a1-1"><span class="sub-num">1.1</span>รู้จักบอร์ดและต่อสวิตช์ลูกลอย</h3>
 <p>บอร์ดตัวนี้มีคอนโทรลเลอร์ ESP32-C3 และเซนเซอร์ในตัวสำหรับวัดห้าค่า ได้แก่ <strong>อุณหภูมิ ความชื้นอากาศ แสง ความกดอากาศ และความเร่ง</strong> (บอร์ดแปลงความเร่งเป็นค่า <strong>ความสั่นสะเทือน</strong> ให้เราแล้ว) นอกจากนั้นมีช่องต่อเซนเซอร์เพิ่มแบบ Grove เราจะต่อ <strong>สวิตช์ลูกลอย</strong> เข้าที่ <strong>ช่อง 1</strong> ซึ่งตั้งค่าไว้แล้วให้อ่านเป็นสัญญาณดิจิทัล</p>
 <p><img alt="ส่วนประกอบหลักของบอร์ด GoGo-IoT: ช่อง USB-C สวิตช์ ON/OFF ช่อง Grove 1 คอนโทรลเลอร์ ESP32-C3 ปุ่ม BOOT และกลุ่มเซนเซอร์ในตัว" src="../images/gogo-iot-main-parts.png" width="100%" /></p>
 <p>ตำแหน่งอุปกรณ์ในภาพ: <strong>USB-C</strong> ใช้จ่ายไฟและเชื่อมต่อคอมพิวเตอร์ · <strong>ON / OFF</strong> คือสวิตช์เปิด–ปิดบอร์ด · <strong>Grove port 1</strong> ใช้ต่อสวิตช์ลูกลอย · กรอบสีแดงด้านขวาคือกลุ่มเซนเซอร์ในตัว · ช่องใส่ถ่าน <strong>18650 อยู่ด้านใต้บอร์ด</strong> จึงไม่ปรากฏในภาพ</p>
@@ -1166,7 +1192,7 @@ body {
 <li>วางสวิตช์ลูกลอยลงแก้วน้ำที่มีน้ำครึ่งแก้ว ให้ลูกลอยลอยขึ้น</li>
 </ol>
 <p><a class="ws-back" href="#a1">↑ กลับไปที่ใบงาน</a></p>
-<h3 id="a1-2">1.2 อ่านชื่อและหมายเลข IP ของบอร์ด</h3>
+<h3 id="a1-2"><span class="sub-num">1.2</span>อ่านชื่อและหมายเลข IP ของบอร์ด</h3>
 <p><strong>เชื่อมต่อบอร์ด</strong></p>
 <ol>
 <li>เปิด <strong>Chrome</strong> หรือ <strong>Edge</strong> ไปที่ <strong><a href="https://web.esphome.io">web.esphome.io</a></strong> (Firefox, Safari ใช้ไม่ได้)</li>
@@ -1187,7 +1213,7 @@ body {
 ถ้าเห็นชื่อแต่ไม่เห็นหมายเลข IP ภายในหนึ่งนาที แปลว่าบอร์ดต่อ WiFi ไม่ได้ ตรวจสีในชื่ออีกครั้ง แล้วยกมือ</p>
 </blockquote>
 <p><a class="ws-back" href="#a1">↑ กลับไปที่ใบงาน</a></p>
-<h3 id="a1-3">1.3 เปิดหน้าเว็บของบอร์ด</h3>
+<h3 id="a1-3"><span class="sub-num">1.3</span>เปิดหน้าเว็บของบอร์ด</h3>
 <p>บอร์ดมีหน้าเว็บสำหรับแสดงค่าในตัว เรียกว่า <strong>เว็บเซิร์ฟเวอร์</strong> เราจึงเปิดดูค่าผ่านเบราว์เซอร์ได้โดยตรงเมื่อเชื่อมต่อ WiFi โซนเดียวกัน โดยยังไม่ต้องใช้ Home Assistant</p>
 <p><strong>เปิดหน้าเว็บและดูค่า</strong></p>
 <ol>
@@ -1199,7 +1225,7 @@ body {
 <p>ถ้าเปิดไม่ขึ้น ตรวจว่าแล็ปท็อปอยู่บน <code>farm-laptop-สีเดียวกัน</code> กับสีในชื่อบอร์ด เพราะหน้านี้อยู่บนตัวบอร์ด ไม่ได้อยู่บนอินเทอร์เน็ต</p>
 </blockquote>
 <p><a class="ws-back" href="#a1">↑ กลับไปที่ใบงาน</a></p>
-<h3 id="a1-4">1.4 ทดลองอ่านค่าเซนเซอร์</h3>
+<h3 id="a1-4"><span class="sub-num">1.4</span>ทดลองอ่านค่าเซนเซอร์</h3>
 <p>ให้คนหนึ่งทดลอง อีกคนสังเกตและบันทึกค่า รอให้ค่าใกล้เคียงเดิมก่อนทดลองอย่างถัดไป</p>
 <p><strong>บันทึกค่าก่อนทดลอง</strong></p>
 <ol>
@@ -1262,7 +1288,7 @@ body {
 <blockquote>
 <p><strong>ค่าตัวเลขกับสถานะต่างกันอย่างไร</strong> ความชื้นและความสว่างบอกปริมาณเป็นตัวเลข ส่วนสวิตช์ลูกลอยบอกได้เพียงว่าน้ำถึงระดับที่ติดตั้งไว้หรือไม่ ไม่ได้บอกปริมาตรน้ำที่เหลือ ในหน้าเว็บของบอร์ดจะเห็น <strong>ON / OFF</strong> ส่วน Home Assistant จะแสดง <strong>Wet / Dry</strong> ตามลำดับ ข้อมูลทั้งหมดที่เราเห็นบนหน้าเว็บถูกส่งมาในรูปแบบดิจิทัล แม้ค่าบางชนิดจะใช้แทนปริมาณที่เปลี่ยนแปลงต่อเนื่องก็ตาม</p>
 </blockquote>
-<h3 id="a1-4b">1.5 สังเกตเวลาตอบสนอง</h3>
+<h3 id="a1-4b"><span class="sub-num">1.5</span>สังเกตเวลาตอบสนอง</h3>
 <p><strong>จับเวลาตอบสนอง</strong></p>
 <ol>
 <li>ใช้มือครอบบอร์ดอีกครั้ง แล้วนับเวลาตั้งแต่เริ่มครอบจนค่าแสงบนหน้าเว็บเปลี่ยนไป บันทึกเวลาที่สังเกตได้ <input class="fld" type="text" data-k="s1.light.delay" data-size="3" size="3" inputmode="decimal" autocomplete="off" spellcheck="false"> วินาที</li>

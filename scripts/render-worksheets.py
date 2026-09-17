@@ -86,6 +86,7 @@ def _load_hook(name: str):
 
 FIELDS = _load_hook("fields")
 STEPS = _load_hook("steps")
+HEADINGS = _load_hook("headings")
 
 
 # ---------------------------------------------------------------- styles
@@ -482,7 +483,7 @@ def render_page(src: str, slug: str, combined: bool, inline: bool = False) -> di
             "pymdownx.tasklist": {"custom_checkbox": True, "clickable_checkbox": True},
         },
     )
-    body = STEPS.continue_steps(md.convert(text))
+    body = HEADINGS.number_badges(STEPS.continue_steps(md.convert(text)))
 
     prefix = f"{slug}--" if combined else ""
     if prefix:  # ids (headings, and paragraphs given one with attr_list) must stay unique once four pages share one document

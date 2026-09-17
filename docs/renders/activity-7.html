@@ -302,9 +302,29 @@ body {
   border-top: 3px solid var(--ag-rule);
 }
 
+/* sub-activities (4.4, 4.5 ...) are the units a group works through, so each H3 starts a
+   visibly new section: a rule above, room, and its number as a badge (hooks/headings.py) */
 .md-typeset h3 {
   font-size: 1.25em;
-  margin-top: 1.8em;
+  margin-top: 2.6em;
+  padding-top: 1em;
+  border-top: 1px solid var(--ag-rule);
+}
+
+.md-typeset h3 .sub-num {
+  display: inline-block;
+  min-width: 2.4em;
+  margin-right: 0.5em;
+  padding: 0 0.45em;
+  border-radius: 0.35rem;
+  background: var(--ag-panel);
+  color: var(--md-typeset-a-color);
+  font-size: 0.8em;
+  font-weight: 700;
+  line-height: 1.75;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+  vertical-align: 0.12em;
 }
 
 .md-typeset h4 {
@@ -506,6 +526,12 @@ body {
 }
 
 /* "back to the list" link closing each sub-section */
+/* the back link closes a sub-activity: a right-aligned footer line */
+.md-typeset p:has(> a.ws-back:only-child) {
+  margin: 1.4em 0 0;
+  text-align: right;
+}
+
 .md-typeset a.ws-back {
   font-size: 0.8em;
   color: var(--md-default-fg-color--light);
@@ -1175,7 +1201,7 @@ body {
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> <strong><a href="#a7-6">7.11 ตรวจแบบร่าง</a></strong> ไล่ตรวจแบบร่างกับเกณฑ์ให้ครบทุกข้อ</li>
 </ul>
 </div>
-<h3 id="a7-1">7.1 เลือกโจทย์</h3>
+<h3 id="a7-1"><span class="sub-num">7.1</span>เลือกโจทย์</h3>
 <p><strong>กำหนดโจทย์ของกลุ่ม</strong></p>
 <ol>
 <li>เลือกสถานการณ์จากบัตรหนึ่งใบ หรือใช้ฟาร์มของสมาชิกในกลุ่ม เขียนข้อมูลฟาร์มและปัญหาที่ต้องการแก้ไว้ส่วนต้นของแบบร่าง</li>
@@ -1219,7 +1245,7 @@ body {
 <li>สถานการณ์ที่กลุ่มเลือก <input class="fld" type="text" data-k="d.scenario" data-size="14" size="14" autocomplete="off" spellcheck="false"></li>
 </ol>
 <p><a class="ws-back" href="#a7">↑ กลับไปที่ใบงาน</a></p>
-<h3 id="a7-2">7.2 สำรวจเครือข่ายในห้อง</h3>
+<h3 id="a7-2"><span class="sub-num">7.2</span>สำรวจเครือข่ายในห้อง</h3>
 <p><strong>อ่านการตั้งค่าเครือข่าย</strong></p>
 <ol>
 <li>เปิดไฟล์ ESPHome ที่แจก หา <strong>ssid</strong> (ชื่อ WiFi), <strong>name_add_mac_suffix</strong> (เติมรหัสท้ายชื่อบอร์ด) และ <strong>api</strong> (เชื่อมกับ Home Assistant)</li>
@@ -1233,7 +1259,7 @@ body {
 <p>บอร์ดกับ Home Assistant สื่อสารผ่านเครือข่ายภายใน ไม่จำเป็นต้องผ่านอินเทอร์เน็ต ส่วนการดูจากนอกฟาร์มต้องมีช่องทางเพิ่ม</p>
 </blockquote>
 <p><a class="ws-back" href="#a7">↑ กลับไปที่ใบงาน</a></p>
-<h3 id="a7-2b">7.3 เลือกเครือข่ายในฟาร์ม</h3>
+<h3 id="a7-2b"><span class="sub-num">7.3</span>เลือกเครือข่ายในฟาร์ม</h3>
 <p><strong>เปรียบเทียบวิธีสื่อสาร</strong></p>
 <ol>
 <li>พิจารณา <strong>ระยะทาง → แหล่งจ่ายไฟ → ปริมาณข้อมูล → ค่าใช้จ่าย</strong> ใช้ตารางนี้เลือกวิธีที่ควรนำไปทดสอบ ไม่ต้องจำทุกเทคโนโลยี</li>
@@ -1326,7 +1352,7 @@ body {
 <li>เติมสองแถวแรกในตาราง <strong>พลังงานและการสื่อสาร</strong> ของแบบร่าง ระบุวิธีที่เลือกและเหตุผลจากปัจจัยทั้งสี่</li>
 </ol>
 <p><a class="ws-back" href="#a7">↑ กลับไปที่ใบงาน</a></p>
-<h3 id="a7-2c">7.4 เปรียบเทียบระบบในฟาร์มกับคลาวด์</h3>
+<h3 id="a7-2c"><span class="sub-num">7.4</span>เปรียบเทียบระบบในฟาร์มกับคลาวด์</h3>
 <p><strong>เปรียบเทียบเมื่ออินเทอร์เน็ตดับ</strong></p>
 <ol>
 <li>สมมติว่าอินเทอร์เน็ตของฟาร์มดับ แต่ไฟฟ้าและเครือข่ายภายในยังใช้ได้ เติมตารางเปรียบเทียบระบบของเรากับระบบที่เก็บข้อมูลและตัดสินใจบนคลาวด์ทั้งหมด โดยไม่มีการทำงานสำรองในฟาร์ม</li>
@@ -1398,7 +1424,8 @@ body {
 </tbody>
 </table></div>
 <p>เปรียบเทียบค่าบริการและผู้ดูแลก่อนเลือก ไม่ต้องตั้งค่าตามทุกวิธี</p>
-<h3 id="a7-2d">7.5 ดูสาธิตการเข้าถึงจากนอกฟาร์ม</h3>
+<p><a class="ws-back" href="#a7">↑ กลับไปที่ใบงาน</a></p>
+<h3 id="a7-2d"><span class="sub-num">7.5</span>ดูสาธิตการเข้าถึงจากนอกฟาร์ม</h3>
 <p>ใช้ชุดของผู้สอน กลุ่มดูและบันทึกผล</p>
 <p><strong>ดูช่องทางเข้าถึงจากภายนอก</strong></p>
 <ol>
@@ -1414,7 +1441,8 @@ body {
 <ol start="4" style="counter-reset: step 3">
 <li>โทรศัพท์ของผู้สอนดูแดชบอร์ดผ่าน <span class="fld-radio" data-k="s3.remote.conn"><label><input class="fld" type="radio" name="s3.remote.conn" data-k="s3.remote.conn" value="อินเทอร์เน็ตมือถือ"> อินเทอร์เน็ตมือถือ</label><label><input class="fld" type="radio" name="s3.remote.conn" data-k="s3.remote.conn" value="WiFi ของโซน"> WiFi ของโซน</label></span> · ส่วนที่ตัดสินใจและบันทึกข้อมูลอยู่ที่ <span class="fld-radio" data-k="s3.remote.where"><label><input class="fld" type="radio" name="s3.remote.where" data-k="s3.remote.where" value="ในฟาร์ม (แล็ปท็อป)"> ในฟาร์ม (แล็ปท็อป)</label><label><input class="fld" type="radio" name="s3.remote.where" data-k="s3.remote.where" value="บนคลาวด์"> บนคลาวด์</label></span></li>
 </ol>
-<h3 id="a7-2e">7.6 เลือกวิธีเข้าถึงจากนอกฟาร์ม</h3>
+<p><a class="ws-back" href="#a7">↑ กลับไปที่ใบงาน</a></p>
+<h3 id="a7-2e"><span class="sub-num">7.6</span>เลือกวิธีเข้าถึงจากนอกฟาร์ม</h3>
 <p><strong>เลือกวิธีตามความต้องการ</strong></p>
 <ol>
 <li>เจ้าของต้อง <span class="fld-radio" data-k="s3.remote.need"><label><input class="fld" type="radio" name="s3.remote.need" data-k="s3.remote.need" value="เข้ามาดูและสั่งได้"> เข้ามาดูและสั่งได้</label><label><input class="fld" type="radio" name="s3.remote.need" data-k="s3.remote.need" value="แค่ได้รับแจ้งเตือน"> แค่ได้รับแจ้งเตือน</label><label><input class="fld" type="radio" name="s3.remote.need" data-k="s3.remote.need" value="ไม่ต้องเลย"> ไม่ต้องเลย</label></span> · วิธีที่เลือก <input class="fld" type="text" data-k="s3.remote.method" data-size="16" size="16" autocomplete="off" spellcheck="false"> · ถ้าอินเทอร์เน็ตฟาร์มดับ จะใช้อะไรไม่ได้ <input class="fld" type="text" data-k="s3.remote.lost" data-size="24" size="24" autocomplete="off" spellcheck="false"></li>
@@ -1427,7 +1455,7 @@ body {
 <p id="a7-2q"><strong>คำถามท้ายเรื่องที่ 1</strong> ถ้าอินเทอร์เน็ตดับ แต่ WiFi และ Home Assistant ในฟาร์มยังทำงาน อะไรยังใช้ได้ หาก Home Assistant ดับด้วย ผลต่างกันอย่างไร</p>
 <textarea class="fld fld-ta" data-k="s3.q.cloud" rows="2"></textarea>
 
-<h3 id="a7-3">7.7 สำรวจกล่องจ่ายไฟ</h3>
+<h3 id="a7-3"><span class="sub-num">7.7</span>สำรวจกล่องจ่ายไฟ</h3>
 <p><strong>Charge controller</strong> ควบคุมการชาร์จแบตเตอรี่จากแผงโซลาร์เซลล์ และจ่ายไฟให้โหลดตามการตั้งค่า ชุดอบรมใช้อะแดปเตอร์ 12V ที่ขั้วแบตเตอรี่แทนแบตเตอรี่จริง</p>
 <p><strong>ไม่ต่อแผงโซลาร์เซลล์ในชุดนี้</strong> เพราะไม่มีแบตเตอรี่รับพลังงานจากการชาร์จ</p>
 <p><strong>ไล่สายและตรวจขั้วต่อ</strong></p>
@@ -1446,7 +1474,7 @@ body {
 <li>จอแสดง <input class="fld" type="text" data-k="s3.pwr.volt" data-size="5" size="5" inputmode="decimal" autocomplete="off" spellcheck="false"> V · ไอคอนแบตเตอรี่แสดงว่า <span class="fld-radio" data-k="s3.pwr.icon"><label><input class="fld" type="radio" name="s3.pwr.icon" data-k="s3.pwr.icon" value="เต็ม"> เต็ม</label><label><input class="fld" type="radio" name="s3.pwr.icon" data-k="s3.pwr.icon" value="ไม่เต็ม"> ไม่เต็ม</label></span></li>
 </ol>
 <p><a class="ws-back" href="#a7">↑ กลับไปที่ใบงาน</a></p>
-<h3 id="a7-3b">7.8 คำนวณพลังงานและจำนวนแผง</h3>
+<h3 id="a7-3b"><span class="sub-num">7.8</span>คำนวณพลังงานและจำนวนแผง</h3>
 <p><strong>โจทย์คำนวณเบื้องต้น:</strong> สมมติว่าแผง 15 W ได้แดดเทียบเท่าเต็มกำลัง 4 ชั่วโมงต่อวัน จึงผลิตได้ <strong>60 Wh/วัน</strong> ยังไม่หักการสูญเสีย กำลังไฟในตารางเป็นค่าที่กำหนดให้ฝึกคำนวณ</p>
 <p><strong>คำนวณพลังงานและจำนวนแผง</strong></p>
 <ol>
@@ -1558,7 +1586,7 @@ body {
 <p id="a7-3q"><strong>คำถามท้ายเรื่องที่ 2</strong> อุปกรณ์ใดทำงานเฉพาะตอนมีแดดได้ อุปกรณ์ใดต้องมีไฟสำรอง ถ้าฟ้าครึ้มสามวัน ต้องรู้ค่าอะไรเพื่อคำนวณว่าจะทำงานต่อได้นานเท่าไร</p>
 <textarea class="fld fld-ta" data-k="s3.q.power" rows="2"></textarea>
 
-<h3 id="a7-4">7.9 เติมแบบร่างให้ครบ</h3>
+<h3 id="a7-4"><span class="sub-num">7.9</span>เติมแบบร่างให้ครบ</h3>
 <p>เติมรายละเอียดส่วนที่เหลือให้ครบ โดยใช้ใบราคาอุปกรณ์ที่แจก หากมีเวลา สามารถค้นข้อมูลเพิ่มเติมจากโทรศัพท์ได้</p>
 <p><strong>ระบุอุปกรณ์และกฎควบคุม</strong></p>
 <ol>
@@ -1581,7 +1609,7 @@ body {
 <li>เติม <strong>สิ่งที่ยังไม่แน่ใจและต้องตรวจสอบเพิ่มเติม</strong></li>
 </ol>
 <p><a class="ws-back" href="#a7">↑ กลับไปที่ใบงาน</a></p>
-<h3 id="a7-5">7.10 แลกเปลี่ยนและปรับแบบร่าง</h3>
+<h3 id="a7-5"><span class="sub-num">7.10</span>แลกเปลี่ยนและปรับแบบร่าง</h3>
 <p>จับคู่กับกลุ่มเดิม ใช้เวลาแลกเปลี่ยน 10 นาที และปรับแก้ 5 นาที</p>
 <p><strong>แลกเปลี่ยนข้อเสนอแนะ</strong></p>
 <ol>
@@ -1597,7 +1625,7 @@ body {
 <li>สิ่งที่ปรับหลังฟังกลุ่มที่จับคู่กัน <input class="fld" type="text" data-k="d.revise" data-size="40" size="40" autocomplete="off" spellcheck="false"></li>
 </ol>
 <p><a class="ws-back" href="#a7">↑ กลับไปที่ใบงาน</a></p>
-<h3 id="a7-6">7.11 ตรวจแบบร่าง</h3>
+<h3 id="a7-6"><span class="sub-num">7.11</span>ตรวจแบบร่าง</h3>
 <p><strong>ตรวจความครบถ้วนก่อนส่ง</strong></p>
 <ol>
 <li>ตรวจว่าอุปกรณ์มีสเปกและราคาอ้างอิงจากใบราคาหรือแหล่งที่ค้น ระบุวันที่และรายการที่ยังต้องเช็กราคา</li>

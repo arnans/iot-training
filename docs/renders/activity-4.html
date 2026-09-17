@@ -302,9 +302,29 @@ body {
   border-top: 3px solid var(--ag-rule);
 }
 
+/* sub-activities (4.4, 4.5 ...) are the units a group works through, so each H3 starts a
+   visibly new section: a rule above, room, and its number as a badge (hooks/headings.py) */
 .md-typeset h3 {
   font-size: 1.25em;
-  margin-top: 1.8em;
+  margin-top: 2.6em;
+  padding-top: 1em;
+  border-top: 1px solid var(--ag-rule);
+}
+
+.md-typeset h3 .sub-num {
+  display: inline-block;
+  min-width: 2.4em;
+  margin-right: 0.5em;
+  padding: 0 0.45em;
+  border-radius: 0.35rem;
+  background: var(--ag-panel);
+  color: var(--md-typeset-a-color);
+  font-size: 0.8em;
+  font-weight: 700;
+  line-height: 1.75;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+  vertical-align: 0.12em;
 }
 
 .md-typeset h4 {
@@ -506,6 +526,12 @@ body {
 }
 
 /* "back to the list" link closing each sub-section */
+/* the back link closes a sub-activity: a right-aligned footer line */
+.md-typeset p:has(> a.ws-back:only-child) {
+  margin: 1.4em 0 0;
+  text-align: right;
+}
+
 .md-typeset a.ws-back {
   font-size: 0.8em;
   color: var(--md-default-fg-color--light);
@@ -1151,7 +1177,7 @@ body {
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> <strong><a href="#a4-q">คำถามท้ายกิจกรรม</a></strong> เกณฑ์เปิดและเกณฑ์ปิดของระบบไฟสวนคือเท่าไร ทำไมสองค่านี้ต้องต่างกัน และเราเอาบทเรียนนี้ไปใช้กับระบบรดน้ำอย่างไร <textarea class="fld fld-ta" data-k="s2.q4" rows="2"></textarea></li>
 </ul>
 </div>
-<h3 id="a4-1">4.1 สังเกตปัญหาไฟกะพริบ</h3>
+<h3 id="a4-1"><span class="sub-num">4.1</span>สังเกตปัญหาไฟกะพริบ</h3>
 <p><strong>เตรียมทดสอบ</strong></p>
 <ol>
 <li>ใช้หลอด LED แทนไฟสวน เปิดกฎ <code>มืด-เปิดไฟ</code> และ <code>สว่าง-ปิดไฟ</code> ไว้ทั้งคู่ ส่วนกฎ <code>ปิดไฟตามเวลา</code> (ถ้าสร้างไว้) ต้องปิดไว้ ขณะนี้เกณฑ์เปิดและปิดเป็นค่าเดียวกัน: <input class="fld" type="text" data-k="s1.light.on" data-size="4" size="4" inputmode="decimal" autocomplete="off" spellcheck="false"> หันหลอดออกจากเซนเซอร์ก่อนทดสอบ</li>
@@ -1166,7 +1192,7 @@ body {
 <p><strong>Chattering</strong> คือการเปิด–ปิดถี่เมื่อค่าแกว่งข้ามเกณฑ์ไปมา ทำให้รีเลย์และอุปกรณ์สึกหรอเร็ว</p>
 </blockquote>
 <p><a class="ws-back" href="#a4">↑ กลับไปที่ใบงาน</a></p>
-<h3 id="a4-2">4.2 แก้ไขด้วยการแยกเกณฑ์เปิดและปิด</h3>
+<h3 id="a4-2"><span class="sub-num">4.2</span>แก้ไขด้วยการแยกเกณฑ์เปิดและปิด</h3>
 <p><strong>แยกเกณฑ์เปิดและปิด</strong></p>
 <ol>
 <li>เปิดกฎ <code>สว่าง-ปิดไฟ</code> ปรับ <strong>Above</strong> ให้สูงกว่าเกณฑ์เปิด แต่ต่ำกว่าค่าแสงเมื่อไม่บังเซนเซอร์ เช่น เปิดต่ำกว่า 40 ปิดสูงกว่า 60 เมื่อในห้องอ่านได้ 80</li>
@@ -1185,7 +1211,7 @@ body {
 <p>ถ้ายังกะพริบ ให้เพิ่มระยะห่างของเกณฑ์ ถ้าไฟไม่ติดหรือไม่ดับ ให้ตรวจว่าเกณฑ์ทั้งสองยังอยู่ระหว่างค่ามืดกับค่าสว่างที่วัดได้</p>
 </blockquote>
 <p><a class="ws-back" href="#a4">↑ กลับไปที่ใบงาน</a></p>
-<h3 id="a4-3">4.3 เพิ่มการจำกัดช่วงเวลาเปิดไฟ</h3>
+<h3 id="a4-3"><span class="sub-num">4.3</span>เพิ่มการจำกัดช่วงเวลาเปิดไฟ</h3>
 <p>บางครั้งนอกจากค่าแสงสว่างแล้ว เราอาจต้องการจำกัดช่วงเวลาที่ไฟจะทำงานควบคู่กันไปด้วย เช่น ให้เปิดไฟได้หลัง 18.30 น. เท่านั้น ถ้ามืดก่อนก็ยังไม่ต้องเปิด</p>
 <p>กฎจากช่วงที่ 1 มีแค่ <strong>When</strong> (trigger) กับ <strong>Then do</strong> (action) ส่วน <strong>And if</strong> คือ <strong>condition</strong> เงื่อนไขเพิ่มเติมที่ต้องผ่านทุกข้อ กฎจึงจะสั่งงาน</p>
 <p><strong>เพิ่มเงื่อนไขเวลา</strong></p>
@@ -1205,7 +1231,8 @@ body {
 <ol start="4" style="counter-reset: step 3">
 <li>รอบล่าสุดใน Traces หยุดที่ส่วนใด <input class="fld" type="text" data-k="s2.time.trace" data-size="16" size="16" autocomplete="off" spellcheck="false"></li>
 </ol>
-<h3 id="a4-3b">4.4 เพิ่ม Trigger ให้รองรับทุกกรณี ให้ไฟเปิดได้เมื่อถึงเวลา</h3>
+<p><a class="ws-back" href="#a4">↑ กลับไปที่ใบงาน</a></p>
+<h3 id="a4-3b"><span class="sub-num">4.4</span>เพิ่ม Trigger ให้รองรับทุกกรณี ให้ไฟเปิดได้เมื่อถึงเวลา</h3>
 <p>เนื่องจาก Trigger ทำงานเฉพาะเวลาที่ค่าแสงข้ามเกณฑ์ ดังนั้นถ้าฟ้ามืดก่อนถึงเวลาที่กำหนด จะพบว่าไฟไม่ติดเมื่อถึงเวลา เพราะค่าแสงข้ามเกณฑ์ไปก่อนหน้าแล้ว การแก้ไขต้องเพิ่ม trigger เวลาและตรวจค่าความสว่าง ณ ตอนนั้น</p>
 <p><strong>ทำนายผลก่อนแก้กฎ</strong> ด้วยกฎใน Automation ปัจจุบัน ถ้ากำหนดให้ไฟติดได้ระหว่าง 18.30 ถึง 07.30 น. วันถัดไป</p>
 <ol>
@@ -1237,7 +1264,7 @@ body {
 <li>เมื่อเพิ่ม trigger เวลาแล้ว ทำไมยังต้องตรวจค่าความสว่างในส่วน And if อีก <input class="fld" type="text" data-k="s2.time.why" data-size="30" size="30" autocomplete="off" spellcheck="false"></li>
 </ol>
 <p><a class="ws-back" href="#a4">↑ กลับไปที่ใบงาน</a></p>
-<h3 id="a4-4">4.5 ลองเพิ่มการแจ้งเตือน</h3>
+<h3 id="a4-4"><span class="sub-num">4.5</span>ลองเพิ่มการแจ้งเตือน</h3>
 <p>Home Assistant สามารถส่งข้อความแจ้งเตือนได้ผ่านทางหน้า Web หรือทาง Mobile App (ต้องติดตั้ง App ก่อนจาก Play Store / App Store)</p>
 <p><strong>เพิ่มข้อความแจ้งเตือน</strong></p>
 <ol>
@@ -1252,7 +1279,7 @@ body {
 <li>ถ้าเข้า Home Assistant ผ่านแอป Companion ไว้แล้ว ลองใช้ <strong>Send a notification via mobile_app</strong> เพื่อส่งข้อความไปยังโทรศัพท์</li>
 </ol>
 <p><a class="ws-back" href="#a4">↑ กลับไปที่ใบงาน</a></p>
-<h3 id="a4-5">4.6 ต่อปั๊มแทนหลอดไฟ</h3>
+<h3 id="a4-5"><span class="sub-num">4.6</span>ต่อปั๊มแทนหลอดไฟ</h3>
 <p>ใช้รีเลย์ตัวเดิมควบคุมปั๊มแทนหลอดไฟ ในห้องนี้ปั๊ม<strong>เดินแห้ง</strong> ไม่ต่อสายยางและไม่ใช้น้ำ เราดูว่าปั๊มเดินหรือหยุดจากเสียงและการสั่นของตัวปั๊ม</p>
 <p><strong>หยุดระบบและถอดปลั๊ก</strong></p>
 <ol>
@@ -1275,7 +1302,8 @@ body {
 หากปั๊มไม่เดิน ให้สั่ง <strong>Off</strong> และถอดปลั๊กก่อนตรวจสายบวกจาก NO สายลบ และกล่องจ่ายไฟ หากปั๊มเดินทั้งที่ Off ให้ตรวจว่าเผลอต่อกับ NC หรือไม่
 <strong>ยังไม่ต้องเพิ่มกฎตรวจลูกลอย</strong> ในฟาร์มจริงเราต้องตรวจเสมอว่าน้ำในถังแห้งหรือไม่  เราจะเพิ่มการป้องกันนี้ในกิจกรรมที่ 5</p>
 </blockquote>
-<h3 id="a4-5b">4.7 สร้างกฎรดน้ำ</h3>
+<p><a class="ws-back" href="#a4">↑ กลับไปที่ใบงาน</a></p>
+<h3 id="a4-5b"><span class="sub-num">4.7</span>สร้างกฎรดน้ำ</h3>
 <p><strong>ใช้ความชื้นอากาศจำลองค่าความชื้นดิน</strong> ใช้ลมปากเพิ่มค่าความชื้นเพื่อจำลองดินเปียก </p>
 <p><strong>ตรวจค่าก่อนเลือกเกณฑ์</strong></p>
 <ol>
@@ -1296,7 +1324,7 @@ body {
 <li>ลองแยกค่าเกณฑ์ความชื้นอากาศที่ใช้เปิดและปิดปั๊ม ตามหลักการ Hysteresis เปิดปั๊มเมื่อต่ำกว่า <input class="fld" type="text" data-k="s2.hum.on" data-size="4" size="4" inputmode="decimal" autocomplete="off" spellcheck="false"> % ปิดปั๊มเมื่อสูงกว่า <input class="fld" type="text" data-k="s2.hum.off" data-size="4" size="4" inputmode="decimal" autocomplete="off" spellcheck="false"> % </li>
 </ol>
 <p><a class="ws-back" href="#a4">↑ กลับไปที่ใบงาน</a></p>
-<h3 id="a4-6">4.8 สร้างโหมด Auto และ Manual</h3>
+<h3 id="a4-6"><span class="sub-num">4.8</span>สร้างโหมด Auto และ Manual</h3>
 <p>ในหน้างานจริงมักใช้โหมดอัตโนมัติควบคู่กับโหมดสั่งเองด้วยมือ เวลาซ่อมอุปกรณ์หรือทดสอบข้อผิดพลาด เราจะได้เลือกเปิดหรือปิดปั๊มเองได้ โดยไม่ต้องพึ่งระบบอัตโนมัติเพียงอย่างเดียว</p>
 <p>Home Assistant ปิดกฎแต่ละข้อได้อยู่แล้ว แต่ถ้าสร้างสวิตช์เลือกโหมดเพื่อใช้งานผ่านแดชบอร์ดจะสะดวกกว่า และเป็นหลักเดียวกับตู้ควบคุม Auto / Off / Manual ที่ใช้งานจริง</p>
 <p><strong>สร้างสวิตช์เลือกโหมด</strong> ซึ่งเป็นสวิตช์บนหน้าจอ ไม่ใช่อุปกรณ์จริง</p>

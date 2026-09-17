@@ -302,9 +302,29 @@ body {
   border-top: 3px solid var(--ag-rule);
 }
 
+/* sub-activities (4.4, 4.5 ...) are the units a group works through, so each H3 starts a
+   visibly new section: a rule above, room, and its number as a badge (hooks/headings.py) */
 .md-typeset h3 {
   font-size: 1.25em;
-  margin-top: 1.8em;
+  margin-top: 2.6em;
+  padding-top: 1em;
+  border-top: 1px solid var(--ag-rule);
+}
+
+.md-typeset h3 .sub-num {
+  display: inline-block;
+  min-width: 2.4em;
+  margin-right: 0.5em;
+  padding: 0 0.45em;
+  border-radius: 0.35rem;
+  background: var(--ag-panel);
+  color: var(--md-typeset-a-color);
+  font-size: 0.8em;
+  font-weight: 700;
+  line-height: 1.75;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+  vertical-align: 0.12em;
 }
 
 .md-typeset h4 {
@@ -506,6 +526,12 @@ body {
 }
 
 /* "back to the list" link closing each sub-section */
+/* the back link closes a sub-activity: a right-aligned footer line */
+.md-typeset p:has(> a.ws-back:only-child) {
+  margin: 1.4em 0 0;
+  text-align: right;
+}
+
 .md-typeset a.ws-back {
   font-size: 0.8em;
   color: var(--md-default-fg-color--light);
@@ -1152,7 +1178,7 @@ body {
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> <strong><a href="#a3-q">คำถามท้ายกิจกรรม</a></strong> ถ้าค่าแสงแกว่งอยู่ใกล้เกณฑ์พอดี เช่น เมฆลอยผ่านตอนพลบค่ำ ระบบจะเปิด–ปิดไฟอย่างไร <textarea class="fld fld-ta" data-k="s1.q3" rows="2"></textarea></li>
 </ul>
 </div>
-<h3 id="a3-1">3.1 เพิ่มบอร์ดทั้งสองเข้า Home Assistant</h3>
+<h3 id="a3-1"><span class="sub-num">3.1</span>เพิ่มบอร์ดทั้งสองเข้า Home Assistant</h3>
 <p><strong>เข้าสู่ Home Assistant</strong></p>
 <ol>
 <li>ที่แล็ปท็อปของตัวแทนกลุ่ม กลับไปที่หน้า Login ของ Home Assistant ที่เปิดไว้ตอนก่อนเริ่ม ใส่ <strong>ชื่อผู้ใช้และรหัสผ่านที่ผู้สอนแจ้ง</strong> แล้วกด <strong>Log in</strong> (ถ้าหน้าเปิดไม่ขึ้น ให้อ่านที่อยู่ IP จากหน้าจอเครื่อง Farm Workshop ใหม่)</li>
@@ -1170,7 +1196,7 @@ body {
 <p><strong>ตรวจชื่อบอร์ดให้ตรงกับที่จดไว้ทั้งชื่อ</strong> โดยเฉพาะรหัสหกตัวท้าย หากเพิ่มบอร์ดของกลุ่มอื่น เราอาจดูค่าหรือสั่งงานอุปกรณ์ผิดกลุ่มได้</p>
 </blockquote>
 <p><a class="ws-back" href="#a3">↑ กลับไปที่ใบงาน</a></p>
-<h3 id="a3-2">3.2 ทดสอบบอร์ดใน Home Assistant</h3>
+<h3 id="a3-2"><span class="sub-num">3.2</span>ทดสอบบอร์ดใน Home Assistant</h3>
 <p><strong>ทดสอบจากแล็ปท็อป</strong></p>
 <ol>
 <li>ใน <strong>Settings → Devices &amp; services</strong> กดเข้าไปที่บอร์ด GoGo-IoT จะเห็น entity ชุดเดียวกับหน้าเว็บของบอร์ด ครอบบอร์ดแล้วดูว่าค่าความสว่างลดลง</li>
@@ -1184,7 +1210,7 @@ body {
 <p>ถ้าโทรศัพท์เปิดไม่ได้ ตรวจว่าอยู่บน WiFi โซนเดียวกับแล็ปท็อป และพิมพ์ที่อยู่ตรงกับที่จดไว้ ถ้ายังไม่ได้ ข้ามไปก่อนแล้วบอกผู้สอน</p>
 </blockquote>
 <p><a class="ws-back" href="#a3">↑ กลับไปที่ใบงาน</a></p>
-<h3 id="a3-3">3.3 เลือกเกณฑ์ความสว่าง</h3>
+<h3 id="a3-3"><span class="sub-num">3.3</span>เลือกเกณฑ์ความสว่าง</h3>
 <p><strong>สถานการณ์จำลอง</strong> เราต้องการให้ไฟสวนเปิดเมื่อมืดและปิดเมื่อสว่าง ในห้องทดลองนี้ ใช้หลอด LED แทนไฟสวน และใช้มือครอบบอร์ดเพื่อจำลองว่าฟ้ามืด ระบบจะอ่านค่าจาก <strong>เซนเซอร์แสง</strong> แล้วสั่ง <strong>หลอดไฟ</strong> ผ่านรีเลย์</p>
 <p><strong>อ่านค่าแสง</strong></p>
 <ol>
@@ -1194,7 +1220,8 @@ body {
 <ol start="2" style="counter-reset: step 1">
 <li>เลือกค่ากลาง ๆ ระหว่างสองค่านั้นเป็น <strong>เกณฑ์</strong> ที่ถือว่ามืด เช่น เปิดโล่ง 80 ครอบ 7 เกณฑ์อาจเป็น 40 · ค่าเกณฑ์ของกลุ่ม <input class="fld" type="text" data-k="s1.light.on" data-size="4" size="4" inputmode="decimal" autocomplete="off" spellcheck="false"></li>
 </ol>
-<h3 id="a3-3b">3.4 เขียนกฎเปิด–ปิดไฟ</h3>
+<p><a class="ws-back" href="#a3">↑ กลับไปที่ใบงาน</a></p>
+<h3 id="a3-3b"><span class="sub-num">3.4</span>เขียนกฎเปิด–ปิดไฟ</h3>
 <p><strong>เขียนกฎจากเกณฑ์ที่เลือก</strong></p>
 <ol>
 <li>เขียนกฎสองข้อเป็นประโยค <strong>"ถ้า ... ให้ ..."</strong> ข้อหนึ่งสำหรับตอนมืด อีกข้อสำหรับตอนสว่าง โดยใช้ค่าเกณฑ์ที่เพิ่งเลือก</li>
@@ -1204,7 +1231,8 @@ body {
 <p>สว่าง: ถ้าเซนเซอร์แสง <input class="fld" type="text" data-k="s1.rule.bright.if" data-size="24" size="24" autocomplete="off" spellcheck="false"> ให้ <input class="fld" type="text" data-k="s1.rule.bright.then" data-size="24" size="24" autocomplete="off" spellcheck="false"></p>
 </blockquote>
 <p>ใน Home Assistant เราสร้างกฎอัตโนมัติที่เรียกว่า <strong>automation</strong> โดยกำหนด <strong>trigger</strong> คือเหตุการณ์ที่เริ่มให้กฎทำงาน และ <strong>action</strong> คือสิ่งที่ระบบต้องทำ สำหรับกฎนี้ เหตุการณ์คือค่าความสว่างเปลี่ยนข้ามเกณฑ์ ส่วนคำสั่งคือเปิดหรือปิดรีเลย์</p>
-<h3 id="a3-3c">3.5 สร้างและทดสอบกฎอัตโนมัติ</h3>
+<p><a class="ws-back" href="#a3">↑ กลับไปที่ใบงาน</a></p>
+<h3 id="a3-3c"><span class="sub-num">3.5</span>สร้างและทดสอบกฎอัตโนมัติ</h3>
 <div class="video"><div class="video-frame"><iframe src="https://www.youtube-nocookie.com/embed/Q2D7aAni7Xo?rel=0" title="วิดีโอสาธิต" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div><p class="video-link"><a href="https://youtu.be/Q2D7aAni7Xo" target="_blank" rel="noopener">▶ เปิดวิดีโอใน YouTube</a></p></div>
 <p>วางเมาส์บนป้าย 📷 ท้ายข้อเพื่อดูภาพหน้าจอของขั้นนั้น (หน้าจอสัมผัสให้แตะ)</p>
 <p><strong>เปิดหน้าสร้างกฎ</strong></p>
@@ -1242,7 +1270,7 @@ body {
 <p><strong>ครอบแล้วไฟไม่ติด</strong> กฎแบบ crossed threshold ทำงานเฉพาะตอนค่า <strong>ข้าม</strong> เกณฑ์ ต้องให้ค่าอยู่เหนือเกณฑ์ก่อนแล้วค่อยครอบ · ตรวจว่ากฎทั้งสองเปิดอยู่ trigger ชี้ที่ <code>ความสว่าง (light)</code> และ action ชี้ที่รีเลย์ของ <strong>กลุ่มเรา</strong> · ถ้าไฟกะพริบเมื่อค่าแสงเปลี่ยนขึ้นลงใกล้เกณฑ์ อาจเกิดจากการใช้เกณฑ์เดียวกันทั้งเปิดและปิด ให้ลองครอบบอร์ดให้มิดและค้างมือไว้นิ่ง ๆ เราจะทดลองและแก้ปัญหานี้ในช่วงที่ 2</p>
 </blockquote>
 <p><a class="ws-back" href="#a3">↑ กลับไปที่ใบงาน</a></p>
-<h3 id="a3-4">3.6 โจทย์เสริม: ปิดไฟตามเวลา (ไม่บังคับทำ)</h3>
+<h3 id="a3-4"><span class="sub-num">3.6</span>โจทย์เสริม: ปิดไฟตามเวลา (ไม่บังคับทำ)</h3>
 <p>ทำข้อนี้เมื่อทดสอบกฎเปิด–ปิดไฟครบแล้วและยังมีเวลาเหลือ เราจะใช้เวลาเป็นตัวเริ่มคำสั่งปิดไฟ</p>
 <p><strong>ตั้งเวลาปิดไฟ</strong></p>
 <ol>

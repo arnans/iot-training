@@ -302,9 +302,29 @@ body {
   border-top: 3px solid var(--ag-rule);
 }
 
+/* sub-activities (4.4, 4.5 ...) are the units a group works through, so each H3 starts a
+   visibly new section: a rule above, room, and its number as a badge (hooks/headings.py) */
 .md-typeset h3 {
   font-size: 1.25em;
-  margin-top: 1.8em;
+  margin-top: 2.6em;
+  padding-top: 1em;
+  border-top: 1px solid var(--ag-rule);
+}
+
+.md-typeset h3 .sub-num {
+  display: inline-block;
+  min-width: 2.4em;
+  margin-right: 0.5em;
+  padding: 0 0.45em;
+  border-radius: 0.35rem;
+  background: var(--ag-panel);
+  color: var(--md-typeset-a-color);
+  font-size: 0.8em;
+  font-weight: 700;
+  line-height: 1.75;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+  vertical-align: 0.12em;
 }
 
 .md-typeset h4 {
@@ -506,6 +526,12 @@ body {
 }
 
 /* "back to the list" link closing each sub-section */
+/* the back link closes a sub-activity: a right-aligned footer line */
+.md-typeset p:has(> a.ws-back:only-child) {
+  margin: 1.4em 0 0;
+  text-align: right;
+}
+
 .md-typeset a.ws-back {
   font-size: 0.8em;
   color: var(--md-default-fg-color--light);
@@ -1173,7 +1199,7 @@ body {
 <li>ตรวจว่าบอร์ดทั้งสองแสดงค่าปัจจุบัน เปิดหน้าอุปกรณ์ไว้คนละแท็บ</li>
 <li>ใช้ปุ่มสั่งปั๊มในการทดสอบ ไม่ต้องเปลี่ยนเกณฑ์ความชื้น</li>
 </ol>
-<h3 id="a5-1">5.1 น้ำต่ำแต่ปั๊มยังเดิน</h3>
+<h3 id="a5-1"><span class="sub-num">5.1</span>น้ำต่ำแต่ปั๊มยังเดิน</h3>
 <p><strong>จำลองปัญหา</strong></p>
 <ol>
 <li>ยกลูกลอยพ้นน้ำ รอให้แสดง <strong>Dry</strong> แล้วสั่งปั๊ม On</li>
@@ -1211,7 +1237,7 @@ body {
 <p>กฎเปิดปั๊มต้องเห็น <strong>Wet</strong> จึงจะเริ่มได้ ถ้าสายลูกลอยหลุดจะอ่าน Dry ถ้าบอร์ดขาดการเชื่อมต่อจะเป็น unavailable ทั้งสองกรณีไม่ผ่านเงื่อนไข</p>
 </blockquote>
 <p><a class="ws-back" href="#a5">↑ กลับไปที่ใบงาน</a></p>
-<h3 id="a5-2">5.2 สั่งแล้วปั๊มไม่เดิน</h3>
+<h3 id="a5-2"><span class="sub-num">5.2</span>สั่งแล้วปั๊มไม่เดิน</h3>
 <p><strong>เตรียมการตรวจจับ</strong></p>
 <ol>
 <li>วางบอร์ด GoGo-IoT ให้แตะตัวปั๊ม หรือวางบนพื้นเดียวกันชิดปั๊ม ให้รับแรงสั่นได้ ลองสั่ง On–Off ตรวจว่า <code>ปั๊มกำลังทำงาน</code> เปลี่ยนตาม หากไม่เปลี่ยน ให้ขยับตำแหน่งหรือเพิ่ม <strong>ความไวตรวจจับปั๊ม</strong></li>
@@ -1266,7 +1292,7 @@ body {
 </li>
 </ol>
 <p><a class="ws-back" href="#a5">↑ กลับไปที่ใบงาน</a></p>
-<h3 id="a5-3">5.3 บอร์ดเซนเซอร์ดับ</h3>
+<h3 id="a5-3"><span class="sub-num">5.3</span>บอร์ดเซนเซอร์ดับ</h3>
 <p><img alt="ตำแหน่งสวิตช์ ON/OFF ทางซ้ายของบอร์ด GoGo-IoT ใกล้ช่อง USB-C และกลุ่มเซนเซอร์ทางขวา" src="../images/gogo-iot-main-parts.png" width="100%" /></p>
 <p>ใช้สวิตช์ <strong>ON / OFF</strong> ปิดบอร์ด ไม่ใช่ปุ่ม BOOT การถอด USB อย่างเดียวอาจไม่ดับเพราะมีถ่านในบอร์ด</p>
 <p><strong>จำลองปัญหา</strong></p>
@@ -1303,7 +1329,7 @@ body {
 </li>
 </ol>
 <p><a class="ws-back" href="#a5">↑ กลับไปที่ใบงาน</a></p>
-<h3 id="a5-4">5.4 ปั๊มเดินนานเกินไป</h3>
+<h3 id="a5-4"><span class="sub-num">5.4</span>ปั๊มเดินนานเกินไป</h3>
 <p><strong>จำลองปัญหา</strong></p>
 <ol>
 <li>สั่งปั๊ม On รอ 1 นาทีโดยรักษาความชื้นให้คงที่</li>
@@ -1336,7 +1362,7 @@ body {
 <p>เมื่อตัดปั๊มแล้ว ให้ตรวจสาเหตุก่อนเริ่มใหม่ กฎรดน้ำจะเริ่มอีกครั้งเมื่อความชื้นข้ามเกณฑ์เปิด ไม่ใช่ทันทีที่ปัญหาหมดไป</p>
 </blockquote>
 <p><a class="ws-back" href="#a5">↑ กลับไปที่ใบงาน</a></p>
-<h3 id="a5-5">5.5 วางแผนบำรุงรักษา</h3>
+<h3 id="a5-5"><span class="sub-num">5.5</span>วางแผนบำรุงรักษา</h3>
 <p>จากปัญหาที่จำลองมาทั้งสี่ข้อ อุปกรณ์ใดเสี่ยงเสียก่อน ต้องตรวจอะไรเป็นประจำ และใครเป็นคนตรวจ</p>
 <p><strong>บันทึกผล</strong></p>
 <ol>

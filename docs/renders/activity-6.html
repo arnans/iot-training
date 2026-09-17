@@ -302,9 +302,29 @@ body {
   border-top: 3px solid var(--ag-rule);
 }
 
+/* sub-activities (4.4, 4.5 ...) are the units a group works through, so each H3 starts a
+   visibly new section: a rule above, room, and its number as a badge (hooks/headings.py) */
 .md-typeset h3 {
   font-size: 1.25em;
-  margin-top: 1.8em;
+  margin-top: 2.6em;
+  padding-top: 1em;
+  border-top: 1px solid var(--ag-rule);
+}
+
+.md-typeset h3 .sub-num {
+  display: inline-block;
+  min-width: 2.4em;
+  margin-right: 0.5em;
+  padding: 0 0.45em;
+  border-radius: 0.35rem;
+  background: var(--ag-panel);
+  color: var(--md-typeset-a-color);
+  font-size: 0.8em;
+  font-weight: 700;
+  line-height: 1.75;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+  vertical-align: 0.12em;
 }
 
 .md-typeset h4 {
@@ -506,6 +526,12 @@ body {
 }
 
 /* "back to the list" link closing each sub-section */
+/* the back link closes a sub-activity: a right-aligned footer line */
+.md-typeset p:has(> a.ws-back:only-child) {
+  margin: 1.4em 0 0;
+  text-align: right;
+}
+
 .md-typeset a.ws-back {
   font-size: 0.8em;
   color: var(--md-default-fg-color--light);
@@ -1153,14 +1179,14 @@ body {
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> <strong><a href="#a6-q">คำถามท้ายกิจกรรม</a></strong> ถ้ามีเวลาเพิ่ม จะปรับ Dashboard อย่างไร เพื่อให้เหมาะสมกับการนำไปใช้งานจริง <textarea class="fld fld-ta" data-k="s3.q6" rows="2"></textarea></li>
 </ul>
 </div>
-<h3 id="a6-1">6.1 เลือกผู้ใช้หลัก</h3>
+<h3 id="a6-1"><span class="sub-num">6.1</span>เลือกผู้ใช้หลัก</h3>
 <p><strong>กำหนดผู้ใช้</strong></p>
 <ol>
 <li>เลือกผู้ใช้หลักหนึ่งกลุ่ม เช่น เจ้าของฟาร์ม คนงานหน้าแปลง หรือผู้จัดการหลายแปลง</li>
 </ol>
 <p>ผู้ใช้หลักของเรา <input class="fld" type="text" data-k="s3.dash.user" data-size="20" size="20" autocomplete="off" spellcheck="false"></p>
 <p><a class="ws-back" href="#a6">↑ กลับไปที่ใบงาน</a></p>
-<h3 id="a6-plan">6.2 เลือกข้อมูลและปุ่มควบคุม</h3>
+<h3 id="a6-plan"><span class="sub-num">6.2</span>เลือกข้อมูลและปุ่มควบคุม</h3>
 <p><strong>เลือกข้อมูลและคำสั่ง</strong></p>
 <ol>
 <li>กรอกสิ่งที่ผู้ใช้ต้องเห็น 3 อย่างและสั่งได้ 2 อย่างในตาราง ใช้คำที่เข้าใจง่าย เช่น “ความชื้นอากาศ” “น้ำถึงระดับลูกลอยหรือไม่” “เปิดปั๊ม” “สลับโหมด Auto / Manual”</li>
@@ -1210,7 +1236,7 @@ body {
 <li>วางข้อมูลสำคัญและปุ่มที่ใช้บ่อยไว้ด้านบน ใช้ชื่อที่ผู้ใช้เข้าใจตรงกัน</li>
 </ol>
 <p><a class="ws-back" href="#a6">↑ กลับไปที่ใบงาน</a></p>
-<h3 id="a6-2">6.3 สร้างแดชบอร์ด</h3>
+<h3 id="a6-2"><span class="sub-num">6.3</span>สร้างแดชบอร์ด</h3>
 <p><strong>สร้างแดชบอร์ด</strong></p>
 <ol>
 <li>เปิด <strong>Settings → Dashboards → + Add dashboard → New dashboard from scratch</strong> ตั้งชื่อ เช่น <code>แปลง 1</code></li>
@@ -1262,7 +1288,7 @@ body {
 <p>ลูกลอยแสดงได้ว่าน้ำถึงจุดติดตั้งหรือไม่ ส่วนสวิตช์ปั๊มแสดงสถานะรีเลย์ ตั้งชื่อไม่ให้ผู้ใช้เข้าใจว่าเป็นปริมาตรน้ำหรือหลักฐานว่าปั๊มเดินจริง</p>
 </blockquote>
 <p><a class="ws-back" href="#a6">↑ กลับไปที่ใบงาน</a></p>
-<h3 id="a6-3">6.4 ให้ผู้อื่นทดลองใช้</h3>
+<h3 id="a6-3"><span class="sub-num">6.4</span>ให้ผู้อื่นทดลองใช้</h3>
 <p><strong>ให้ผู้อื่นลองใช้</strong></p>
 <ol>
 <li>เปิดแดชบอร์ดบนโทรศัพท์ ให้คนจากกลุ่มข้าง ๆ หรือคนที่ไม่ได้ช่วยสร้างทดลองดู โดยยังไม่อธิบาย</li>

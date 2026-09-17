@@ -2,6 +2,7 @@ site_name: IoT ในฟาร์มอัจฉริยะ
 site_description: ใบงานสำหรับผู้เข้าร่วม - IoT Systems in Smart Farming
 
 docs_dir: docs
+copyright: เอกสารนี้เรียบเรียงขึ้นด้วย AI (Fable 5.1 และ GPT-6 Astra) ภายใต้การกำกับอย่างใกล้ชิดของผู้จัดทำ และรับรองว่าเนื้อหาเป็นไปตามเจตนาของผู้จัดทำทุกประการ   # AI disclosure, shown in the site footer; the renders carry the same line
 site_dir: site
 
 # index.html is the published site's front door, hand-written for GitHub Pages.

@@ -75,6 +75,8 @@ NAV_PAGES = [p for p in PAGES if p[2] != "อ้างอิง"]
 REDIRECTS = {"session-1": "session-1-start", "session-2": "activity-4", "session-3": "session-3-history"}
 
 SITE_NAME = "IoT ในฟาร์มอัจฉริยะ"
+# shown at the foot of every page, on screen and in print; the site footer carries the same line (mkdocs.yml)
+AI_DISCLOSURE = "เอกสารนี้เรียบเรียงขึ้นด้วย AI (Fable 5.1 และ GPT-6 Astra) ภายใต้การกำกับอย่างใกล้ชิดของผู้จัดทำ และรับรองว่าเนื้อหาเป็นไปตามเจตนาของผู้จัดทำทุกประการ"
 FONTS = ("https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700"
          "&family=IBM+Plex+Mono:wght@400;600&display=swap")
 
@@ -181,6 +183,7 @@ body {
 .ws-pager a { text-decoration: none; color: var(--md-typeset-a-color); }
 .ws-pager a:hover, .ws-pager a:focus-visible { text-decoration: underline; }
 .ws-pager .ws-next { margin-left: auto; text-align: right; font-weight: 600; }
+.ws-disclosure { margin: 2.5rem 0 0; padding-top: 0.8rem; border-top: 1px solid var(--ag-rule); font-size: 0.78rem; line-height: 1.5; color: var(--md-default-fg-color--light); }
 .ws-side a:focus-visible, .ws-top a:focus-visible { outline: 2px solid var(--ag-marigold); outline-offset: 2px; }
 
 @media (min-width: 64rem) {
@@ -628,6 +631,7 @@ def page_shell(title: str, nav: str, main: str, scripts: str) -> str:
 {nav}
 <main class="md-content__inner md-typeset" id="ws-main">
 {main}
+<footer class="ws-disclosure">{AI_DISCLOSURE}</footer>
 </main>
 </div>
 <dialog id="shot-box" aria-label="ภาพหน้าจอ"><img alt=""><p></p></dialog>

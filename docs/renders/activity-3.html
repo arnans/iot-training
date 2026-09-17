@@ -79,6 +79,7 @@ body {
 .ws-pager a { text-decoration: none; color: var(--md-typeset-a-color); }
 .ws-pager a:hover, .ws-pager a:focus-visible { text-decoration: underline; }
 .ws-pager .ws-next { margin-left: auto; text-align: right; font-weight: 600; }
+.ws-disclosure { margin: 2.5rem 0 0; padding-top: 0.8rem; border-top: 1px solid var(--ag-rule); font-size: 0.78rem; line-height: 1.5; color: var(--md-default-fg-color--light); }
 .ws-side a:focus-visible, .ws-top a:focus-visible { outline: 2px solid var(--ag-marigold); outline-offset: 2px; }
 
 @media (min-width: 64rem) {
@@ -1271,14 +1272,14 @@ body {
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> <strong><a href="#a3-1">3.1 เพิ่มบอร์ดทั้งสองเข้า Home Assistant</a></strong> เข้าระบบด้วยชื่อผู้ใช้และรหัสผ่านที่ผู้สอนแจ้ง เพิ่มบอร์ดทั้งสองตัว โดยดูจากชื่อบอร์ดที่จดไว้</li>
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> <strong><a href="#a3-2">3.2 ทดสอบบอร์ดใน Home Assistant</a></strong> ดูค่าเซนเซอร์ในหน้าอุปกรณ์ สั่งหลอดไฟจากแล็ปท็อป แล้วสั่งจากโทรศัพท์ (ถ้าโทรศัพท์เปิดไม่ได้ ข้ามไปก่อนแล้วบอกผู้สอน)</li>
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> <strong><a href="#a3-3">3.3 เลือกเกณฑ์ความสว่าง</a></strong> ค่าเกณฑ์ที่กลุ่มเลือก <input class="fld" type="text" data-k="s1.light.on" data-size="4" size="4" inputmode="decimal" autocomplete="off" spellcheck="false"></li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> <strong><a href="#a3-3b">3.4 เขียนกฎเปิด–ปิดไฟ</a></strong> เขียนเป็นประโยค "ถ้า ... ให้ ..."<ul>
-<li>มืด: ถ้าเซนเซอร์แสง <input class="fld" type="text" data-k="s1.rule.dark.if" data-size="24" size="24" autocomplete="off" spellcheck="false"> ให้ <input class="fld" type="text" data-k="s1.rule.dark.then" data-size="24" size="24" autocomplete="off" spellcheck="false"></li>
-<li>สว่าง: ถ้าเซนเซอร์แสง <input class="fld" type="text" data-k="s1.rule.bright.if" data-size="24" size="24" autocomplete="off" spellcheck="false"> ให้ <input class="fld" type="text" data-k="s1.rule.bright.then" data-size="24" size="24" autocomplete="off" spellcheck="false"></li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> <strong><a href="#a3-3b">3.4 เขียนกฎเปิด–ปิดไฟ</a></strong> เขียนเป็นประโยค "ถ้า ... แล้วให้ ..."<ul>
+<li>มืด: ถ้าเซนเซอร์แสง <input class="fld" type="text" data-k="s1.rule.dark.if" data-size="24" size="24" autocomplete="off" spellcheck="false"> แล้วให้ <input class="fld" type="text" data-k="s1.rule.dark.then" data-size="24" size="24" autocomplete="off" spellcheck="false"></li>
+<li>สว่าง: ถ้าเซนเซอร์แสง <input class="fld" type="text" data-k="s1.rule.bright.if" data-size="24" size="24" autocomplete="off" spellcheck="false"> แล้วให้ <input class="fld" type="text" data-k="s1.rule.bright.then" data-size="24" size="24" autocomplete="off" spellcheck="false"></li>
 </ul>
 </li>
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> <strong><a href="#a3-3c">3.5 สร้างและทดสอบกฎอัตโนมัติ</a></strong> <code>มืด-เปิดไฟ</code> และ <code>สว่าง-ปิดไฟ</code> ครอบแล้วเอามือออกสามรอบ ไฟติดและดับเองครบกี่รอบ <input class="fld" type="text" data-k="s1.auto.pass" data-size="2" size="2" inputmode="decimal" autocomplete="off" spellcheck="false"> ต้องได้ 3 จาก 3</li>
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> <strong><a href="#a3-4">3.6 โจทย์เสริม: ปิดไฟตามเวลา (ไม่บังคับทำ)</a></strong> เวลาที่กลุ่มตั้ง <input class="fld" type="text" data-k="s1.timer.at" data-size="5" size="5" autocomplete="off" spellcheck="false"> น. ผล <span class="fld-radio" data-k="s1.timer.ok"><label><input class="fld" type="radio" name="s1.timer.ok" data-k="s1.timer.ok" value="ดับตรงเวลา"> ดับตรงเวลา</label><label><input class="fld" type="radio" name="s1.timer.ok" data-k="s1.timer.ok" value="ไม่ดับ"> ไม่ดับ</label><label><input class="fld" type="radio" name="s1.timer.ok" data-k="s1.timer.ok" value="ไม่ได้ทำ"> ไม่ได้ทำ</label></span> เมื่อทดสอบเสร็จ ให้ <strong>ปิดการใช้งานกฎนี้</strong></li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> <strong><a href="#a3-q">คำถามท้ายกิจกรรม</a></strong> ถ้าค่าแสงแกว่งอยู่ใกล้เกณฑ์พอดี เช่น เมฆลอยผ่านตอนพลบค่ำ ระบบจะเปิด–ปิดไฟอย่างไร <textarea class="fld fld-ta" data-k="s1.q3" rows="2"></textarea></li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> <strong><a href="#a3-q">คำถามท้ายกิจกรรม</a></strong> ถ้าค่าแสงอยู่ใกล้เกณฑ์พอดี แล้วมีเมฆลอยผ่านตอนพลบค่ำจนค่าแสงแกว่งไปมา ระบบจะเปิด–ปิดไฟอย่างไร <textarea class="fld fld-ta" data-k="s1.q3" rows="2"></textarea></li>
 </ul>
 </div>
 <h3 id="a3-1"><span class="sub-num">3.1</span>เพิ่มบอร์ดทั้งสองเข้า Home Assistant</h3>
@@ -1310,7 +1311,7 @@ body {
 <li>สมาชิกอีกคนต่อโทรศัพท์เข้า WiFi <code>farm-laptop-สี</code> ของโซนเรา (<strong>ไม่ใช่อินเทอร์เน็ตมือถือ</strong> เพราะ Home Assistant อยู่ในแล็ปท็อป) เปิดที่อยู่เดียวกับที่จดไว้ตอนก่อนเริ่ม เข้าระบบด้วยชื่อผู้ใช้และรหัสผ่านเดียวกัน แล้วสั่งหลอดไฟจากโทรศัพท์ ทั้งสองจอต้องแสดงสถานะเดียวกัน</li>
 </ol>
 <blockquote>
-<p>ถ้าโทรศัพท์เปิดไม่ได้ ตรวจว่าอยู่บน WiFi โซนเดียวกับแล็ปท็อป และพิมพ์ที่อยู่ตรงกับที่จดไว้ ถ้ายังไม่ได้ ข้ามไปก่อนแล้วบอกผู้สอน</p>
+<p>ถ้าลองเปิดจากโทรศัพท์แล้วเข้าไม่ได้ ให้ตรวจว่าอยู่บน WiFi โซนเดียวกับแล็ปท็อป และพิมพ์ที่อยู่ตรงกับที่จดไว้ หากตรวจแล้วแต่ยังเข้าไม่ได้ ให้ข้ามไปก่อนแล้วบอกผู้สอน</p>
 </blockquote>
 <p><a class="ws-back" href="#a3">↑ กลับไปที่ใบงาน</a></p>
 <h3 id="a3-3"><span class="sub-num">3.3</span>เลือกเกณฑ์ความสว่าง</h3>
@@ -1327,11 +1328,11 @@ body {
 <h3 id="a3-3b"><span class="sub-num">3.4</span>เขียนกฎเปิด–ปิดไฟ</h3>
 <p class="ws-phase"><strong>เขียนกฎจากเกณฑ์ที่เลือก</strong></p>
 <ol>
-<li>เขียนกฎสองข้อเป็นประโยค <strong>"ถ้า ... ให้ ..."</strong> ข้อหนึ่งสำหรับตอนมืด อีกข้อสำหรับตอนสว่าง โดยใช้ค่าเกณฑ์ที่เพิ่งเลือก</li>
+<li>เขียนกฎสองข้อเป็นประโยค <strong>"ถ้า ... แล้วให้ ..."</strong> ข้อหนึ่งสำหรับตอนมืด อีกข้อสำหรับตอนสว่าง โดยใช้ค่าเกณฑ์ที่เพิ่งเลือก</li>
 </ol>
 <blockquote>
-<p>มืด: ถ้าเซนเซอร์แสง <input class="fld" type="text" data-k="s1.rule.dark.if" data-size="24" size="24" autocomplete="off" spellcheck="false"> ให้ <input class="fld" type="text" data-k="s1.rule.dark.then" data-size="24" size="24" autocomplete="off" spellcheck="false"></p>
-<p>สว่าง: ถ้าเซนเซอร์แสง <input class="fld" type="text" data-k="s1.rule.bright.if" data-size="24" size="24" autocomplete="off" spellcheck="false"> ให้ <input class="fld" type="text" data-k="s1.rule.bright.then" data-size="24" size="24" autocomplete="off" spellcheck="false"></p>
+<p>มืด: ถ้าเซนเซอร์แสง <input class="fld" type="text" data-k="s1.rule.dark.if" data-size="24" size="24" autocomplete="off" spellcheck="false"> แล้วให้ <input class="fld" type="text" data-k="s1.rule.dark.then" data-size="24" size="24" autocomplete="off" spellcheck="false"></p>
+<p>สว่าง: ถ้าเซนเซอร์แสง <input class="fld" type="text" data-k="s1.rule.bright.if" data-size="24" size="24" autocomplete="off" spellcheck="false"> แล้วให้ <input class="fld" type="text" data-k="s1.rule.bright.then" data-size="24" size="24" autocomplete="off" spellcheck="false"></p>
 </blockquote>
 <p>ใน Home Assistant เราสร้างกฎอัตโนมัติที่เรียกว่า <strong>automation</strong> โดยกำหนด <strong>trigger</strong> คือเหตุการณ์ที่เริ่มให้กฎทำงาน และ <strong>action</strong> คือสิ่งที่ระบบต้องทำ สำหรับกฎนี้ เหตุการณ์คือค่าความสว่างเปลี่ยนข้ามเกณฑ์ ส่วนคำสั่งคือเปิดหรือปิดรีเลย์</p>
 <p><a class="ws-back" href="#a3">↑ กลับไปที่ใบงาน</a></p>
@@ -1386,10 +1387,10 @@ body {
 <li><strong>ปิดการใช้งานกฎนี้</strong> ใน Settings → Automations &amp; scenes ทันที ไม่อย่างนั้นกฎจะทำงานทุกวันเวลาเดิม รวมถึงตอนที่รีเลย์ต่อกับปั๊มในช่วงที่ 2</li>
 </ol>
 <blockquote>
-<p>ถ้าไฟไม่ดับ ดูว่าเวลาที่ตั้งผ่านไปแล้วหรือยัง ต้องตั้งเวลาในอนาคตเสมอ</p>
+<p>ถ้าทดสอบแล้วไฟไม่ดับ ให้ดูว่าเวลาที่ตั้งผ่านไปแล้วหรือยัง เพราะต้องตั้งเวลาในอนาคตเสมอ</p>
 </blockquote>
 <p><a class="ws-back" href="#a3">↑ กลับไปที่ใบงาน</a></p>
-<p id="a3-q"><strong>คำถามท้ายกิจกรรม</strong> ถ้าค่าแสงแกว่งอยู่ใกล้เกณฑ์พอดี เช่น เมฆลอยผ่านตอนพลบค่ำ หรือมือครอบบอร์ดแค่ครึ่งเดียว ระบบจะเปิด–ปิดไฟอย่างไร (ยังไม่ต้องทดลองตอนนี้ เราจะทดลองและแก้ในช่วงที่ 2)</p>
+<p id="a3-q"><strong>คำถามท้ายกิจกรรม</strong> ถ้าค่าแสงอยู่ใกล้เกณฑ์พอดี แล้วมีเมฆลอยผ่านตอนพลบค่ำ หรือเราใช้มือครอบบอร์ดแค่ครึ่งเดียวจนค่าแสงแกว่งไปมา ระบบจะเปิด–ปิดไฟอย่างไร (ยังไม่ต้องทดลองตอนนี้ เราจะทดลองและแก้ในช่วงที่ 2)</p>
 <textarea class="fld fld-ta" data-k="s1.q3" rows="2"></textarea>
 
 <h2 id="กอนออกจากหอง">ก่อนออกจากห้อง</h2>
@@ -1405,6 +1406,7 @@ body {
 </ul>
 <hr />
 <p>ต่อไป: <a href="activity-4.html">ช่วงที่ 2 — ตรรกะควบคุมอัตโนมัติและการออกแบบ Fail-safe สำหรับฟาร์ม</a></p><nav class="ws-pager" aria-label="หน้าก่อนหน้าและถัดไป"><a class="ws-prev" href="activity-2.html">← กิจกรรม 2 · ต่อวงจรและสั่งงานหลอดไฟ (Act)</a><a class="ws-next" href="activity-4.html">ถัดไป: กิจกรรม 4 · ตั้งกฎอัตโนมัติ (Think) →</a></nav>
+<footer class="ws-disclosure">เอกสารนี้เรียบเรียงขึ้นด้วย AI (Fable 5.1 และ GPT-6 Astra) ภายใต้การกำกับอย่างใกล้ชิดของผู้จัดทำ และรับรองว่าเนื้อหาเป็นไปตามเจตนาของผู้จัดทำทุกประการ</footer>
 </main>
 </div>
 <dialog id="shot-box" aria-label="ภาพหน้าจอ"><img alt=""><p></p></dialog>

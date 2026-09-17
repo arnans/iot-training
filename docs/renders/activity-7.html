@@ -79,6 +79,7 @@ body {
 .ws-pager a { text-decoration: none; color: var(--md-typeset-a-color); }
 .ws-pager a:hover, .ws-pager a:focus-visible { text-decoration: underline; }
 .ws-pager .ws-next { margin-left: auto; text-align: right; font-weight: 600; }
+.ws-disclosure { margin: 2.5rem 0 0; padding-top: 0.8rem; border-top: 1px solid var(--ag-rule); font-size: 0.78rem; line-height: 1.5; color: var(--md-default-fg-color--light); }
 .ws-side a:focus-visible, .ws-top a:focus-visible { outline: 2px solid var(--ag-marigold); outline-offset: 2px; }
 
 @media (min-width: 64rem) {
@@ -1279,7 +1280,7 @@ body {
 <li>ระบบควบคุม → อุปกรณ์ปลายทาง ระยะ <input class="fld" type="text" data-k="s3.net.2.dist" data-size="4" size="4" inputmode="decimal" autocomplete="off" spellcheck="false"> เมตร · มีไฟที่ปลายทาง <span class="fld-radio" data-k="s3.net.2.power"><label><input class="fld" type="radio" name="s3.net.2.power" data-k="s3.net.2.power" value="มี"> มี</label><label><input class="fld" type="radio" name="s3.net.2.power" data-k="s3.net.2.power" value="ไม่มี"> ไม่มี</label></span> · ตัดออกเพราะระยะ <input class="fld" type="text" data-k="s3.net.2.out_dist" data-size="12" size="12" autocomplete="off" spellcheck="false"> · ตัดออกเพราะไม่มีไฟ <input class="fld" type="text" data-k="s3.net.2.out_power" data-size="12" size="12" autocomplete="off" spellcheck="false"> · เหลือให้เลือก <input class="fld" type="text" data-k="s3.net.2.left" data-size="12" size="12" autocomplete="off" spellcheck="false"></li>
 </ul>
 </li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> <strong><a href="#a7-2c">7.4 เปรียบเทียบระบบในฟาร์มกับคลาวด์</a></strong> สมมติอินเทอร์เน็ตฟาร์มดับ แต่ไฟและเครือข่ายภายในยังใช้ได้ ฝั่งคลาวด์ไม่มีระบบสำรองในฟาร์ม<ul>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> <strong><a href="#a7-2c">7.4 เปรียบเทียบระบบในฟาร์มกับคลาวด์</a></strong> ถ้าอินเทอร์เน็ตฟาร์มดับ แต่ไฟและเครือข่ายภายในยังใช้ได้ แล้วระบบของเรากับระบบคลาวด์จะเป็นอย่างไร สมมุติว่าฝั่งคลาวด์ไม่มีระบบสำรองในฟาร์ม<ul>
 <li>automation ยังทำงานหรือไม่ ของเรา <input class="fld" type="text" data-k="s3.cloud.auto.ours" data-size="8" size="8" autocomplete="off" spellcheck="false"> บนคลาวด์ <input class="fld" type="text" data-k="s3.cloud.auto.cloud" data-size="8" size="8" autocomplete="off" spellcheck="false"></li>
 <li>ดูแดชบอร์ดจากในฟาร์ม ของเรา <input class="fld" type="text" data-k="s3.cloud.farm.ours" data-size="8" size="8" autocomplete="off" spellcheck="false"> บนคลาวด์ <input class="fld" type="text" data-k="s3.cloud.farm.cloud" data-size="8" size="8" autocomplete="off" spellcheck="false"></li>
 <li>ดูข้อมูลปัจจุบันจากนอกฟาร์ม ของเรา <input class="fld" type="text" data-k="s3.cloud.city.ours" data-size="8" size="8" autocomplete="off" spellcheck="false"> บนคลาวด์ <input class="fld" type="text" data-k="s3.cloud.city.cloud" data-size="8" size="8" autocomplete="off" spellcheck="false"></li>
@@ -1287,8 +1288,8 @@ body {
 </ul>
 </li>
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> <strong><a href="#a7-2d">7.5 ดูสาธิตการเข้าถึงจากนอกฟาร์ม</a></strong> โทรศัพท์ของผู้สอนดูแดชบอร์ดผ่าน <span class="fld-radio" data-k="s3.remote.conn"><label><input class="fld" type="radio" name="s3.remote.conn" data-k="s3.remote.conn" value="อินเทอร์เน็ตมือถือ"> อินเทอร์เน็ตมือถือ</label><label><input class="fld" type="radio" name="s3.remote.conn" data-k="s3.remote.conn" value="WiFi ของโซน"> WiFi ของโซน</label></span> · ส่วนที่ตัดสินใจและบันทึกข้อมูลอยู่ที่ <span class="fld-radio" data-k="s3.remote.where"><label><input class="fld" type="radio" name="s3.remote.where" data-k="s3.remote.where" value="ในฟาร์ม (แล็ปท็อป)"> ในฟาร์ม (แล็ปท็อป)</label><label><input class="fld" type="radio" name="s3.remote.where" data-k="s3.remote.where" value="บนคลาวด์"> บนคลาวด์</label></span></li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> <strong><a href="#a7-2e">7.6 เลือกวิธีเข้าถึงจากนอกฟาร์ม</a></strong> เจ้าของต้อง <span class="fld-radio" data-k="s3.remote.need"><label><input class="fld" type="radio" name="s3.remote.need" data-k="s3.remote.need" value="เข้ามาดูและสั่งได้"> เข้ามาดูและสั่งได้</label><label><input class="fld" type="radio" name="s3.remote.need" data-k="s3.remote.need" value="แค่ได้รับแจ้งเตือน"> แค่ได้รับแจ้งเตือน</label><label><input class="fld" type="radio" name="s3.remote.need" data-k="s3.remote.need" value="ไม่ต้องเลย"> ไม่ต้องเลย</label></span> · ทางที่เลือก <input class="fld" type="text" data-k="s3.remote.method" data-size="16" size="16" autocomplete="off" spellcheck="false"> · ถ้าอินเทอร์เน็ตที่ฟาร์มดับ สิ่งที่หายไปคือ <input class="fld" type="text" data-k="s3.remote.lost" data-size="24" size="24" autocomplete="off" spellcheck="false"></li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> <strong><a href="#a7-2q">คำถามท้ายเรื่องที่ 1</a></strong> ถ้าอินเทอร์เน็ตดับ แต่ WiFi และ Home Assistant ในฟาร์มยังทำงาน อะไรยังใช้ได้ หาก Home Assistant ดับด้วย ผลต่างกันอย่างไร <textarea class="fld fld-ta" data-k="s3.q.cloud" rows="2"></textarea></li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> <strong><a href="#a7-2e">7.6 เลือกวิธีเข้าถึงจากนอกฟาร์ม</a></strong> เจ้าของต้อง <span class="fld-radio" data-k="s3.remote.need"><label><input class="fld" type="radio" name="s3.remote.need" data-k="s3.remote.need" value="เข้ามาดูและสั่งได้"> เข้ามาดูและสั่งได้</label><label><input class="fld" type="radio" name="s3.remote.need" data-k="s3.remote.need" value="แค่ได้รับแจ้งเตือน"> แค่ได้รับแจ้งเตือน</label><label><input class="fld" type="radio" name="s3.remote.need" data-k="s3.remote.need" value="ไม่ต้องเลย"> ไม่ต้องเลย</label></span> · ทางที่เลือก <input class="fld" type="text" data-k="s3.remote.method" data-size="16" size="16" autocomplete="off" spellcheck="false"> · ถ้าเลือกวิธีนี้แล้วอินเทอร์เน็ตที่ฟาร์มดับ เราจะใช้อะไรไม่ได้ <input class="fld" type="text" data-k="s3.remote.lost" data-size="24" size="24" autocomplete="off" spellcheck="false"></li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> <strong><a href="#a7-2q">คำถามท้ายเรื่องที่ 1</a></strong> ถ้าอินเทอร์เน็ตดับ แต่ WiFi และ Home Assistant ในฟาร์มยังทำงาน แล้วเราจะใช้อะไรได้บ้าง หาก Home Assistant ดับไปด้วย ผลจะต่างจากเดิมอย่างไร <textarea class="fld fld-ta" data-k="s3.q.cloud" rows="2"></textarea></li>
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> <strong><a href="#a7-3">7.7 สำรวจกล่องจ่ายไฟ</a></strong> จอแสดง <input class="fld" type="text" data-k="s3.pwr.volt" data-size="5" size="5" inputmode="decimal" autocomplete="off" spellcheck="false"> V · ไอคอนแบตเตอรี่แสดงว่า <span class="fld-radio" data-k="s3.pwr.icon"><label><input class="fld" type="radio" name="s3.pwr.icon" data-k="s3.pwr.icon" value="เต็ม"> เต็ม</label><label><input class="fld" type="radio" name="s3.pwr.icon" data-k="s3.pwr.icon" value="ไม่เต็ม"> ไม่เต็ม</label></span></li>
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> <strong><a href="#a7-3b">7.8 คำนวณพลังงานและจำนวนแผง</a></strong> ใช้ไฟต่อวัน (Wh) · แผง 15 W กี่แผง · ต้องมีแบตเตอรี่ไหม<ul>
 <li>บอร์ดเซนเซอร์ 0.5 W วันละ 24 ชั่วโมง <input class="fld" type="text" data-k="s3.pwr.size.node.wh" data-size="5" size="5" inputmode="decimal" autocomplete="off" spellcheck="false"> Wh · <input class="fld" type="text" data-k="s3.pwr.size.node.panels" data-size="3" size="3" inputmode="decimal" autocomplete="off" spellcheck="false"> แผง · <span class="fld-radio" data-k="s3.pwr.size.node.bat"><label><input class="fld" type="radio" name="s3.pwr.size.node.bat" data-k="s3.pwr.size.node.bat" value="ต้องมี"> ต้องมี</label><label><input class="fld" type="radio" name="s3.pwr.size.node.bat" data-k="s3.pwr.size.node.bat" value="ไม่ต้อง"> ไม่ต้อง</label></span></li>
@@ -1298,7 +1299,7 @@ body {
 <li>หนึ่งคืน 12 ชั่วโมง บอร์ดเซนเซอร์ใช้ <input class="fld" type="text" data-k="s3.pwr.size.night_node" data-size="4" size="4" inputmode="decimal" autocomplete="off" spellcheck="false"> Wh · ปั๊มฟาร์มถ้าเดินกลางคืน 3 ชั่วโมง ใช้ <input class="fld" type="text" data-k="s3.pwr.size.night_pump" data-size="5" size="5" inputmode="decimal" autocomplete="off" spellcheck="false"> Wh</li>
 </ul>
 </li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> <strong><a href="#a7-3q">คำถามท้ายเรื่องที่ 2</a></strong> อุปกรณ์ใดทำงานเฉพาะตอนมีแดดได้ อุปกรณ์ใดต้องมีไฟสำรอง ถ้าฟ้าครึ้มสามวัน ต้องรู้ค่าอะไรเพื่อคำนวณว่าจะทำงานต่อได้นานเท่าไร <textarea class="fld fld-ta" data-k="s3.q.power" rows="2"></textarea></li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> <strong><a href="#a7-3q">คำถามท้ายเรื่องที่ 2</a></strong> อุปกรณ์ใดทำงานเฉพาะตอนมีแดดได้ และอุปกรณ์ใดต้องมีไฟสำรอง ถ้าฟ้าครึ้มต่อเนื่องสามวัน แล้วเราต้องการรู้ว่าระบบจะทำงานต่อได้นานเท่าไร ต้องใช้ค่าอะไรบ้างในการคำนวณ <textarea class="fld fld-ta" data-k="s3.q.power" rows="2"></textarea></li>
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> <strong><a href="#a7-4">7.9 เติมแบบร่างให้ครบ</a></strong> เติมแบบร่างให้มีครบ: Input · Output · Logic · fail-safe และ manual override · การดูแลและงบประมาณ · แผนทดลองครั้งแรก · สิ่งที่ยังไม่แน่ใจ</li>
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> <strong><a href="#a7-5">7.10 แลกเปลี่ยนและปรับแบบร่าง</a></strong> สิ่งที่ปรับหลังฟังกลุ่มที่จับคู่กัน <input class="fld" type="text" data-k="d.revise" data-size="40" size="40" autocomplete="off" spellcheck="false"></li>
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> <strong><a href="#a7-6">7.11 ตรวจแบบร่าง</a></strong> ไล่ตรวจแบบร่างกับเกณฑ์ให้ครบทุกข้อ</li>
@@ -1458,7 +1459,7 @@ body {
 <h3 id="a7-2c"><span class="sub-num">7.4</span>เปรียบเทียบระบบในฟาร์มกับคลาวด์</h3>
 <p class="ws-phase"><strong>เปรียบเทียบเมื่ออินเทอร์เน็ตดับ</strong></p>
 <ol>
-<li>สมมติว่าอินเทอร์เน็ตของฟาร์มดับ แต่ไฟฟ้าและเครือข่ายภายในยังใช้ได้ เติมตารางเปรียบเทียบระบบของเรากับระบบที่เก็บข้อมูลและตัดสินใจบนคลาวด์ทั้งหมด โดยไม่มีการทำงานสำรองในฟาร์ม</li>
+<li>ถ้าอินเทอร์เน็ตของฟาร์มดับ แต่ไฟฟ้าและเครือข่ายภายในยังใช้ได้ แล้วระบบของเรากับระบบที่เก็บข้อมูลและตัดสินใจบนคลาวด์ทั้งหมดจะเป็นอย่างไร ลองเติมตารางเปรียบเทียบ โดยสมมุติว่าฝั่งคลาวด์ไม่มีการทำงานสำรองในฟาร์ม</li>
 </ol>
 <div class="table-wrap"><table>
 <thead>
@@ -1548,14 +1549,14 @@ body {
 <h3 id="a7-2e"><span class="sub-num">7.6</span>เลือกวิธีเข้าถึงจากนอกฟาร์ม</h3>
 <p class="ws-phase"><strong>เลือกวิธีตามความต้องการ</strong></p>
 <ol>
-<li>เจ้าของต้อง <span class="fld-radio" data-k="s3.remote.need"><label><input class="fld" type="radio" name="s3.remote.need" data-k="s3.remote.need" value="เข้ามาดูและสั่งได้"> เข้ามาดูและสั่งได้</label><label><input class="fld" type="radio" name="s3.remote.need" data-k="s3.remote.need" value="แค่ได้รับแจ้งเตือน"> แค่ได้รับแจ้งเตือน</label><label><input class="fld" type="radio" name="s3.remote.need" data-k="s3.remote.need" value="ไม่ต้องเลย"> ไม่ต้องเลย</label></span> · วิธีที่เลือก <input class="fld" type="text" data-k="s3.remote.method" data-size="16" size="16" autocomplete="off" spellcheck="false"> · ถ้าอินเทอร์เน็ตฟาร์มดับ จะใช้อะไรไม่ได้ <input class="fld" type="text" data-k="s3.remote.lost" data-size="24" size="24" autocomplete="off" spellcheck="false"></li>
+<li>เจ้าของต้อง <span class="fld-radio" data-k="s3.remote.need"><label><input class="fld" type="radio" name="s3.remote.need" data-k="s3.remote.need" value="เข้ามาดูและสั่งได้"> เข้ามาดูและสั่งได้</label><label><input class="fld" type="radio" name="s3.remote.need" data-k="s3.remote.need" value="แค่ได้รับแจ้งเตือน"> แค่ได้รับแจ้งเตือน</label><label><input class="fld" type="radio" name="s3.remote.need" data-k="s3.remote.need" value="ไม่ต้องเลย"> ไม่ต้องเลย</label></span> · วิธีที่เลือก <input class="fld" type="text" data-k="s3.remote.method" data-size="16" size="16" autocomplete="off" spellcheck="false"> · ถ้าเลือกวิธีนี้แล้วอินเทอร์เน็ตฟาร์มดับ เราจะใช้อะไรไม่ได้ <input class="fld" type="text" data-k="s3.remote.lost" data-size="24" size="24" autocomplete="off" spellcheck="false"></li>
 </ol>
 <p class="ws-phase"><strong>บันทึกลงแบบร่าง</strong></p>
 <ol start="2" style="counter-reset: step 1">
 <li>เติมแถวที่สาม ฟาร์ม → เจ้าของนอกฟาร์ม และช่อง <strong>ระบบประมวลผลและสั่งงานอยู่ที่ใด</strong></li>
 </ol>
 <p><a class="ws-back" href="#a7">↑ กลับไปที่ใบงาน</a></p>
-<p id="a7-2q"><strong>คำถามท้ายเรื่องที่ 1</strong> ถ้าอินเทอร์เน็ตดับ แต่ WiFi และ Home Assistant ในฟาร์มยังทำงาน อะไรยังใช้ได้ หาก Home Assistant ดับด้วย ผลต่างกันอย่างไร</p>
+<p id="a7-2q"><strong>คำถามท้ายเรื่องที่ 1</strong> ถ้าอินเทอร์เน็ตดับ แต่ WiFi และ Home Assistant ในฟาร์มยังทำงาน แล้วเราจะใช้อะไรได้บ้าง หาก Home Assistant ดับไปด้วย ผลจะต่างจากเดิมอย่างไร</p>
 <textarea class="fld fld-ta" data-k="s3.q.cloud" rows="2"></textarea>
 
 <h3 id="a7-3"><span class="sub-num">7.7</span>สำรวจกล่องจ่ายไฟ</h3>
@@ -1578,7 +1579,7 @@ body {
 </ol>
 <p><a class="ws-back" href="#a7">↑ กลับไปที่ใบงาน</a></p>
 <h3 id="a7-3b"><span class="sub-num">7.8</span>คำนวณพลังงานและจำนวนแผง</h3>
-<p><strong>โจทย์คำนวณเบื้องต้น:</strong> สมมติว่าแผง 15 W ได้แดดเทียบเท่าเต็มกำลัง 4 ชั่วโมงต่อวัน จึงผลิตได้ <strong>60 Wh/วัน</strong> ยังไม่หักการสูญเสีย กำลังไฟในตารางเป็นค่าที่กำหนดให้ฝึกคำนวณ</p>
+<p><strong>โจทย์คำนวณเบื้องต้น:</strong> ถ้าแผงขนาด 15 W ได้แดดเทียบเท่าเต็มกำลังวันละ 4 ชั่วโมง แล้วเรายังไม่หักการสูญเสีย แผงจะผลิตพลังงานได้ <strong>60 Wh/วัน</strong> กำลังไฟในตารางเป็นค่าที่กำหนดให้ฝึกคำนวณ</p>
 <p class="ws-phase"><strong>คำนวณพลังงานและจำนวนแผง</strong></p>
 <ol>
 <li>คำนวณแต่ละแถวในตาราง: <strong>พลังงานต่อวัน (Wh) = กำลังไฟ (W) × ชั่วโมงทำงาน</strong></li>
@@ -1686,7 +1687,7 @@ body {
 <p><strong>ระวัง</strong> แผงที่โดนแสงมีแรงดันที่ขั้ว ห้ามให้ขั้วบวก–ลบแตะกัน การต่อระบบจริงต้องใช้แบตเตอรี่และอุปกรณ์ที่เข้ากัน และทำตามลำดับในคู่มือของรุ่นนั้น</p>
 </blockquote>
 <p><a class="ws-back" href="#a7">↑ กลับไปที่ใบงาน</a></p>
-<p id="a7-3q"><strong>คำถามท้ายเรื่องที่ 2</strong> อุปกรณ์ใดทำงานเฉพาะตอนมีแดดได้ อุปกรณ์ใดต้องมีไฟสำรอง ถ้าฟ้าครึ้มสามวัน ต้องรู้ค่าอะไรเพื่อคำนวณว่าจะทำงานต่อได้นานเท่าไร</p>
+<p id="a7-3q"><strong>คำถามท้ายเรื่องที่ 2</strong> อุปกรณ์ใดทำงานเฉพาะตอนมีแดดได้ และอุปกรณ์ใดต้องมีไฟสำรอง ถ้าฟ้าครึ้มต่อเนื่องสามวัน แล้วเราต้องการรู้ว่าระบบจะทำงานต่อได้นานเท่าไร ต้องใช้ค่าอะไรบ้างในการคำนวณ</p>
 <textarea class="fld fld-ta" data-k="s3.q.power" rows="2"></textarea>
 
 <h3 id="a7-4"><span class="sub-num">7.9</span>เติมแบบร่างให้ครบ</h3>
@@ -1716,7 +1717,7 @@ body {
 <p>จับคู่กับกลุ่มเดิม ใช้เวลาแลกเปลี่ยน 10 นาที และปรับแก้ 5 นาที</p>
 <p class="ws-phase"><strong>แลกเปลี่ยนข้อเสนอแนะ</strong></p>
 <ol>
-<li>กลุ่มแรกเล่าแบบร่าง 1 นาที อีกกลุ่มเสนอแนะ 3 นาที: <strong>เหตุผลใดชัดเจน · ถ้าอุปกรณ์ใดเสียแล้วยังไม่รู้ผลกระทบ</strong></li>
+<li>กลุ่มแรกเล่าแบบร่าง 1 นาที อีกกลุ่มเสนอแนะ 3 นาที: <strong>เหตุผลใดชัดเจน · ถ้าอุปกรณ์ตัวใดเสีย แล้วเรายังไม่แน่ใจว่าจะกระทบส่วนไหนบ้าง</strong></li>
 <li>สลับบทบาท</li>
 </ol>
 <p class="ws-phase"><strong>ปรับแบบร่าง</strong></p>
@@ -1761,6 +1762,7 @@ body {
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> ตรวจรายการอุปกรณ์ตาม หน้าแรก แล้วคืนทั้งชุดพร้อมบัตรประจำกลุ่ม</li>
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> <strong>เก็บคำตอบของกลุ่มไว้</strong> กด <strong>ดาวน์โหลดคำตอบ</strong> ที่หัวหน้านี้แล้วส่งไฟล์ให้ผู้สอน จากนั้นเปิด<a href="record-sheet.html">ใบบันทึกของกลุ่ม</a> แล้วกด <strong>พิมพ์ / บันทึก PDF</strong> เก็บแบบร่างนี้ไว้ใช้วางแผนทดลองในฟาร์มต่อ</li>
 </ul><nav class="ws-pager" aria-label="หน้าก่อนหน้าและถัดไป"><a class="ws-prev" href="activity-6.html">← กิจกรรม 6 · สร้างแดชบอร์ด (Dashboard)</a></nav>
+<footer class="ws-disclosure">เอกสารนี้เรียบเรียงขึ้นด้วย AI (Fable 5.1 และ GPT-6 Astra) ภายใต้การกำกับอย่างใกล้ชิดของผู้จัดทำ และรับรองว่าเนื้อหาเป็นไปตามเจตนาของผู้จัดทำทุกประการ</footer>
 </main>
 </div>
 <dialog id="shot-box" aria-label="ภาพหน้าจอ"><img alt=""><p></p></dialog>

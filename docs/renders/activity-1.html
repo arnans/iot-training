@@ -79,6 +79,7 @@ body {
 .ws-pager a { text-decoration: none; color: var(--md-typeset-a-color); }
 .ws-pager a:hover, .ws-pager a:focus-visible { text-decoration: underline; }
 .ws-pager .ws-next { margin-left: auto; text-align: right; font-weight: 600; }
+.ws-disclosure { margin: 2.5rem 0 0; padding-top: 0.8rem; border-top: 1px solid var(--ag-rule); font-size: 0.78rem; line-height: 1.5; color: var(--md-default-fg-color--light); }
 .ws-side a:focus-visible, .ws-top a:focus-visible { outline: 2px solid var(--ag-marigold); outline-offset: 2px; }
 
 @media (min-width: 64rem) {
@@ -1280,7 +1281,7 @@ body {
 </ul>
 </li>
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> <strong><a href="#a1-4b">1.5 สังเกตเวลาตอบสนอง</a></strong> ครอบบอร์ดแล้ว ค่าแสงบนหน้าเว็บเปลี่ยนภายในกี่วินาที <input class="fld" type="text" data-k="s1.light.delay" data-size="3" size="3" inputmode="decimal" autocomplete="off" spellcheck="false"></li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> <strong><a href="#a1-q">คำถามท้ายกิจกรรม</a></strong> หากจะสร้างระบบรดน้ำ เราควรวัดค่าอะไรเพื่อช่วยตัดสินใจว่าจะรดน้ำเมื่อไร และสวิตช์ลูกลอยช่วยบอกข้อมูลอะไรได้บ้าง <textarea class="fld fld-ta" data-k="s1.q1" rows="2"></textarea></li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> <strong><a href="#a1-q">คำถามท้ายกิจกรรม</a></strong> ถ้าเราจะสร้างระบบรดน้ำ แล้วต้องตัดสินใจว่าจะรดน้ำเมื่อไร ควรวัดค่าอะไรบ้าง และสวิตช์ลูกลอยช่วยบอกข้อมูลอะไรได้บ้าง <textarea class="fld fld-ta" data-k="s1.q1" rows="2"></textarea></li>
 </ul>
 </div>
 <h3 id="a1-1"><span class="sub-num">1.1</span>รู้จักบอร์ดและต่อสวิตช์ลูกลอย</h3>
@@ -1313,7 +1314,7 @@ body {
 <p><img alt="หน้าจอ web.esphome.io หลังกด Connect และกดปุ่ม Reset device ในหน้าเว็บ แสดง log ของบอร์ด มีกรอบเน้นแถบ DEVICE NAME และแถบ IP ADDRESS และกรอบเน้นปุ่ม Reset device ที่มุมล่างขวา" src="../images/activity1/a1-name-ip-lookup.gif" width="60%" /></p>
 <blockquote>
 <p>ถ้าหน้าต่าง log ว่างเปล่า หรือชื่อเลื่อนผ่านไปแล้ว ให้กดปุ่ม <strong>Reset device</strong> ในหน้าเว็บอีกครั้ง <strong>อย่าถอดสาย USB และอย่ากดปุ่มบนบอร์ด</strong> สองอย่างนั้นจะตัดการเชื่อมต่อของเบราว์เซอร์ และชื่อจะไม่ขึ้น
-ถ้าเห็นชื่อแต่ไม่เห็นหมายเลข IP ภายในหนึ่งนาที แปลว่าบอร์ดต่อ WiFi ไม่ได้ ตรวจสีในชื่ออีกครั้ง แล้วยกมือ</p>
+ถ้าเห็นชื่อบอร์ดแล้ว แต่รอครบหนึ่งนาทียังไม่เห็นหมายเลข IP แปลว่าบอร์ดต่อ WiFi ไม่ได้ ให้ตรวจสีในชื่ออีกครั้ง แล้วยกมือ</p>
 </blockquote>
 <p><a class="ws-back" href="#a1">↑ กลับไปที่ใบงาน</a></p>
 <h3 id="a1-3"><span class="sub-num">1.3</span>เปิดหน้าเว็บของบอร์ด</h3>
@@ -1325,7 +1326,7 @@ body {
 </ol>
 <p><img alt="หน้าเว็บของบอร์ด GoGo-IoT ตารางซ้ายคือ entity แต่ละตัวพร้อมค่าปัจจุบัน กรอบดำทางขวาคือ log ของบอร์ด" src="../images/activity1-web-ui.png" width="100%" /></p>
 <blockquote>
-<p>ถ้าเปิดไม่ขึ้น ตรวจว่าแล็ปท็อปอยู่บน <code>farm-laptop-สีเดียวกัน</code> กับสีในชื่อบอร์ด เพราะหน้านี้อยู่บนตัวบอร์ด ไม่ได้อยู่บนอินเทอร์เน็ต</p>
+<p>ถ้าลองเปิดแล้วหน้าเว็บไม่ขึ้น ให้ตรวจว่าแล็ปท็อปอยู่บน <code>farm-laptop-สีเดียวกัน</code> กับสีในชื่อบอร์ด เพราะหน้านี้อยู่บนตัวบอร์ด ไม่ได้อยู่บนอินเทอร์เน็ต</p>
 </blockquote>
 <p><a class="ws-back" href="#a1">↑ กลับไปที่ใบงาน</a></p>
 <h3 id="a1-4"><span class="sub-num">1.4</span>ทดลองอ่านค่าเซนเซอร์</h3>
@@ -1398,8 +1399,9 @@ body {
 </ol>
 <p>บอร์ดอ่านและส่งค่าเป็นระยะ จึงอาจต้องรอสักครู่กว่าจะเห็นค่าเปลี่ยนบนหน้าจอ ใช้เวลาที่วัดได้นี้ประกอบการทดสอบกฎในกิจกรรมที่ 3 และช่วงที่ 2 อย่าเพิ่งสรุปว่ากฎไม่ทำงานทันทีที่ครอบบอร์ด</p>
 <p><a class="ws-back" href="#a1">↑ กลับไปที่ใบงาน</a></p>
-<p id="a1-q"><strong>คำถามท้ายกิจกรรม</strong> หากจะสร้างระบบรดน้ำ เราควรวัดค่าอะไรเพื่อช่วยตัดสินใจว่าจะรดน้ำเมื่อไร และสวิตช์ลูกลอยช่วยบอกข้อมูลอะไรได้บ้าง</p>
+<p id="a1-q"><strong>คำถามท้ายกิจกรรม</strong> ถ้าเราจะสร้างระบบรดน้ำ แล้วต้องตัดสินใจว่าจะรดน้ำเมื่อไร ควรวัดค่าอะไรบ้าง และสวิตช์ลูกลอยช่วยบอกข้อมูลอะไรได้บ้าง</p>
 <textarea class="fld fld-ta" data-k="s1.q1" rows="2"></textarea><nav class="ws-pager" aria-label="หน้าก่อนหน้าและถัดไป"><a class="ws-prev" href="session-1-start.html">← เตรียมพร้อมก่อนเริ่ม</a><a class="ws-next" href="activity-2.html">ถัดไป: กิจกรรม 2 · ต่อวงจรและสั่งงานหลอดไฟ (Act) →</a></nav>
+<footer class="ws-disclosure">เอกสารนี้เรียบเรียงขึ้นด้วย AI (Fable 5.1 และ GPT-6 Astra) ภายใต้การกำกับอย่างใกล้ชิดของผู้จัดทำ และรับรองว่าเนื้อหาเป็นไปตามเจตนาของผู้จัดทำทุกประการ</footer>
 </main>
 </div>
 <dialog id="shot-box" aria-label="ภาพหน้าจอ"><img alt=""><p></p></dialog>

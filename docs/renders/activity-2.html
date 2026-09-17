@@ -6,7 +6,7 @@
 </head>
 <body>
 <title>กิจกรรมที่ 2 — ต่อวงจรและสั่งงานหลอดไฟ (Act)</title>
-<meta name="description" content="ใบงานผู้เข้าร่วม IoT ในฟาร์มอัจฉริยะ (ฉบับร่างสำหรับทดลองใช้)">
+<meta name="description" content="ใบงานผู้เข้าร่วม IoT ในฟาร์มอัจฉริยะ">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;600&display=swap">
@@ -40,13 +40,6 @@ body {
   gap: 0.4rem 1rem;
 }
 .ws-brand { font-weight: 600; font-size: 1.05rem; letter-spacing: 0.01em; }
-.ws-draft {
-  font-size: 0.76rem;
-  padding: 0.1rem 0.75rem;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.16);
-  border: 1px solid rgba(255, 255, 255, 0.28);
-}
 
 /* ---- shell: page switcher + reading column ---- */
 .ws-shell {
@@ -75,6 +68,7 @@ body {
   color: #ffffff;
 }
 .ws-g::after, .ws-n::after { content: " · "; }
+.ws-pages > li > a::before { display: none; }   /* the number badge is a sidebar thing */
 .ws-pages > li.is-current .ws-n, .ws-pages > li.is-current .ws-g { opacity: 0.85; }
 .ws-toc { display: none; }
 /* phones: the current group's pages as chips, every other group as one chip (its first page) */
@@ -98,38 +92,60 @@ body {
     padding-block: 2rem;
   }
   .ws-pages { display: block; }
-  .ws-pages > li { margin-bottom: 0.3rem; }
-  .ws-pages > li > a {
-    display: block;
-    border: 0;
-    border-radius: 0.5rem;
-    padding: 0.35rem 0.7rem;
-    font-weight: 600;
-  }
-  .ws-pages > li.is-current > a { background: var(--ag-panel); color: var(--md-typeset-a-color); }
-  /* sidebar: a group row per session, then "กิจกรรม 2" as a small eyebrow over the page's name */
-  .ws-g { display: none; }
+  /* sidebar: a session is a heading with a rule above; its pages hang off a tree line, each
+     activity with its number as a badge, the unnumbered pages with a hollow one */
+  .ws-g, .ws-n { display: none; }
   .ws-pages > li[data-page]:not(.in-group), .ws-pages > li.ws-group.in-group { display: block; }
   .ws-pages > li.ws-group > a, .ws-pages > li.ws-group > a:hover {
     display: block;
-    margin: 1.1rem 0 0.35rem 0;
-    padding: 0 0.7rem;
+    margin: 1.5rem 0 0.4rem 0;
+    padding: 0.6rem 0.2rem 0;
     border: 0;
-    font-size: 0.72rem;
-    font-weight: 600;
-    letter-spacing: 0.04em;
-    color: var(--md-default-fg-color--light);
+    border-top: 2px solid var(--ag-rule);
+    border-radius: 0;
+    font-size: 0.92rem;
+    font-weight: 700;
+    color: var(--ag-green-deep);
   }
-  .ws-group:first-child > a { margin-top: 0; }
-  .ws-n {
-    display: block;
-    font-size: 0.72rem;
+  .ws-pages > li.ws-group:first-child > a { margin-top: 0; padding-top: 0; border-top: 0; }
+  .ws-pages > li[data-page] {
+    margin: 0 0 0.15rem 0.45rem;
+    padding-left: 0.55rem;
+    border-left: 2px solid var(--ag-rule);
+  }
+  .ws-pages > li[data-page] > a {
+    display: flex;
+    align-items: baseline;
+    gap: 0.5rem;
+    border: 0;
+    border-radius: 0.4rem;
+    padding: 0.3rem 0.5rem;
     font-weight: 500;
-    letter-spacing: 0.03em;
-    color: var(--md-default-fg-color--lighter);
   }
-  .ws-n::after { content: none; }
-  .ws-pages > li.is-current .ws-n { color: var(--ag-marigold-deep); opacity: 1; }
+  .ws-pages > li[data-page] > a::before {
+    content: attr(data-n);
+    display: block;
+    flex: none;
+    width: 1.45rem;
+    height: 1.45rem;
+    border-radius: 50%;
+    background: var(--ag-step-bg);
+    color: var(--ag-step-fg);
+    font-size: 0.72rem;
+    font-weight: 700;
+    line-height: 1.45rem;
+    text-align: center;
+    align-self: center;
+  }
+  .ws-pages > li[data-page] > a:not([data-n])::before {
+    content: "";
+    width: 1.05rem;
+    height: 1.05rem;
+    margin: 0 0.2rem;
+    background: transparent;
+    border: 2px solid var(--ag-rule);
+  }
+  .ws-pages > li.is-current > a { background: var(--ag-panel); color: var(--md-typeset-a-color); font-weight: 700; }
   .ws-t { display: block; }
   .ws-pages > li.is-current .ws-toc {
     display: block;
@@ -277,6 +293,30 @@ body {
   font-weight: 600;
 }
 
+/* course structure: a session is a heading with a rule above, its pages hang off a tree line */
+.md-nav--primary .md-nav__item--section {
+  margin-top: 1.3rem;
+  padding-top: 0.55rem;
+  border-top: 2px solid var(--ag-rule);
+}
+
+.md-nav--primary .md-nav__item--section > .md-nav__link {
+  margin-bottom: 0.25rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--ag-green-deep);
+}
+
+.md-nav--primary .md-nav__item--section > .md-nav > .md-nav__list {
+  margin-left: 0.25rem;
+  padding-left: 0.6rem;
+  border-left: 2px solid var(--ag-rule);
+}
+
+[data-md-color-scheme="slate"] .md-nav--primary .md-nav__item--section > .md-nav__link {
+  color: var(--md-typeset-a-color);
+}
+
 /* ---------- type ---------- */
 .md-typeset {
   font-family: "Prompt", "Segoe UI", sans-serif;
@@ -315,26 +355,26 @@ body {
 /* sub-activities (4.4, 4.5 ...) are the units a group works through, so each H3 starts a
    visibly new section: a rule above, room, and its number as a badge (hooks/headings.py) */
 .md-typeset h3 {
-  font-size: 1.25em;
-  margin-top: 2.6em;
-  padding-top: 1em;
-  border-top: 1px solid var(--ag-rule);
+  font-size: 1.3em;
+  margin-top: 3em;
+  padding-top: 1.1em;
+  border-top: 2px solid var(--ag-rule);
 }
 
 .md-typeset h3 .sub-num {
   display: inline-block;
-  min-width: 2.4em;
-  margin-right: 0.5em;
-  padding: 0 0.45em;
-  border-radius: 0.35rem;
-  background: var(--ag-panel);
-  color: var(--md-typeset-a-color);
-  font-size: 0.8em;
+  min-width: 2.2em;
+  margin-right: 0.55em;
+  padding: 0.05em 0.5em;
+  border-radius: 0.4rem;
+  background: var(--ag-step-bg);
+  color: var(--ag-step-fg);
+  font-size: 1.05em;
   font-weight: 700;
-  line-height: 1.75;
+  line-height: 1.5;
   text-align: center;
   font-variant-numeric: tabular-nums;
-  vertical-align: 0.12em;
+  vertical-align: 0.05em;
 }
 
 .md-typeset h4 {
@@ -1160,11 +1200,10 @@ body {
 <header class="ws-top">
   <div class="ws-top__inner">
     <span class="ws-brand">IoT ในฟาร์มอัจฉริยะ</span>
-    <span class="ws-draft">ฉบับร่างสำหรับทดลองใช้ · 2026-09-17</span>
   </div>
 </header>
 <div class="ws-shell">
-<nav class="ws-side" aria-label="หน้าในชุดใบงาน"><ul class="ws-pages"><li class="ws-group" data-group="ก่อนการอบรม"><a href="install.html">ก่อนการอบรม</a></li><li data-page="install" data-group="ก่อนการอบรม"><a href="install.html"><span class="ws-g">ก่อนการอบรม</span><span class="ws-t">เตรียมแล็ปท็อป</span></a></li><li class="ws-group in-group" data-group="ช่วงที่ 1"><a href="session-1-start.html">ช่วงที่ 1</a></li><li data-page="session-1-start" data-group="ช่วงที่ 1" class="in-group"><a href="session-1-start.html"><span class="ws-g">ช่วง 1</span><span class="ws-t">เตรียมพร้อมก่อนเริ่ม</span></a></li><li data-page="activity-1" data-group="ช่วงที่ 1" class="in-group"><a href="activity-1.html"><span class="ws-g">ช่วง 1</span><span class="ws-n">กิจกรรม 1</span><span class="ws-t">อ่านค่าเซนเซอร์ (Sense)</span></a></li><li data-page="activity-2" data-group="ช่วงที่ 1" class="is-current in-group"><a href="activity-2.html" aria-current="page"><span class="ws-g">ช่วง 1</span><span class="ws-n">กิจกรรม 2</span><span class="ws-t">ต่อวงจรและสั่งงานหลอดไฟ (Act)</span></a><ul class="ws-toc"><li><a href="#a2">ใบงาน</a></li><li><a href="#a2-1">2.1 รู้จักบอร์ดรีเลย์</a></li><li><a href="#a2-1b">2.2 อ่านชื่อและหมายเลข IP แล้วลองสั่งรีเลย์</a></li><li><a href="#a2-2">2.3 รู้จักกล่องจ่ายไฟและวงจรหลอดไฟ</a></li><li><a href="#a2-2b">2.4 ต่อสายวงจรหลอดไฟ</a></li><li><a href="#a2-2c">2.5 จ่ายไฟและทดสอบหลอดไฟ</a></li></ul></li><li data-page="activity-3" data-group="ช่วงที่ 1" class="in-group"><a href="activity-3.html"><span class="ws-g">ช่วง 1</span><span class="ws-n">กิจกรรม 3</span><span class="ws-t">สร้างกฎควบคุมระบบ (Logic)</span></a></li><li class="ws-group" data-group="ช่วงที่ 2"><a href="activity-4.html">ช่วงที่ 2</a></li><li data-page="activity-4" data-group="ช่วงที่ 2"><a href="activity-4.html"><span class="ws-g">ช่วง 2</span><span class="ws-n">กิจกรรม 4</span><span class="ws-t">ตั้งกฎอัตโนมัติ (Think)</span></a></li><li data-page="activity-5" data-group="ช่วงที่ 2"><a href="activity-5.html"><span class="ws-g">ช่วง 2</span><span class="ws-n">กิจกรรม 5</span><span class="ws-t">จำลองปัญหาและป้องกัน (Failure lab)</span></a></li><li class="ws-group" data-group="ช่วงที่ 3"><a href="session-3-history.html">ช่วงที่ 3</a></li><li data-page="session-3-history" data-group="ช่วงที่ 3"><a href="session-3-history.html"><span class="ws-g">ช่วง 3</span><span class="ws-t">อ่านข้อมูลย้อนหลัง</span></a></li><li data-page="activity-6" data-group="ช่วงที่ 3"><a href="activity-6.html"><span class="ws-g">ช่วง 3</span><span class="ws-n">กิจกรรม 6</span><span class="ws-t">สร้างแดชบอร์ด (Dashboard)</span></a></li><li data-page="activity-7" data-group="ช่วงที่ 3"><a href="activity-7.html"><span class="ws-g">ช่วง 3</span><span class="ws-n">กิจกรรม 7</span><span class="ws-t">ออกแบบระบบฟาร์ม (Design)</span></a></li><li class="ws-group" data-group="อ้างอิง"><a href="resources.html">อ้างอิง</a></li><li data-page="resources" data-group="อ้างอิง"><a href="resources.html"><span class="ws-g">อ้างอิง</span><span class="ws-t">รวมไฟล์และลิงก์</span></a></li><li data-page="reference" data-group="อ้างอิง"><a href="reference.html"><span class="ws-g">อ้างอิง</span><span class="ws-t">เมนูและวิธีแก้ปัญหา</span></a></li><li data-page="record-sheet" data-group="อ้างอิง"><a href="record-sheet.html"><span class="ws-g">อ้างอิง</span><span class="ws-t">ใบบันทึกของกลุ่ม</span></a></li></ul></nav>
+<nav class="ws-side" aria-label="หน้าในชุดใบงาน"><ul class="ws-pages"><li class="ws-group" data-group="ก่อนการอบรม"><a href="install.html">ก่อนการอบรม</a></li><li data-page="install" data-group="ก่อนการอบรม"><a href="install.html"><span class="ws-g">ก่อนการอบรม</span><span class="ws-t">เตรียมแล็ปท็อป</span></a></li><li class="ws-group in-group" data-group="ช่วงที่ 1"><a href="session-1-start.html">ช่วงที่ 1</a></li><li data-page="session-1-start" data-group="ช่วงที่ 1" class="in-group"><a href="session-1-start.html"><span class="ws-g">ช่วง 1</span><span class="ws-t">เตรียมพร้อมก่อนเริ่ม</span></a></li><li data-page="activity-1" data-group="ช่วงที่ 1" class="in-group"><a href="activity-1.html" data-n="1"><span class="ws-g">ช่วง 1</span><span class="ws-n">กิจกรรม 1</span><span class="ws-t">อ่านค่าเซนเซอร์ (Sense)</span></a></li><li data-page="activity-2" data-group="ช่วงที่ 1" class="is-current in-group"><a href="activity-2.html" aria-current="page" data-n="2"><span class="ws-g">ช่วง 1</span><span class="ws-n">กิจกรรม 2</span><span class="ws-t">ต่อวงจรและสั่งงานหลอดไฟ (Act)</span></a><ul class="ws-toc"><li><a href="#a2">ใบงาน</a></li><li><a href="#a2-1">2.1 รู้จักบอร์ดรีเลย์</a></li><li><a href="#a2-1b">2.2 อ่านชื่อและหมายเลข IP แล้วลองสั่งรีเลย์</a></li><li><a href="#a2-2">2.3 รู้จักกล่องจ่ายไฟและวงจรหลอดไฟ</a></li><li><a href="#a2-2b">2.4 ต่อสายวงจรหลอดไฟ</a></li><li><a href="#a2-2c">2.5 จ่ายไฟและทดสอบหลอดไฟ</a></li></ul></li><li data-page="activity-3" data-group="ช่วงที่ 1" class="in-group"><a href="activity-3.html" data-n="3"><span class="ws-g">ช่วง 1</span><span class="ws-n">กิจกรรม 3</span><span class="ws-t">สร้างกฎควบคุมระบบ (Logic)</span></a></li><li class="ws-group" data-group="ช่วงที่ 2"><a href="activity-4.html">ช่วงที่ 2</a></li><li data-page="activity-4" data-group="ช่วงที่ 2"><a href="activity-4.html" data-n="4"><span class="ws-g">ช่วง 2</span><span class="ws-n">กิจกรรม 4</span><span class="ws-t">ตั้งกฎอัตโนมัติ (Think)</span></a></li><li data-page="activity-5" data-group="ช่วงที่ 2"><a href="activity-5.html" data-n="5"><span class="ws-g">ช่วง 2</span><span class="ws-n">กิจกรรม 5</span><span class="ws-t">จำลองปัญหาและป้องกัน (Failure lab)</span></a></li><li class="ws-group" data-group="ช่วงที่ 3"><a href="session-3-history.html">ช่วงที่ 3</a></li><li data-page="session-3-history" data-group="ช่วงที่ 3"><a href="session-3-history.html"><span class="ws-g">ช่วง 3</span><span class="ws-t">อ่านข้อมูลย้อนหลัง</span></a></li><li data-page="activity-6" data-group="ช่วงที่ 3"><a href="activity-6.html" data-n="6"><span class="ws-g">ช่วง 3</span><span class="ws-n">กิจกรรม 6</span><span class="ws-t">สร้างแดชบอร์ด (Dashboard)</span></a></li><li data-page="activity-7" data-group="ช่วงที่ 3"><a href="activity-7.html" data-n="7"><span class="ws-g">ช่วง 3</span><span class="ws-n">กิจกรรม 7</span><span class="ws-t">ออกแบบระบบฟาร์ม (Design)</span></a></li></ul></nav>
 <main class="md-content__inner md-typeset" id="ws-main">
 <h1 id="กจกรรมท-2--ตอวงจรและสงงานหลอดไฟ-act">กิจกรรมที่ 2 — ต่อวงจรและสั่งงานหลอดไฟ (Act)</h1>
 <p><img alt="" class="activity-banner" decoding="async" height="300" loading="lazy" src="../images/activity-banners/activity-02-led.png" width="1800" /></p>

@@ -32,7 +32,6 @@ from __future__ import annotations
 
 import argparse
 import base64
-import datetime as _dt
 import html
 import importlib.util
 import mimetypes
@@ -69,6 +68,9 @@ PAGES = [
     ("record-sheet.md", "record-sheet", "อ้างอิง", "", "ใบบันทึกของกลุ่ม"),
 ]
 SLUGS = {p[1] for p in PAGES}
+# the switcher ends at activity 7: the reference pages are reached from docs/index.html, so the
+# course structure stays readable. They are still rendered (and linked from the front door).
+NAV_PAGES = [p for p in PAGES if p[2] != "อ้างอิง"]
 # the session pages became one page per activity; the old render names forward to the session's first page
 REDIRECTS = {"session-1": "session-1-start", "session-2": "activity-4", "session-3": "session-3-history"}
 
@@ -139,13 +141,6 @@ body {
   gap: 0.4rem 1rem;
 }
 .ws-brand { font-weight: 600; font-size: 1.05rem; letter-spacing: 0.01em; }
-.ws-draft {
-  font-size: 0.76rem;
-  padding: 0.1rem 0.75rem;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.16);
-  border: 1px solid rgba(255, 255, 255, 0.28);
-}
 
 /* ---- shell: page switcher + reading column ---- */
 .ws-shell {
@@ -174,6 +169,7 @@ body {
   color: #ffffff;
 }
 .ws-g::after, .ws-n::after { content: " · "; }
+.ws-pages > li > a::before { display: none; }   /* the number badge is a sidebar thing */
 .ws-pages > li.is-current .ws-n, .ws-pages > li.is-current .ws-g { opacity: 0.85; }
 .ws-toc { display: none; }
 /* phones: the current group's pages as chips, every other group as one chip (its first page) */
@@ -197,38 +193,60 @@ body {
     padding-block: 2rem;
   }
   .ws-pages { display: block; }
-  .ws-pages > li { margin-bottom: 0.3rem; }
-  .ws-pages > li > a {
-    display: block;
-    border: 0;
-    border-radius: 0.5rem;
-    padding: 0.35rem 0.7rem;
-    font-weight: 600;
-  }
-  .ws-pages > li.is-current > a { background: var(--ag-panel); color: var(--md-typeset-a-color); }
-  /* sidebar: a group row per session, then "กิจกรรม 2" as a small eyebrow over the page's name */
-  .ws-g { display: none; }
+  /* sidebar: a session is a heading with a rule above; its pages hang off a tree line, each
+     activity with its number as a badge, the unnumbered pages with a hollow one */
+  .ws-g, .ws-n { display: none; }
   .ws-pages > li[data-page]:not(.in-group), .ws-pages > li.ws-group.in-group { display: block; }
   .ws-pages > li.ws-group > a, .ws-pages > li.ws-group > a:hover {
     display: block;
-    margin: 1.1rem 0 0.35rem 0;
-    padding: 0 0.7rem;
+    margin: 1.5rem 0 0.4rem 0;
+    padding: 0.6rem 0.2rem 0;
     border: 0;
-    font-size: 0.72rem;
-    font-weight: 600;
-    letter-spacing: 0.04em;
-    color: var(--md-default-fg-color--light);
+    border-top: 2px solid var(--ag-rule);
+    border-radius: 0;
+    font-size: 0.92rem;
+    font-weight: 700;
+    color: var(--ag-green-deep);
   }
-  .ws-group:first-child > a { margin-top: 0; }
-  .ws-n {
-    display: block;
-    font-size: 0.72rem;
+  .ws-pages > li.ws-group:first-child > a { margin-top: 0; padding-top: 0; border-top: 0; }
+  .ws-pages > li[data-page] {
+    margin: 0 0 0.15rem 0.45rem;
+    padding-left: 0.55rem;
+    border-left: 2px solid var(--ag-rule);
+  }
+  .ws-pages > li[data-page] > a {
+    display: flex;
+    align-items: baseline;
+    gap: 0.5rem;
+    border: 0;
+    border-radius: 0.4rem;
+    padding: 0.3rem 0.5rem;
     font-weight: 500;
-    letter-spacing: 0.03em;
-    color: var(--md-default-fg-color--lighter);
   }
-  .ws-n::after { content: none; }
-  .ws-pages > li.is-current .ws-n { color: var(--ag-marigold-deep); opacity: 1; }
+  .ws-pages > li[data-page] > a::before {
+    content: attr(data-n);
+    display: block;
+    flex: none;
+    width: 1.45rem;
+    height: 1.45rem;
+    border-radius: 50%;
+    background: var(--ag-step-bg);
+    color: var(--ag-step-fg);
+    font-size: 0.72rem;
+    font-weight: 700;
+    line-height: 1.45rem;
+    text-align: center;
+    align-self: center;
+  }
+  .ws-pages > li[data-page] > a:not([data-n])::before {
+    content: "";
+    width: 1.05rem;
+    height: 1.05rem;
+    margin: 0 0.2rem;
+    background: transparent;
+    border: 2px solid var(--ag-rule);
+  }
+  .ws-pages > li.is-current > a { background: var(--ag-panel); color: var(--md-typeset-a-color); font-weight: 700; }
   .ws-t { display: block; }
   .ws-pages > li.is-current .ws-toc {
     display: block;
@@ -540,9 +558,12 @@ def _toc_tokens(tokens):
 
 def switcher(pages: list[dict], current: str | None, combined: bool) -> str:
     rows, group = [], None
-    cur_group = next((g for _, s, g, *_ in PAGES if s == current), None)
-    for (_, slug, grp, eyebrow, name), p in zip(PAGES, pages):
+    by_slug = {p["slug"]: p for p in pages}
+    cur_group = next((g for _, s, g, *_ in NAV_PAGES if s == current), None)
+    for _, slug, grp, eyebrow, name in NAV_PAGES:
+        p = by_slug[slug]
         ingrp = ' in-group' if grp == cur_group else ""
+        num = f' data-n="{eyebrow.split()[-1]}"' if eyebrow else ""    # "กิจกรรม 4" -> the badge shows 4
         if grp != group:
             group = grp
             first = f'<a href="#{slug}" data-goto="{slug}">' if combined else f'<a href="{slug}.html">'
@@ -552,14 +573,14 @@ def switcher(pages: list[dict], current: str | None, combined: bool) -> str:
                  + (f'<span class="ws-n">{eyebrow}</span>' if eyebrow else "")
                  + f'<span class="ws-t">{html.escape(name)}</span>')
         if combined:
-            head = f'<a href="#{slug}" data-goto="{slug}">{label}</a>'
+            head = f'<a href="#{slug}" data-goto="{slug}"{num}>{label}</a>'
             toc = "".join(
                 f'<li><a href="#{sid}" data-goto="{slug}" data-anchor="{sid}">{name}</a></li>'
                 for sid, name in p["sections"]
             )
         else:
             aria = ' aria-current="page"' if cur else ""
-            head = f'<a href="{slug}.html"{aria}>{label}</a>'
+            head = f'<a href="{slug}.html"{aria}{num}>{label}</a>'
             toc = "".join(f'<li><a href="#{sid}">{name}</a></li>' for sid, name in p["sections"]) if cur else ""
         cls = ' class="is-current in-group"' if cur else (' class="in-group"' if ingrp else "")
         rows.append(
@@ -588,10 +609,10 @@ def pager(slug: str, combined: bool) -> str:
     return f'<nav class="ws-pager" aria-label="หน้าก่อนหน้าและถัดไป">{prev}{nxt}</nav>' if prev or nxt else ""
 
 
-def page_shell(title: str, nav: str, main: str, scripts: str, stamp: str) -> str:
+def page_shell(title: str, nav: str, main: str, scripts: str) -> str:
     css = BASE_CSS + site_css() + LATE_CSS
     return f"""<title>{html.escape(title)}</title>
-<meta name="description" content="ใบงานผู้เข้าร่วม {html.escape(SITE_NAME)} (ฉบับร่างสำหรับทดลองใช้)">
+<meta name="description" content="ใบงานผู้เข้าร่วม {html.escape(SITE_NAME)}">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="{FONTS}">
@@ -601,7 +622,6 @@ def page_shell(title: str, nav: str, main: str, scripts: str, stamp: str) -> str
 <header class="ws-top">
   <div class="ws-top__inner">
     <span class="ws-brand">{html.escape(SITE_NAME)}</span>
-    <span class="ws-draft">ฉบับร่างสำหรับทดลองใช้ · {stamp}</span>
   </div>
 </header>
 <div class="ws-shell">
@@ -629,12 +649,11 @@ def main() -> None:
     ap.add_argument("--offline", action="store_true", help="inline images as data URIs so each render opens on its own")
     args = ap.parse_args()
 
-    stamp = _dt.date.today().isoformat()
     OUT_DIR.mkdir(exist_ok=True)
 
     pages = [render_page(src, slug, combined=False, inline=args.offline) for src, slug, *_ in PAGES]
     for p in pages:
-        doc = full_document(page_shell(p["title"], switcher(pages, p["slug"], False), p["body"], "", stamp))
+        doc = full_document(page_shell(p["title"], switcher(pages, p["slug"], False), p["body"], ""))
         out = OUT_DIR / f"{p['slug']}.html"
         out.write_text(doc, encoding="utf-8")
         print(f"wrote {out.relative_to(ROOT)}  ({out.stat().st_size / 1e6:.1f} MB)")
@@ -645,12 +664,12 @@ def main() -> None:
             f'<a href="{new}.html">{new}.html</a></p></body></html>\n', encoding="utf-8")
 
     if args.combined:
-        cpages = [render_page(src, slug, combined=True, inline=True) for src, slug, *_ in PAGES]
+        cpages = [render_page(src, slug, combined=True, inline=True) for src, slug, *_ in NAV_PAGES]
         main_html = "\n".join(
             f'<section class="ws-page" data-page="{p["slug"]}">\n{p["body"]}\n</section>' for p in cpages
         )
         frag = page_shell(SITE_NAME, switcher(cpages, cpages[0]["slug"], True), main_html,
-                          f"<script>{TABS_JS}</script>", stamp)
+                          f"<script>{TABS_JS}</script>")
         out = pathlib.Path(args.combined)
         out.write_text(frag, encoding="utf-8")
         print(f"wrote {out}  ({out.stat().st_size / 1e6:.1f} MB)")

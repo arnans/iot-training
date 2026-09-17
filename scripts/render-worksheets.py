@@ -9,12 +9,14 @@ own pieces, so a render behaves like the live worksheet:
     re-keyed from Material's colour-scheme attribute to prefers-color-scheme)
   - docs/javascripts/extra.js saves answers to localStorage and adds the toolbar
 
-Every image is inlined as a data URI, so each file opens on its own: attach it to a
-message, open it from a USB stick, or publish it. Links to pages that are not
-rendered (index, record sheet, reference) become plain text.
+Images are linked as ../images/..., which GitHub Pages serves next to the renders, so
+the committed files stay small. --offline inlines every image as a data URI instead, for
+a render that must open on its own: attached to a message or opened from a USB stick.
+Links to pages that are not rendered (index, record sheet, reference) become plain text.
 
     python scripts/render-worksheets.py                    # docs/renders/<page>.html
-    python scripts/render-worksheets.py --combined out.html # also one page with all four as tabs
+    python scripts/render-worksheets.py --offline          # same, images inlined (~30 MB in all)
+    python scripts/render-worksheets.py --combined out.html # also one page with all as tabs (always inlined)
 
 The combined file is an HTML fragment (no <html>/<head>), written for publishing as a
 claude.ai Artifact; it asks the host for its download capability so the
@@ -448,7 +450,7 @@ def youtube_embed(m: re.Match) -> str:
             f'<p class="video-link"><a href="{html.escape(url)}" target="_blank" rel="noopener">▶ เปิดวิดีโอใน YouTube</a></p></div>')
 
 
-def render_page(src: str, slug: str, combined: bool) -> dict:
+def render_page(src: str, slug: str, combined: bool, inline: bool = False) -> dict:
     text = (DOCS / src).read_text(encoding="utf-8")
     title = re.search(r"^# (.+)$", text, re.M).group(1).strip()
     text = FIELDS.MARKER.sub(FIELDS._render, text)
@@ -477,7 +479,8 @@ def render_page(src: str, slug: str, combined: bool) -> dict:
         return f'<a href="{target}.html{anchor}">{inner}</a>'
 
     body = re.sub(r'<a href="([a-z0-9-]+)\.md(#[^"]*)?">(.*?)</a>', link, body, flags=re.S)
-    body = re.sub(r'(src|href)="(images/[^"]+)"', lambda m: f'{m.group(1)}="{data_uri(m.group(2))}"', body)
+    body = re.sub(r'(src|href)="(images/[^"]+)"',
+                  lambda m: f'{m.group(1)}="{data_uri(m.group(2)) if inline else "../" + m.group(2)}"', body)
     body = body.replace("<table>", '<div class="table-wrap"><table>').replace("</table>", "</table></div>")
     body = YOUTUBE_LINE.sub(youtube_embed, body)
 
@@ -557,13 +560,14 @@ def full_document(fragment: str) -> str:
 
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__.split("\n\n")[0])
-    ap.add_argument("--combined", metavar="PATH", help="also write all four pages as one tabbed fragment")
+    ap.add_argument("--combined", metavar="PATH", help="also write all pages as one tabbed fragment (images inlined)")
+    ap.add_argument("--offline", action="store_true", help="inline images as data URIs so each render opens on its own")
     args = ap.parse_args()
 
     stamp = _dt.date.today().isoformat()
     OUT_DIR.mkdir(exist_ok=True)
 
-    pages = [render_page(src, slug, combined=False) for src, slug, *_ in PAGES]
+    pages = [render_page(src, slug, combined=False, inline=args.offline) for src, slug, *_ in PAGES]
     for p in pages:
         doc = full_document(page_shell(p["title"], switcher(pages, p["slug"], False), p["body"], "", stamp))
         out = OUT_DIR / f"{p['slug']}.html"
@@ -571,7 +575,7 @@ def main() -> None:
         print(f"wrote {out.relative_to(ROOT)}  ({out.stat().st_size / 1e6:.1f} MB)")
 
     if args.combined:
-        cpages = [render_page(src, slug, combined=True) for src, slug, *_ in PAGES]
+        cpages = [render_page(src, slug, combined=True, inline=True) for src, slug, *_ in PAGES]
         main_html = "\n".join(
             f'<section class="ws-page" data-page="{p["slug"]}">\n{p["body"]}\n</section>' for p in cpages
         )

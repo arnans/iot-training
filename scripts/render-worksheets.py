@@ -176,7 +176,14 @@ body {
 .ws-g::after, .ws-n::after { content: " · "; }
 .ws-pages > li.is-current .ws-n, .ws-pages > li.is-current .ws-g { opacity: 0.85; }
 .ws-toc { display: none; }
-.ws-group { display: none; }   /* phones: the group name is the chip's first words instead */
+/* phones: the current group's pages as chips, every other group as one chip (its first page) */
+.ws-pages > li[data-page]:not(.in-group) { display: none; }
+.ws-pages > li.ws-group.in-group { display: none; }
+.ws-pages > li.in-group .ws-g { display: none; }
+.ws-pager { display: flex; justify-content: space-between; gap: 1rem; margin: 3rem 0 1rem; padding-top: 1rem; border-top: 1px solid var(--ag-rule); font-size: 0.9rem; }
+.ws-pager a { text-decoration: none; color: var(--md-typeset-a-color); }
+.ws-pager a:hover, .ws-pager a:focus-visible { text-decoration: underline; }
+.ws-pager .ws-next { margin-left: auto; text-align: right; font-weight: 600; }
 .ws-side a:focus-visible, .ws-top a:focus-visible { outline: 2px solid var(--ag-marigold); outline-offset: 2px; }
 
 @media (min-width: 64rem) {
@@ -201,15 +208,18 @@ body {
   .ws-pages > li.is-current > a { background: var(--ag-panel); color: var(--md-typeset-a-color); }
   /* sidebar: a group row per session, then "กิจกรรม 2" as a small eyebrow over the page's name */
   .ws-g { display: none; }
-  .ws-group {
+  .ws-pages > li[data-page]:not(.in-group), .ws-pages > li.ws-group.in-group { display: block; }
+  .ws-pages > li.ws-group > a, .ws-pages > li.ws-group > a:hover {
     display: block;
-    margin: 1.1rem 0 0.35rem 0.7rem;
+    margin: 1.1rem 0 0.35rem 0;
+    padding: 0 0.7rem;
+    border: 0;
     font-size: 0.72rem;
     font-weight: 600;
     letter-spacing: 0.04em;
     color: var(--md-default-fg-color--light);
   }
-  .ws-group:first-child { margin-top: 0; }
+  .ws-group:first-child > a { margin-top: 0; }
   .ws-n {
     display: block;
     font-size: 0.72rem;
@@ -327,7 +337,7 @@ LATE_CSS = """
 #shot-box p { margin: 0.5rem 0.2rem 0; font-size: 0.85rem; color: var(--md-default-fg-color--light); }
 
 @media print {
-  .ws-top, .ws-side, #shot-box { display: none !important; }
+  .ws-top, .ws-side, .ws-pager, #shot-box { display: none !important; }
   .ws-shell { display: block; max-width: none; padding: 0; }
 }
 """
@@ -407,9 +417,12 @@ TABS_JS = r"""
   function show(slug, anchor) {
     if (!pages.some(function (p) { return p.dataset.page === slug; })) slug = pages[0].dataset.page;
     pages.forEach(function (p) { p.hidden = p.dataset.page !== slug; });
+    var group = (items.filter(function (li) { return li.dataset.page === slug; })[0] || {}).dataset;
+    group = group ? group.group : "";
     items.forEach(function (li) {
       var on = li.dataset.page === slug;
       li.classList.toggle("is-current", on);
+      li.classList.toggle("in-group", li.dataset.group === group);
       var a = li.querySelector("a");
       if (!a) return;                              /* a group row */
       if (on) a.setAttribute("aria-current", "page"); else a.removeAttribute("aria-current");
@@ -508,7 +521,7 @@ def render_page(src: str, slug: str, combined: bool, inline: bool = False) -> di
 
     sections = [(prefix + t["id"], html.escape(html.unescape(t["name"])))
                 for t in _toc_tokens(md.toc_tokens)]
-    return {"slug": slug, "title": title, "body": body, "sections": sections}
+    return {"slug": slug, "title": title, "body": body + pager(slug, combined), "sections": sections}
 
 
 SUB_ID = re.compile(r"^(?:[a-z0-9-]+--)?(?:a\d+|hist)(?:-|$)")   # sub-activity ids: a4, a4-1, hist-2 (combined: prefixed)
@@ -527,10 +540,13 @@ def _toc_tokens(tokens):
 
 def switcher(pages: list[dict], current: str | None, combined: bool) -> str:
     rows, group = [], None
+    cur_group = next((g for _, s, g, *_ in PAGES if s == current), None)
     for (_, slug, grp, eyebrow, name), p in zip(PAGES, pages):
+        ingrp = ' in-group' if grp == cur_group else ""
         if grp != group:
             group = grp
-            rows.append(f'<li class="ws-group">{grp}</li>')
+            first = f'<a href="#{slug}" data-goto="{slug}">' if combined else f'<a href="{slug}.html">'
+            rows.append(f'<li class="ws-group{ingrp}" data-group="{grp}">{first}{grp}</a></li>')
         cur = slug == current
         label = (f'<span class="ws-g">{grp.replace("ช่วงที่", "ช่วง")}</span>'
                  + (f'<span class="ws-n">{eyebrow}</span>' if eyebrow else "")
@@ -545,13 +561,31 @@ def switcher(pages: list[dict], current: str | None, combined: bool) -> str:
             aria = ' aria-current="page"' if cur else ""
             head = f'<a href="{slug}.html"{aria}>{label}</a>'
             toc = "".join(f'<li><a href="#{sid}">{name}</a></li>' for sid, name in p["sections"]) if cur else ""
-        cls = ' class="is-current"' if cur else ""
+        cls = ' class="is-current in-group"' if cur else (' class="in-group"' if ingrp else "")
         rows.append(
-            f'<li data-page="{slug}"{cls}>{head}'
+            f'<li data-page="{slug}" data-group="{grp}"{cls}>{head}'
             + (f'<ul class="ws-toc">{toc}</ul>' if toc else "")
             + "</li>"
         )
     return f'<nav class="ws-side" aria-label="หน้าในชุดใบงาน"><ul class="ws-pages">{"".join(rows)}</ul></nav>'
+
+
+COURSE = [p for p in PAGES if p[2].startswith("ช่วงที่")]   # the pages a group works through in order
+
+
+def pager(slug: str, combined: bool) -> str:
+    """Previous / next links along the course pages; nothing on the reference pages."""
+    idx = next((i for i, p in enumerate(COURSE) if p[1] == slug), None)
+    if idx is None:
+        return ""
+    def link(p, cls, arrow_l, arrow_r):
+        _, s, grp, eyebrow, name = p
+        text = f"{eyebrow} · {html.escape(name)}" if eyebrow else html.escape(name)
+        href = f'href="#{s}" data-goto="{s}"' if combined else f'href="{s}.html"'
+        return f'<a class="{cls}" {href}>{arrow_l}{text}{arrow_r}</a>'
+    prev = link(COURSE[idx - 1], "ws-prev", "← ", "") if idx > 0 else ""
+    nxt = link(COURSE[idx + 1], "ws-next", "ถัดไป: ", " →") if idx + 1 < len(COURSE) else ""
+    return f'<nav class="ws-pager" aria-label="หน้าก่อนหน้าและถัดไป">{prev}{nxt}</nav>' if prev or nxt else ""
 
 
 def page_shell(title: str, nav: str, main: str, scripts: str, stamp: str) -> str:

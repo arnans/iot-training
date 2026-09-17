@@ -8,6 +8,7 @@ site_dir: site
 # MkDocs renders index.md to the same destination, so keep it out of the preview build.
 exclude_docs: |
   index.html
+  superpowers/
 
 theme:
   name: material
@@ -39,9 +40,18 @@ theme:
 nav:
   - เริ่มต้นที่นี่: index.md
   - เตรียมแล็ปท็อปก่อนการอบรม: install.md
-  - "ช่วงที่ 1 — ระบบสมองกลฝังตัวในฟาร์ม: รับรู้ ตัดสินใจ สั่งการ": session-1.md
-  - "ช่วงที่ 2 — ตรรกะควบคุมอัตโนมัติและการออกแบบ Fail-safe สำหรับฟาร์ม": session-2.md
-  - "ช่วงที่ 3 — โครงสร้างระบบ IoT: การสื่อสาร คลาวด์ แดชบอร์ด และการออกแบบระบบ": session-3.md
+  - "ช่วงที่ 1 — รับรู้ ตัดสินใจ สั่งการ":
+      - เตรียมพร้อมก่อนเริ่ม: session-1-start.md
+      - "กิจกรรมที่ 1 — รู้จักและทดลองอ่านค่าเซนเซอร์ (Sense)": activity-1.md
+      - "กิจกรรมที่ 2 — ต่อวงจรและสั่งงานหลอดไฟ (Act)": activity-2.md
+      - "กิจกรรมที่ 3 — สร้างกฎควบคุมระบบ (Logic)": activity-3.md
+  - "ช่วงที่ 2 — ควบคุมอัตโนมัติและ Fail-safe":
+      - "กิจกรรมที่ 4 — ตั้งกฎให้ระบบทำงานอัตโนมัติ (Think)": activity-4.md
+      - "กิจกรรมที่ 5 — จำลองปัญหาและเพิ่มระบบป้องกัน (Failure lab)": activity-5.md
+  - "ช่วงที่ 3 — แดชบอร์ดและออกแบบระบบ":
+      - การอ่านข้อมูลที่บันทึกไว้ย้อนหลัง: session-3-history.md
+      - "กิจกรรมที่ 6 — สร้างหน้าจอติดตามและควบคุมฟาร์ม (Dashboard)": activity-6.md
+      - "กิจกรรมที่ 7 — ออกแบบระบบสำหรับฟาร์ม (Design)": activity-7.md
   - ใบบันทึกของกลุ่ม: record-sheet.md
   - เมนูและวิธีแก้ปัญหา: reference.md
   - รวมไฟล์และลิงก์: resources.md

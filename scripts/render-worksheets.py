@@ -50,18 +50,27 @@ ROOT = pathlib.Path(__file__).resolve().parent.parent
 DOCS = ROOT / "docs"
 OUT_DIR = DOCS / "renders"
 
-# (source, slug, switcher eyebrow, switcher label) -- the label is the session title cut
-# to what fits a chip on a phone; keep it in step with the page's own # heading
+# (source, slug, group, eyebrow, label) -- the group is a heading row in the sidebar and the
+# first words of the chip on a phone; the label is the page title cut to what fits a chip.
+# Keep them in step with mkdocs.yml's nav and each page's own # heading.
 PAGES = [
-    ("install.md", "install", "ก่อนการอบรม", "เตรียมแล็ปท็อป"),
-    ("session-1.md", "session-1", "ช่วงที่ 1", "รับรู้ ตัดสินใจ สั่งการ"),
-    ("session-2.md", "session-2", "ช่วงที่ 2", "ควบคุมอัตโนมัติและ Fail-safe"),
-    ("session-3.md", "session-3", "ช่วงที่ 3", "แดชบอร์ดและออกแบบระบบ"),
-    ("resources.md", "resources", "อ้างอิง", "รวมไฟล์และลิงก์"),
-    ("reference.md", "reference", "อ้างอิง", "เมนูและวิธีแก้ปัญหา"),
-    ("record-sheet.md", "record-sheet", "อ้างอิง", "ใบบันทึกของกลุ่ม"),
+    ("install.md", "install", "ก่อนการอบรม", "", "เตรียมแล็ปท็อป"),
+    ("session-1-start.md", "session-1-start", "ช่วงที่ 1", "", "เตรียมพร้อมก่อนเริ่ม"),
+    ("activity-1.md", "activity-1", "ช่วงที่ 1", "กิจกรรม 1", "อ่านค่าเซนเซอร์ (Sense)"),
+    ("activity-2.md", "activity-2", "ช่วงที่ 1", "กิจกรรม 2", "ต่อวงจรและสั่งงานหลอดไฟ (Act)"),
+    ("activity-3.md", "activity-3", "ช่วงที่ 1", "กิจกรรม 3", "สร้างกฎควบคุมระบบ (Logic)"),
+    ("activity-4.md", "activity-4", "ช่วงที่ 2", "กิจกรรม 4", "ตั้งกฎอัตโนมัติ (Think)"),
+    ("activity-5.md", "activity-5", "ช่วงที่ 2", "กิจกรรม 5", "จำลองปัญหาและป้องกัน (Failure lab)"),
+    ("session-3-history.md", "session-3-history", "ช่วงที่ 3", "", "อ่านข้อมูลย้อนหลัง"),
+    ("activity-6.md", "activity-6", "ช่วงที่ 3", "กิจกรรม 6", "สร้างแดชบอร์ด (Dashboard)"),
+    ("activity-7.md", "activity-7", "ช่วงที่ 3", "กิจกรรม 7", "ออกแบบระบบฟาร์ม (Design)"),
+    ("resources.md", "resources", "อ้างอิง", "", "รวมไฟล์และลิงก์"),
+    ("reference.md", "reference", "อ้างอิง", "", "เมนูและวิธีแก้ปัญหา"),
+    ("record-sheet.md", "record-sheet", "อ้างอิง", "", "ใบบันทึกของกลุ่ม"),
 ]
 SLUGS = {p[1] for p in PAGES}
+# the session pages became one page per activity; the old render names forward to the session's first page
+REDIRECTS = {"session-1": "session-1-start", "session-2": "activity-4", "session-3": "session-3-history"}
 
 SITE_NAME = "IoT ในฟาร์มอัจฉริยะ"
 FONTS = ("https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700"
@@ -163,9 +172,10 @@ body {
   border-color: var(--ag-green);
   color: #ffffff;
 }
-.ws-n::after { content: " · "; }
-.ws-pages > li.is-current .ws-n { opacity: 0.85; }
+.ws-g::after, .ws-n::after { content: " · "; }
+.ws-pages > li.is-current .ws-n, .ws-pages > li.is-current .ws-g { opacity: 0.85; }
 .ws-toc { display: none; }
+.ws-group { display: none; }   /* phones: the group name is the chip's first words instead */
 .ws-side a:focus-visible, .ws-top a:focus-visible { outline: 2px solid var(--ag-marigold); outline-offset: 2px; }
 
 @media (min-width: 64rem) {
@@ -188,7 +198,17 @@ body {
     font-weight: 600;
   }
   .ws-pages > li.is-current > a { background: var(--ag-panel); color: var(--md-typeset-a-color); }
-  /* sidebar: session number as a small eyebrow over the session's name */
+  /* sidebar: a group row per session, then "กิจกรรม 2" as a small eyebrow over the page's name */
+  .ws-g { display: none; }
+  .ws-group {
+    display: block;
+    margin: 1.1rem 0 0.35rem 0.7rem;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    color: var(--md-default-fg-color--light);
+  }
+  .ws-group:first-child { margin-top: 0; }
   .ws-n {
     display: block;
     font-size: 0.72rem;
@@ -390,6 +410,7 @@ TABS_JS = r"""
       var on = li.dataset.page === slug;
       li.classList.toggle("is-current", on);
       var a = li.querySelector("a");
+      if (!a) return;                              /* a group row */
       if (on) a.setAttribute("aria-current", "page"); else a.removeAttribute("aria-current");
     });
     regrow(document.querySelector('.ws-page[data-page="' + slug + '"]'));
@@ -485,25 +506,34 @@ def render_page(src: str, slug: str, combined: bool, inline: bool = False) -> di
     body = YOUTUBE_LINE.sub(youtube_embed, body)
 
     sections = [(prefix + t["id"], html.escape(html.unescape(t["name"])))
-                for t in _h2_tokens(md.toc_tokens)]
+                for t in _toc_tokens(md.toc_tokens)]
     return {"slug": slug, "title": title, "body": body, "sections": sections}
 
 
-def _h2_tokens(tokens):
+SUB_ID = re.compile(r"^(?:[a-z0-9-]+--)?(?:a\d+|hist)(?:-|$)")   # sub-activity ids: a4, a4-1, hist-2 (combined: prefixed)
+
+
+def _toc_tokens(tokens):
+    """The page's own nav: its H2s, and on an activity page the sub-activities (H3s under the H1)."""
     out = []
     for t in tokens:
-        if t["level"] == 2:
+        if t["level"] == 1:
+            out.extend(_toc_tokens(t["children"]))
+        elif t["level"] == 2 or (t["level"] == 3 and SUB_ID.match(t["id"])):
             out.append(t)
-        elif t["level"] < 2:
-            out.extend(_h2_tokens(t["children"]))
     return out
 
 
 def switcher(pages: list[dict], current: str | None, combined: bool) -> str:
-    rows = []
-    for (_, slug, eyebrow, name), p in zip(PAGES, pages):
+    rows, group = [], None
+    for (_, slug, grp, eyebrow, name), p in zip(PAGES, pages):
+        if grp != group:
+            group = grp
+            rows.append(f'<li class="ws-group">{grp}</li>')
         cur = slug == current
-        label = f'<span class="ws-n">{eyebrow}</span><span class="ws-t">{html.escape(name)}</span>'
+        label = (f'<span class="ws-g">{grp.replace("ช่วงที่", "ช่วง")}</span>'
+                 + (f'<span class="ws-n">{eyebrow}</span>' if eyebrow else "")
+                 + f'<span class="ws-t">{html.escape(name)}</span>')
         if combined:
             head = f'<a href="#{slug}" data-goto="{slug}">{label}</a>'
             toc = "".join(
@@ -573,6 +603,11 @@ def main() -> None:
         out = OUT_DIR / f"{p['slug']}.html"
         out.write_text(doc, encoding="utf-8")
         print(f"wrote {out.relative_to(ROOT)}  ({out.stat().st_size / 1e6:.1f} MB)")
+    for old, new in REDIRECTS.items():
+        (OUT_DIR / f"{old}.html").write_text(
+            f'<!DOCTYPE html>\n<html lang="th"><head><meta charset="utf-8">\n<meta http-equiv="refresh" content="0; url={new}.html">\n'
+            f'<title>{html.escape(SITE_NAME)}</title></head>\n<body><p>ใบงานช่วงนี้แยกเป็นหน้าละกิจกรรมแล้ว: '
+            f'<a href="{new}.html">{new}.html</a></p></body></html>\n', encoding="utf-8")
 
     if args.combined:
         cpages = [render_page(src, slug, combined=True, inline=True) for src, slug, *_ in PAGES]

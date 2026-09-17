@@ -60,9 +60,9 @@ loads (install guide step 3, and the pre-start check in Session 1).
 |---|---|
 | Participant site | <https://arnans.github.io/iot-training/> |
 | Before the workshop — เตรียมแล็ปท็อป | [install.html](https://arnans.github.io/iot-training/renders/install.html) |
-| Session 1 — รับรู้ ตัดสินใจ สั่งการ | [session-1.html](https://arnans.github.io/iot-training/renders/session-1.html) |
-| Session 2 — ควบคุมอัตโนมัติและ Fail-safe | [session-2.html](https://arnans.github.io/iot-training/renders/session-2.html) |
-| Session 3 — แดชบอร์ดและออกแบบระบบ | [session-3.html](https://arnans.github.io/iot-training/renders/session-3.html) |
+| Session 1 — รับรู้ ตัดสินใจ สั่งการ | [session-1-start.html](https://arnans.github.io/iot-training/renders/session-1-start.html) |
+| Session 2 — ควบคุมอัตโนมัติและ Fail-safe | [activity-4.html](https://arnans.github.io/iot-training/renders/activity-4.html) |
+| Session 3 — แดชบอร์ดและออกแบบระบบ | [session-3-history.html](https://arnans.github.io/iot-training/renders/session-3-history.html) |
 | Participant file & link list | [resources.html](https://arnans.github.io/iot-training/renders/resources.html) |
 | Team record sheet + design canvas — **the one thing that gets printed** | [record-sheet.md](https://github.com/arnans/iot-training/blob/main/docs/record-sheet.md) *(repo)* |
 | Home Assistant menu paths + troubleshooting — **keep this open while roving** | [reference.md](https://github.com/arnans/iot-training/blob/main/docs/reference.md) *(repo)* |

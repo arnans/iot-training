@@ -212,12 +212,43 @@
     return store.dev;
   }
 
-  /* "session-1" on MkDocs (/session-1/), on a render (/renders/session-1.html), on the combined render (visible tab) */
+  /* "activity-2" on MkDocs (/activity-2/), on a render (/renders/activity-2.html), on the combined render (visible tab) */
   function pageKey() {
     var shown = document.querySelector(".ws-page:not([hidden])");
     if (shown && shown.dataset.page) return shown.dataset.page;
     var seg = location.pathname.replace(/\/(index\.html)?$/, "").split("/").pop() || "index";
     return seg.replace(/\.html$/, "").replace(/[.#$\/\[\]]/g, "_");
+  }
+
+  /* The worksheet is one page per activity, but the dashboard (docs/progress.html) keeps one
+     tab per session, so every report is filed under the session. This browser caches a summary
+     of each page it has visited, and each session's record is rebuilt from those, in course
+     order, on every push; activity 2's page therefore adds to session 1 instead of replacing
+     activity 1's counts. Pages not listed here (record sheet, reference) report under their own name. */
+  var PAGE_SESSION = {
+    "session-1-start": "session-1", "activity-1": "session-1", "activity-2": "session-1", "activity-3": "session-1",
+    "activity-4": "session-2", "activity-5": "session-2",
+    "session-3-history": "session-3", "activity-6": "session-3", "activity-7": "session-3"
+  };
+  var PAGE_ORDER = Object.keys(PAGE_SESSION);
+  function sessionKey() { return PAGE_SESSION[pageKey()] || pageKey(); }
+
+  function sessionRecords() {
+    var out = {}, slugs = Object.keys(store.progPages || {});
+    function idx(s) { var i = PAGE_ORDER.indexOf(s); return i < 0 ? PAGE_ORDER.length : i; }
+    slugs.sort(function (a, b) { return idx(a) - idx(b); });
+    slugs.forEach(function (slug) {
+      var p = store.progPages[slug], key = PAGE_SESSION[slug] || slug;
+      var r = out[key] || (out[key] = { acts: {}, order: [], names: {}, steps: {}, ts: 0 });
+      (p.order || []).forEach(function (id) {
+        if (r.order.indexOf(id) < 0) r.order.push(id);
+        r.acts[id] = p.acts[id];
+        if (p.names && p.names[id]) r.names[id] = p.names[id];
+        if (p.steps && p.steps[id]) r.steps[id] = p.steps[id];
+      });
+      if (p.ts > r.ts) r.ts = p.ts;
+    });
+    return out;
   }
 
   /* the activity an element belongs to: the nearest heading above it. id "a5" (sub-section ids
@@ -348,17 +379,17 @@
     var team = teamClean(store.fields["team.no"]);
     if (!team || !PROGRESS_DB || !hasFields(document)) return;
     if (team !== store.sentAs) { verifyTeam(team); return; }      // nothing leaves until the number is confirmed
-    var page = pageKey(), now = Date.now();
-    store.prog = store.prog || {};
+    var now = Date.now();
+    store.progPages = store.progPages || {};
     var sum = summarize();
-    store.prog[page] = { acts: sum.acts, order: sum.order, names: sum.names, steps: sum.steps, ts: now };
+    store.progPages[pageKey()] = { acts: sum.acts, order: sum.order, names: sum.names, steps: sum.steps, ts: now };
     if (last) store.last = last;
     saveSoon();                                   // the cache of other pages' counts rides along in the store
     var doc = {
-      team: team, dev: devId(), ts: now, page: page,
+      team: team, dev: devId(), ts: now, page: sessionKey(),
       srv: { ".sv": "timestamp" },                 // the database stamps its own clock; phones' clocks drift
       zone: ZONE_SLUG[store.fields["team.zone"]] || "",
-      pages: store.prog, last: store.last || null
+      pages: sessionRecords(), last: store.last || null
     };
     fetch(PROGRESS_DB + "/progress/" + today() + "/" + team + "/" + devId() + ".json?print=silent",   // no echo: download quota is the free tier's limit
           { method: "PUT", body: JSON.stringify(doc), keepalive: true })
@@ -380,7 +411,7 @@
     if (Date.now() - lastMsgAt < MSG_GAP) { composerNote("รอสักครู่แล้วส่งใหม่", true); return; }
     lastMsgAt = Date.now();
     var doc = {
-      team: team, dev: devId(), kind: kind, text: text, page: pageKey(),
+      team: team, dev: devId(), kind: kind, text: text, page: sessionKey(),
       zone: ZONE_SLUG[store.fields["team.zone"]] || "", ts: Date.now(), srv: { ".sv": "timestamp" }
     };
     composerNote("กำลังส่ง…");
@@ -653,7 +684,7 @@
       if (el.checked) store.checks[key] = true; else delete store.checks[key];
       saveNow();
       pushNow({                                    // every tick reaches the dashboard at once
-        page: pageKey(), act: actId(el), on: !!el.checked, ts: Date.now(), label: stepLabel(el)
+        page: sessionKey(), act: actId(el), on: !!el.checked, ts: Date.now(), label: stepLabel(el)
       });
     }
   });

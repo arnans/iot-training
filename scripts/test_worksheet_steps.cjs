@@ -3,10 +3,16 @@
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const { JSDOM } = require(process.argv[2] || 'jsdom');
-for (const session of [1, 2, 3]) {
-  const source = fs.readFileSync(`docs/session-${session}.md`, 'utf8');
-  const dom = new JSDOM(fs.readFileSync(`docs/renders/session-${session}.html`, 'utf8'));
+const PAGES = ['activity-1', 'activity-2', 'activity-3', 'activity-4', 'activity-5', 'session-3-history', 'activity-6', 'activity-7'];
+for (const slug of PAGES) {
+  const source = fs.readFileSync(`docs/${slug}.md`, 'utf8');
+  const dom = new JSDOM(fs.readFileSync(`docs/renders/${slug}.html`, 'utf8'));
   let checked = 0;
+  // every in-page link resolves: the split into one page per activity must not strand an anchor
+  for (const a of dom.window.document.querySelectorAll('.md-typeset a[href^="#"]')) {
+    const id = decodeURIComponent(a.getAttribute('href').slice(1));
+    assert.ok(dom.window.document.getElementById(id), `${slug}: link to missing anchor #${id}`);
+  }
   for (const match of source.matchAll(/^### [^\n]*\{ #(a[1-7]-[\w-]+|hist-[1-4]) \}\r?\n([\s\S]*?)(?=^### |^## |$(?![\s\S]))/gm)) {
     const [, id, body] = match;
     const numbers = [...body.matchAll(/^(\d+)\. /gm)].map(m => Number(m[1]));
@@ -27,6 +33,6 @@ for (const session of [1, 2, 3]) {
     assert.equal(next - 1, numbers.length, `${id}: rendered steps missing or merged`);
     checked++;
   }
-  console.log(`PASS session-${session}: ${checked} procedures have continuous source and rendered numbering`);
+  console.log(`PASS ${slug}: ${checked} procedures have continuous source and rendered numbering, all anchors resolve`);
   dom.window.close();
 }

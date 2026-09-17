@@ -245,9 +245,13 @@ body {
   --ag-chip-border: #f2cf86;
   --ag-badge-bg: var(--ag-green);
   --ag-badge-fg: #ffffff;
-  --ag-step-bg: #e2eedb;
-  --ag-step-fg: var(--ag-green-deep);
+  --ag-step-bg: #e6e9e3;             /* steps: neutral, they are sequence not structure */
+  --ag-step-fg: #3f4d41;
   --ag-nav-bg: #f3f7ef;
+  --ag-panel-note: #eaf3fb;          /* explanation: sky */
+  --ag-panel-caution: #fdeeea;       /* caution: tomato */
+  --ag-th-fg: var(--ag-green-deep);
+  --ag-phase-fg: var(--ag-green-deep);
   --ag-rule: var(--ag-leaf);
   --ag-shadow: rgba(30, 42, 31, 0.14);
 }
@@ -429,6 +433,11 @@ body {
   font-variant-numeric: tabular-nums;
 }
 
+.md-typeset ol > li:has(.fld)::before {   /* a step that records something: the input colour */
+  background: var(--ag-chip-bg);
+  color: var(--ag-chip-fg);
+}
+
 .md-typeset ol ol > li::before {
   background: transparent;
   color: var(--md-typeset-a-color);
@@ -495,13 +504,40 @@ body {
 .md-typeset strong.role-tester   { background: var(--ag-tomato); }
 
 /* ---------- callouts (blockquotes) ---------- */
+/* callouts: explanation = sky, caution = tomato (hooks/callouts.py), record note = marigold */
 .md-typeset blockquote {
   margin: 1.4em 0;
   padding: 0.8em 1.2em;
-  border-left: 5px solid var(--ag-rule);
+  border-left: 5px solid var(--ag-sky);
   border-radius: 0 0.7em 0.7em 0;
-  background: var(--ag-panel);
+  background: var(--ag-panel-note);
   color: var(--md-typeset-color);
+}
+
+.md-typeset blockquote.ws-caution {
+  border-left-color: var(--ag-tomato);
+  background: var(--ag-panel-caution);
+}
+
+/* phase labels: the action groups of a procedure, scannable like a table of contents */
+.md-typeset p.ws-phase {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 1.9em 0 0.5em;
+  font-size: 0.88em;
+  color: var(--ag-phase-fg);
+}
+
+.md-typeset p.ws-phase::before {
+  content: "";
+  flex: none;
+  width: 1rem;
+  border-top: 2px solid var(--ag-leaf);
+}
+
+.md-typeset p.ws-phase strong {
+  font-weight: 600;
 }
 
 .md-typeset blockquote.note-record {
@@ -608,11 +644,12 @@ body {
 }
 
 .md-typeset table:not([class]) th {
-  background: var(--md-primary-fg-color);
-  color: #ffffff;
+  background: var(--ag-panel);
+  color: var(--ag-th-fg);
   font-family: "Prompt", "Segoe UI", sans-serif;
   font-weight: 600;
   border: 0;
+  border-bottom: 2px solid var(--ag-rule);
 }
 
 .md-typeset table:not([class]) tr:nth-child(even) td {
@@ -1115,9 +1152,13 @@ body {
   --ag-chip-border: #5a4620;
   --ag-badge-bg: var(--ag-leaf);
   --ag-badge-fg: #14201a;
-  --ag-step-bg: #263a2c;
-  --ag-step-fg: #bfe0a8;
+  --ag-step-bg: #2a332c;
+  --ag-step-fg: #c9d3c8;
   --ag-nav-bg: #172219;
+  --ag-panel-note: #17252f;
+  --ag-panel-caution: #33201b;
+  --ag-th-fg: var(--md-typeset-a-color);
+  --ag-phase-fg: var(--md-typeset-a-color);
   --ag-rule: #4e7d2c;
   --ag-shadow: rgba(0, 0, 0, 0.45);
   color-scheme: dark;
@@ -1145,9 +1186,13 @@ body {
   --ag-chip-border: #5a4620;
   --ag-badge-bg: var(--ag-leaf);
   --ag-badge-fg: #14201a;
-  --ag-step-bg: #263a2c;
-  --ag-step-fg: #bfe0a8;
+  --ag-step-bg: #2a332c;
+  --ag-step-fg: #c9d3c8;
   --ag-nav-bg: #172219;
+  --ag-panel-note: #17252f;
+  --ag-panel-caution: #33201b;
+  --ag-th-fg: var(--md-typeset-a-color);
+  --ag-phase-fg: var(--md-typeset-a-color);
   --ag-rule: #4e7d2c;
   --ag-shadow: rgba(0, 0, 0, 0.45);
   color-scheme: dark;
@@ -1243,7 +1288,7 @@ body {
 <p><img alt="ส่วนประกอบหลักของบอร์ด GoGo-IoT: ช่อง USB-C สวิตช์ ON/OFF ช่อง Grove 1 คอนโทรลเลอร์ ESP32-C3 ปุ่ม BOOT และกลุ่มเซนเซอร์ในตัว" src="../images/gogo-iot-main-parts.png" width="100%" /></p>
 <p>ตำแหน่งอุปกรณ์ในภาพ: <strong>USB-C</strong> ใช้จ่ายไฟและเชื่อมต่อคอมพิวเตอร์ · <strong>ON / OFF</strong> คือสวิตช์เปิด–ปิดบอร์ด · <strong>Grove port 1</strong> ใช้ต่อสวิตช์ลูกลอย · กรอบสีแดงด้านขวาคือกลุ่มเซนเซอร์ในตัว · ช่องใส่ถ่าน <strong>18650 อยู่ด้านใต้บอร์ด</strong> จึงไม่ปรากฏในภาพ</p>
 <p><img alt="ชุดสวิตช์ลูกลอยที่ต่อกับบอร์ด GoGo-IoT แล้ว: สาย Grove ออกจากบอร์ดไปเข้าตัวแปลงซึ่งเป็นบอร์ดเล็กมีขั้วสกรู และสายสีเหลืองสองเส้นจากตัวแปลงไปยังตัวลูกลอยสีขาว" src="../images/gogo-iot-float-switch.jpg" width="75%" /></p>
-<p><strong>ต่อบอร์ดและลูกลอย</strong></p>
+<p class="ws-phase"><strong>ต่อบอร์ดและลูกลอย</strong></p>
 <ol>
 <li>เสียบสาย Grove จากตัวแปลงของสวิตช์ลูกลอยเข้า <strong>ช่อง 1</strong> บนบอร์ด</li>
 <li>เสียบสาย USB-C เข้าบอร์ด แล้วเสียบอีกปลายเข้าช่อง USB ของแล็ปท็อป</li>
@@ -1251,7 +1296,7 @@ body {
 </ol>
 <p><a class="ws-back" href="#a1">↑ กลับไปที่ใบงาน</a></p>
 <h3 id="a1-2"><span class="sub-num">1.2</span>อ่านชื่อและหมายเลข IP ของบอร์ด</h3>
-<p><strong>เชื่อมต่อบอร์ด</strong></p>
+<p class="ws-phase"><strong>เชื่อมต่อบอร์ด</strong></p>
 <ol>
 <li>เปิด <strong>Chrome</strong> หรือ <strong>Edge</strong> ไปที่ <strong><a href="https://web.esphome.io">web.esphome.io</a></strong> (Firefox, Safari ใช้ไม่ได้)</li>
 <li>
@@ -1259,7 +1304,7 @@ body {
 <p><img alt="หน้าต่างเลือกพอร์ตของ web.esphome.io หลังกด Connect" src="../images/esphome-port.png" width="60%" /></p>
 </li>
 </ol>
-<p><strong>อ่านและบันทึกข้อมูลบอร์ด</strong></p>
+<p class="ws-phase"><strong>อ่านและบันทึกข้อมูลบอร์ด</strong></p>
 <ol start="3" style="counter-reset: step 2">
 <li>กด <strong>Logs &amp; Console</strong> แล้วกดปุ่ม <strong>Reset device</strong> ในหน้าเว็บ (ไม่ใช่ปุ่มบนบอร์ด) บอร์ดจะเริ่มทำงานใหม่ และแสดงข้อความสำคัญสองบรรทัดในหน้าต่างบันทึกการทำงาน (log) บรรทัดแรก ๆ คือ <code>=====  DEVICE NAME: ...  =====</code> ตัวอย่างชื่อคือ <code>gogo-iot-red-a1b2c3</code> และอีกราว 10–20 วินาทีต่อมา หลังบอร์ดต่อ WiFi ได้ จะมี <code>=====  IP ADDRESS: ...  =====</code> ตามมา</li>
 <li><strong>ตรวจชื่อบอร์ด</strong> ชื่อต้องตรงกับโซนของเรา (<code>red</code> / <code>green</code> / <code>blue</code>) ถ้าไม่ตรง บอร์ดนี้จะเชื่อมต่อเครือข่ายของโซนเราไม่ได้ ให้ยกมือขอเปลี่ยนบอร์ด</li>
@@ -1273,7 +1318,7 @@ body {
 <p><a class="ws-back" href="#a1">↑ กลับไปที่ใบงาน</a></p>
 <h3 id="a1-3"><span class="sub-num">1.3</span>เปิดหน้าเว็บของบอร์ด</h3>
 <p>บอร์ดมีหน้าเว็บสำหรับแสดงค่าในตัว เรียกว่า <strong>เว็บเซิร์ฟเวอร์</strong> เราจึงเปิดดูค่าผ่านเบราว์เซอร์ได้โดยตรงเมื่อเชื่อมต่อ WiFi โซนเดียวกัน โดยยังไม่ต้องใช้ Home Assistant</p>
-<p><strong>เปิดหน้าเว็บและดูค่า</strong></p>
+<p class="ws-phase"><strong>เปิดหน้าเว็บและดูค่า</strong></p>
 <ol>
 <li>เปิดแท็บใหม่ พิมพ์ <code>http://</code> ตามด้วยหมายเลข IP ที่จดไว้ เช่น <code>http://192.168.10.57</code></li>
 <li>จะเห็นรายการค่าจากบอร์ด แต่ละรายการเรียกว่า <strong>entity</strong> เช่น ค่าความสว่างหรือสถานะสวิตช์ลูกลอย ค่าจะอัปเดตเองโดยไม่ต้องรีเฟรช สังเกตว่าสวิตช์ลูกลอยไม่ได้แสดงเป็นตัวเลข แต่แสดงเป็นสถานะสองอย่าง รายการที่เกี่ยวกับ <strong>ปั๊ม</strong> (ปั๊มกำลังทำงาน และความไวตรวจจับปั๊ม) ปล่อยไว้ก่อน เราจะใช้ในช่วงที่ 2</li>
@@ -1285,18 +1330,18 @@ body {
 <p><a class="ws-back" href="#a1">↑ กลับไปที่ใบงาน</a></p>
 <h3 id="a1-4"><span class="sub-num">1.4</span>ทดลองอ่านค่าเซนเซอร์</h3>
 <p>ให้คนหนึ่งทดลอง อีกคนสังเกตและบันทึกค่า รอให้ค่าใกล้เคียงเดิมก่อนทดลองอย่างถัดไป</p>
-<p><strong>บันทึกค่าก่อนทดลอง</strong></p>
+<p class="ws-phase"><strong>บันทึกค่าก่อนทดลอง</strong></p>
 <ol>
 <li>บันทึกค่าขณะวางบอร์ดไว้ตามปกติลงตารางผล</li>
 </ol>
-<p><strong>ทดลองทีละอย่าง</strong></p>
+<p class="ws-phase"><strong>ทดลองทีละอย่าง</strong></p>
 <ol start="2" style="counter-reset: step 1">
 <li>เป่าลมหายใจใส่บอร์ดช้า ๆ 5 วินาที บันทึกความชื้นอากาศและอุณหภูมิ</li>
 <li>ใช้มือครอบบอร์ดให้มืด บันทึกค่าแสง แล้วเอามือออก ดูว่าค่ากลับมาใกล้เดิมหรือไม่</li>
 <li>เคาะโต๊ะข้างบอร์ดหรือเขย่าบอร์ดเบา ๆ บันทึกความสั่นสะเทือน แล้ววางนิ่ง ดูว่าค่าลดลงหรือไม่</li>
 <li>ยกลูกลอยพ้นน้ำแล้ววางกลับ บันทึกสถานะทั้งสองแบบ (หน้าเว็บใช้ <strong>ON</strong> = น้ำถึงลูกลอย <strong>OFF</strong> = น้ำต่ำกว่าลูกลอย)</li>
 </ol>
-<p><strong>บันทึกผล</strong></p>
+<p class="ws-phase"><strong>บันทึกผล</strong></p>
 <ol start="6" style="counter-reset: step 5">
 <li>ตรวจว่าบันทึกค่าครบทุกช่อง ค่าแสงจะใช้ตั้งเกณฑ์ในกิจกรรมที่ 3 ส่วนความชื้นอากาศจะใช้ในช่วงที่ 2</li>
 </ol>
@@ -1347,7 +1392,7 @@ body {
 <p><strong>ค่าตัวเลขกับสถานะต่างกันอย่างไร</strong> ความชื้นและความสว่างบอกปริมาณเป็นตัวเลข ส่วนสวิตช์ลูกลอยบอกได้เพียงว่าน้ำถึงระดับที่ติดตั้งไว้หรือไม่ ไม่ได้บอกปริมาตรน้ำที่เหลือ ในหน้าเว็บของบอร์ดจะเห็น <strong>ON / OFF</strong> ส่วน Home Assistant จะแสดง <strong>Wet / Dry</strong> ตามลำดับ ข้อมูลทั้งหมดที่เราเห็นบนหน้าเว็บถูกส่งมาในรูปแบบดิจิทัล แม้ค่าบางชนิดจะใช้แทนปริมาณที่เปลี่ยนแปลงต่อเนื่องก็ตาม</p>
 </blockquote>
 <h3 id="a1-4b"><span class="sub-num">1.5</span>สังเกตเวลาตอบสนอง</h3>
-<p><strong>จับเวลาตอบสนอง</strong></p>
+<p class="ws-phase"><strong>จับเวลาตอบสนอง</strong></p>
 <ol>
 <li>ใช้มือครอบบอร์ดอีกครั้ง แล้วนับเวลาตั้งแต่เริ่มครอบจนค่าแสงบนหน้าเว็บเปลี่ยนไป บันทึกเวลาที่สังเกตได้ <input class="fld" type="text" data-k="s1.light.delay" data-size="3" size="3" inputmode="decimal" autocomplete="off" spellcheck="false"> วินาที</li>
 </ol>

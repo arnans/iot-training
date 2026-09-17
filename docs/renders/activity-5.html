@@ -245,9 +245,13 @@ body {
   --ag-chip-border: #f2cf86;
   --ag-badge-bg: var(--ag-green);
   --ag-badge-fg: #ffffff;
-  --ag-step-bg: #e2eedb;
-  --ag-step-fg: var(--ag-green-deep);
+  --ag-step-bg: #e6e9e3;             /* steps: neutral, they are sequence not structure */
+  --ag-step-fg: #3f4d41;
   --ag-nav-bg: #f3f7ef;
+  --ag-panel-note: #eaf3fb;          /* explanation: sky */
+  --ag-panel-caution: #fdeeea;       /* caution: tomato */
+  --ag-th-fg: var(--ag-green-deep);
+  --ag-phase-fg: var(--ag-green-deep);
   --ag-rule: var(--ag-leaf);
   --ag-shadow: rgba(30, 42, 31, 0.14);
 }
@@ -429,6 +433,11 @@ body {
   font-variant-numeric: tabular-nums;
 }
 
+.md-typeset ol > li:has(.fld)::before {   /* a step that records something: the input colour */
+  background: var(--ag-chip-bg);
+  color: var(--ag-chip-fg);
+}
+
 .md-typeset ol ol > li::before {
   background: transparent;
   color: var(--md-typeset-a-color);
@@ -495,13 +504,40 @@ body {
 .md-typeset strong.role-tester   { background: var(--ag-tomato); }
 
 /* ---------- callouts (blockquotes) ---------- */
+/* callouts: explanation = sky, caution = tomato (hooks/callouts.py), record note = marigold */
 .md-typeset blockquote {
   margin: 1.4em 0;
   padding: 0.8em 1.2em;
-  border-left: 5px solid var(--ag-rule);
+  border-left: 5px solid var(--ag-sky);
   border-radius: 0 0.7em 0.7em 0;
-  background: var(--ag-panel);
+  background: var(--ag-panel-note);
   color: var(--md-typeset-color);
+}
+
+.md-typeset blockquote.ws-caution {
+  border-left-color: var(--ag-tomato);
+  background: var(--ag-panel-caution);
+}
+
+/* phase labels: the action groups of a procedure, scannable like a table of contents */
+.md-typeset p.ws-phase {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 1.9em 0 0.5em;
+  font-size: 0.88em;
+  color: var(--ag-phase-fg);
+}
+
+.md-typeset p.ws-phase::before {
+  content: "";
+  flex: none;
+  width: 1rem;
+  border-top: 2px solid var(--ag-leaf);
+}
+
+.md-typeset p.ws-phase strong {
+  font-weight: 600;
 }
 
 .md-typeset blockquote.note-record {
@@ -608,11 +644,12 @@ body {
 }
 
 .md-typeset table:not([class]) th {
-  background: var(--md-primary-fg-color);
-  color: #ffffff;
+  background: var(--ag-panel);
+  color: var(--ag-th-fg);
   font-family: "Prompt", "Segoe UI", sans-serif;
   font-weight: 600;
   border: 0;
+  border-bottom: 2px solid var(--ag-rule);
 }
 
 .md-typeset table:not([class]) tr:nth-child(even) td {
@@ -1115,9 +1152,13 @@ body {
   --ag-chip-border: #5a4620;
   --ag-badge-bg: var(--ag-leaf);
   --ag-badge-fg: #14201a;
-  --ag-step-bg: #263a2c;
-  --ag-step-fg: #bfe0a8;
+  --ag-step-bg: #2a332c;
+  --ag-step-fg: #c9d3c8;
   --ag-nav-bg: #172219;
+  --ag-panel-note: #17252f;
+  --ag-panel-caution: #33201b;
+  --ag-th-fg: var(--md-typeset-a-color);
+  --ag-phase-fg: var(--md-typeset-a-color);
   --ag-rule: #4e7d2c;
   --ag-shadow: rgba(0, 0, 0, 0.45);
   color-scheme: dark;
@@ -1145,9 +1186,13 @@ body {
   --ag-chip-border: #5a4620;
   --ag-badge-bg: var(--ag-leaf);
   --ag-badge-fg: #14201a;
-  --ag-step-bg: #263a2c;
-  --ag-step-fg: #bfe0a8;
+  --ag-step-bg: #2a332c;
+  --ag-step-fg: #c9d3c8;
   --ag-nav-bg: #172219;
+  --ag-panel-note: #17252f;
+  --ag-panel-caution: #33201b;
+  --ag-th-fg: var(--md-typeset-a-color);
+  --ag-phase-fg: var(--md-typeset-a-color);
   --ag-rule: #4e7d2c;
   --ag-shadow: rgba(0, 0, 0, 0.45);
   color-scheme: dark;
@@ -1250,7 +1295,7 @@ body {
 </ul>
 </div>
 <h3 id="a5-0">ก่อนจำลองปัญหาทุกข้อ</h3>
-<p><strong>ตรวจความพร้อมก่อนทดสอบ</strong></p>
+<p class="ws-phase"><strong>ตรวจความพร้อมก่อนทดสอบ</strong></p>
 <ol>
 <li>ตรวจว่ากฎรดน้ำเปิดอยู่ <code>Pump Auto Mode</code> เปิดอยู่ กฎไฟสวนและกฎตั้งเวลาปิดไว้</li>
 <li>ตรวจว่าปั๊มต่อกับรีเลย์แล้ว ลูกลอยอยู่ในแก้วน้ำและแสดง <strong>Wet</strong></li>
@@ -1258,15 +1303,15 @@ body {
 <li>ใช้ปุ่มสั่งปั๊มในการทดสอบ ไม่ต้องเปลี่ยนเกณฑ์ความชื้น</li>
 </ol>
 <h3 id="a5-1"><span class="sub-num">5.1</span>น้ำต่ำแต่ปั๊มยังเดิน</h3>
-<p><strong>จำลองปัญหา</strong></p>
+<p class="ws-phase"><strong>จำลองปัญหา</strong></p>
 <ol>
 <li>ยกลูกลอยพ้นน้ำ รอให้แสดง <strong>Dry</strong> แล้วสั่งปั๊ม On</li>
 </ol>
-<p><strong>สังเกตผล</strong></p>
+<p class="ws-phase"><strong>สังเกตผล</strong></p>
 <ol start="2" style="counter-reset: step 1">
 <li>สังเกตว่าปั๊มยังเดิน (ฟังเสียง) เพราะกฎเดิมดูความชื้นแต่ไม่ตรวจระดับน้ำ จากนั้นสั่ง Off ก่อนแก้กฎ</li>
 </ol>
-<p><strong>สร้างกฎป้องกัน</strong></p>
+<p class="ws-phase"><strong>สร้างกฎป้องกัน</strong></p>
 <p>หยุดปั๊มเมื่อน้ำต่ำ และหยุดด้วยหากมีคนสั่ง On ขณะน้ำต่ำ</p>
 <ol start="3" style="counter-reset: step 2">
 <li>สร้างกฎใหม่ เพิ่ม <strong>Trigger → Entity → State</strong> เลือกลูกลอย <strong>To: Dry</strong></li>
@@ -1275,16 +1320,16 @@ body {
 <li>เพิ่ม <strong>Action → Switch → Turn off</strong> รีเลย์ และ <strong>Send a persistent notification</strong> ข้อความ <code>น้ำในถังต่ำ หยุดปั๊มแล้ว</code> บันทึกชื่อ <code>Fail-safe - น้ำหมด</code></li>
 <li>เปิดกฎ <code>รดน้ำ - เปิดปั๊ม</code> เพิ่ม condition ให้ลูกลอยเป็น <strong>Wet</strong> ก่อนเริ่มปั๊ม แล้วบันทึก</li>
 </ol>
-<p><strong>ทดสอบให้ผ่านทั้งสองแบบ</strong></p>
+<p class="ws-phase"><strong>ทดสอบให้ผ่านทั้งสองแบบ</strong></p>
 <ol start="8" style="counter-reset: step 7">
 <li>ลูกลอยเป็น Dry แล้วสั่ง On ทั้งจากปุ่มบนบอร์ดและหน้าอุปกรณ์ ปั๊มต้องหยุดและมีแจ้งเตือน</li>
 <li>ลูกลอยเป็น Wet สั่งปั๊มเดิน แล้วยกลูกลอยให้เป็น Dry ปั๊มต้องหยุดเช่นกัน</li>
 </ol>
-<p><strong>คืนสภาพลูกลอย</strong></p>
+<p class="ws-phase"><strong>คืนสภาพลูกลอย</strong></p>
 <ol start="10" style="counter-reset: step 9">
 <li>วางลูกลอยกลับในน้ำ การกลับเป็น Wet อย่างเดียวไม่ได้สั่งปั๊มให้เริ่มใหม่</li>
 </ol>
-<p><strong>บันทึกผล</strong></p>
+<p class="ws-phase"><strong>บันทึกผล</strong></p>
 <ol start="11" style="counter-reset: step 10">
 <li>
 <p>จำลองปัญหาสำเร็จหรือไม่ <span class="fld-radio" data-k="s2.sab.1.ok"><label><input class="fld" type="radio" name="s2.sab.1.ok" data-k="s2.sab.1.ok" value="สำเร็จ"> สำเร็จ</label><label><input class="fld" type="radio" name="s2.sab.1.ok" data-k="s2.sab.1.ok" value="ไม่สำเร็จ"> ไม่สำเร็จ</label></span> · เกิดอะไรขึ้น <input class="fld" type="text" data-k="s2.sab.1.what" data-size="24" size="24" autocomplete="off" spellcheck="false"></p>
@@ -1296,19 +1341,19 @@ body {
 </blockquote>
 <p><a class="ws-back" href="#a5">↑ กลับไปที่ใบงาน</a></p>
 <h3 id="a5-2"><span class="sub-num">5.2</span>สั่งแล้วปั๊มไม่เดิน</h3>
-<p><strong>เตรียมการตรวจจับ</strong></p>
+<p class="ws-phase"><strong>เตรียมการตรวจจับ</strong></p>
 <ol>
 <li>วางบอร์ด GoGo-IoT ให้แตะตัวปั๊ม หรือวางบนพื้นเดียวกันชิดปั๊ม ให้รับแรงสั่นได้ ลองสั่ง On–Off ตรวจว่า <code>ปั๊มกำลังทำงาน</code> เปลี่ยนตาม หากไม่เปลี่ยน ให้ขยับตำแหน่งหรือเพิ่ม <strong>ความไวตรวจจับปั๊ม</strong></li>
 </ol>
-<p><strong>จำลองปัญหา</strong></p>
+<p class="ws-phase"><strong>จำลองปัญหา</strong></p>
 <ol start="2" style="counter-reset: step 1">
 <li>สั่ง Off และถอดปลั๊กอะแดปเตอร์ก่อนถอดสายปั๊มที่จุดต่อจาก NO เก็บปลายสายไม่ให้แตะขั้วอื่น เสียบปลั๊ก รอให้บอร์ดเชื่อมต่อ แล้วสั่ง On</li>
 </ol>
-<p><strong>สังเกตผล</strong></p>
+<p class="ws-phase"><strong>สังเกตผล</strong></p>
 <ol start="3" style="counter-reset: step 2">
 <li>สังเกตว่ารีเลย์เป็น On แต่ปั๊มเงียบและไม่สั่น สถานะรีเลย์ยืนยันได้เพียงว่าสวิตช์เปิดอยู่</li>
 </ol>
-<p><strong>สร้างกฎป้องกัน</strong></p>
+<p class="ws-phase"><strong>สร้างกฎป้องกัน</strong></p>
 <p>ตรวจแรงสั่นหลังสั่งเปิดปั๊ม หากไม่พบให้หยุดและแจ้งเตือน การสั่นเป็นหลักฐานประกอบ ไม่ได้ยืนยันว่าน้ำไหลถึงแปลง</p>
 <div class="table-wrap"><table>
 <thead>
@@ -1334,15 +1379,15 @@ body {
 <li>Condition: <strong>Entity → State</strong> เลือก <code>ปั๊มกำลังทำงาน</code> สถานะ <strong>Off</strong></li>
 <li>Action: <strong>Switch → Turn off</strong> สวิตช์ปั๊ม และแจ้งเตือน <code>สั่งปั๊มแล้วแต่ไม่มีการสั่น ตรวจสายและระดับน้ำ</code></li>
 </ol>
-<p><strong>ทดสอบกฎ</strong></p>
+<p class="ws-phase"><strong>ทดสอบกฎ</strong></p>
 <ol start="8" style="counter-reset: step 7">
 <li>เมื่อสายยังถอดอยู่ สั่ง On กฎต้องปิดรีเลย์และแจ้งเตือนหลังครบประมาณ 15 วินาที</li>
 </ol>
-<p><strong>ต่อสายกลับและทดสอบ</strong></p>
+<p class="ws-phase"><strong>ต่อสายกลับและทดสอบ</strong></p>
 <ol start="9" style="counter-reset: step 8">
 <li>สั่ง Off ถอดปลั๊ก แล้วต่อสายกลับ ขันให้แน่น เสียบปลั๊กและรอให้บอร์ดพร้อม สั่ง On อีกครั้ง ปั๊มต้องเดินผ่าน 15 วินาทีได้ ถ้าถูกตัด ให้ตรวจตำแหน่งบอร์ดและความไว</li>
 </ol>
-<p><strong>บันทึกผล</strong></p>
+<p class="ws-phase"><strong>บันทึกผล</strong></p>
 <ol start="10" style="counter-reset: step 9">
 <li>
 <p>จำลองปัญหาสำเร็จหรือไม่ <span class="fld-radio" data-k="s2.sab.2.ok"><label><input class="fld" type="radio" name="s2.sab.2.ok" data-k="s2.sab.2.ok" value="สำเร็จ"> สำเร็จ</label><label><input class="fld" type="radio" name="s2.sab.2.ok" data-k="s2.sab.2.ok" value="ไม่สำเร็จ"> ไม่สำเร็จ</label></span> · เกิดอะไรขึ้น <input class="fld" type="text" data-k="s2.sab.2.what" data-size="24" size="24" autocomplete="off" spellcheck="false"></p>
@@ -1353,33 +1398,33 @@ body {
 <h3 id="a5-3"><span class="sub-num">5.3</span>บอร์ดเซนเซอร์ดับ</h3>
 <p><img alt="ตำแหน่งสวิตช์ ON/OFF ทางซ้ายของบอร์ด GoGo-IoT ใกล้ช่อง USB-C และกลุ่มเซนเซอร์ทางขวา" src="../images/gogo-iot-main-parts.png" width="100%" /></p>
 <p>ใช้สวิตช์ <strong>ON / OFF</strong> ปิดบอร์ด ไม่ใช่ปุ่ม BOOT การถอด USB อย่างเดียวอาจไม่ดับเพราะมีถ่านในบอร์ด</p>
-<p><strong>จำลองปัญหา</strong></p>
+<p class="ws-phase"><strong>จำลองปัญหา</strong></p>
 <ol>
 <li>สั่งปั๊ม On แล้วปิดสวิตช์ GoGo-IoT ดูว่าเมื่อใดค่าความชื้นเปลี่ยนเป็น <strong>unavailable</strong> และปั๊มหยุดด้วยกฎใด จากนั้นเปิดบอร์ดกลับ</li>
 </ol>
 <blockquote>
 <p>กฎ <code>Fail-safe - สั่งแล้วไม่เดิน</code> จากข้อ 5.2 อาจหยุดปั๊มก่อนระบบตรวจพบว่าบอร์ดหาย ให้ดูชื่อกฎในแจ้งเตือนหรือ <strong>Traces</strong> อย่าตัดสินจากการหยุดของปั๊มอย่างเดียว</p>
 </blockquote>
-<p><strong>เลือกวิธีรับมือ</strong></p>
+<p class="ws-phase"><strong>เลือกวิธีรับมือ</strong></p>
 <ol start="2" style="counter-reset: step 1">
 <li>หากไม่ได้รับค่าความชื้น กลุ่มคิดว่าปั๊มควรเปิด ปิด หรือคงสถานะเดิม เพราะอะไร</li>
 </ol>
-<p><strong>บันทึกผล</strong></p>
+<p class="ws-phase"><strong>บันทึกผล</strong></p>
 <ol start="3" style="counter-reset: step 2">
 <li>กลุ่มเลือกให้ปั๊ม <span class="fld-radio" data-k="s2.fs3.choice"><label><input class="fld" type="radio" name="s2.fs3.choice" data-k="s2.fs3.choice" value="เปิด"> เปิด</label><label><input class="fld" type="radio" name="s2.fs3.choice" data-k="s2.fs3.choice" value="ปิด"> ปิด</label><label><input class="fld" type="radio" name="s2.fs3.choice" data-k="s2.fs3.choice" value="คงสถานะเดิม"> คงสถานะเดิม</label></span> เพราะ <input class="fld" type="text" data-k="s2.fs3.why" data-size="30" size="30" autocomplete="off" spellcheck="false"></li>
 </ol>
-<p><strong>สร้างกฎหยุดปั๊มเมื่อเซนเซอร์หาย</strong></p>
+<p class="ws-phase"><strong>สร้างกฎหยุดปั๊มเมื่อเซนเซอร์หาย</strong></p>
 <p>กฎตัวอย่างนี้หยุดปั๊มเพื่อป้องกันการสูบน้ำต่อโดยไม่มีข้อมูล</p>
 <ol start="4" style="counter-reset: step 3">
 <li>สร้าง automation ชื่อ <code>Fail-safe - เซนเซอร์หาย</code></li>
 <li>Trigger: <strong>Entity → State</strong> เลือกความชื้นอากาศ ช่อง <strong>To</strong> พิมพ์ <code>unavailable</code> แล้วเพิ่ม trigger อีกอันแบบเดียวกันแต่ To เป็น <code>unknown</code></li>
 <li>Action: <strong>Switch → Turn off</strong> สวิตช์ปั๊ม และแจ้งเตือน <code>ไม่ได้รับค่าจากเซนเซอร์ หยุดปั๊มเพื่อความปลอดภัย</code></li>
 </ol>
-<p><strong>ทดสอบกฎ</strong></p>
+<p class="ws-phase"><strong>ทดสอบกฎ</strong></p>
 <ol start="7" style="counter-reset: step 6">
 <li>รอให้บอร์ดกลับมาแสดงค่า แล้วสั่งปั๊ม On และปิดบอร์ดอีกครั้ง ตรวจใน <strong>Traces</strong> ว่ากฎ <code>Fail-safe - เซนเซอร์หาย</code> ทำงานเมื่อค่าเป็น unavailable และสั่ง Off พร้อมแจ้งเตือน แม้กฎอื่นจะหยุดปั๊มไปก่อน จากนั้นเปิดบอร์ดกลับ</li>
 </ol>
-<p><strong>บันทึกผล</strong></p>
+<p class="ws-phase"><strong>บันทึกผล</strong></p>
 <ol start="8" style="counter-reset: step 7">
 <li>
 <p>จำลองปัญหาสำเร็จหรือไม่ <span class="fld-radio" data-k="s2.sab.3.ok"><label><input class="fld" type="radio" name="s2.sab.3.ok" data-k="s2.sab.3.ok" value="สำเร็จ"> สำเร็จ</label><label><input class="fld" type="radio" name="s2.sab.3.ok" data-k="s2.sab.3.ok" value="ไม่สำเร็จ"> ไม่สำเร็จ</label></span> · เกิดอะไรขึ้น <input class="fld" type="text" data-k="s2.sab.3.what" data-size="24" size="24" autocomplete="off" spellcheck="false"></p>
@@ -1388,28 +1433,28 @@ body {
 </ol>
 <p><a class="ws-back" href="#a5">↑ กลับไปที่ใบงาน</a></p>
 <h3 id="a5-4"><span class="sub-num">5.4</span>ปั๊มเดินนานเกินไป</h3>
-<p><strong>จำลองปัญหา</strong></p>
+<p class="ws-phase"><strong>จำลองปัญหา</strong></p>
 <ol>
 <li>สั่งปั๊ม On รอ 1 นาทีโดยรักษาความชื้นให้คงที่</li>
 </ol>
 <blockquote>
 <p>ถ้าปั๊มถูกตัดที่ราว 15 วินาที แปลว่ากฎ <code>Fail-safe - สั่งแล้วไม่เดิน</code> จากข้อ 5.2 ทำงาน ให้ตรวจตำแหน่งบอร์ดและ <strong>ความไวตรวจจับปั๊ม</strong> แล้วจำลองใหม่</p>
 </blockquote>
-<p><strong>สังเกตผล</strong></p>
+<p class="ws-phase"><strong>สังเกตผล</strong></p>
 <ol start="2" style="counter-reset: step 1">
 <li>สังเกตว่าปั๊มยังเดิน เพราะความชื้นไม่ข้ามเกณฑ์ปิด สั่ง Off ก่อนสร้างกฎ</li>
 </ol>
-<p><strong>สร้างกฎจำกัดเวลา</strong></p>
+<p class="ws-phase"><strong>สร้างกฎจำกัดเวลา</strong></p>
 <ol start="3" style="counter-reset: step 2">
 <li>สร้าง automation ชื่อ <code>Fail-safe - จำกัดเวลาเปิดปั๊ม</code></li>
 <li>Trigger: <strong>Entity → State</strong> เลือกสวิตช์ปั๊ม ช่อง <strong>To</strong> เลือก <strong>On</strong> ช่อง <strong>For</strong> ตั้ง <strong>30 วินาที</strong> (ใช้สำหรับการทดลองนี้ และยาวกว่ากฎสั่งแล้วไม่เดิน 15 วินาที)</li>
 <li>Action: <strong>Switch → Turn off</strong> สวิตช์ปั๊ม และแจ้งเตือน <code>ปั๊มเดินเกินเวลา ตัดการทำงานแล้ว โปรดตรวจสอบ</code></li>
 </ol>
-<p><strong>ทดสอบการหยุดตามเวลา</strong></p>
+<p class="ws-phase"><strong>ทดสอบการหยุดตามเวลา</strong></p>
 <ol start="6" style="counter-reset: step 5">
 <li>กดปุ่มให้ปั๊มเดินอีกครั้ง ปั๊มต้องหยุดเองที่ราว 30 วินาที พร้อมข้อความแจ้งเตือน</li>
 </ol>
-<p><strong>บันทึกผล</strong></p>
+<p class="ws-phase"><strong>บันทึกผล</strong></p>
 <ol start="7" style="counter-reset: step 6">
 <li>
 <p>จำลองปัญหาสำเร็จหรือไม่ <span class="fld-radio" data-k="s2.sab.4.ok"><label><input class="fld" type="radio" name="s2.sab.4.ok" data-k="s2.sab.4.ok" value="สำเร็จ"> สำเร็จ</label><label><input class="fld" type="radio" name="s2.sab.4.ok" data-k="s2.sab.4.ok" value="ไม่สำเร็จ"> ไม่สำเร็จ</label></span> · เกิดอะไรขึ้น <input class="fld" type="text" data-k="s2.sab.4.what" data-size="24" size="24" autocomplete="off" spellcheck="false"></p>
@@ -1422,7 +1467,7 @@ body {
 <p><a class="ws-back" href="#a5">↑ กลับไปที่ใบงาน</a></p>
 <h3 id="a5-5"><span class="sub-num">5.5</span>วางแผนบำรุงรักษา</h3>
 <p>จากปัญหาที่จำลองมาทั้งสี่ข้อ อุปกรณ์ใดเสี่ยงเสียก่อน ต้องตรวจอะไรเป็นประจำ และใครเป็นคนตรวจ</p>
-<p><strong>บันทึกผล</strong></p>
+<p class="ws-phase"><strong>บันทึกผล</strong></p>
 <ol>
 <li>กรอกตารางบำรุงรักษา ใครดูแล บ่อยแค่ไหน ดูอะไร ให้ครบทั้ง 5 รายการ</li>
 </ol>

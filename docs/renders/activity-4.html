@@ -245,9 +245,13 @@ body {
   --ag-chip-border: #f2cf86;
   --ag-badge-bg: var(--ag-green);
   --ag-badge-fg: #ffffff;
-  --ag-step-bg: #e2eedb;
-  --ag-step-fg: var(--ag-green-deep);
+  --ag-step-bg: #e6e9e3;             /* steps: neutral, they are sequence not structure */
+  --ag-step-fg: #3f4d41;
   --ag-nav-bg: #f3f7ef;
+  --ag-panel-note: #eaf3fb;          /* explanation: sky */
+  --ag-panel-caution: #fdeeea;       /* caution: tomato */
+  --ag-th-fg: var(--ag-green-deep);
+  --ag-phase-fg: var(--ag-green-deep);
   --ag-rule: var(--ag-leaf);
   --ag-shadow: rgba(30, 42, 31, 0.14);
 }
@@ -429,6 +433,11 @@ body {
   font-variant-numeric: tabular-nums;
 }
 
+.md-typeset ol > li:has(.fld)::before {   /* a step that records something: the input colour */
+  background: var(--ag-chip-bg);
+  color: var(--ag-chip-fg);
+}
+
 .md-typeset ol ol > li::before {
   background: transparent;
   color: var(--md-typeset-a-color);
@@ -495,13 +504,40 @@ body {
 .md-typeset strong.role-tester   { background: var(--ag-tomato); }
 
 /* ---------- callouts (blockquotes) ---------- */
+/* callouts: explanation = sky, caution = tomato (hooks/callouts.py), record note = marigold */
 .md-typeset blockquote {
   margin: 1.4em 0;
   padding: 0.8em 1.2em;
-  border-left: 5px solid var(--ag-rule);
+  border-left: 5px solid var(--ag-sky);
   border-radius: 0 0.7em 0.7em 0;
-  background: var(--ag-panel);
+  background: var(--ag-panel-note);
   color: var(--md-typeset-color);
+}
+
+.md-typeset blockquote.ws-caution {
+  border-left-color: var(--ag-tomato);
+  background: var(--ag-panel-caution);
+}
+
+/* phase labels: the action groups of a procedure, scannable like a table of contents */
+.md-typeset p.ws-phase {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 1.9em 0 0.5em;
+  font-size: 0.88em;
+  color: var(--ag-phase-fg);
+}
+
+.md-typeset p.ws-phase::before {
+  content: "";
+  flex: none;
+  width: 1rem;
+  border-top: 2px solid var(--ag-leaf);
+}
+
+.md-typeset p.ws-phase strong {
+  font-weight: 600;
 }
 
 .md-typeset blockquote.note-record {
@@ -608,11 +644,12 @@ body {
 }
 
 .md-typeset table:not([class]) th {
-  background: var(--md-primary-fg-color);
-  color: #ffffff;
+  background: var(--ag-panel);
+  color: var(--ag-th-fg);
   font-family: "Prompt", "Segoe UI", sans-serif;
   font-weight: 600;
   border: 0;
+  border-bottom: 2px solid var(--ag-rule);
 }
 
 .md-typeset table:not([class]) tr:nth-child(even) td {
@@ -1115,9 +1152,13 @@ body {
   --ag-chip-border: #5a4620;
   --ag-badge-bg: var(--ag-leaf);
   --ag-badge-fg: #14201a;
-  --ag-step-bg: #263a2c;
-  --ag-step-fg: #bfe0a8;
+  --ag-step-bg: #2a332c;
+  --ag-step-fg: #c9d3c8;
   --ag-nav-bg: #172219;
+  --ag-panel-note: #17252f;
+  --ag-panel-caution: #33201b;
+  --ag-th-fg: var(--md-typeset-a-color);
+  --ag-phase-fg: var(--md-typeset-a-color);
   --ag-rule: #4e7d2c;
   --ag-shadow: rgba(0, 0, 0, 0.45);
   color-scheme: dark;
@@ -1145,9 +1186,13 @@ body {
   --ag-chip-border: #5a4620;
   --ag-badge-bg: var(--ag-leaf);
   --ag-badge-fg: #14201a;
-  --ag-step-bg: #263a2c;
-  --ag-step-fg: #bfe0a8;
+  --ag-step-bg: #2a332c;
+  --ag-step-fg: #c9d3c8;
   --ag-nav-bg: #172219;
+  --ag-panel-note: #17252f;
+  --ag-panel-caution: #33201b;
+  --ag-th-fg: var(--md-typeset-a-color);
+  --ag-phase-fg: var(--md-typeset-a-color);
   --ag-rule: #4e7d2c;
   --ag-shadow: rgba(0, 0, 0, 0.45);
   color-scheme: dark;
@@ -1215,7 +1260,7 @@ body {
 <nav class="ws-side" aria-label="หน้าในชุดใบงาน"><ul class="ws-pages"><li class="ws-group" data-group="ก่อนการอบรม"><a href="install.html">ก่อนการอบรม</a></li><li data-page="install" data-group="ก่อนการอบรม"><a href="install.html"><span class="ws-g">ก่อนการอบรม</span><span class="ws-t">เตรียมแล็ปท็อป</span></a></li><li class="ws-group" data-group="ช่วงที่ 1"><a href="session-1-start.html">ช่วงที่ 1</a></li><li data-page="session-1-start" data-group="ช่วงที่ 1"><a href="session-1-start.html"><span class="ws-g">ช่วง 1</span><span class="ws-t">เตรียมพร้อมก่อนเริ่ม</span></a></li><li data-page="activity-1" data-group="ช่วงที่ 1"><a href="activity-1.html" data-n="1"><span class="ws-g">ช่วง 1</span><span class="ws-n">กิจกรรม 1</span><span class="ws-t">อ่านค่าเซนเซอร์ (Sense)</span></a></li><li data-page="activity-2" data-group="ช่วงที่ 1"><a href="activity-2.html" data-n="2"><span class="ws-g">ช่วง 1</span><span class="ws-n">กิจกรรม 2</span><span class="ws-t">ต่อวงจรและสั่งงานหลอดไฟ (Act)</span></a></li><li data-page="activity-3" data-group="ช่วงที่ 1"><a href="activity-3.html" data-n="3"><span class="ws-g">ช่วง 1</span><span class="ws-n">กิจกรรม 3</span><span class="ws-t">สร้างกฎควบคุมระบบ (Logic)</span></a></li><li class="ws-group in-group" data-group="ช่วงที่ 2"><a href="activity-4.html">ช่วงที่ 2</a></li><li data-page="activity-4" data-group="ช่วงที่ 2" class="is-current in-group"><a href="activity-4.html" aria-current="page" data-n="4"><span class="ws-g">ช่วง 2</span><span class="ws-n">กิจกรรม 4</span><span class="ws-t">ตั้งกฎอัตโนมัติ (Think)</span></a><ul class="ws-toc"><li><a href="#a4">ใบงาน</a></li><li><a href="#a4-1">4.1 สังเกตปัญหาไฟกะพริบ</a></li><li><a href="#a4-2">4.2 แก้ไขด้วยการแยกเกณฑ์เปิดและปิด</a></li><li><a href="#a4-3">4.3 เพิ่มการจำกัดช่วงเวลาเปิดไฟ</a></li><li><a href="#a4-3b">4.4 เพิ่ม Trigger ให้รองรับทุกกรณี ให้ไฟเปิดได้เมื่อถึงเวลา</a></li><li><a href="#a4-4">4.5 ลองเพิ่มการแจ้งเตือน</a></li><li><a href="#a4-5">4.6 ต่อปั๊มแทนหลอดไฟ</a></li><li><a href="#a4-5b">4.7 สร้างกฎรดน้ำ</a></li><li><a href="#a4-6">4.8 สร้างโหมด Auto และ Manual</a></li></ul></li><li data-page="activity-5" data-group="ช่วงที่ 2" class="in-group"><a href="activity-5.html" data-n="5"><span class="ws-g">ช่วง 2</span><span class="ws-n">กิจกรรม 5</span><span class="ws-t">จำลองปัญหาและป้องกัน (Failure lab)</span></a></li><li class="ws-group" data-group="ช่วงที่ 3"><a href="session-3-history.html">ช่วงที่ 3</a></li><li data-page="session-3-history" data-group="ช่วงที่ 3"><a href="session-3-history.html"><span class="ws-g">ช่วง 3</span><span class="ws-t">อ่านข้อมูลย้อนหลัง</span></a></li><li data-page="activity-6" data-group="ช่วงที่ 3"><a href="activity-6.html" data-n="6"><span class="ws-g">ช่วง 3</span><span class="ws-n">กิจกรรม 6</span><span class="ws-t">สร้างแดชบอร์ด (Dashboard)</span></a></li><li data-page="activity-7" data-group="ช่วงที่ 3"><a href="activity-7.html" data-n="7"><span class="ws-g">ช่วง 3</span><span class="ws-n">กิจกรรม 7</span><span class="ws-t">ออกแบบระบบฟาร์ม (Design)</span></a></li></ul></nav>
 <main class="md-content__inner md-typeset" id="ws-main">
 <h1 id="กจกรรมท-4--ตงกฎใหระบบทำงานอตโนมต-think">กิจกรรมที่ 4 — ตั้งกฎให้ระบบทำงานอัตโนมัติ (Think)</h1>
-<p><strong>ให้โปรแกรมตัดสินใจและสั่งงานแทนเรา</strong></p>
+<p class="ws-phase"><strong>ให้โปรแกรมตัดสินใจและสั่งงานแทนเรา</strong></p>
 <p>ช่วงนี้เราจะศึกษาหลักการ Hysteresis ฝึกเพิ่มเงื่อนไขเวลา จำลองปัญหาและเพิ่มกฎป้องกันความเสียหาย (fail-safe) ที่มีประโยชน์สำหรับหน้างานจริง</p>
 <p><img alt="" class="activity-banner" decoding="async" height="300" loading="lazy" src="../images/activity-banners/activity-04-irrigation.png" width="1800" /></p>
 <p><strong>70 นาที</strong> รวมต่อปั๊มแทนหลอดไฟ</p>
@@ -1236,11 +1281,11 @@ body {
 </ul>
 </div>
 <h3 id="a4-1"><span class="sub-num">4.1</span>สังเกตปัญหาไฟกะพริบ</h3>
-<p><strong>เตรียมทดสอบ</strong></p>
+<p class="ws-phase"><strong>เตรียมทดสอบ</strong></p>
 <ol>
 <li>ใช้หลอด LED แทนไฟสวน เปิดกฎ <code>มืด-เปิดไฟ</code> และ <code>สว่าง-ปิดไฟ</code> ไว้ทั้งคู่ ส่วนกฎ <code>ปิดไฟตามเวลา</code> (ถ้าสร้างไว้) ต้องปิดไว้ ขณะนี้เกณฑ์เปิดและปิดเป็นค่าเดียวกัน: <input class="fld" type="text" data-k="s1.light.on" data-size="4" size="4" inputmode="decimal" autocomplete="off" spellcheck="false"> หันหลอดออกจากเซนเซอร์ก่อนทดสอบ</li>
 </ol>
-<p><strong>สังเกตและนับการเปิด–ปิด</strong></p>
+<p class="ws-phase"><strong>สังเกตและนับการเปิด–ปิด</strong></p>
 <ol start="2" style="counter-reset: step 1">
 <li>เลื่อนมือจนค่าแสงอยู่ใกล้เกณฑ์ แล้วขยับมือขึ้นลงช้า ๆ</li>
 <li>ให้สมาชิกอีกคนจับเวลา 1 นาที นับทุกครั้งที่ไฟเปลี่ยนจากติดเป็นดับหรือดับเป็นติด</li>
@@ -1251,17 +1296,17 @@ body {
 </blockquote>
 <p><a class="ws-back" href="#a4">↑ กลับไปที่ใบงาน</a></p>
 <h3 id="a4-2"><span class="sub-num">4.2</span>แก้ไขด้วยการแยกเกณฑ์เปิดและปิด</h3>
-<p><strong>แยกเกณฑ์เปิดและปิด</strong></p>
+<p class="ws-phase"><strong>แยกเกณฑ์เปิดและปิด</strong></p>
 <ol>
 <li>เปิดกฎ <code>สว่าง-ปิดไฟ</code> ปรับ <strong>Above</strong> ให้สูงกว่าเกณฑ์เปิด แต่ต่ำกว่าค่าแสงเมื่อไม่บังเซนเซอร์ เช่น เปิดต่ำกว่า 40 ปิดสูงกว่า 60 เมื่อในห้องอ่านได้ 80</li>
 </ol>
-<p><strong>ทดสอบและบันทึกผล</strong></p>
+<p class="ws-phase"><strong>ทดสอบและบันทึกผล</strong></p>
 <ol start="2" style="counter-reset: step 1">
 <li>กด <strong>Save</strong> แล้วขยับมือแบบเดิม 1 นาที</li>
 <li>บันทึกเกณฑ์ปิด <input class="fld" type="text" data-k="s2.light.off" data-size="4" size="4" inputmode="decimal" autocomplete="off" spellcheck="false"> และจำนวนครั้งหลังแก้ <input class="fld" type="text" data-k="s2.chatter.after" data-size="3" size="3" inputmode="decimal" autocomplete="off" spellcheck="false"> ครั้ง</li>
 </ol>
 <p>การเว้นระยะระหว่างเกณฑ์เปิดกับเกณฑ์ปิดเรียกว่า <strong>hysteresis</strong> เมื่อค่าอยู่ระหว่างสองเกณฑ์ อุปกรณ์จะคงสถานะเดิม</p>
-<p><strong>ตรวจการทำงานหลังแก้</strong></p>
+<p class="ws-phase"><strong>ตรวจการทำงานหลังแก้</strong></p>
 <ol start="4" style="counter-reset: step 3">
 <li>ตรวจว่าขยับมือใกล้เกณฑ์เปิดแล้วไฟเปลี่ยนสถานะไม่เกิน 2 ครั้งใน 1 นาที จากนั้นครอบให้ไฟติดและเอามือออกให้ไฟดับ</li>
 </ol>
@@ -1272,11 +1317,11 @@ body {
 <h3 id="a4-3"><span class="sub-num">4.3</span>เพิ่มการจำกัดช่วงเวลาเปิดไฟ</h3>
 <p>บางครั้งนอกจากค่าแสงสว่างแล้ว เราอาจต้องการจำกัดช่วงเวลาที่ไฟจะทำงานควบคู่กันไปด้วย เช่น ให้เปิดไฟได้หลัง 18.30 น. เท่านั้น ถ้ามืดก่อนก็ยังไม่ต้องเปิด</p>
 <p>กฎจากช่วงที่ 1 มีแค่ <strong>When</strong> (trigger) กับ <strong>Then do</strong> (action) ส่วน <strong>And if</strong> คือ <strong>condition</strong> เงื่อนไขเพิ่มเติมที่ต้องผ่านทุกข้อ กฎจึงจะสั่งงาน</p>
-<p><strong>เพิ่มเงื่อนไขเวลา</strong></p>
+<p class="ws-phase"><strong>เพิ่มเงื่อนไขเวลา</strong></p>
 <ol>
 <li>เปิด <code>มืด-เปิดไฟ</code> ใน <strong>And if</strong> กด <strong>+ Add condition → Time</strong> ตั้งช่วงเวลา <strong>After</strong> และ <strong>Before</strong> ตามความเหมาะสมแล้วกด <strong>Save</strong></li>
 </ol>
-<p><strong>ทดสอบในและนอกช่วงเวลา</strong></p>
+<p class="ws-phase"><strong>ทดสอบในและนอกช่วงเวลา</strong></p>
 <p><strong>ก่อนทดสอบแต่ละรอบ:</strong> เอามือออก รอให้ค่าแสงสูงกว่าเกณฑ์เปิด และสั่งรีเลย์ <strong>Off</strong> เพื่อให้เริ่มจากสภาพเดียวกัน</p>
 <ol start="2" style="counter-reset: step 1">
 <li><strong>ทดสอบในเวลา:</strong> ตั้งช่วงที่ครอบคลุมเวลาปัจจุบัน แล้วครอบเซนเซอร์ ไฟควรติด</li>
@@ -1285,7 +1330,7 @@ body {
 <blockquote>
 <p>Condition ตรวจเมื่อเกิด trigger เท่านั้น การถึงช่วงเวลาที่ตั้งไว้ยังไม่ทำให้กฎเริ่มเอง</p>
 </blockquote>
-<p><strong>บันทึกผล</strong></p>
+<p class="ws-phase"><strong>บันทึกผล</strong></p>
 <ol start="4" style="counter-reset: step 3">
 <li>รอบล่าสุดใน Traces หยุดที่ส่วนใด <input class="fld" type="text" data-k="s2.time.trace" data-size="16" size="16" autocomplete="off" spellcheck="false"></li>
 </ol>
@@ -1298,7 +1343,7 @@ body {
 <li>ถ้าแสงมืดก่อน 18.30 น. ไฟจะติดหรือไม่ <span class="fld-radio" data-k="s2.time.dark_before"><label><input class="fld" type="radio" name="s2.time.dark_before" data-k="s2.time.dark_before" value="ติด"> ติด</label><label><input class="fld" type="radio" name="s2.time.dark_before" data-k="s2.time.dark_before" value="ไม่ติด"> ไม่ติด</label></span> เพราะ <input class="fld" type="text" data-k="s2.time.dark_before_why" data-size="24" size="24" autocomplete="off" spellcheck="false"></li>
 </ol>
 <p>การทำให้ระบบทำงานได้สมบูรณ์นั้น จำเป็นต้องเพิ่ม Trigger เมื่อถึงเวลา 18.30 น. เพิ่มเติม</p>
-<p><strong>เพิ่มเหตุการณ์เวลาและเงื่อนไขแสง</strong></p>
+<p class="ws-phase"><strong>เพิ่มเหตุการณ์เวลาและเงื่อนไขแสง</strong></p>
 <ol start="3" style="counter-reset: step 2">
 <li>ใน <code>มืด-เปิดไฟ</code> เพิ่ม <strong>When → + Add trigger → Time</strong> ตั้งเวลา <strong>At time</strong> ให้ตรงกับค่าเวลา <strong>After</strong> ใน 4.3</li>
 <li>เพิ่ม <strong>And if → + Add condition</strong> ค้นหาคำว่า <strong>ความสว่าง (light)</strong> ใส่ค่าเกณฑ์เปิดใน <strong>Below</strong></li>
@@ -1310,46 +1355,46 @@ body {
 <li>แก้ <strong>After</strong> และ <strong>At time</strong> ของกฎเปิดไฟเป็นอีก 2 นาทีข้างหน้า ส่วน <strong>Before</strong> และ <strong>At time</strong> ของกฎปิดไฟให้ช้ากว่านั้น 1 นาที กด <strong>Save</strong> ทั้งสองกฎ</li>
 <li>รอดู ไฟต้องติดเมื่อถึงเวลาเปิด และดับเมื่อถึงเวลาปิด</li>
 </ol>
-<p><strong>บันทึกผล</strong></p>
+<p class="ws-phase"><strong>บันทึกผล</strong></p>
 <ol start="9" style="counter-reset: step 8">
 <li>ถ้าแสงมืดก่อนเวลาที่กำหนด เมื่อถึงเวลาแล้วไฟติดหรือไม่ <span class="fld-radio" data-k="s2.time.fixed"><label><input class="fld" type="radio" name="s2.time.fixed" data-k="s2.time.fixed" value="ติด"> ติด</label><label><input class="fld" type="radio" name="s2.time.fixed" data-k="s2.time.fixed" value="ไม่ติด"> ไม่ติด</label></span></li>
 </ol>
 <blockquote>
 <p>หลาย trigger หมายถึงเกิดเหตุการณ์ใดเหตุการณ์หนึ่งก็เริ่มกฎได้ แต่ condition ทุกข้อยังต้องเป็นจริง</p>
 </blockquote>
-<p><strong>อธิบายเหตุผล</strong></p>
+<p class="ws-phase"><strong>อธิบายเหตุผล</strong></p>
 <ol start="10" style="counter-reset: step 9">
 <li>เมื่อเพิ่ม trigger เวลาแล้ว ทำไมยังต้องตรวจค่าความสว่างในส่วน And if อีก <input class="fld" type="text" data-k="s2.time.why" data-size="30" size="30" autocomplete="off" spellcheck="false"></li>
 </ol>
 <p><a class="ws-back" href="#a4">↑ กลับไปที่ใบงาน</a></p>
 <h3 id="a4-4"><span class="sub-num">4.5</span>ลองเพิ่มการแจ้งเตือน</h3>
 <p>Home Assistant สามารถส่งข้อความแจ้งเตือนได้ผ่านทางหน้า Web หรือทาง Mobile App (ต้องติดตั้ง App ก่อนจาก Play Store / App Store)</p>
-<p><strong>เพิ่มข้อความแจ้งเตือน</strong></p>
+<p class="ws-phase"><strong>เพิ่มข้อความแจ้งเตือน</strong></p>
 <ol>
 <li>ใน <code>มืด-เปิดไฟ</code> เพิ่ม <strong>Action → Send a persistent notification</strong> ใส่ข้อความ เช่น <code>ไฟสวนเปิดแล้ว</code> แล้วกด <strong>Save</strong> ข้อความจะอยู่ที่ไอคอนกระดิ่ง</li>
 </ol>
-<p><strong>ทดสอบการแจ้งเตือน</strong></p>
+<p class="ws-phase"><strong>ทดสอบการแจ้งเตือน</strong></p>
 <ol start="2" style="counter-reset: step 1">
 <li>ตั้งช่วง <strong>After–Before</strong> ให้ครอบคลุมเวลาปัจจุบัน เริ่มจากไฟดับและค่าแสงสูงกว่าเกณฑ์เปิด แล้วครอบเซนเซอร์ ไฟต้องติดและมีข้อความแจ้งเตือน</li>
 </ol>
-<p><strong>(ไม่บังคับทำ) ลองแจ้งเตือนทางโทรศัพท์</strong></p>
+<p class="ws-phase"><strong>(ไม่บังคับทำ) ลองแจ้งเตือนทางโทรศัพท์</strong></p>
 <ol start="3" style="counter-reset: step 2">
 <li>ถ้าเข้า Home Assistant ผ่านแอป Companion ไว้แล้ว ลองใช้ <strong>Send a notification via mobile_app</strong> เพื่อส่งข้อความไปยังโทรศัพท์</li>
 </ol>
 <p><a class="ws-back" href="#a4">↑ กลับไปที่ใบงาน</a></p>
 <h3 id="a4-5"><span class="sub-num">4.6</span>ต่อปั๊มแทนหลอดไฟ</h3>
 <p>ใช้รีเลย์ตัวเดิมควบคุมปั๊มแทนหลอดไฟ ในห้องนี้ปั๊ม<strong>เดินแห้ง</strong> ไม่ต่อสายยางและไม่ใช้น้ำ เราดูว่าปั๊มเดินหรือหยุดจากเสียงและการสั่นของตัวปั๊ม</p>
-<p><strong>หยุดระบบและถอดปลั๊ก</strong></p>
+<p class="ws-phase"><strong>หยุดระบบและถอดปลั๊ก</strong></p>
 <ol>
 <li><strong>ปิดกฎไฟสวนและกฎตั้งเวลาทุกกฎ</strong> แล้วสั่งรีเลย์ <strong>Off</strong> การปิดกฎไม่ได้ปิดรีเลย์ ต้องทำทั้งสองอย่าง</li>
 <li><strong>ถอดอะแดปเตอร์ออกจากปลั๊ก</strong> ก่อนแก้สาย ถอดสายหลอด LED ที่เต๋าต่อสายและเก็บหลอดไว้</li>
 </ol>
-<p><strong>ต่อปั๊มและจัดอุปกรณ์</strong></p>
+<p class="ws-phase"><strong>ต่อปั๊มและจัดอุปกรณ์</strong></p>
 <ol start="3" style="counter-reset: step 2">
 <li>ต่อสายปั๊มแทนสายหลอด: สายบวกเข้าจุดที่มาจาก <strong>NO</strong> และสายลบเข้าจุดลบ ขันสกรูให้แน่น ไม่มีสายเข้า <strong>NC</strong></li>
 <li>วางปั๊มบนโต๊ะห่างจากบอร์ดและแล็ปท็อป เติมน้ำในแก้วครึ่งแก้วแล้ววางสวิตช์ลูกลอยลงไปเหมือนช่วงที่ 1 วางแก้วให้ห่างจากบอร์ด</li>
 </ol>
-<p><strong>จ่ายไฟและทดสอบ</strong></p>
+<p class="ws-phase"><strong>จ่ายไฟและทดสอบ</strong></p>
 <ol start="5" style="counter-reset: step 4">
 <li>เสียบอะแดปเตอร์ รอให้บอร์ดเชื่อมต่อ สถานะลูกลอยต้องแสดง <strong>Wet</strong></li>
 <li>สั่งปั๊ม <strong>On</strong> ประมาณ 10 วินาที แล้ว <strong>Off</strong> ฟังเสียงและแตะตัวปั๊ม ปั๊มต้องเดินแล้วหยุดตามคำสั่ง</li>
@@ -1363,21 +1408,21 @@ body {
 <p><a class="ws-back" href="#a4">↑ กลับไปที่ใบงาน</a></p>
 <h3 id="a4-5b"><span class="sub-num">4.7</span>สร้างกฎรดน้ำ</h3>
 <p><strong>ใช้ความชื้นอากาศจำลองค่าความชื้นดิน</strong> ใช้ลมปากเพิ่มค่าความชื้นเพื่อจำลองดินเปียก </p>
-<p><strong>ตรวจค่าก่อนเลือกเกณฑ์</strong></p>
+<p class="ws-phase"><strong>ตรวจค่าก่อนเลือกเกณฑ์</strong></p>
 <ol>
 <li>เลือกค่าเกณฑ์ที่แยกระหว่างดินแห้งกับดินเปียก ค่าที่เลือก = <input class="fld" type="text" data-k="s1.hum.room" data-size="6" size="6" inputmode="decimal" autocomplete="off" spellcheck="false"> % </li>
 </ol>
-<p><strong>สร้างกฎเปิด–ปิดปั๊ม</strong></p>
+<p class="ws-phase"><strong>สร้างกฎเปิด–ปิดปั๊ม</strong></p>
 <ol start="2" style="counter-reset: step 1">
 <li>สร้าง <code>รดน้ำ - เปิดปั๊ม</code> เลือก <strong>Trigger → Entity → Numeric state → ความชื้นอากาศ</strong> ตั้ง <strong>Below</strong> สูงกว่าค่าห้องเล็กน้อย และ <strong>Action → Switch → Turn on</strong> รีเลย์ของกลุ่ม</li>
 <li>สร้าง <code>รดน้ำ - ปิดปั๊ม</code> ด้วยวิธีเดียวกัน ตั้ง <strong>Above</strong> สูงกว่าเกณฑ์เปิด 5–10 จุดเปอร์เซ็นต์ และ <strong>Action → Switch → Turn off</strong> บันทึกทั้งสองกฎ</li>
 </ol>
-<p><strong>ทดสอบการทำงาน</strong></p>
+<p class="ws-phase"><strong>ทดสอบการทำงาน</strong></p>
 <ol start="4" style="counter-reset: step 3">
 <li>สั่งปั๊ม <strong>On</strong> จากหน้าอุปกรณ์ เป่าลมจนความชื้นสูงกว่าเกณฑ์ปิด ปั๊มต้องหยุด</li>
 <li>รอให้ค่าลดต่ำกว่าเกณฑ์เปิด ปั๊มต้องกลับมาเดิน ถ้าค่าไม่ข้ามเกณฑ์ ให้ปรับเกณฑ์ให้อยู่ในช่วงที่ทดลองได้</li>
 </ol>
-<p><strong>บันทึกผล</strong></p>
+<p class="ws-phase"><strong>บันทึกผล</strong></p>
 <ol start="6" style="counter-reset: step 5">
 <li>ลองแยกค่าเกณฑ์ความชื้นอากาศที่ใช้เปิดและปิดปั๊ม ตามหลักการ Hysteresis เปิดปั๊มเมื่อต่ำกว่า <input class="fld" type="text" data-k="s2.hum.on" data-size="4" size="4" inputmode="decimal" autocomplete="off" spellcheck="false"> % ปิดปั๊มเมื่อสูงกว่า <input class="fld" type="text" data-k="s2.hum.off" data-size="4" size="4" inputmode="decimal" autocomplete="off" spellcheck="false"> % </li>
 </ol>
@@ -1391,13 +1436,13 @@ body {
 <li>กด <strong>+ Create helper</strong> พิมพ์ค้นหา <strong>"Toggle"</strong> แล้วเลือก</li>
 <li>ตั้งชื่อ <code>Pump Auto Mode</code> แล้วกด <strong>Create</strong></li>
 </ol>
-<p><strong>เปิดใช้แดชบอร์ดเพื่อดูสวิตช์ใหม่นี้</strong></p>
+<p class="ws-phase"><strong>เปิดใช้แดชบอร์ดเพื่อดูสวิตช์ใหม่นี้</strong></p>
 <ol start="4" style="counter-reset: step 3">
 <li>เปิด <strong>Settings → Dashboards</strong> กด <strong>+ Add dashboard</strong></li>
 <li>เลือก <strong>Overview (Legacy)</strong> ตั้งชื่อว่า <code>Farm Dashboard</code> หรือชื่ออื่นที่ต้องการ ขอให้แน่ใจว่าเปิด <strong>Add to sidebar</strong> ไว้</li>
 <li>เปิด Dashboard ใหม่นี้จากเมนูด้านซ้าย สังเกตดูว่ามีอะไรบ้าง หา Toggle ชื่อ <code>Pump Auto Mode</code> แล้วลองกดเปิด–ปิด</li>
 </ol>
-<p><strong>แก้ไข Automation เพื่อให้กฎรดน้ำตรวจโหมดก่อนสั่งปั๊ม</strong></p>
+<p class="ws-phase"><strong>แก้ไข Automation เพื่อให้กฎรดน้ำตรวจโหมดก่อนสั่งปั๊ม</strong></p>
 <ol start="7" style="counter-reset: step 6">
 <li>เปิด <strong>Settings → Automations &amp; scenes</strong> เลือก <code>รดน้ำ - เปิดปั๊ม</code></li>
 <li>ในส่วน <strong>And if</strong> กด <strong>+ Add condition</strong> พิมพ์ในช่องค้นหา <code>Pump Auto Mode</code> แล้วเลือกเงื่อนไข <strong>Switch is on</strong>  กด <strong>Save</strong></li>
@@ -1407,7 +1452,7 @@ body {
 <li>ทดสอบโหมด Manual - ให้ปิด <code>Pump Auto Mode</code> เป่าลมให้ความชื้นสูงกว่าเกณฑ์เปิด แล้วหยุดเป่า เมื่อค่าลดต่ำกว่าเกณฑ์ ปั๊มเริ่มเองหรือไม่ <span class="fld-radio" data-k="s2.mode.off"><label><input class="fld" type="radio" name="s2.mode.off" data-k="s2.mode.off" value="ไม่เริ่ม"> ไม่เริ่ม</label><label><input class="fld" type="radio" name="s2.mode.off" data-k="s2.mode.off" value="เริ่ม"> เริ่ม</label></span> ระหว่างนี้สั่งรีเลย์ <strong>On–Off</strong> จากหน้าอุปกรณ์ ปั๊มยังเดินและหยุดตามมือเรา นี่คือโหมด Manual</li>
 <li>ทดสอบโหมด Auto - เปิด <code>Pump Auto Mode</code> แล้วทำซ้ำ ปั๊มเริ่มเองหรือไม่ <span class="fld-radio" data-k="s2.mode.on"><label><input class="fld" type="radio" name="s2.mode.on" data-k="s2.mode.on" value="เริ่ม"> เริ่ม</label><label><input class="fld" type="radio" name="s2.mode.on" data-k="s2.mode.on" value="ไม่เริ่ม"> ไม่เริ่ม</label></span></li>
 </ol>
-<p><strong>เตรียมระบบสำหรับกิจกรรมถัดไป</strong></p>
+<p class="ws-phase"><strong>เตรียมระบบสำหรับกิจกรรมถัดไป</strong></p>
 <ol start="11" style="counter-reset: step 10">
 <li>ก่อนทำกิจกรรมถัดไป ให้ <code>Pump Auto Mode</code> <strong>เปิดอยู่</strong> กฎรดน้ำสองกฎ <strong>เปิดอยู่</strong> และกฎไฟสวนกับกฎตั้งเวลา <strong>ปิดไว้</strong></li>
 </ol>

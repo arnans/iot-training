@@ -245,9 +245,13 @@ body {
   --ag-chip-border: #f2cf86;
   --ag-badge-bg: var(--ag-green);
   --ag-badge-fg: #ffffff;
-  --ag-step-bg: #e2eedb;
-  --ag-step-fg: var(--ag-green-deep);
+  --ag-step-bg: #e6e9e3;             /* steps: neutral, they are sequence not structure */
+  --ag-step-fg: #3f4d41;
   --ag-nav-bg: #f3f7ef;
+  --ag-panel-note: #eaf3fb;          /* explanation: sky */
+  --ag-panel-caution: #fdeeea;       /* caution: tomato */
+  --ag-th-fg: var(--ag-green-deep);
+  --ag-phase-fg: var(--ag-green-deep);
   --ag-rule: var(--ag-leaf);
   --ag-shadow: rgba(30, 42, 31, 0.14);
 }
@@ -429,6 +433,11 @@ body {
   font-variant-numeric: tabular-nums;
 }
 
+.md-typeset ol > li:has(.fld)::before {   /* a step that records something: the input colour */
+  background: var(--ag-chip-bg);
+  color: var(--ag-chip-fg);
+}
+
 .md-typeset ol ol > li::before {
   background: transparent;
   color: var(--md-typeset-a-color);
@@ -495,13 +504,40 @@ body {
 .md-typeset strong.role-tester   { background: var(--ag-tomato); }
 
 /* ---------- callouts (blockquotes) ---------- */
+/* callouts: explanation = sky, caution = tomato (hooks/callouts.py), record note = marigold */
 .md-typeset blockquote {
   margin: 1.4em 0;
   padding: 0.8em 1.2em;
-  border-left: 5px solid var(--ag-rule);
+  border-left: 5px solid var(--ag-sky);
   border-radius: 0 0.7em 0.7em 0;
-  background: var(--ag-panel);
+  background: var(--ag-panel-note);
   color: var(--md-typeset-color);
+}
+
+.md-typeset blockquote.ws-caution {
+  border-left-color: var(--ag-tomato);
+  background: var(--ag-panel-caution);
+}
+
+/* phase labels: the action groups of a procedure, scannable like a table of contents */
+.md-typeset p.ws-phase {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 1.9em 0 0.5em;
+  font-size: 0.88em;
+  color: var(--ag-phase-fg);
+}
+
+.md-typeset p.ws-phase::before {
+  content: "";
+  flex: none;
+  width: 1rem;
+  border-top: 2px solid var(--ag-leaf);
+}
+
+.md-typeset p.ws-phase strong {
+  font-weight: 600;
 }
 
 .md-typeset blockquote.note-record {
@@ -608,11 +644,12 @@ body {
 }
 
 .md-typeset table:not([class]) th {
-  background: var(--md-primary-fg-color);
-  color: #ffffff;
+  background: var(--ag-panel);
+  color: var(--ag-th-fg);
   font-family: "Prompt", "Segoe UI", sans-serif;
   font-weight: 600;
   border: 0;
+  border-bottom: 2px solid var(--ag-rule);
 }
 
 .md-typeset table:not([class]) tr:nth-child(even) td {
@@ -1115,9 +1152,13 @@ body {
   --ag-chip-border: #5a4620;
   --ag-badge-bg: var(--ag-leaf);
   --ag-badge-fg: #14201a;
-  --ag-step-bg: #263a2c;
-  --ag-step-fg: #bfe0a8;
+  --ag-step-bg: #2a332c;
+  --ag-step-fg: #c9d3c8;
   --ag-nav-bg: #172219;
+  --ag-panel-note: #17252f;
+  --ag-panel-caution: #33201b;
+  --ag-th-fg: var(--md-typeset-a-color);
+  --ag-phase-fg: var(--md-typeset-a-color);
   --ag-rule: #4e7d2c;
   --ag-shadow: rgba(0, 0, 0, 0.45);
   color-scheme: dark;
@@ -1145,9 +1186,13 @@ body {
   --ag-chip-border: #5a4620;
   --ag-badge-bg: var(--ag-leaf);
   --ag-badge-fg: #14201a;
-  --ag-step-bg: #263a2c;
-  --ag-step-fg: #bfe0a8;
+  --ag-step-bg: #2a332c;
+  --ag-step-fg: #c9d3c8;
   --ag-nav-bg: #172219;
+  --ag-panel-note: #17252f;
+  --ag-panel-caution: #33201b;
+  --ag-th-fg: var(--md-typeset-a-color);
+  --ag-phase-fg: var(--md-typeset-a-color);
   --ag-rule: #4e7d2c;
   --ag-shadow: rgba(0, 0, 0, 0.45);
   color-scheme: dark;
@@ -1237,11 +1282,11 @@ body {
 </ul>
 </div>
 <h3 id="a3-1"><span class="sub-num">3.1</span>เพิ่มบอร์ดทั้งสองเข้า Home Assistant</h3>
-<p><strong>เข้าสู่ Home Assistant</strong></p>
+<p class="ws-phase"><strong>เข้าสู่ Home Assistant</strong></p>
 <ol>
 <li>ที่แล็ปท็อปของตัวแทนกลุ่ม กลับไปที่หน้า Login ของ Home Assistant ที่เปิดไว้ตอนก่อนเริ่ม ใส่ <strong>ชื่อผู้ใช้และรหัสผ่านที่ผู้สอนแจ้ง</strong> แล้วกด <strong>Log in</strong> (ถ้าหน้าเปิดไม่ขึ้น ให้อ่านที่อยู่ IP จากหน้าจอเครื่อง Farm Workshop ใหม่)</li>
 </ol>
-<p><strong>เพิ่มและตั้งชื่อบอร์ด</strong></p>
+<p class="ws-phase"><strong>เพิ่มและตั้งชื่อบอร์ด</strong></p>
 <ol start="2" style="counter-reset: step 1">
 <li>ไปที่ <strong>Settings → Devices &amp; services</strong> จะเห็นการ์ดของบอร์ดที่ระบบค้นพบเองอยู่แล้ว ซึ่งมีของทุกกลุ่มในโซนเราปนกันอยู่</li>
 <li><strong>หาการ์ดที่ชื่อลงท้ายด้วยรหัสหกตัวท้ายของบอร์ด GoGo-IoT</strong> ที่จดไว้ (เช่น <code>a1b2c3</code>) ตรวจสีในชื่ออีกครั้ง แล้วกดเพิ่ม ไม่ต้องพิมพ์อะไร ไม่มีรหัสให้ใส่</li>
@@ -1255,12 +1300,12 @@ body {
 </blockquote>
 <p><a class="ws-back" href="#a3">↑ กลับไปที่ใบงาน</a></p>
 <h3 id="a3-2"><span class="sub-num">3.2</span>ทดสอบบอร์ดใน Home Assistant</h3>
-<p><strong>ทดสอบจากแล็ปท็อป</strong></p>
+<p class="ws-phase"><strong>ทดสอบจากแล็ปท็อป</strong></p>
 <ol>
 <li>ใน <strong>Settings → Devices &amp; services</strong> กดเข้าไปที่บอร์ด GoGo-IoT จะเห็น entity ชุดเดียวกับหน้าเว็บของบอร์ด ครอบบอร์ดแล้วดูว่าค่าความสว่างลดลง</li>
 <li>กดเข้าไปที่บอร์ดรีเลย์ กดสวิตช์ <strong>รีเลย์ (relay)</strong> เป็น On หลอดไฟต้องติด กด Off หลอดต้องดับ</li>
 </ol>
-<p><strong>ทดสอบจากโทรศัพท์</strong></p>
+<p class="ws-phase"><strong>ทดสอบจากโทรศัพท์</strong></p>
 <ol start="3" style="counter-reset: step 2">
 <li>สมาชิกอีกคนต่อโทรศัพท์เข้า WiFi <code>farm-laptop-สี</code> ของโซนเรา (<strong>ไม่ใช่อินเทอร์เน็ตมือถือ</strong> เพราะ Home Assistant อยู่ในแล็ปท็อป) เปิดที่อยู่เดียวกับที่จดไว้ตอนก่อนเริ่ม เข้าระบบด้วยชื่อผู้ใช้และรหัสผ่านเดียวกัน แล้วสั่งหลอดไฟจากโทรศัพท์ ทั้งสองจอต้องแสดงสถานะเดียวกัน</li>
 </ol>
@@ -1270,17 +1315,17 @@ body {
 <p><a class="ws-back" href="#a3">↑ กลับไปที่ใบงาน</a></p>
 <h3 id="a3-3"><span class="sub-num">3.3</span>เลือกเกณฑ์ความสว่าง</h3>
 <p><strong>สถานการณ์จำลอง</strong> เราต้องการให้ไฟสวนเปิดเมื่อมืดและปิดเมื่อสว่าง ในห้องทดลองนี้ ใช้หลอด LED แทนไฟสวน และใช้มือครอบบอร์ดเพื่อจำลองว่าฟ้ามืด ระบบจะอ่านค่าจาก <strong>เซนเซอร์แสง</strong> แล้วสั่ง <strong>หลอดไฟ</strong> ผ่านรีเลย์</p>
-<p><strong>อ่านค่าแสง</strong></p>
+<p class="ws-phase"><strong>อ่านค่าแสง</strong></p>
 <ol>
 <li>ในหน้าอุปกรณ์ของบอร์ด GoGo-IoT ดูค่าความสว่างเมื่อไม่มีสิ่งบัง แล้วใช้มือครอบบอร์ดให้มิดและรอจนค่าเปลี่ยน เปรียบเทียบกับค่าที่บันทึกในกิจกรรมที่ 1: ไม่บังแสง <input class="fld" type="text" data-k="s1.light.room" data-size="6" size="6" inputmode="decimal" autocomplete="off" spellcheck="false"> ใช้มือครอบ <input class="fld" type="text" data-k="s1.light.test" data-size="6" size="6" inputmode="decimal" autocomplete="off" spellcheck="false"> หากแสงในห้องเปลี่ยนไป ให้ใช้ค่าที่เห็นในขณะนี้เลือกเกณฑ์</li>
 </ol>
-<p><strong>เลือกเกณฑ์</strong></p>
+<p class="ws-phase"><strong>เลือกเกณฑ์</strong></p>
 <ol start="2" style="counter-reset: step 1">
 <li>เลือกค่ากลาง ๆ ระหว่างสองค่านั้นเป็น <strong>เกณฑ์</strong> ที่ถือว่ามืด เช่น เปิดโล่ง 80 ครอบ 7 เกณฑ์อาจเป็น 40 · ค่าเกณฑ์ของกลุ่ม <input class="fld" type="text" data-k="s1.light.on" data-size="4" size="4" inputmode="decimal" autocomplete="off" spellcheck="false"></li>
 </ol>
 <p><a class="ws-back" href="#a3">↑ กลับไปที่ใบงาน</a></p>
 <h3 id="a3-3b"><span class="sub-num">3.4</span>เขียนกฎเปิด–ปิดไฟ</h3>
-<p><strong>เขียนกฎจากเกณฑ์ที่เลือก</strong></p>
+<p class="ws-phase"><strong>เขียนกฎจากเกณฑ์ที่เลือก</strong></p>
 <ol>
 <li>เขียนกฎสองข้อเป็นประโยค <strong>"ถ้า ... ให้ ..."</strong> ข้อหนึ่งสำหรับตอนมืด อีกข้อสำหรับตอนสว่าง โดยใช้ค่าเกณฑ์ที่เพิ่งเลือก</li>
 </ol>
@@ -1293,33 +1338,33 @@ body {
 <h3 id="a3-3c"><span class="sub-num">3.5</span>สร้างและทดสอบกฎอัตโนมัติ</h3>
 <div class="video"><div class="video-frame"><iframe src="https://www.youtube-nocookie.com/embed/Q2D7aAni7Xo?rel=0" title="วิดีโอสาธิต" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div><p class="video-link"><a href="https://youtu.be/Q2D7aAni7Xo" target="_blank" rel="noopener">▶ เปิดวิดีโอใน YouTube</a></p></div>
 <p>วางเมาส์บนป้าย 📷 ท้ายข้อเพื่อดูภาพหน้าจอของขั้นนั้น (หน้าจอสัมผัสให้แตะ)</p>
-<p><strong>เปิดหน้าสร้างกฎ</strong></p>
+<p class="ws-phase"><strong>เปิดหน้าสร้างกฎ</strong></p>
 <ol>
 <li>เปิด <strong>Settings → Automations &amp; scenes</strong> <a class="glightbox" data-title="Settings → Automations &amp; scenes" href="../images/steps/s2-a5-01-settings-automations.png">📷</a></li>
 <li>กด <strong>+ Create automation</strong> <a class="glightbox" data-title="ปุ่ม Create automation" href="../images/steps/s2-a5-02-create-automation.png">📷</a> แล้วเลือก <strong>Create new automation</strong> <a class="glightbox" data-title="เลือก Create new automation" href="../images/steps/s2-a5-03-create-new.png">📷</a></li>
 </ol>
-<p><strong>ตั้งเหตุการณ์เปิดไฟ</strong></p>
+<p class="ws-phase"><strong>ตั้งเหตุการณ์เปิดไฟ</strong></p>
 <ol start="3" style="counter-reset: step 2">
 <li>ในส่วน <strong>When</strong> กด <strong>+ Add trigger</strong> <a class="glightbox" data-title="ส่วน When กด Add trigger" href="../images/steps/s2-a5-04-add-trigger.png">📷</a></li>
 <li>พิมพ์ <strong>ความสว่าง</strong> แล้วกดที่ <strong>ความสว่าง (light)</strong> <a class="glightbox" data-title="ค้นหา ความสว่าง แล้วกดที่ entity" href="../images/steps/s2-a5-05-search-light.png">📷</a></li>
 <li>เลือก <strong>Illuminance crossed threshold</strong> <a class="glightbox" data-title="เลือก Illuminance crossed threshold" href="../images/steps/s2-a5-06-pick-crossed-threshold.png">📷</a></li>
 <li><strong>Threshold type</strong> เลือก <strong>Below</strong> <a class="glightbox" data-title="Threshold type เลือก Below" href="../images/steps/s2-a5-07-threshold-below.png">📷</a> แล้วพิมพ์ค่าเกณฑ์ของกลุ่มในช่อง <strong>Below</strong> <a class="glightbox" data-title="พิมพ์ค่าเกณฑ์ในช่อง Below" href="../images/steps/s2-a5-08-value-50.png">📷</a></li>
 </ol>
-<p><strong>ตั้งคำสั่งและบันทึกกฎ</strong></p>
+<p class="ws-phase"><strong>ตั้งคำสั่งและบันทึกกฎ</strong></p>
 <ol start="7" style="counter-reset: step 6">
 <li>ในส่วน <strong>Then do</strong> กด <strong>+ Add action</strong> <a class="glightbox" data-title="ส่วน Then do กด Add action" href="../images/steps/s2-a5-09-add-action.png">📷</a></li>
 <li>พิมพ์ <strong>รีเลย์</strong> แล้วกดที่ <strong>รีเลย์ (relay)</strong> <a class="glightbox" data-title="ค้นหา รีเลย์ แล้วกดที่ entity" href="../images/steps/s2-a5-10-search-relay.png">📷</a> เลือก <strong>Turn on switch</strong> <a class="glightbox" data-title="เลือก Turn on switch" href="../images/steps/s2-a5-11-turn-on-switch.png">📷</a></li>
 <li>กด <strong>Save</strong> <a class="glightbox" data-title="ปุ่ม Save" href="../images/steps/s2-a5-12-save.png">📷</a> ตั้งชื่อ <code>มืด-เปิดไฟ</code> แล้วกด <strong>Save</strong> อีกครั้ง <a class="glightbox" data-title="ตั้งชื่อ automation แล้ว Save" href="../images/steps/s2-a5-13-save-name.png">📷</a> กฎที่เสร็จมี trigger หนึ่งข้อและ action หนึ่งข้อ <a class="glightbox" data-title="กฎที่สร้างเสร็จ" href="../images/steps/s2-a5-15-editor-done.png">📷</a></li>
 </ol>
-<p><strong>ทดสอบกฎเปิดไฟ</strong></p>
+<p class="ws-phase"><strong>ทดสอบกฎเปิดไฟ</strong></p>
 <ol start="10" style="counter-reset: step 9">
 <li>เริ่มจากเอามือออกและรอให้ค่าแสงสูงกว่าเกณฑ์ จากนั้นครอบบอร์ดให้มิด รอจนค่าบนหน้าจอต่ำกว่าเกณฑ์ โดยเผื่อเวลาตามที่วัดในข้อ 1.5 หลอดควรติดเอง เมื่อเอามือออก หลอดจะยังไม่ดับ เพราะยังไม่มีกฎสั่งปิด ให้สั่ง Off จากหน้าอุปกรณ์ก่อนทำข้อต่อไป</li>
 </ol>
-<p><strong>สร้างกฎปิดไฟ</strong></p>
+<p class="ws-phase"><strong>สร้างกฎปิดไฟ</strong></p>
 <ol start="11" style="counter-reset: step 10">
 <li>ทำซ้ำข้อ 2–9 แต่ <strong>Threshold type</strong> เลือก <strong>Above</strong> ใส่ <strong>ค่าเกณฑ์เดียวกัน</strong> และ action เลือก <strong>Turn off switch</strong> ตั้งชื่อ <code>สว่าง-ปิดไฟ</code> ในรายการ Automations ต้องเห็นกฎสองข้อพร้อมสวิตช์เปิดอยู่ <a class="glightbox" data-title="รายการ Automations" href="../images/steps/s2-a5-14-list.png">📷</a></li>
 </ol>
-<p><strong>ทดสอบทั้งสองกฎ</strong></p>
+<p class="ws-phase"><strong>ทดสอบทั้งสองกฎ</strong></p>
 <ol start="12" style="counter-reset: step 11">
 <li>เริ่มเมื่อค่าแสงสูงกว่าเกณฑ์ ใช้มือครอบจนค่าต่ำกว่าเกณฑ์และไฟติด แล้วเอามือออก รอจนค่าสูงกว่าเกณฑ์และไฟดับ ทำครบสามรอบโดยไม่กดสวิตช์เอง บันทึกจำนวนรอบที่ไฟติดและดับได้ตามกฎ <input class="fld" type="text" data-k="s1.auto.pass" data-size="2" size="2" inputmode="decimal" autocomplete="off" spellcheck="false"> จาก 3 รอบ</li>
 </ol>
@@ -1330,12 +1375,12 @@ body {
 <p><a class="ws-back" href="#a3">↑ กลับไปที่ใบงาน</a></p>
 <h3 id="a3-4"><span class="sub-num">3.6</span>โจทย์เสริม: ปิดไฟตามเวลา (ไม่บังคับทำ)</h3>
 <p>ทำข้อนี้เมื่อทดสอบกฎเปิด–ปิดไฟครบแล้วและยังมีเวลาเหลือ เราจะใช้เวลาเป็นตัวเริ่มคำสั่งปิดไฟ</p>
-<p><strong>ตั้งเวลาปิดไฟ</strong></p>
+<p class="ws-phase"><strong>ตั้งเวลาปิดไฟ</strong></p>
 <ol>
 <li>ดูนาฬิกาบนแล็ปท็อป เลือกเวลาประมาณ 2 นาทีข้างหน้า จดไว้ <input class="fld" type="text" data-k="s1.timer.at" data-size="5" size="5" autocomplete="off" spellcheck="false"> น.</li>
 <li>สร้าง automation ใหม่ trigger เลือก <strong>Time</strong> ตั้ง <strong>At</strong> เป็นเวลานั้น action ค้นหา <strong>รีเลย์ (relay)</strong> เลือก <strong>Turn off switch</strong> ตั้งชื่อ <code>ปิดไฟตามเวลา</code></li>
 </ol>
-<p><strong>ทดสอบและปิดกฎเสริม</strong></p>
+<p class="ws-phase"><strong>ทดสอบและปิดกฎเสริม</strong></p>
 <ol start="3" style="counter-reset: step 2">
 <li>สั่งหลอดไฟ <strong>On</strong> จากหน้าอุปกรณ์ แล้วรักษาแสงรอบบอร์ดให้คงที่ระหว่างรอ เพื่อไม่ให้กฎตามความสว่างสั่งงานแทรก ไฟต้องดับเองเมื่อถึงเวลา ผล <span class="fld-radio" data-k="s1.timer.ok"><label><input class="fld" type="radio" name="s1.timer.ok" data-k="s1.timer.ok" value="ดับตรงเวลา"> ดับตรงเวลา</label><label><input class="fld" type="radio" name="s1.timer.ok" data-k="s1.timer.ok" value="ไม่ดับ"> ไม่ดับ</label><label><input class="fld" type="radio" name="s1.timer.ok" data-k="s1.timer.ok" value="ไม่ได้ทำ"> ไม่ได้ทำ</label></span></li>
 <li><strong>ปิดการใช้งานกฎนี้</strong> ใน Settings → Automations &amp; scenes ทันที ไม่อย่างนั้นกฎจะทำงานทุกวันเวลาเดิม รวมถึงตอนที่รีเลย์ต่อกับปั๊มในช่วงที่ 2</li>

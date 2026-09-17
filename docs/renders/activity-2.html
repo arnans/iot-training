@@ -245,9 +245,13 @@ body {
   --ag-chip-border: #f2cf86;
   --ag-badge-bg: var(--ag-green);
   --ag-badge-fg: #ffffff;
-  --ag-step-bg: #e2eedb;
-  --ag-step-fg: var(--ag-green-deep);
+  --ag-step-bg: #e6e9e3;             /* steps: neutral, they are sequence not structure */
+  --ag-step-fg: #3f4d41;
   --ag-nav-bg: #f3f7ef;
+  --ag-panel-note: #eaf3fb;          /* explanation: sky */
+  --ag-panel-caution: #fdeeea;       /* caution: tomato */
+  --ag-th-fg: var(--ag-green-deep);
+  --ag-phase-fg: var(--ag-green-deep);
   --ag-rule: var(--ag-leaf);
   --ag-shadow: rgba(30, 42, 31, 0.14);
 }
@@ -429,6 +433,11 @@ body {
   font-variant-numeric: tabular-nums;
 }
 
+.md-typeset ol > li:has(.fld)::before {   /* a step that records something: the input colour */
+  background: var(--ag-chip-bg);
+  color: var(--ag-chip-fg);
+}
+
 .md-typeset ol ol > li::before {
   background: transparent;
   color: var(--md-typeset-a-color);
@@ -495,13 +504,40 @@ body {
 .md-typeset strong.role-tester   { background: var(--ag-tomato); }
 
 /* ---------- callouts (blockquotes) ---------- */
+/* callouts: explanation = sky, caution = tomato (hooks/callouts.py), record note = marigold */
 .md-typeset blockquote {
   margin: 1.4em 0;
   padding: 0.8em 1.2em;
-  border-left: 5px solid var(--ag-rule);
+  border-left: 5px solid var(--ag-sky);
   border-radius: 0 0.7em 0.7em 0;
-  background: var(--ag-panel);
+  background: var(--ag-panel-note);
   color: var(--md-typeset-color);
+}
+
+.md-typeset blockquote.ws-caution {
+  border-left-color: var(--ag-tomato);
+  background: var(--ag-panel-caution);
+}
+
+/* phase labels: the action groups of a procedure, scannable like a table of contents */
+.md-typeset p.ws-phase {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 1.9em 0 0.5em;
+  font-size: 0.88em;
+  color: var(--ag-phase-fg);
+}
+
+.md-typeset p.ws-phase::before {
+  content: "";
+  flex: none;
+  width: 1rem;
+  border-top: 2px solid var(--ag-leaf);
+}
+
+.md-typeset p.ws-phase strong {
+  font-weight: 600;
 }
 
 .md-typeset blockquote.note-record {
@@ -608,11 +644,12 @@ body {
 }
 
 .md-typeset table:not([class]) th {
-  background: var(--md-primary-fg-color);
-  color: #ffffff;
+  background: var(--ag-panel);
+  color: var(--ag-th-fg);
   font-family: "Prompt", "Segoe UI", sans-serif;
   font-weight: 600;
   border: 0;
+  border-bottom: 2px solid var(--ag-rule);
 }
 
 .md-typeset table:not([class]) tr:nth-child(even) td {
@@ -1115,9 +1152,13 @@ body {
   --ag-chip-border: #5a4620;
   --ag-badge-bg: var(--ag-leaf);
   --ag-badge-fg: #14201a;
-  --ag-step-bg: #263a2c;
-  --ag-step-fg: #bfe0a8;
+  --ag-step-bg: #2a332c;
+  --ag-step-fg: #c9d3c8;
   --ag-nav-bg: #172219;
+  --ag-panel-note: #17252f;
+  --ag-panel-caution: #33201b;
+  --ag-th-fg: var(--md-typeset-a-color);
+  --ag-phase-fg: var(--md-typeset-a-color);
   --ag-rule: #4e7d2c;
   --ag-shadow: rgba(0, 0, 0, 0.45);
   color-scheme: dark;
@@ -1145,9 +1186,13 @@ body {
   --ag-chip-border: #5a4620;
   --ag-badge-bg: var(--ag-leaf);
   --ag-badge-fg: #14201a;
-  --ag-step-bg: #263a2c;
-  --ag-step-fg: #bfe0a8;
+  --ag-step-bg: #2a332c;
+  --ag-step-fg: #c9d3c8;
   --ag-nav-bg: #172219;
+  --ag-panel-note: #17252f;
+  --ag-panel-caution: #33201b;
+  --ag-th-fg: var(--md-typeset-a-color);
+  --ag-phase-fg: var(--md-typeset-a-color);
   --ag-rule: #4e7d2c;
   --ag-shadow: rgba(0, 0, 0, 0.45);
   color-scheme: dark;
@@ -1234,7 +1279,7 @@ body {
 <h3 id="a2-1"><span class="sub-num">2.1</span>รู้จักบอร์ดรีเลย์</h3>
 <p>บอร์ดรีเลย์เป็นบอร์ดคนละตัวกับบอร์ดเซนเซอร์ มีคอนโทรลเลอร์ของตัวเอง (ESP32-C6) และมีขั้วต่อสองกลุ่ม ดูตำแหน่งขั้วต่อจากแผนภาพนี้ก่อนต่อสาย</p>
 <p><img alt="แผนภาพบอร์ดรีเลย์ ESP32-C6 ชี้ตำแหน่งขั้ว NO COM NC ทางซ้าย ขั้วไฟเข้า 7-60 Input และ GND ทางขวา ช่อง USB Type-C ปุ่มบนบอร์ด ไฟ LED และไฟแสดงสถานะรีเลย์" src="../images/relay-board-terminals.png" width="100%" /></p>
-<p><strong>สำรวจขั้วต่อบนบอร์ด</strong></p>
+<p class="ws-phase"><strong>สำรวจขั้วต่อบนบอร์ด</strong></p>
 <ol>
 <li>เทียบภาพกับบอร์ดจริง ให้ทุกคนชี้ขั้วที่ใช้ต่อหลอดไฟและขั้วที่ห้ามต่อสาย โดยดูตารางนี้ประกอบ</li>
 </ol>
@@ -1281,18 +1326,18 @@ body {
 </table></div>
 <p><a class="ws-back" href="#a2">↑ กลับไปที่ใบงาน</a></p>
 <h3 id="a2-1b"><span class="sub-num">2.2</span>อ่านชื่อและหมายเลข IP แล้วลองสั่งรีเลย์</h3>
-<p><strong>อ่านข้อมูลบอร์ด</strong></p>
+<p class="ws-phase"><strong>อ่านข้อมูลบอร์ด</strong></p>
 <ol>
 <li>เสียบสาย USB-C จากบอร์ดรีเลย์เข้าแล็ปท็อป (ยังไม่ต่ออย่างอื่นทั้งสิ้น)</li>
 <li>ทำเหมือนกิจกรรมที่ 1: <a href="https://web.esphome.io">web.esphome.io</a> → <strong>Connect</strong> → เลือกพอร์ต → <strong>Logs &amp; Console</strong> → กด <strong>Reset device</strong> ในหน้าเว็บ อ่านชื่อบอร์ด เช่น <code>gogo-relay-red-a1b2c3</code> และหมายเลข IP ตรวจว่าสีในชื่อตรงกับโซนของกลุ่ม แล้วจดไว้ ชื่อบอร์ด <input class="fld" type="text" data-k="board.relay.name" data-size="22" size="22" autocomplete="off" spellcheck="false"> IP <input class="fld" type="text" data-k="board.relay.ip" data-size="15" size="15" autocomplete="off" spellcheck="false"> ปิดหน้าต่าง</li>
 </ol>
-<p><strong>ทดสอบรีเลย์</strong></p>
+<p class="ws-phase"><strong>ทดสอบรีเลย์</strong></p>
 <ol start="3" style="counter-reset: step 2">
 <li>เปิดแท็บใหม่ไปที่ <code>http://</code> ตามด้วยหมายเลข IP ของบอร์ดรีเลย์ จะเห็น entity ชื่อ <strong>รีเลย์ (relay)</strong> เป็นสวิตช์</li>
 <li>กดให้เป็น On หนึ่งวินาที แล้ว Off ฟังเสียงคลิก และดูไฟ <strong>Relay Indicator</strong> ติดดับตาม</li>
 <li>กด <strong>ปุ่มบนบอร์ด</strong> หนึ่งครั้ง รีเลย์คลิกและสวิตช์บนหน้าเว็บเปลี่ยนตาม กดอีกครั้งให้กลับเป็น Off</li>
 </ol>
-<p><strong>เตรียมต่อวงจร</strong></p>
+<p class="ws-phase"><strong>เตรียมต่อวงจร</strong></p>
 <ol start="6" style="counter-reset: step 5">
 <li><strong>ถอดปลายสาย USB ออกจากแล็ปท็อป</strong> ปลายฝั่งบอร์ดเสียบไว้ตามเดิม ในข้อ 2.4 เราจะย้ายปลายนี้ไปเสียบช่อง USB ของกล่องจ่ายไฟ</li>
 </ol>
@@ -1301,7 +1346,7 @@ body {
 </blockquote>
 <p><a class="ws-back" href="#a2">↑ กลับไปที่ใบงาน</a></p>
 <h3 id="a2-2"><span class="sub-num">2.3</span>รู้จักกล่องจ่ายไฟและวงจรหลอดไฟ</h3>
-<p><strong>สำรวจขั้วต่อและทางเดินไฟ</strong></p>
+<p class="ws-phase"><strong>สำรวจขั้วต่อและทางเดินไฟ</strong></p>
 <p>ชุดทดลองใช้ <strong>charge controller เป็นกล่องจ่ายไฟ</strong> ให้หลอดไฟและบอร์ด</p>
 <ol>
 <li>หาจุดต่อทั้งสามตำแหน่งบนกล่อง: <strong>ขั้วคู่กลาง</strong> (สัญลักษณ์แบตเตอรี่) คือไฟเข้าจากอะแดปเตอร์ · <strong>ขั้วคู่ขวาสุด</strong> (สัญลักษณ์หลอดไฟ) คือไฟออก 12V ไปหลอดไฟ · <strong>ช่อง USB สองช่อง</strong> ใช้จ่ายไฟเลี้ยงบอร์ดรีเลย์ (อีกช่องเก็บไว้ให้บอร์ด GoGo-IoT ตอนท้ายวัน)</li>
@@ -1311,18 +1356,18 @@ body {
 <p><a class="ws-back" href="#a2">↑ กลับไปที่ใบงาน</a></p>
 <h3 id="a2-2b"><span class="sub-num">2.4</span>ต่อสายวงจรหลอดไฟ</h3>
 <p><strong>ยังไม่เสียบปลั๊กอะแดปเตอร์ระหว่างต่อสาย</strong> และตรวจว่าถอดสาย USB ของบอร์ดรีเลย์ออกจากแล็ปท็อปแล้ว ต่อสายตามแผนภาพ แล้วให้สมาชิกอีกคนช่วยตรวจในข้อ 6</p>
-<p><strong>ต่อสายไฟและหลอด LED</strong></p>
+<p class="ws-phase"><strong>ต่อสายไฟและหลอด LED</strong></p>
 <ol>
 <li>ต่อสายอะแดปเตอร์ 12V เข้า <strong>คู่กลาง</strong> (สัญลักษณ์แบตเตอรี่) ของ charge controller สายแดงเข้าบวก สายดำเข้าลบ อะแดปเตอร์นี้ทำหน้าที่แทนแบตเตอรี่ที่ชาร์จเต็ม</li>
 <li>ต่อสายของหลอด LED เข้าเต๋าต่อสาย โดยแยกสายบวก (มีแถบแดง) และสายลบไว้คนละจุด</li>
 <li>ต่อสายจากขั้วลบของ <strong>คู่ขวาสุด</strong> (สัญลักษณ์หลอดไฟ) บนกล่องจ่ายไฟ ไปยังจุดต่อสายลบของ LED ที่เต๋าต่อสาย</li>
 <li>ใช้สายสองเส้นต่อทางเดินไฟบวก: เส้นแรกจากขั้วบวกของ <strong>คู่ขวาสุด</strong> บนกล่องจ่ายไฟไปยัง <strong>COM</strong> ของรีเลย์ เส้นที่สองจาก <strong>NO</strong> ไปยังจุดต่อสายบวกของ LED ที่เต๋าต่อสาย</li>
 </ol>
-<p><strong>ต่อไฟเลี้ยงบอร์ด</strong></p>
+<p class="ws-phase"><strong>ต่อไฟเลี้ยงบอร์ด</strong></p>
 <ol start="5" style="counter-reset: step 4">
 <li>เสียบปลายสาย USB ของบอร์ดรีเลย์เข้าช่อง USB ของกล่องจ่ายไฟ โดยยังไม่เสียบปลั๊กอะแดปเตอร์</li>
 </ol>
-<p><strong>ตรวจวงจรก่อนจ่ายไฟ</strong></p>
+<p class="ws-phase"><strong>ตรวจวงจรก่อนจ่ายไฟ</strong></p>
 <ol start="6" style="counter-reset: step 5">
 <li>ตรวจว่าสกรูทุกตัวขันแน่น ไม่มีปลายสายเปลือยแตะกัน ไม่มีสายเข้าขั้ว <strong>NC</strong> และไม่มีสายเข้าขั้ว <strong>7-60 Input / GND</strong></li>
 </ol>
@@ -1332,12 +1377,12 @@ body {
 </blockquote>
 <p><a class="ws-back" href="#a2">↑ กลับไปที่ใบงาน</a></p>
 <h3 id="a2-2c"><span class="sub-num">2.5</span>จ่ายไฟและทดสอบหลอดไฟ</h3>
-<p><strong>จัดอุปกรณ์และจ่ายไฟ</strong></p>
+<p class="ws-phase"><strong>จัดอุปกรณ์และจ่ายไฟ</strong></p>
 <ol>
 <li>วางหลอด LED ให้เลนส์หันออกจากบอร์ด GoGo-IoT และห่างจากบอร์ดอย่างน้อย 30 ซม. ไม่อย่างนั้นแสงจากหลอดจะย้อนเข้าเซนเซอร์แสงของบอร์ด และทำให้ระบบสั่งเปิด–ปิดไฟสลับไปมาในกิจกรรมที่ 3</li>
 <li><strong>เสียบอะแดปเตอร์เข้ารางปลั๊ก</strong> จอ charge controller ควรติดและแสดงแรงดัน ไฟบนบอร์ดรีเลย์ควรติด รอ 30 วินาทีให้บอร์ดต่อ WiFi</li>
 </ol>
-<p><strong>ทดสอบการเปิด–ปิด</strong></p>
+<p class="ws-phase"><strong>ทดสอบการเปิด–ปิด</strong></p>
 <ol start="3" style="counter-reset: step 2">
 <li>เปิดหน้าเว็บของบอร์ดรีเลย์อีกครั้งที่หมายเลข IP เดิม (หากเปิดไม่ได้ ให้ทำตามคำแนะนำใต้ขั้นตอนนี้เพื่ออ่านหมายเลข IP ใหม่)</li>
 <li>กดสวิตช์เป็น On หลอดต้องติด กด Off หลอดต้องดับ ทำซ้ำสองสามครั้ง สังเกตว่าไฟ <strong>Relay Indicator</strong> ติดดับพร้อมหลอด การที่หลอดติดและดับตามคำสั่งยืนยันว่าอุปกรณ์ทำงานจริง ไม่ใช่เพียงสถานะบนหน้าจอเปลี่ยน</li>
@@ -1350,7 +1395,7 @@ body {
 <p id="a2-q"><strong>คำถามท้ายกิจกรรม</strong> หากนำแนวคิดนี้ไปควบคุมปั๊มน้ำ 220V ในฟาร์มจริง ต้องพิจารณาอุปกรณ์และความปลอดภัยเรื่องใดบ้าง และควรให้ใครเป็นผู้ติดตั้ง</p>
 <textarea class="fld fld-ta" data-k="s1.q2" rows="2"></textarea>
 
-<p><strong>เตรียมก่อนพัก</strong></p>
+<p class="ws-phase"><strong>เตรียมก่อนพัก</strong></p>
 <ol start="6" style="counter-reset: step 5">
 <li>สั่งสวิตช์รีเลย์เป็น <strong>Off</strong> จากหน้าเว็บของบอร์ด และดูว่าหลอดดับจริง</li>
 </ol><nav class="ws-pager" aria-label="หน้าก่อนหน้าและถัดไป"><a class="ws-prev" href="activity-1.html">← กิจกรรม 1 · อ่านค่าเซนเซอร์ (Sense)</a><a class="ws-next" href="activity-3.html">ถัดไป: กิจกรรม 3 · สร้างกฎควบคุมระบบ (Logic) →</a></nav>

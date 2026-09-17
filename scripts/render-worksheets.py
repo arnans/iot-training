@@ -66,14 +66,15 @@ FONTS = ("https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;7
          "&family=IBM+Plex+Mono:wght@400;600&display=swap")
 
 
-def _load_fields_hook():
-    spec = importlib.util.spec_from_file_location("fields_hook", ROOT / "hooks" / "fields.py")
+def _load_hook(name: str):
+    spec = importlib.util.spec_from_file_location(f"{name}_hook", ROOT / "hooks" / f"{name}.py")
     mod = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(mod)
     return mod
 
 
-FIELDS = _load_fields_hook()
+FIELDS = _load_hook("fields")
+STEPS = _load_hook("steps")
 
 
 # ---------------------------------------------------------------- styles
@@ -458,7 +459,7 @@ def render_page(src: str, slug: str, combined: bool) -> dict:
             "pymdownx.tasklist": {"custom_checkbox": True, "clickable_checkbox": True},
         },
     )
-    body = md.convert(text)
+    body = STEPS.continue_steps(md.convert(text))
 
     prefix = f"{slug}--" if combined else ""
     if prefix:  # ids (headings, and paragraphs given one with attr_list) must stay unique once four pages share one document

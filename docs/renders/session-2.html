@@ -313,6 +313,9 @@ body {
 }
 
 /* ---------- numbered steps ---------- */
+/* The badge comes from a CSS counter, which ignores <ol start="N">. hooks/steps.py adds
+   style="counter-reset: step N-1" to those lists so a procedure keeps counting past its
+   action-group headings. */
 .md-typeset ol {
   counter-reset: step;
   list-style: none;
@@ -1110,7 +1113,7 @@ body {
 <header class="ws-top">
   <div class="ws-top__inner">
     <span class="ws-brand">IoT ในฟาร์มอัจฉริยะ</span>
-    <span class="ws-draft">ฉบับร่างสำหรับทดลองใช้ · 2026-09-16</span>
+    <span class="ws-draft">ฉบับร่างสำหรับทดลองใช้ · 2026-09-17</span>
   </div>
 </header>
 <div class="ws-shell">
@@ -1152,7 +1155,7 @@ body {
 <li>ใช้หลอด LED แทนไฟสวน เปิดกฎ <code>มืด-เปิดไฟ</code> และ <code>สว่าง-ปิดไฟ</code> ไว้ทั้งคู่ ส่วนกฎ <code>ปิดไฟตามเวลา</code> (ถ้าสร้างไว้) ต้องปิดไว้ ขณะนี้เกณฑ์เปิดและปิดเป็นค่าเดียวกัน: <input class="fld" type="text" data-k="s1.light.on" data-size="4" size="4" inputmode="decimal" autocomplete="off" spellcheck="false"> หันหลอดออกจากเซนเซอร์ก่อนทดสอบ</li>
 </ol>
 <p><strong>สังเกตและนับการเปิด–ปิด</strong></p>
-<ol start="2">
+<ol start="2" style="counter-reset: step 1">
 <li>เลื่อนมือจนค่าแสงอยู่ใกล้เกณฑ์ แล้วขยับมือขึ้นลงช้า ๆ</li>
 <li>ให้สมาชิกอีกคนจับเวลา 1 นาที นับทุกครั้งที่ไฟเปลี่ยนจากติดเป็นดับหรือดับเป็นติด</li>
 <li>บันทึกก่อนแก้ <input class="fld" type="text" data-k="s2.chatter.before" data-size="3" size="3" inputmode="decimal" autocomplete="off" spellcheck="false"> ครั้งใน 1 นาที</li>
@@ -1167,13 +1170,13 @@ body {
 <li>เปิดกฎ <code>สว่าง-ปิดไฟ</code> ปรับ <strong>Above</strong> ให้สูงกว่าเกณฑ์เปิด แต่ต่ำกว่าค่าแสงเมื่อไม่บังเซนเซอร์ เช่น เปิดต่ำกว่า 40 ปิดสูงกว่า 60 เมื่อในห้องอ่านได้ 80</li>
 </ol>
 <p><strong>ทดสอบและบันทึกผล</strong></p>
-<ol start="2">
+<ol start="2" style="counter-reset: step 1">
 <li>กด <strong>Save</strong> แล้วขยับมือแบบเดิม 1 นาที</li>
 <li>บันทึกเกณฑ์ปิด <input class="fld" type="text" data-k="s2.light.off" data-size="4" size="4" inputmode="decimal" autocomplete="off" spellcheck="false"> และจำนวนครั้งหลังแก้ <input class="fld" type="text" data-k="s2.chatter.after" data-size="3" size="3" inputmode="decimal" autocomplete="off" spellcheck="false"> ครั้ง</li>
 </ol>
 <p>การเว้นระยะระหว่างเกณฑ์เปิดกับเกณฑ์ปิดเรียกว่า <strong>hysteresis</strong> เมื่อค่าอยู่ระหว่างสองเกณฑ์ อุปกรณ์จะคงสถานะเดิม</p>
 <p><strong>ตรวจการทำงานหลังแก้</strong></p>
-<ol start="4">
+<ol start="4" style="counter-reset: step 3">
 <li>ตรวจว่าขยับมือใกล้เกณฑ์เปิดแล้วไฟเปลี่ยนสถานะไม่เกิน 2 ครั้งใน 1 นาที จากนั้นครอบให้ไฟติดและเอามือออกให้ไฟดับ</li>
 </ol>
 <blockquote>
@@ -1189,7 +1192,7 @@ body {
 </ol>
 <p><strong>ทดสอบในและนอกช่วงเวลา</strong></p>
 <p><strong>ก่อนทดสอบแต่ละรอบ:</strong> เอามือออก รอให้ค่าแสงสูงกว่าเกณฑ์เปิด และสั่งรีเลย์ <strong>Off</strong> เพื่อให้เริ่มจากสภาพเดียวกัน</p>
-<ol start="2">
+<ol start="2" style="counter-reset: step 1">
 <li><strong>ทดสอบในเวลา:</strong> ตั้งช่วงที่ครอบคลุมเวลาปัจจุบัน แล้วครอบเซนเซอร์ ไฟควรติด</li>
 <li><strong>ทดสอบนอกเวลา:</strong> ตั้งช่วงที่ยังมาไม่ถึง แล้วครอบเซนเซอร์ ไฟควรไม่ติด เปิด <strong>Traces</strong> ดูว่ากฎหยุดที่ส่วนใด</li>
 </ol>
@@ -1197,7 +1200,7 @@ body {
 <p>Condition ตรวจเมื่อเกิด trigger เท่านั้น การถึงช่วงเวลาที่ตั้งไว้ยังไม่ทำให้กฎเริ่มเอง</p>
 </blockquote>
 <p><strong>บันทึกผล</strong></p>
-<ol start="4">
+<ol start="4" style="counter-reset: step 3">
 <li>รอบล่าสุดใน Traces หยุดที่ส่วนใด <input class="fld" type="text" data-k="s2.time.trace" data-size="16" size="16" autocomplete="off" spellcheck="false"></li>
 </ol>
 <h3 id="a4-3b">4.4 เพิ่ม Trigger ให้รองรับทุกกรณี ให้ไฟเปิดได้เมื่อถึงเวลา</h3>
@@ -1209,26 +1212,26 @@ body {
 </ol>
 <p>การทำให้ระบบทำงานได้สมบูรณ์นั้น จำเป็นต้องเพิ่ม Trigger เมื่อถึงเวลา 18.30 น. เพิ่มเติม</p>
 <p><strong>เพิ่มเหตุการณ์เวลาและเงื่อนไขแสง</strong></p>
-<ol start="3">
+<ol start="3" style="counter-reset: step 2">
 <li>ใน <code>มืด-เปิดไฟ</code> เพิ่ม <strong>When → + Add trigger → Time</strong> ตั้งเวลา <strong>At time</strong> ให้ตรงกับค่าเวลา <strong>After</strong> ใน 4.3</li>
 <li>เพิ่ม <strong>And if → + Add condition</strong> ค้นหาคำว่า <strong>ความสว่าง (light)</strong> ใส่ค่าเกณฑ์เปิดใน <strong>Below</strong></li>
 <li>ใน <code>สว่าง-ปิดไฟ</code> เพิ่ม <strong>Time trigger</strong> ตั้ง <strong>At</strong> ให้ตรงกับ <strong>Before</strong> ของกฎเปิดไฟ แล้วบันทึกทั้งสองกฎ</li>
 </ol>
 <p><strong>ทดสอบ</strong> จำลองฟ้ามืดก่อนเวลา แล้วไม่แตะเซนเซอร์อีก</p>
-<ol start="6">
+<ol start="6" style="counter-reset: step 5">
 <li>สั่งรีเลย์ <strong>Off</strong> แล้วครอบเซนเซอร์ให้มืดค้างไว้</li>
 <li>แก้ <strong>After</strong> และ <strong>At time</strong> ของกฎเปิดไฟเป็นอีก 2 นาทีข้างหน้า ส่วน <strong>Before</strong> และ <strong>At time</strong> ของกฎปิดไฟให้ช้ากว่านั้น 1 นาที กด <strong>Save</strong> ทั้งสองกฎ</li>
 <li>รอดู ไฟต้องติดเมื่อถึงเวลาเปิด และดับเมื่อถึงเวลาปิด</li>
 </ol>
 <p><strong>บันทึกผล</strong></p>
-<ol start="9">
+<ol start="9" style="counter-reset: step 8">
 <li>ถ้าแสงมืดก่อนเวลาที่กำหนด เมื่อถึงเวลาแล้วไฟติดหรือไม่ <span class="fld-radio" data-k="s2.time.fixed"><label><input class="fld" type="radio" name="s2.time.fixed" data-k="s2.time.fixed" value="ติด"> ติด</label><label><input class="fld" type="radio" name="s2.time.fixed" data-k="s2.time.fixed" value="ไม่ติด"> ไม่ติด</label></span></li>
 </ol>
 <blockquote>
 <p>หลาย trigger หมายถึงเกิดเหตุการณ์ใดเหตุการณ์หนึ่งก็เริ่มกฎได้ แต่ condition ทุกข้อยังต้องเป็นจริง</p>
 </blockquote>
 <p><strong>อธิบายเหตุผล</strong></p>
-<ol start="10">
+<ol start="10" style="counter-reset: step 9">
 <li>เมื่อเพิ่ม trigger เวลาแล้ว ทำไมยังต้องตรวจค่าความสว่างในส่วน And if อีก <input class="fld" type="text" data-k="s2.time.why" data-size="30" size="30" autocomplete="off" spellcheck="false"></li>
 </ol>
 <p><a class="ws-back" href="#a4">↑ กลับไปที่ใบงาน</a></p>
@@ -1239,11 +1242,11 @@ body {
 <li>ใน <code>มืด-เปิดไฟ</code> เพิ่ม <strong>Action → Send a persistent notification</strong> ใส่ข้อความ เช่น <code>ไฟสวนเปิดแล้ว</code> แล้วกด <strong>Save</strong> ข้อความจะอยู่ที่ไอคอนกระดิ่ง</li>
 </ol>
 <p><strong>ทดสอบการแจ้งเตือน</strong></p>
-<ol start="2">
+<ol start="2" style="counter-reset: step 1">
 <li>ตั้งช่วง <strong>After–Before</strong> ให้ครอบคลุมเวลาปัจจุบัน เริ่มจากไฟดับและค่าแสงสูงกว่าเกณฑ์เปิด แล้วครอบเซนเซอร์ ไฟต้องติดและมีข้อความแจ้งเตือน</li>
 </ol>
 <p><strong>(ไม่บังคับทำ) ลองแจ้งเตือนทางโทรศัพท์</strong></p>
-<ol start="3">
+<ol start="3" style="counter-reset: step 2">
 <li>ถ้าเข้า Home Assistant ผ่านแอป Companion ไว้แล้ว ลองใช้ <strong>Send a notification via mobile_app</strong> เพื่อส่งข้อความไปยังโทรศัพท์</li>
 </ol>
 <p><a class="ws-back" href="#a4">↑ กลับไปที่ใบงาน</a></p>
@@ -1255,12 +1258,12 @@ body {
 <li><strong>ถอดอะแดปเตอร์ออกจากปลั๊ก</strong> ก่อนแก้สาย ถอดสายหลอด LED ที่เต๋าต่อสายและเก็บหลอดไว้</li>
 </ol>
 <p><strong>ต่อปั๊มและจัดอุปกรณ์</strong></p>
-<ol start="3">
+<ol start="3" style="counter-reset: step 2">
 <li>ต่อสายปั๊มแทนสายหลอด: สายบวกเข้าจุดที่มาจาก <strong>NO</strong> และสายลบเข้าจุดลบ ขันสกรูให้แน่น ไม่มีสายเข้า <strong>NC</strong></li>
 <li>วางปั๊มบนโต๊ะห่างจากบอร์ดและแล็ปท็อป เติมน้ำในแก้วครึ่งแก้วแล้ววางสวิตช์ลูกลอยลงไปเหมือนช่วงที่ 1 วางแก้วให้ห่างจากบอร์ด</li>
 </ol>
 <p><strong>จ่ายไฟและทดสอบ</strong></p>
-<ol start="5">
+<ol start="5" style="counter-reset: step 4">
 <li>เสียบอะแดปเตอร์ รอให้บอร์ดเชื่อมต่อ สถานะลูกลอยต้องแสดง <strong>Wet</strong></li>
 <li>สั่งปั๊ม <strong>On</strong> ประมาณ 10 วินาที แล้ว <strong>Off</strong> ฟังเสียงและแตะตัวปั๊ม ปั๊มต้องเดินแล้วหยุดตามคำสั่ง</li>
 <li>บันทึกเวลาปัจจุบัน <input class="fld" type="text" data-k="s2.pump_back_t" data-size="5" size="5" autocomplete="off" spellcheck="false"> น. เดี๋ยวจะใช้แยกแยะเหตุการณ์ใน Log เมื่ออ่านกราฟในกิจกรรมช่วงที่ 3</li>
@@ -1277,17 +1280,17 @@ body {
 <li>เลือกค่าเกณฑ์ที่แยกระหว่างดินแห้งกับดินเปียก ค่าที่เลือก = <input class="fld" type="text" data-k="s1.hum.room" data-size="6" size="6" inputmode="decimal" autocomplete="off" spellcheck="false"> % </li>
 </ol>
 <p><strong>สร้างกฎเปิด–ปิดปั๊ม</strong></p>
-<ol start="2">
+<ol start="2" style="counter-reset: step 1">
 <li>สร้าง <code>รดน้ำ - เปิดปั๊ม</code> เลือก <strong>Trigger → Entity → Numeric state → ความชื้นอากาศ</strong> ตั้ง <strong>Below</strong> สูงกว่าค่าห้องเล็กน้อย และ <strong>Action → Switch → Turn on</strong> รีเลย์ของกลุ่ม</li>
 <li>สร้าง <code>รดน้ำ - ปิดปั๊ม</code> ด้วยวิธีเดียวกัน ตั้ง <strong>Above</strong> สูงกว่าเกณฑ์เปิด 5–10 จุดเปอร์เซ็นต์ และ <strong>Action → Switch → Turn off</strong> บันทึกทั้งสองกฎ</li>
 </ol>
 <p><strong>ทดสอบการทำงาน</strong></p>
-<ol start="4">
+<ol start="4" style="counter-reset: step 3">
 <li>สั่งปั๊ม <strong>On</strong> จากหน้าอุปกรณ์ เป่าลมจนความชื้นสูงกว่าเกณฑ์ปิด ปั๊มต้องหยุด</li>
 <li>รอให้ค่าลดต่ำกว่าเกณฑ์เปิด ปั๊มต้องกลับมาเดิน ถ้าค่าไม่ข้ามเกณฑ์ ให้ปรับเกณฑ์ให้อยู่ในช่วงที่ทดลองได้</li>
 </ol>
 <p><strong>บันทึกผล</strong></p>
-<ol start="6">
+<ol start="6" style="counter-reset: step 5">
 <li>ลองแยกค่าเกณฑ์ความชื้นอากาศที่ใช้เปิดและปิดปั๊ม ตามหลักการ Hysteresis เปิดปั๊มเมื่อต่ำกว่า <input class="fld" type="text" data-k="s2.hum.on" data-size="4" size="4" inputmode="decimal" autocomplete="off" spellcheck="false"> % ปิดปั๊มเมื่อสูงกว่า <input class="fld" type="text" data-k="s2.hum.off" data-size="4" size="4" inputmode="decimal" autocomplete="off" spellcheck="false"> % </li>
 </ol>
 <p><a class="ws-back" href="#a4">↑ กลับไปที่ใบงาน</a></p>
@@ -1301,23 +1304,23 @@ body {
 <li>ตั้งชื่อ <code>Pump Auto Mode</code> แล้วกด <strong>Create</strong></li>
 </ol>
 <p><strong>เปิดใช้แดชบอร์ดเพื่อดูสวิตช์ใหม่นี้</strong></p>
-<ol start="4">
+<ol start="4" style="counter-reset: step 3">
 <li>เปิด <strong>Settings → Dashboards</strong> กด <strong>+ Add dashboard</strong></li>
 <li>เลือก <strong>Overview (Legacy)</strong> ตั้งชื่อว่า <code>Farm Dashboard</code> หรือชื่ออื่นที่ต้องการ ขอให้แน่ใจว่าเปิด <strong>Add to sidebar</strong> ไว้</li>
 <li>เปิด Dashboard ใหม่นี้จากเมนูด้านซ้าย สังเกตดูว่ามีอะไรบ้าง หา Toggle ชื่อ <code>Pump Auto Mode</code> แล้วลองกดเปิด–ปิด</li>
 </ol>
 <p><strong>แก้ไข Automation เพื่อให้กฎรดน้ำตรวจโหมดก่อนสั่งปั๊ม</strong></p>
-<ol start="7">
+<ol start="7" style="counter-reset: step 6">
 <li>เปิด <strong>Settings → Automations &amp; scenes</strong> เลือก <code>รดน้ำ - เปิดปั๊ม</code></li>
 <li>ในส่วน <strong>And if</strong> กด <strong>+ Add condition</strong> พิมพ์ในช่องค้นหา <code>Pump Auto Mode</code> แล้วเลือกเงื่อนไข <strong>Switch is on</strong>  กด <strong>Save</strong></li>
 </ol>
 <p><strong>ทดสอบ</strong> ใช้วิธีเป่าลมแบบเดียวกับ 4.7 และสั่งรีเลย์ <strong>Off</strong> ก่อนทุกรอบ</p>
-<ol start="9">
+<ol start="9" style="counter-reset: step 8">
 <li>ทดสอบโหมด Manual - ให้ปิด <code>Pump Auto Mode</code> เป่าลมให้ความชื้นสูงกว่าเกณฑ์เปิด แล้วหยุดเป่า เมื่อค่าลดต่ำกว่าเกณฑ์ ปั๊มเริ่มเองหรือไม่ <span class="fld-radio" data-k="s2.mode.off"><label><input class="fld" type="radio" name="s2.mode.off" data-k="s2.mode.off" value="ไม่เริ่ม"> ไม่เริ่ม</label><label><input class="fld" type="radio" name="s2.mode.off" data-k="s2.mode.off" value="เริ่ม"> เริ่ม</label></span> ระหว่างนี้สั่งรีเลย์ <strong>On–Off</strong> จากหน้าอุปกรณ์ ปั๊มยังเดินและหยุดตามมือเรา นี่คือโหมด Manual</li>
 <li>ทดสอบโหมด Auto - เปิด <code>Pump Auto Mode</code> แล้วทำซ้ำ ปั๊มเริ่มเองหรือไม่ <span class="fld-radio" data-k="s2.mode.on"><label><input class="fld" type="radio" name="s2.mode.on" data-k="s2.mode.on" value="เริ่ม"> เริ่ม</label><label><input class="fld" type="radio" name="s2.mode.on" data-k="s2.mode.on" value="ไม่เริ่ม"> ไม่เริ่ม</label></span></li>
 </ol>
 <p><strong>เตรียมระบบสำหรับกิจกรรมถัดไป</strong></p>
-<ol start="11">
+<ol start="11" style="counter-reset: step 10">
 <li>ก่อนทำกิจกรรมถัดไป ให้ <code>Pump Auto Mode</code> <strong>เปิดอยู่</strong> กฎรดน้ำสองกฎ <strong>เปิดอยู่</strong> และกฎไฟสวนกับกฎตั้งเวลา <strong>ปิดไว้</strong></li>
 </ol>
 <p><a class="ws-back" href="#a4">↑ กลับไปที่ใบงาน</a></p>
@@ -1374,12 +1377,12 @@ body {
 <li>ยกลูกลอยพ้นน้ำ รอให้แสดง <strong>Dry</strong> แล้วสั่งปั๊ม On</li>
 </ol>
 <p><strong>สังเกตผล</strong></p>
-<ol start="2">
+<ol start="2" style="counter-reset: step 1">
 <li>สังเกตว่าปั๊มยังเดิน (ฟังเสียง) เพราะกฎเดิมดูความชื้นแต่ไม่ตรวจระดับน้ำ จากนั้นสั่ง Off ก่อนแก้กฎ</li>
 </ol>
 <p><strong>สร้างกฎป้องกัน</strong></p>
 <p>หยุดปั๊มเมื่อน้ำต่ำ และหยุดด้วยหากมีคนสั่ง On ขณะน้ำต่ำ</p>
-<ol start="3">
+<ol start="3" style="counter-reset: step 2">
 <li>สร้างกฎใหม่ เพิ่ม <strong>Trigger → Entity → State</strong> เลือกลูกลอย <strong>To: Dry</strong></li>
 <li>เพิ่ม trigger อีกข้อ เลือกสวิตช์รีเลย์ <strong>To: On</strong></li>
 <li>เพิ่ม <strong>Condition → Entity → State</strong> เลือกลูกลอย <strong>Dry</strong></li>
@@ -1387,16 +1390,16 @@ body {
 <li>เปิดกฎ <code>รดน้ำ - เปิดปั๊ม</code> เพิ่ม condition ให้ลูกลอยเป็น <strong>Wet</strong> ก่อนเริ่มปั๊ม แล้วบันทึก</li>
 </ol>
 <p><strong>ทดสอบให้ผ่านทั้งสองแบบ</strong></p>
-<ol start="8">
+<ol start="8" style="counter-reset: step 7">
 <li>ลูกลอยเป็น Dry แล้วสั่ง On ทั้งจากปุ่มบนบอร์ดและหน้าอุปกรณ์ ปั๊มต้องหยุดและมีแจ้งเตือน</li>
 <li>ลูกลอยเป็น Wet สั่งปั๊มเดิน แล้วยกลูกลอยให้เป็น Dry ปั๊มต้องหยุดเช่นกัน</li>
 </ol>
 <p><strong>คืนสภาพลูกลอย</strong></p>
-<ol start="10">
+<ol start="10" style="counter-reset: step 9">
 <li>วางลูกลอยกลับในน้ำ การกลับเป็น Wet อย่างเดียวไม่ได้สั่งปั๊มให้เริ่มใหม่</li>
 </ol>
 <p><strong>บันทึกผล</strong></p>
-<ol start="11">
+<ol start="11" style="counter-reset: step 10">
 <li>
 <p>จำลองปัญหาสำเร็จหรือไม่ <span class="fld-radio" data-k="s2.sab.1.ok"><label><input class="fld" type="radio" name="s2.sab.1.ok" data-k="s2.sab.1.ok" value="สำเร็จ"> สำเร็จ</label><label><input class="fld" type="radio" name="s2.sab.1.ok" data-k="s2.sab.1.ok" value="ไม่สำเร็จ"> ไม่สำเร็จ</label></span> · เกิดอะไรขึ้น <input class="fld" type="text" data-k="s2.sab.1.what" data-size="24" size="24" autocomplete="off" spellcheck="false"></p>
 <p>แก้ได้แล้วหรือไม่ <span class="fld-radio" data-k="s2.sab.1.fixed"><label><input class="fld" type="radio" name="s2.sab.1.fixed" data-k="s2.sab.1.fixed" value="แก้ได้"> แก้ได้</label><label><input class="fld" type="radio" name="s2.sab.1.fixed" data-k="s2.sab.1.fixed" value="ยังไม่ได้"> ยังไม่ได้</label></span> · หมายเหตุ <input class="fld" type="text" data-k="s2.sab.1.note" data-size="24" size="24" autocomplete="off" spellcheck="false"></p>
@@ -1412,11 +1415,11 @@ body {
 <li>วางบอร์ด GoGo-IoT ให้แตะตัวปั๊ม หรือวางบนพื้นเดียวกันชิดปั๊ม ให้รับแรงสั่นได้ ลองสั่ง On–Off ตรวจว่า <code>ปั๊มกำลังทำงาน</code> เปลี่ยนตาม หากไม่เปลี่ยน ให้ขยับตำแหน่งหรือเพิ่ม <strong>ความไวตรวจจับปั๊ม</strong></li>
 </ol>
 <p><strong>จำลองปัญหา</strong></p>
-<ol start="2">
+<ol start="2" style="counter-reset: step 1">
 <li>สั่ง Off และถอดปลั๊กอะแดปเตอร์ก่อนถอดสายปั๊มที่จุดต่อจาก NO เก็บปลายสายไม่ให้แตะขั้วอื่น เสียบปลั๊ก รอให้บอร์ดเชื่อมต่อ แล้วสั่ง On</li>
 </ol>
 <p><strong>สังเกตผล</strong></p>
-<ol start="3">
+<ol start="3" style="counter-reset: step 2">
 <li>สังเกตว่ารีเลย์เป็น On แต่ปั๊มเงียบและไม่สั่น สถานะรีเลย์ยืนยันได้เพียงว่าสวิตช์เปิดอยู่</li>
 </ol>
 <p><strong>สร้างกฎป้องกัน</strong></p>
@@ -1439,22 +1442,22 @@ body {
 </tr>
 </tbody>
 </table></div>
-<ol start="4">
+<ol start="4" style="counter-reset: step 3">
 <li>สร้าง automation ชื่อ <code>Fail-safe - สั่งแล้วไม่เดิน</code></li>
 <li>Trigger: <strong>Entity → State</strong> เลือกสวิตช์ปั๊ม ช่อง <strong>To</strong> ใส่ <code>On</code> ช่อง <strong>For</strong> ใส่ <strong>15 วินาที</strong> (สั้นกว่ากฎจำกัดเวลาที่จะสร้างในข้อ 5.4 จึงแยกได้ว่ากฎใดเป็นผู้ตัด)</li>
 <li>Condition: <strong>Entity → State</strong> เลือก <code>ปั๊มกำลังทำงาน</code> สถานะ <strong>Off</strong></li>
 <li>Action: <strong>Switch → Turn off</strong> สวิตช์ปั๊ม และแจ้งเตือน <code>สั่งปั๊มแล้วแต่ไม่มีการสั่น ตรวจสายและระดับน้ำ</code></li>
 </ol>
 <p><strong>ทดสอบกฎ</strong></p>
-<ol start="8">
+<ol start="8" style="counter-reset: step 7">
 <li>เมื่อสายยังถอดอยู่ สั่ง On กฎต้องปิดรีเลย์และแจ้งเตือนหลังครบประมาณ 15 วินาที</li>
 </ol>
 <p><strong>ต่อสายกลับและทดสอบ</strong></p>
-<ol start="9">
+<ol start="9" style="counter-reset: step 8">
 <li>สั่ง Off ถอดปลั๊ก แล้วต่อสายกลับ ขันให้แน่น เสียบปลั๊กและรอให้บอร์ดพร้อม สั่ง On อีกครั้ง ปั๊มต้องเดินผ่าน 15 วินาทีได้ ถ้าถูกตัด ให้ตรวจตำแหน่งบอร์ดและความไว</li>
 </ol>
 <p><strong>บันทึกผล</strong></p>
-<ol start="10">
+<ol start="10" style="counter-reset: step 9">
 <li>
 <p>จำลองปัญหาสำเร็จหรือไม่ <span class="fld-radio" data-k="s2.sab.2.ok"><label><input class="fld" type="radio" name="s2.sab.2.ok" data-k="s2.sab.2.ok" value="สำเร็จ"> สำเร็จ</label><label><input class="fld" type="radio" name="s2.sab.2.ok" data-k="s2.sab.2.ok" value="ไม่สำเร็จ"> ไม่สำเร็จ</label></span> · เกิดอะไรขึ้น <input class="fld" type="text" data-k="s2.sab.2.what" data-size="24" size="24" autocomplete="off" spellcheck="false"></p>
 <p>แก้ได้แล้วหรือไม่ <span class="fld-radio" data-k="s2.sab.2.fixed"><label><input class="fld" type="radio" name="s2.sab.2.fixed" data-k="s2.sab.2.fixed" value="แก้ได้"> แก้ได้</label><label><input class="fld" type="radio" name="s2.sab.2.fixed" data-k="s2.sab.2.fixed" value="ยังไม่ได้"> ยังไม่ได้</label></span> · หมายเหตุ <input class="fld" type="text" data-k="s2.sab.2.note" data-size="24" size="24" autocomplete="off" spellcheck="false"></p>
@@ -1472,26 +1475,26 @@ body {
 <p>กฎ <code>Fail-safe - สั่งแล้วไม่เดิน</code> จากข้อ 5.2 อาจหยุดปั๊มก่อนระบบตรวจพบว่าบอร์ดหาย ให้ดูชื่อกฎในแจ้งเตือนหรือ <strong>Traces</strong> อย่าตัดสินจากการหยุดของปั๊มอย่างเดียว</p>
 </blockquote>
 <p><strong>เลือกวิธีรับมือ</strong></p>
-<ol start="2">
+<ol start="2" style="counter-reset: step 1">
 <li>หากไม่ได้รับค่าความชื้น กลุ่มคิดว่าปั๊มควรเปิด ปิด หรือคงสถานะเดิม เพราะอะไร</li>
 </ol>
 <p><strong>บันทึกผล</strong></p>
-<ol start="3">
+<ol start="3" style="counter-reset: step 2">
 <li>กลุ่มเลือกให้ปั๊ม <span class="fld-radio" data-k="s2.fs3.choice"><label><input class="fld" type="radio" name="s2.fs3.choice" data-k="s2.fs3.choice" value="เปิด"> เปิด</label><label><input class="fld" type="radio" name="s2.fs3.choice" data-k="s2.fs3.choice" value="ปิด"> ปิด</label><label><input class="fld" type="radio" name="s2.fs3.choice" data-k="s2.fs3.choice" value="คงสถานะเดิม"> คงสถานะเดิม</label></span> เพราะ <input class="fld" type="text" data-k="s2.fs3.why" data-size="30" size="30" autocomplete="off" spellcheck="false"></li>
 </ol>
 <p><strong>สร้างกฎหยุดปั๊มเมื่อเซนเซอร์หาย</strong></p>
 <p>กฎตัวอย่างนี้หยุดปั๊มเพื่อป้องกันการสูบน้ำต่อโดยไม่มีข้อมูล</p>
-<ol start="4">
+<ol start="4" style="counter-reset: step 3">
 <li>สร้าง automation ชื่อ <code>Fail-safe - เซนเซอร์หาย</code></li>
 <li>Trigger: <strong>Entity → State</strong> เลือกความชื้นอากาศ ช่อง <strong>To</strong> พิมพ์ <code>unavailable</code> แล้วเพิ่ม trigger อีกอันแบบเดียวกันแต่ To เป็น <code>unknown</code></li>
 <li>Action: <strong>Switch → Turn off</strong> สวิตช์ปั๊ม และแจ้งเตือน <code>ไม่ได้รับค่าจากเซนเซอร์ หยุดปั๊มเพื่อความปลอดภัย</code></li>
 </ol>
 <p><strong>ทดสอบกฎ</strong></p>
-<ol start="7">
+<ol start="7" style="counter-reset: step 6">
 <li>รอให้บอร์ดกลับมาแสดงค่า แล้วสั่งปั๊ม On และปิดบอร์ดอีกครั้ง ตรวจใน <strong>Traces</strong> ว่ากฎ <code>Fail-safe - เซนเซอร์หาย</code> ทำงานเมื่อค่าเป็น unavailable และสั่ง Off พร้อมแจ้งเตือน แม้กฎอื่นจะหยุดปั๊มไปก่อน จากนั้นเปิดบอร์ดกลับ</li>
 </ol>
 <p><strong>บันทึกผล</strong></p>
-<ol start="8">
+<ol start="8" style="counter-reset: step 7">
 <li>
 <p>จำลองปัญหาสำเร็จหรือไม่ <span class="fld-radio" data-k="s2.sab.3.ok"><label><input class="fld" type="radio" name="s2.sab.3.ok" data-k="s2.sab.3.ok" value="สำเร็จ"> สำเร็จ</label><label><input class="fld" type="radio" name="s2.sab.3.ok" data-k="s2.sab.3.ok" value="ไม่สำเร็จ"> ไม่สำเร็จ</label></span> · เกิดอะไรขึ้น <input class="fld" type="text" data-k="s2.sab.3.what" data-size="24" size="24" autocomplete="off" spellcheck="false"></p>
 <p>แก้ได้แล้วหรือไม่ <span class="fld-radio" data-k="s2.sab.3.fixed"><label><input class="fld" type="radio" name="s2.sab.3.fixed" data-k="s2.sab.3.fixed" value="แก้ได้"> แก้ได้</label><label><input class="fld" type="radio" name="s2.sab.3.fixed" data-k="s2.sab.3.fixed" value="ยังไม่ได้"> ยังไม่ได้</label></span> · หมายเหตุ <input class="fld" type="text" data-k="s2.sab.3.note" data-size="24" size="24" autocomplete="off" spellcheck="false"></p>
@@ -1507,21 +1510,21 @@ body {
 <p>ถ้าปั๊มถูกตัดที่ราว 15 วินาที แปลว่ากฎ <code>Fail-safe - สั่งแล้วไม่เดิน</code> จากข้อ 5.2 ทำงาน ให้ตรวจตำแหน่งบอร์ดและ <strong>ความไวตรวจจับปั๊ม</strong> แล้วจำลองใหม่</p>
 </blockquote>
 <p><strong>สังเกตผล</strong></p>
-<ol start="2">
+<ol start="2" style="counter-reset: step 1">
 <li>สังเกตว่าปั๊มยังเดิน เพราะความชื้นไม่ข้ามเกณฑ์ปิด สั่ง Off ก่อนสร้างกฎ</li>
 </ol>
 <p><strong>สร้างกฎจำกัดเวลา</strong></p>
-<ol start="3">
+<ol start="3" style="counter-reset: step 2">
 <li>สร้าง automation ชื่อ <code>Fail-safe - จำกัดเวลาเปิดปั๊ม</code></li>
 <li>Trigger: <strong>Entity → State</strong> เลือกสวิตช์ปั๊ม ช่อง <strong>To</strong> เลือก <strong>On</strong> ช่อง <strong>For</strong> ตั้ง <strong>30 วินาที</strong> (ใช้สำหรับการทดลองนี้ และยาวกว่ากฎสั่งแล้วไม่เดิน 15 วินาที)</li>
 <li>Action: <strong>Switch → Turn off</strong> สวิตช์ปั๊ม และแจ้งเตือน <code>ปั๊มเดินเกินเวลา ตัดการทำงานแล้ว โปรดตรวจสอบ</code></li>
 </ol>
 <p><strong>ทดสอบการหยุดตามเวลา</strong></p>
-<ol start="6">
+<ol start="6" style="counter-reset: step 5">
 <li>กดปุ่มให้ปั๊มเดินอีกครั้ง ปั๊มต้องหยุดเองที่ราว 30 วินาที พร้อมข้อความแจ้งเตือน</li>
 </ol>
 <p><strong>บันทึกผล</strong></p>
-<ol start="7">
+<ol start="7" style="counter-reset: step 6">
 <li>
 <p>จำลองปัญหาสำเร็จหรือไม่ <span class="fld-radio" data-k="s2.sab.4.ok"><label><input class="fld" type="radio" name="s2.sab.4.ok" data-k="s2.sab.4.ok" value="สำเร็จ"> สำเร็จ</label><label><input class="fld" type="radio" name="s2.sab.4.ok" data-k="s2.sab.4.ok" value="ไม่สำเร็จ"> ไม่สำเร็จ</label></span> · เกิดอะไรขึ้น <input class="fld" type="text" data-k="s2.sab.4.what" data-size="24" size="24" autocomplete="off" spellcheck="false"></p>
 <p>แก้ได้แล้วหรือไม่ <span class="fld-radio" data-k="s2.sab.4.fixed"><label><input class="fld" type="radio" name="s2.sab.4.fixed" data-k="s2.sab.4.fixed" value="แก้ได้"> แก้ได้</label><label><input class="fld" type="radio" name="s2.sab.4.fixed" data-k="s2.sab.4.fixed" value="ยังไม่ได้"> ยังไม่ได้</label></span> · หมายเหตุ <input class="fld" type="text" data-k="s2.sab.4.note" data-size="24" size="24" autocomplete="off" spellcheck="false"></p>

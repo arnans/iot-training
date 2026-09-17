@@ -1,4 +1,4 @@
-// Check source numbering and the actual list starts emitted by the renderer.
+// Check source numbering, the list starts emitted by the renderer, and the counter seed the CSS needs to display them.
 // Usage: node scripts/test_worksheet_steps.cjs /path/to/node_modules/jsdom
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
@@ -17,7 +17,11 @@ for (const session of [1, 2, 3]) {
     let next = 1;
     for (let el = heading.nextElementSibling; el && !/^H[23]$/.test(el.tagName); el = el.nextElementSibling) {
       if (el.tagName !== 'OL') continue;
-      assert.equal(Number(el.getAttribute('start') || 1), next, `${id}: rendered numbering restarts`);
+      const start = Number(el.getAttribute('start') || 1);
+      assert.equal(start, next, `${id}: rendered numbering restarts`);
+      // extra.css draws the step number from a CSS counter, which ignores start=; hooks/steps.py must seed it
+      const expectReset = start > 1 ? `step ${start - 1}` : '';
+      assert.equal(el.style.getPropertyValue('counter-reset'), expectReset, `${id}: displayed number does not honour start=${start}`);
       next += [...el.children].filter(child => child.tagName === 'LI').length;
     }
     assert.equal(next - 1, numbers.length, `${id}: rendered steps missing or merged`);

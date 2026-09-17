@@ -48,6 +48,7 @@ nav:
 
 hooks:
   - hooks/fields.py   # {{f:key}} markers -> form fields, see webapp/FILLABLE-WORKSHEET.md
+  - hooks/steps.py    # seed the CSS step counter so numbering continues past action-group breaks
 
 plugins:
   - search

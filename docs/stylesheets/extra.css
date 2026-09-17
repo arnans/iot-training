@@ -171,6 +171,9 @@
 }
 
 /* ---------- numbered steps ---------- */
+/* The badge comes from a CSS counter, which ignores <ol start="N">. hooks/steps.py adds
+   style="counter-reset: step N-1" to those lists so a procedure keeps counting past its
+   action-group headings. */
 .md-typeset ol {
   counter-reset: step;
   list-style: none;

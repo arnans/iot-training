@@ -16,7 +16,21 @@ for (const slug of PAGES) {
   for (const match of source.matchAll(/^### [^\n]*\{ #(a[1-7]-[\w-]+|hist-[1-4]) \}\r?\n([\s\S]*?)(?=^### |^## |$(?![\s\S]))/gm)) {
     const [, id, body] = match;
     const numbers = [...body.matchAll(/^(\d+)\. /gm)].map(m => Number(m[1]));
-    assert.ok(numbers.length, `${id}: missing numbered procedure`);
+    if (!numbers.length) {
+      // a listen-only section (7.3 since 18 Sep 2026): acknowledgement checkboxes and no procedure at all
+      assert.ok(/^- \[ \] /m.test(body), `${id}: missing numbered procedure`);
+      const heading = dom.window.document.getElementById(id);
+      assert.ok(heading, `${id}: missing rendered heading`);
+      let lists = 0, boxes = 0;
+      for (let el = heading.nextElementSibling; el && !/^H[23]$/.test(el.tagName); el = el.nextElementSibling) {
+        if (el.tagName === 'OL') lists++;
+        boxes += el.querySelectorAll('input[type="checkbox"]').length;
+      }
+      assert.equal(lists, 0, `${id}: listen-only section renders a numbered list`);
+      assert.ok(boxes, `${id}: listen-only section renders no checkboxes`);
+      checked++;
+      continue;
+    }
     assert.deepEqual(numbers, numbers.map((_, i) => i + 1), `${id}: source numbering restarts`);
     const heading = dom.window.document.getElementById(id);
     assert.ok(heading, `${id}: missing rendered heading`);

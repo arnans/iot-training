@@ -1486,12 +1486,12 @@ body {
 <p><strong>ความชื้นอากาศตั้งแต่ช่วงที่ 2</strong> ต่ำสุด <input class="fld" type="text" data-k="s3.hist.hum_min" data-size="4" size="4" inputmode="decimal" autocomplete="off" spellcheck="false"> % ตอน <input class="fld" type="text" data-k="s3.hist.hum_min_t" data-size="5" size="5" autocomplete="off" spellcheck="false"> น. สูงสุด <input class="fld" type="text" data-k="s3.hist.hum_max" data-size="4" size="4" inputmode="decimal" autocomplete="off" spellcheck="false"> % ตอน <input class="fld" type="text" data-k="s3.hist.hum_max_t" data-size="5" size="5" autocomplete="off" spellcheck="false"> น.</p>
 <p><strong>ทำไมกราฟไม่มีข้อมูลช่วงพักหลังช่วงที่ 1</strong> <input class="fld" type="text" data-k="s3.hist.why_gap" data-size="30" size="30" autocomplete="off" spellcheck="false"> <strong>ฟาร์มจริงต้องเปลี่ยนอะไร</strong> <input class="fld" type="text" data-k="s3.hist.farm_change" data-size="30" size="30" autocomplete="off" spellcheck="false"></p>
 <h3 id="วางแผนหนาจอแดชบอรด">วางแผนหน้าจอแดชบอร์ด</h3>
-<p>ผู้ใช้หลักของแดชบอร์ด <input class="fld" type="text" data-k="s3.dash.user" data-size="20" size="20" autocomplete="off" spellcheck="false"></p>
+<p>ผู้ที่จะใช้แดชบอร์ด <input class="fld" type="text" data-k="s3.dash.user" data-size="44" size="44" autocomplete="off" spellcheck="false"></p>
 <div class="table-wrap"><table>
 <thead>
 <tr>
 <th></th>
-<th>สิ่งที่ผู้ใช้ต้องเห็น</th>
+<th>ค่าที่จะแสดง</th>
 </tr>
 </thead>
 <tbody>
@@ -1513,7 +1513,7 @@ body {
 <thead>
 <tr>
 <th></th>
-<th>สิ่งที่ผู้ใช้ต้องสั่งได้</th>
+<th>สิ่งที่จะควบคุม</th>
 </tr>
 </thead>
 <tbody>
@@ -1527,284 +1527,44 @@ body {
 </tr>
 </tbody>
 </table></div>
-<p><strong>คำถามท้ายกิจกรรมที่ 6</strong> ผู้ทดลองใช้ตอบข้อไหนไม่ได้หรือใช้เวลานาน และเราปรับแดชบอร์ดอย่างไร</p>
+<p><strong>คำถามท้ายกิจกรรมที่ 6</strong> ถ้าเรามีเวลาเพิ่มแล้วจะนำ Dashboard นี้ไปใช้งานจริง ควรปรับส่วนใดบ้างให้เหมาะกับผู้ใช้</p>
 <textarea class="fld fld-ta" data-k="s3.q6" rows="2"></textarea>
 
-<h3 id="เครอขายในฟารม">เครือข่ายในฟาร์ม</h3>
-<div class="table-wrap"><table>
-<thead>
-<tr>
-<th>จุดเชื่อมต่อในโจทย์ของเรา</th>
-<th>ระยะ (เมตร)</th>
-<th>มีไฟที่ปลายทาง</th>
-<th>ตัดออกเพราะระยะ</th>
-<th>ตัดออกเพราะไม่มีไฟ</th>
-<th>เหลือให้เลือก</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>เซนเซอร์ → ระบบควบคุม</td>
-<td><input class="fld" type="text" data-k="s3.net.1.dist" data-size="4" size="4" inputmode="decimal" autocomplete="off" spellcheck="false"></td>
-<td><span class="fld-radio" data-k="s3.net.1.power"><label><input class="fld" type="radio" name="s3.net.1.power" data-k="s3.net.1.power" value="มี"> มี</label><label><input class="fld" type="radio" name="s3.net.1.power" data-k="s3.net.1.power" value="ไม่มี"> ไม่มี</label></span></td>
-<td><input class="fld" type="text" data-k="s3.net.1.out_dist" data-size="12" size="12" autocomplete="off" spellcheck="false"></td>
-<td><input class="fld" type="text" data-k="s3.net.1.out_power" data-size="12" size="12" autocomplete="off" spellcheck="false"></td>
-<td><input class="fld" type="text" data-k="s3.net.1.left" data-size="12" size="12" autocomplete="off" spellcheck="false"></td>
-</tr>
-<tr>
-<td>ระบบควบคุม → อุปกรณ์ปลายทาง</td>
-<td><input class="fld" type="text" data-k="s3.net.2.dist" data-size="4" size="4" inputmode="decimal" autocomplete="off" spellcheck="false"></td>
-<td><span class="fld-radio" data-k="s3.net.2.power"><label><input class="fld" type="radio" name="s3.net.2.power" data-k="s3.net.2.power" value="มี"> มี</label><label><input class="fld" type="radio" name="s3.net.2.power" data-k="s3.net.2.power" value="ไม่มี"> ไม่มี</label></span></td>
-<td><input class="fld" type="text" data-k="s3.net.2.out_dist" data-size="12" size="12" autocomplete="off" spellcheck="false"></td>
-<td><input class="fld" type="text" data-k="s3.net.2.out_power" data-size="12" size="12" autocomplete="off" spellcheck="false"></td>
-<td><input class="fld" type="text" data-k="s3.net.2.left" data-size="12" size="12" autocomplete="off" spellcheck="false"></td>
-</tr>
-</tbody>
-</table></div>
-<h3 id="การเขาถงจากนอกฟารม">การเข้าถึงจากนอกฟาร์ม</h3>
-<p>ถ้าอินเทอร์เน็ตฟาร์มดับ แต่ไฟฟ้าและเครือข่ายภายในยังใช้ได้ แล้วระบบของเรากับระบบคลาวด์จะเป็นอย่างไร สมมุติว่าฝั่งคลาวด์ไม่มีระบบทำงานสำรองในฟาร์ม</p>
-<div class="table-wrap"><table>
-<thead>
-<tr>
-<th></th>
-<th>ระบบของเรา</th>
-<th>ระบบที่ประมวลผลและสั่งงานบนคลาวด์</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>automation ยังทำงานหรือไม่</td>
-<td><input class="fld" type="text" data-k="s3.cloud.auto.ours" data-size="8" size="8" autocomplete="off" spellcheck="false"></td>
-<td><input class="fld" type="text" data-k="s3.cloud.auto.cloud" data-size="8" size="8" autocomplete="off" spellcheck="false"></td>
-</tr>
-<tr>
-<td>ดูแดชบอร์ดจากในฟาร์ม</td>
-<td><input class="fld" type="text" data-k="s3.cloud.farm.ours" data-size="8" size="8" autocomplete="off" spellcheck="false"></td>
-<td><input class="fld" type="text" data-k="s3.cloud.farm.cloud" data-size="8" size="8" autocomplete="off" spellcheck="false"></td>
-</tr>
-<tr>
-<td>ดูข้อมูลปัจจุบันจากนอกฟาร์ม</td>
-<td><input class="fld" type="text" data-k="s3.cloud.city.ours" data-size="8" size="8" autocomplete="off" spellcheck="false"></td>
-<td><input class="fld" type="text" data-k="s3.cloud.city.cloud" data-size="8" size="8" autocomplete="off" spellcheck="false"></td>
-</tr>
-<tr>
-<td>ข้อมูลใหม่ยังบันทึกหรือไม่</td>
-<td><input class="fld" type="text" data-k="s3.cloud.log.ours" data-size="8" size="8" autocomplete="off" spellcheck="false"></td>
-<td><input class="fld" type="text" data-k="s3.cloud.log.cloud" data-size="8" size="8" autocomplete="off" spellcheck="false"></td>
-</tr>
-</tbody>
-</table></div>
-<p><strong>สาธิตดูจากนอกพื้นที่</strong> โทรศัพท์ของผู้สอนดูแดชบอร์ดผ่าน <span class="fld-radio" data-k="s3.remote.conn"><label><input class="fld" type="radio" name="s3.remote.conn" data-k="s3.remote.conn" value="อินเทอร์เน็ตมือถือ"> อินเทอร์เน็ตมือถือ</label><label><input class="fld" type="radio" name="s3.remote.conn" data-k="s3.remote.conn" value="WiFi ของโซน"> WiFi ของโซน</label></span> · ส่วนที่ตัดสินใจและบันทึกข้อมูลอยู่ที่ <span class="fld-radio" data-k="s3.remote.where"><label><input class="fld" type="radio" name="s3.remote.where" data-k="s3.remote.where" value="ในฟาร์ม (แล็ปท็อป)"> ในฟาร์ม (แล็ปท็อป)</label><label><input class="fld" type="radio" name="s3.remote.where" data-k="s3.remote.where" value="บนคลาวด์"> บนคลาวด์</label></span></p>
-<p><strong>ในโจทย์ของเรา</strong> เจ้าของต้อง <span class="fld-radio" data-k="s3.remote.need"><label><input class="fld" type="radio" name="s3.remote.need" data-k="s3.remote.need" value="เข้ามาดูและสั่งได้"> เข้ามาดูและสั่งได้</label><label><input class="fld" type="radio" name="s3.remote.need" data-k="s3.remote.need" value="แค่ได้รับแจ้งเตือน"> แค่ได้รับแจ้งเตือน</label><label><input class="fld" type="radio" name="s3.remote.need" data-k="s3.remote.need" value="ไม่ต้องเลย"> ไม่ต้องเลย</label></span> · ทางที่เลือก <input class="fld" type="text" data-k="s3.remote.method" data-size="16" size="16" autocomplete="off" spellcheck="false"> · ถ้าเลือกวิธีนี้แล้วอินเทอร์เน็ตที่ฟาร์มดับ เราจะใช้อะไรไม่ได้ <input class="fld" type="text" data-k="s3.remote.lost" data-size="24" size="24" autocomplete="off" spellcheck="false"></p>
-<p><strong>คำถามเรื่องการสื่อสาร</strong> ถ้าอินเทอร์เน็ตดับ แต่ WiFi และ Home Assistant ในฟาร์มยังทำงาน แล้วเราจะใช้อะไรได้บ้าง หาก Home Assistant ดับไปด้วย ผลจะต่างจากเดิมอย่างไร</p>
-<textarea class="fld fld-ta" data-k="s3.q.cloud" rows="2"></textarea>
-
-<h3 id="พลงงาน">พลังงาน</h3>
-<p><strong>ตัวควบคุมการชาร์จ</strong> แรงดันที่จอแสดง <input class="fld" type="text" data-k="s3.pwr.volt" data-size="5" size="5" inputmode="decimal" autocomplete="off" spellcheck="false"> V · ไอคอนแบตเตอรี่แสดงว่า <span class="fld-radio" data-k="s3.pwr.icon"><label><input class="fld" type="radio" name="s3.pwr.icon" data-k="s3.pwr.icon" value="เต็ม"> เต็ม</label><label><input class="fld" type="radio" name="s3.pwr.icon" data-k="s3.pwr.icon" value="ไม่เต็ม"> ไม่เต็ม</label></span></p>
-<p><strong>คำนวณพลังงานและจำนวนแผง</strong> ถ้าแผงขนาด 15 W ได้แดดเทียบเท่าเต็มกำลังวันละ 4 ชั่วโมง แล้วเรายังไม่หักการสูญเสีย แผงจะผลิตพลังงานได้ 60 Wh/วัน จำนวนแผงปัดขึ้น และต้องตรวจให้จ่ายกำลังขณะใช้งานได้พอด้วย</p>
-<div class="table-wrap"><table>
-<thead>
-<tr>
-<th>โหลด</th>
-<th>กำลัง</th>
-<th>ทำงานวันละ</th>
-<th>ใช้ไฟต่อวัน (Wh)</th>
-<th>แผง 15 W กี่แผง</th>
-<th>ต้องมีแบตเตอรี่ไหม</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>บอร์ดเซนเซอร์ GoGo-IoT</td>
-<td>0.5 W</td>
-<td>24 ชั่วโมง</td>
-<td><input class="fld" type="text" data-k="s3.pwr.size.node.wh" data-size="5" size="5" inputmode="decimal" autocomplete="off" spellcheck="false"></td>
-<td><input class="fld" type="text" data-k="s3.pwr.size.node.panels" data-size="3" size="3" inputmode="decimal" autocomplete="off" spellcheck="false"></td>
-<td><span class="fld-radio" data-k="s3.pwr.size.node.bat"><label><input class="fld" type="radio" name="s3.pwr.size.node.bat" data-k="s3.pwr.size.node.bat" value="ต้องมี"> ต้องมี</label><label><input class="fld" type="radio" name="s3.pwr.size.node.bat" data-k="s3.pwr.size.node.bat" value="ไม่ต้อง"> ไม่ต้อง</label></span></td>
-</tr>
-<tr>
-<td>เราเตอร์ + เครื่องที่รัน Home Assistant</td>
-<td>10 W</td>
-<td>24 ชั่วโมง</td>
-<td><input class="fld" type="text" data-k="s3.pwr.size.ha.wh" data-size="5" size="5" inputmode="decimal" autocomplete="off" spellcheck="false"></td>
-<td><input class="fld" type="text" data-k="s3.pwr.size.ha.panels" data-size="3" size="3" inputmode="decimal" autocomplete="off" spellcheck="false"></td>
-<td><span class="fld-radio" data-k="s3.pwr.size.ha.bat"><label><input class="fld" type="radio" name="s3.pwr.size.ha.bat" data-k="s3.pwr.size.ha.bat" value="ต้องมี"> ต้องมี</label><label><input class="fld" type="radio" name="s3.pwr.size.ha.bat" data-k="s3.pwr.size.ha.bat" value="ไม่ต้อง"> ไม่ต้อง</label></span></td>
-</tr>
-<tr>
-<td>ปั๊มในชุดทดลอง 12V</td>
-<td>18 W</td>
-<td>2 ชั่วโมง</td>
-<td><input class="fld" type="text" data-k="s3.pwr.size.kitpump.wh" data-size="5" size="5" inputmode="decimal" autocomplete="off" spellcheck="false"></td>
-<td><input class="fld" type="text" data-k="s3.pwr.size.kitpump.panels" data-size="3" size="3" inputmode="decimal" autocomplete="off" spellcheck="false"></td>
-<td><span class="fld-radio" data-k="s3.pwr.size.kitpump.bat"><label><input class="fld" type="radio" name="s3.pwr.size.kitpump.bat" data-k="s3.pwr.size.kitpump.bat" value="ต้องมี"> ต้องมี</label><label><input class="fld" type="radio" name="s3.pwr.size.kitpump.bat" data-k="s3.pwr.size.kitpump.bat" value="ไม่ต้อง"> ไม่ต้อง</label></span></td>
-</tr>
-<tr>
-<td>ปั๊มฟาร์ม (สมมติกินไฟ 750 W)</td>
-<td>750 W</td>
-<td>3 ชั่วโมง</td>
-<td><input class="fld" type="text" data-k="s3.pwr.size.farmpump.wh" data-size="5" size="5" inputmode="decimal" autocomplete="off" spellcheck="false"></td>
-<td><input class="fld" type="text" data-k="s3.pwr.size.farmpump.panels" data-size="3" size="3" inputmode="decimal" autocomplete="off" spellcheck="false"></td>
-<td><span class="fld-radio" data-k="s3.pwr.size.farmpump.bat"><label><input class="fld" type="radio" name="s3.pwr.size.farmpump.bat" data-k="s3.pwr.size.farmpump.bat" value="ต้องมี"> ต้องมี</label><label><input class="fld" type="radio" name="s3.pwr.size.farmpump.bat" data-k="s3.pwr.size.farmpump.bat" value="ไม่ต้อง"> ไม่ต้อง</label></span></td>
-</tr>
-</tbody>
-</table></div>
-<p><strong>หนึ่งคืน (12 ชั่วโมง)</strong> บอร์ดเซนเซอร์ใช้ <input class="fld" type="text" data-k="s3.pwr.size.night_node" data-size="4" size="4" inputmode="decimal" autocomplete="off" spellcheck="false"> Wh · ปั๊มฟาร์มถ้าเดินกลางคืน 3 ชั่วโมง ใช้ <input class="fld" type="text" data-k="s3.pwr.size.night_pump" data-size="5" size="5" inputmode="decimal" autocomplete="off" spellcheck="false"> Wh</p>
-<p><strong>คำถามเรื่องพลังงาน</strong> อุปกรณ์ใดทำงานเฉพาะตอนมีแดดได้ และอุปกรณ์ใดต้องมีไฟสำรอง ถ้าฟ้าครึ้มต่อเนื่องสามวัน แล้วเราต้องการรู้ว่าระบบจะทำงานต่อได้นานเท่าไร ต้องใช้ค่าอะไรบ้างในการคำนวณ</p>
-<textarea class="fld fld-ta" data-k="s3.q.power" rows="2"></textarea>
-
-<hr />
-<h1 id="แบบรางระบบ-iot-สำหรบฟารม">แบบร่างระบบ IoT สำหรับฟาร์ม</h1>
-<p><strong>กลุ่มที่</strong> <input class="fld" type="text" data-k="team.no" data-size="4" size="4" autocomplete="off" spellcheck="false"> · <strong>สถานการณ์</strong> <input class="fld" type="text" data-k="d.scenario" data-size="14" size="14" autocomplete="off" spellcheck="false"> · <strong>ชื่อระบบ</strong> <input class="fld" type="text" data-k="d.name" data-size="20" size="20" autocomplete="off" spellcheck="false"></p>
-<p class="ws-phase"><strong>ปัญหาที่ระบบนี้แก้ (หนึ่งประโยค)</strong></p>
+<h3 id="กจกรรมท-7--ออกแบบระบบสำหรบทดลองหนงจด">กิจกรรมที่ 7 — ออกแบบระบบสำหรับทดลองหนึ่งจุด</h3>
+<p><strong>สถานการณ์</strong> <input class="fld" type="text" data-k="d.scenario" data-size="14" size="14" autocomplete="off" spellcheck="false"></p>
+<p class="ws-phase"><strong>ปัญหาที่ต้องการแก้ (หนึ่งประโยค)</strong></p>
 <textarea class="fld fld-ta" data-k="d.problem" rows="2"></textarea>
 
-<h3 id="input-เซนเซอรทใชรบขอมล">Input: เซนเซอร์ที่ใช้รับข้อมูล</h3>
+<p><strong>เซนเซอร์และอุปกรณ์ที่สั่งงาน</strong> เซนเซอร์ <input class="fld" type="text" data-k="d.in.1.sensor" data-size="30" size="30" autocomplete="off" spellcheck="false"> อุปกรณ์ที่สั่งงาน <input class="fld" type="text" data-k="d.out.1.device" data-size="30" size="30" autocomplete="off" spellcheck="false"></p>
+<p class="ws-phase"><strong>วิธีสื่อสาร</strong></p>
 <div class="table-wrap"><table>
 <thead>
 <tr>
-<th>เซนเซอร์</th>
-<th>จำนวน</th>
-<th>แอนะล็อก / ดิจิทัล</th>
-<th>สเปกที่สำคัญ</th>
-<th>ราคา/ชิ้น</th>
-<th>รวม</th>
+<th>จุดเชื่อมต่อ</th>
+<th>วิธีที่เลือก</th>
+<th>ทำไมจึงเลือกวิธีนี้</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><input class="fld" type="text" data-k="d.in.1.sensor" data-size="12" size="12" autocomplete="off" spellcheck="false"></td>
-<td><input class="fld" type="text" data-k="d.in.1.qty" data-size="2" size="2" inputmode="decimal" autocomplete="off" spellcheck="false"></td>
-<td><span class="fld-radio" data-k="d.in.1.type"><label><input class="fld" type="radio" name="d.in.1.type" data-k="d.in.1.type" value="แอนะล็อก"> แอนะล็อก</label><label><input class="fld" type="radio" name="d.in.1.type" data-k="d.in.1.type" value="ดิจิทัล"> ดิจิทัล</label></span></td>
-<td><input class="fld" type="text" data-k="d.in.1.spec" data-size="16" size="16" autocomplete="off" spellcheck="false"></td>
-<td><input class="fld" type="text" data-k="d.in.1.price" data-size="5" size="5" inputmode="decimal" autocomplete="off" spellcheck="false"></td>
-<td><input class="fld" type="text" data-k="d.in.1.total" data-size="6" size="6" inputmode="decimal" autocomplete="off" spellcheck="false"></td>
+<td>จากเซนเซอร์ถึงระบบควบคุม</td>
+<td><input class="fld" type="text" data-k="d.comm.1.tech" data-size="12" size="12" autocomplete="off" spellcheck="false"></td>
+<td><input class="fld" type="text" data-k="d.comm.1.why" data-size="30" size="30" autocomplete="off" spellcheck="false"></td>
 </tr>
 <tr>
-<td><input class="fld" type="text" data-k="d.in.2.sensor" data-size="12" size="12" autocomplete="off" spellcheck="false"></td>
-<td><input class="fld" type="text" data-k="d.in.2.qty" data-size="2" size="2" inputmode="decimal" autocomplete="off" spellcheck="false"></td>
-<td><span class="fld-radio" data-k="d.in.2.type"><label><input class="fld" type="radio" name="d.in.2.type" data-k="d.in.2.type" value="แอนะล็อก"> แอนะล็อก</label><label><input class="fld" type="radio" name="d.in.2.type" data-k="d.in.2.type" value="ดิจิทัล"> ดิจิทัล</label></span></td>
-<td><input class="fld" type="text" data-k="d.in.2.spec" data-size="16" size="16" autocomplete="off" spellcheck="false"></td>
-<td><input class="fld" type="text" data-k="d.in.2.price" data-size="5" size="5" inputmode="decimal" autocomplete="off" spellcheck="false"></td>
-<td><input class="fld" type="text" data-k="d.in.2.total" data-size="6" size="6" inputmode="decimal" autocomplete="off" spellcheck="false"></td>
+<td>จากระบบควบคุมถึงอุปกรณ์ปลายทาง</td>
+<td><input class="fld" type="text" data-k="d.comm.2.tech" data-size="12" size="12" autocomplete="off" spellcheck="false"></td>
+<td><input class="fld" type="text" data-k="d.comm.2.why" data-size="30" size="30" autocomplete="off" spellcheck="false"></td>
 </tr>
 <tr>
-<td><input class="fld" type="text" data-k="d.in.3.sensor" data-size="12" size="12" autocomplete="off" spellcheck="false"></td>
-<td><input class="fld" type="text" data-k="d.in.3.qty" data-size="2" size="2" inputmode="decimal" autocomplete="off" spellcheck="false"></td>
-<td><span class="fld-radio" data-k="d.in.3.type"><label><input class="fld" type="radio" name="d.in.3.type" data-k="d.in.3.type" value="แอนะล็อก"> แอนะล็อก</label><label><input class="fld" type="radio" name="d.in.3.type" data-k="d.in.3.type" value="ดิจิทัล"> ดิจิทัล</label></span></td>
-<td><input class="fld" type="text" data-k="d.in.3.spec" data-size="16" size="16" autocomplete="off" spellcheck="false"></td>
-<td><input class="fld" type="text" data-k="d.in.3.price" data-size="5" size="5" inputmode="decimal" autocomplete="off" spellcheck="false"></td>
-<td><input class="fld" type="text" data-k="d.in.3.total" data-size="6" size="6" inputmode="decimal" autocomplete="off" spellcheck="false"></td>
+<td>จากฟาร์มถึงเจ้าของนอกฟาร์ม (ถ้าไม่ใช้ ให้ระบุว่าไม่ใช้)</td>
+<td><input class="fld" type="text" data-k="d.comm.3.tech" data-size="16" size="16" autocomplete="off" spellcheck="false"></td>
+<td><input class="fld" type="text" data-k="d.comm.3.why" data-size="30" size="30" autocomplete="off" spellcheck="false"></td>
 </tr>
 </tbody>
 </table></div>
-<h3 id="output-อปกรณททำงานตามคำสงและวงจรขบ">Output: อุปกรณ์ที่ทำงานตามคำสั่งและวงจรขับ</h3>
-<div class="table-wrap"><table>
-<thead>
-<tr>
-<th>อุปกรณ์ปลายทาง</th>
-<th>แรงดัน / กระแส (V / A)</th>
-<th>วงจรขับที่ใช้</th>
-<th>รู้ได้อย่างไรว่าทำงานจริง</th>
-<th>ราคา</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><input class="fld" type="text" data-k="d.out.1.device" data-size="12" size="12" autocomplete="off" spellcheck="false"></td>
-<td><input class="fld" type="text" data-k="d.out.1.va" data-size="8" size="8" autocomplete="off" spellcheck="false"></td>
-<td><input class="fld" type="text" data-k="d.out.1.driver" data-size="10" size="10" autocomplete="off" spellcheck="false"></td>
-<td><input class="fld" type="text" data-k="d.out.1.verify" data-size="16" size="16" autocomplete="off" spellcheck="false"></td>
-<td><input class="fld" type="text" data-k="d.out.1.price" data-size="6" size="6" inputmode="decimal" autocomplete="off" spellcheck="false"></td>
-</tr>
-<tr>
-<td><input class="fld" type="text" data-k="d.out.2.device" data-size="12" size="12" autocomplete="off" spellcheck="false"></td>
-<td><input class="fld" type="text" data-k="d.out.2.va" data-size="8" size="8" autocomplete="off" spellcheck="false"></td>
-<td><input class="fld" type="text" data-k="d.out.2.driver" data-size="10" size="10" autocomplete="off" spellcheck="false"></td>
-<td><input class="fld" type="text" data-k="d.out.2.verify" data-size="16" size="16" autocomplete="off" spellcheck="false"></td>
-<td><input class="fld" type="text" data-k="d.out.2.price" data-size="6" size="6" inputmode="decimal" autocomplete="off" spellcheck="false"></td>
-</tr>
-</tbody>
-</table></div>
-<blockquote>
-<p><strong>จะตรวจว่าทำงานจริงได้อย่างไร</strong> ถ้าสั่งรีเลย์แล้ววงจรต่อถึงกัน แต่ปั๊มติดขัดหรือสายหลุด ปั๊มก็อาจไม่หมุน เราจะใช้ข้อมูลใดยืนยันว่าอุปกรณ์ทำงานจริง</p>
-</blockquote>
-<h3 id="logic-กฎทใชตดสนใจและสงงาน">Logic: กฎที่ใช้ตัดสินใจและสั่งงาน</h3>
-<blockquote>
-<ol>
-<li>
-<p>ถ้า <input class="fld" type="text" data-k="d.rule.1.if" data-size="18" size="18" autocomplete="off" spellcheck="false"> และ <input class="fld" type="text" data-k="d.rule.1.and" data-size="12" size="12" autocomplete="off" spellcheck="false"> แล้วให้ <input class="fld" type="text" data-k="d.rule.1.then" data-size="18" size="18" autocomplete="off" spellcheck="false"></p>
-</li>
-<li>
-<p>ถ้า <input class="fld" type="text" data-k="d.rule.2.if" data-size="18" size="18" autocomplete="off" spellcheck="false"> และ <input class="fld" type="text" data-k="d.rule.2.and" data-size="12" size="12" autocomplete="off" spellcheck="false"> แล้วให้ <input class="fld" type="text" data-k="d.rule.2.then" data-size="18" size="18" autocomplete="off" spellcheck="false"></p>
-</li>
-<li>
-<p>ถ้า <input class="fld" type="text" data-k="d.rule.3.if" data-size="18" size="18" autocomplete="off" spellcheck="false"> และ <input class="fld" type="text" data-k="d.rule.3.and" data-size="12" size="12" autocomplete="off" spellcheck="false"> แล้วให้ <input class="fld" type="text" data-k="d.rule.3.then" data-size="18" size="18" autocomplete="off" spellcheck="false"></p>
-</li>
-</ol>
-</blockquote>
-<p><strong>ระบบประมวลผลและสั่งงานอยู่ที่ใด</strong> <span class="fld-radio" data-k="d.logic.where"><label><input class="fld" type="radio" name="d.logic.where" data-k="d.logic.where" value="ในฟาร์ม"> ในฟาร์ม</label><label><input class="fld" type="radio" name="d.logic.where" data-k="d.logic.where" value="บนคลาวด์"> บนคลาวด์</label><label><input class="fld" type="radio" name="d.logic.where" data-k="d.logic.where" value="ในบอร์ด"> ในบอร์ด</label></span> เพราะ <input class="fld" type="text" data-k="d.logic.why" data-size="24" size="24" autocomplete="off" spellcheck="false"></p>
-<h3 id="พลงงานและการสอสาร">พลังงานและการสื่อสาร</h3>
-<p><strong>แหล่งพลังงานของอุปกรณ์แต่ละจุด</strong> (ไฟบ้าน / โซลาร์เฉพาะกลางวัน / โซลาร์ + แบตเตอรี่ / แบตเตอรี่อย่างเดียว) <input class="fld" type="text" data-k="d.power" data-size="36" size="36" autocomplete="off" spellcheck="false"></p>
-<div class="table-wrap"><table>
-<thead>
-<tr>
-<th>จาก → ถึง</th>
-<th>เทคโนโลยี</th>
-<th>เหตุผลที่เลือกตามปัจจัยทั้งสี่</th>
-<th>ราคา</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>เซนเซอร์ → ระบบควบคุม</td>
-<td><input class="fld" type="text" data-k="d.comm.1.tech" data-size="10" size="10" autocomplete="off" spellcheck="false"></td>
-<td><input class="fld" type="text" data-k="d.comm.1.why" data-size="22" size="22" autocomplete="off" spellcheck="false"></td>
-<td><input class="fld" type="text" data-k="d.comm.1.price" data-size="6" size="6" inputmode="decimal" autocomplete="off" spellcheck="false"></td>
-</tr>
-<tr>
-<td>ระบบควบคุม → อุปกรณ์ปลายทาง</td>
-<td><input class="fld" type="text" data-k="d.comm.2.tech" data-size="10" size="10" autocomplete="off" spellcheck="false"></td>
-<td><input class="fld" type="text" data-k="d.comm.2.why" data-size="22" size="22" autocomplete="off" spellcheck="false"></td>
-<td><input class="fld" type="text" data-k="d.comm.2.price" data-size="6" size="6" inputmode="decimal" autocomplete="off" spellcheck="false"></td>
-</tr>
-<tr>
-<td>ฟาร์ม → เจ้าของนอกฟาร์ม</td>
-<td><input class="fld" type="text" data-k="d.comm.3.tech" data-size="10" size="10" autocomplete="off" spellcheck="false"></td>
-<td><input class="fld" type="text" data-k="d.comm.3.why" data-size="22" size="22" autocomplete="off" spellcheck="false"></td>
-<td><input class="fld" type="text" data-k="d.comm.3.price" data-size="6" size="6" inputmode="decimal" autocomplete="off" spellcheck="false"></td>
-</tr>
-</tbody>
-</table></div>
-<h3 id="การปองกนเมอระบบขดของและการสงงานดวยมอ">การป้องกันเมื่อระบบขัดข้องและการสั่งงานด้วยมือ</h3>
-<blockquote>
-<p><strong>Fail-safe 1</strong> เมื่อ <input class="fld" type="text" data-k="d.fs1.when" data-size="18" size="18" autocomplete="off" spellcheck="false"> ระบบจะ <input class="fld" type="text" data-k="d.fs1.do" data-size="18" size="18" autocomplete="off" spellcheck="false"> อยู่ที่ <span class="fld-radio" data-k="d.fs1.where"><label><input class="fld" type="radio" name="d.fs1.where" data-k="d.fs1.where" value="HA"> HA</label><label><input class="fld" type="radio" name="d.fs1.where" data-k="d.fs1.where" value="บอร์ด"> บอร์ด</label><label><input class="fld" type="radio" name="d.fs1.where" data-k="d.fs1.where" value="สายไฟตรง"> สายไฟตรง</label></span></p>
-<p><strong>Fail-safe 2</strong> เมื่อ <input class="fld" type="text" data-k="d.fs2.when" data-size="18" size="18" autocomplete="off" spellcheck="false"> ระบบจะ <input class="fld" type="text" data-k="d.fs2.do" data-size="18" size="18" autocomplete="off" spellcheck="false"> อยู่ที่ <span class="fld-radio" data-k="d.fs2.where"><label><input class="fld" type="radio" name="d.fs2.where" data-k="d.fs2.where" value="HA"> HA</label><label><input class="fld" type="radio" name="d.fs2.where" data-k="d.fs2.where" value="บอร์ด"> บอร์ด</label><label><input class="fld" type="radio" name="d.fs2.where" data-k="d.fs2.where" value="สายไฟตรง"> สายไฟตรง</label></span></p>
-<p><strong>วิธีสั่งงานด้วยมือ (Manual override)</strong> <input class="fld" type="text" data-k="d.manual" data-size="40" size="40" autocomplete="off" spellcheck="false"></p>
-</blockquote>
-<h3 id="สงทยงไมแนใจ">สิ่งที่ยังไม่แน่ใจ</h3>
-<blockquote>
-<p>ต้องถามใคร หรือวัดอะไรก่อนซื้อ <textarea class="fld fld-ta" data-k="d.unknown" rows="2"></textarea></p>
-</blockquote>
-<h3 id="การดแลและงบประมาณ">การดูแลและงบประมาณ</h3>
-<blockquote>
-<p>ใครดูแล <input class="fld" type="text" data-k="d.care.who" data-size="12" size="12" autocomplete="off" spellcheck="false"> ตรวจอะไรทุกสัปดาห์ <input class="fld" type="text" data-k="d.care.weekly" data-size="18" size="18" autocomplete="off" spellcheck="false"> อุปกรณ์ที่คาดว่าจะเสื่อมสภาพก่อน <input class="fld" type="text" data-k="d.care.wear" data-size="14" size="14" autocomplete="off" spellcheck="false"></p>
-<p>อุปกรณ์รวม <input class="fld" type="text" data-k="d.budget.parts" data-size="7" size="7" inputmode="decimal" autocomplete="off" spellcheck="false"> บาท ค่าติดตั้ง <input class="fld" type="text" data-k="d.budget.install" data-size="7" size="7" inputmode="decimal" autocomplete="off" spellcheck="false"> บาท รายเดือน (ซิม / คลาวด์ / ไฟ) <input class="fld" type="text" data-k="d.budget.monthly" data-size="6" size="6" inputmode="decimal" autocomplete="off" spellcheck="false"> บาท</p>
-</blockquote>
-<h3 id="วางแผนทดลองกอนขยายระบบ">วางแผนทดลองก่อนขยายระบบ</h3>
-<blockquote>
-<p>ประโยชน์ที่คาดว่าจะได้ <input class="fld" type="text" data-k="d.pilot.benefit" data-size="40" size="40" autocomplete="off" spellcheck="false"></p>
-<p>วัดผลจากอะไร <input class="fld" type="text" data-k="d.pilot.measure" data-size="20" size="20" autocomplete="off" spellcheck="false"> ค่าที่วัดได้ก่อนเริ่มทดลอง <input class="fld" type="text" data-k="d.pilot.baseline" data-size="16" size="16" autocomplete="off" spellcheck="false"></p>
-<p>เริ่มทดลองที่จุดใดและใช้อุปกรณ์อะไรบ้าง (เริ่มจากหนึ่งจุด) <input class="fld" type="text" data-k="d.pilot.start" data-size="36" size="36" autocomplete="off" spellcheck="false"></p>
-<p>สิ่งแรกที่จะทำหลังจบการอบรม <input class="fld" type="text" data-k="d.pilot.first" data-size="30" size="30" autocomplete="off" spellcheck="false"> ใครทำ <input class="fld" type="text" data-k="d.pilot.who" data-size="10" size="10" autocomplete="off" spellcheck="false"></p>
-<p>วันที่นัดประเมินผล <input class="fld" type="text" data-k="d.pilot.date" data-size="12" size="12" autocomplete="off" spellcheck="false"> เกณฑ์ตัดสินใจว่าจะขยาย ปรับปรุง หรือยุติการทดลอง <input class="fld" type="text" data-k="d.pilot.criteria" data-size="30" size="30" autocomplete="off" spellcheck="false"></p>
-</blockquote>
-<p><strong>สิ่งที่ปรับหลังฟังกลุ่มที่จับคู่กัน</strong> <input class="fld" type="text" data-k="d.revise" data-size="40" size="40" autocomplete="off" spellcheck="false"></p>
-<h3 id="นำเสนอ-1-นาท">นำเสนอ 1 นาที</h3>
-<blockquote>
-<p>ประโยคแรก (ปัญหาที่แก้) <input class="fld" type="text" data-k="d.pitch.1" data-size="40" size="40" autocomplete="off" spellcheck="false"></p>
-<p>การตัดสินใจที่ยากที่สุด และเลือกอะไรเพราะอะไร <input class="fld" type="text" data-k="d.pitch.2" data-size="40" size="40" autocomplete="off" spellcheck="false"></p>
-<p>วิธีป้องกันความเสียหายที่สำคัญที่สุดของระบบ <input class="fld" type="text" data-k="d.pitch.3" data-size="40" size="40" autocomplete="off" spellcheck="false"></p>
-</blockquote>
+<p><strong>แหล่งพลังงาน</strong> ของเซนเซอร์ ระบบควบคุม และอุปกรณ์ปลายทาง <input class="fld" type="text" data-k="d.power" data-size="50" size="50" autocomplete="off" spellcheck="false"> · ชนิดแบตเตอรี่ที่เลือกและเหตุผล <input class="fld" type="text" data-k="d.battery" data-size="50" size="50" autocomplete="off" spellcheck="false"> · อุปกรณ์ที่ต้องมีไฟสำรองและระยะเวลาที่ต้องการ (ถ้าไม่มี ให้ระบุว่าไม่มี) <input class="fld" type="text" data-k="d.power.backup" data-size="40" size="40" autocomplete="off" spellcheck="false"></p>
+<p><strong>แผนทดสอบ</strong> จะดูหรือวัดอะไร <input class="fld" type="text" data-k="d.test.how" data-size="50" size="50" autocomplete="off" spellcheck="false"> · ผลแบบใดจึงถือว่าระบบทำงานตามที่ตั้งใจ <input class="fld" type="text" data-k="d.test.pass" data-size="50" size="50" autocomplete="off" spellcheck="false"></p>
 <footer class="ws-disclosure">เอกสารนี้เรียบเรียงขึ้นด้วย AI (Fable 5.1 และ GPT-6 Astra) ภายใต้การกำกับอย่างใกล้ชิดของผู้จัดทำ และรับรองว่าเนื้อหาเป็นไปตามเจตนาของผู้จัดทำทุกประการ</footer>
 </main>
 </div>

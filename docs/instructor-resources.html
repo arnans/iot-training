@@ -215,7 +215,7 @@ figcaption {
   <header class="doc-head">
     <p class="kicker">Instructor & TA handbook</p>
     <h1>Instructor & TA resources</h1>
-    <p class="meta">IoT in Smart Farming workshop · Last updated 2026-09-16</p>
+    <p class="meta">IoT in Smart Farming workshop · Last updated 2026-09-18</p>
     <p class="disclosure">This document was compiled with Claude AI. Its content was designed and reviewed by those responsible, who certify that it reflects the intent of the preparing team in every respect.</p>
   </header>
   <p>Every file and link needed to prepare for and run the workshop, in one place.
@@ -329,7 +329,7 @@ figcaption {
   <td><a href="https://arnans.github.io/iot-training/renders/resources.html">resources.html</a></td>
   </tr>
   <tr>
-  <td>Team record sheet + design canvas — <strong>the one thing that gets printed</strong></td>
+  <td>Team record sheet — <strong>the one thing that gets printed</strong></td>
   <td><a href="https://github.com/arnans/iot-training/blob/main/docs/record-sheet.md">record-sheet.md</a> <em>(repo)</em></td>
   </tr>
   <tr>
@@ -415,8 +415,7 @@ figcaption {
   check first). Minutes are the design estimate, not a rehearsed timing.</p>
   <p><strong>How to run it.</strong> Project the checklist and talk through it one item at a time; teams work down
   it while you talk. The prose under each item is for the team that falls behind or wants the reason.</p>
-  <p>The question added with the checklists, <code>s2.fs.none</code>, the two from the Activity 4 pilot,
-  <code>s2.time.trace</code> and <code>s2.time.why</code>, and the Session 1 lighting keys (<code>s1.light.on</code>,
+  <p>The two questions from the Activity 4 pilot, <code>s2.time.trace</code> and <code>s2.time.why</code>, and the Session 1 lighting keys (<code>s1.light.on</code>,
   <code>s1.rule.dark.*</code>, <code>s1.rule.bright.*</code>, <code>s1.auto.pass</code>, <code>s1.timer.at</code>, <code>s1.timer.ok</code>) are on the
   record sheet like every other answer. Session 1 no longer records the supply voltage, the
   wired-right-first-time self-report, the control-box position or the manual-round counts
@@ -681,12 +680,18 @@ figcaption {
   come back by itself; that is by design, and it is why the notification matters. <strong>The sabotage is cut at
   about 15 s instead:</strong> <code>Fail-safe - สั่งแล้วไม่เดิน</code> from 5.2 decided the pump is not running, so fix the
   board's placement or raise <code>ความไวตรวจจับปั๊ม</code> before trying again.</p>
-  <h4>5.5 Which rule stops which problem</h4>
-  <p><strong>Done when</strong> the "no rule" answer names the laptop or Home Assistant down or off WiFi. Since 15 Sep
-  2026 the worksheet's table credits the 30 s cutoff with catching a float stuck floating (reads Wet
-  with the tank empty), so that row is no longer a "no rule" case, though it still needs a person to go
-  and look. The self-check (all four problems seen, fixed and re-tested) is ticked.</p>
-  <p><strong>The laptop-off-WiFi round was cut on 16 Sep 2026</strong> (Roger). No team now <em>sees</em> the pump run on with
+  <h4>5.5 Maintenance plan · ~5 min</h4>
+  <p><strong>Done when</strong> all five rows carry a named person, a frequency and a thing to check. Moved here from
+  the debrief on 16 Sep 2026 so Activity 5 ends on something the group writes, not a table it reads.
+  A good row is concrete: the float gets lifted and wiped weekly by whoever feeds the fish; the pump
+  strainer is cleared monthly; someone notices within a day when the network or Home Assistant is
+  down, because nothing else will tell them. Weak rows say "everyone" and "sometimes".</p>
+  <p><strong>If stuck</strong> Start from the four problems just staged: each one names a part that failed and a
+  person who had to intervene.</p>
+  <p><strong>The limits table left the worksheet on 16 Sep 2026</strong> with the laptop-off-WiFi round; both were
+  reading, not doing. The end-of-activity question still asks the question the table answered, and
+  the model answer below carries the table for you. The WiFi-off demonstration still works for a
+  table that finishes early: No team now <em>sees</em> the pump run on with
   every fail-safe silent; they read it off the last row of this table instead. If a table finishes
   early and asks, the demonstration still works: pump On, laptop WiFi off, watch for up to 40 s with
   someone at the pump, then stop it with the relay board's <strong>button before</strong> WiFi comes back — the Off
@@ -695,8 +700,68 @@ figcaption {
   <h4>End-of-activity question</h4>
   <p><strong>A good answer</strong> says no: every fail-safe lives in Home Assistant, so they all stop with it.
   Real safety needs something that works without it: a float wired to cut pump power directly, a
-  limit built into the board's own firmware, and a manual Auto / Off / Manual switch. The
-  control-box demo in the debrief answers this.</p>
+  <strong>A good answer</strong> says no: every fail-safe lives in Home Assistant, so they all stop with it.
+  Real safety needs something that works without it: a float wired to cut pump power directly, a
+  limit built into the board's own firmware, and a manual Auto / Off / Manual switch. Since 16 Sep
+  2026 the worksheet no longer prints the limits table, so this is the facilitator's copy of it:</p>
+  <div class="table-scroll"><table>
+  <thead>
+  <tr>
+  <th>Failure</th>
+  <th>What Home Assistant sees</th>
+  <th>What stops the pump</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr>
+  <td>Float wire cut, or float stuck down</td>
+  <td>float <strong>Dry</strong></td>
+  <td>น้ำหมด rule (stops a pump that may still have water: safe, but someone must go and look)</td>
+  </tr>
+  <tr>
+  <td>Float stuck floating (algae, tank wall)</td>
+  <td>float still <strong>Wet</strong> with the tank empty</td>
+  <td>น้ำหมด rule cannot see it; the 30 s cutoff still cuts each run; the float needs checking</td>
+  </tr>
+  <tr>
+  <td>Tank already empty, pump started from the device page or the board button</td>
+  <td>switch On while float <strong>Dry</strong></td>
+  <td>น้ำหมด rule, second trigger</td>
+  </tr>
+  <tr>
+  <td>GoGo-IoT switched off, cell flat, or off WiFi</td>
+  <td>every entity of the board <strong>unavailable</strong></td>
+  <td>เซนเซอร์หาย rule, or the cutoff; the watering rule cannot start a new run without Wet</td>
+  </tr>
+  <tr>
+  <td>Commanded On, pump does not run</td>
+  <td>switch On, <code>pump running</code> Off</td>
+  <td>สั่งแล้วไม่เดิน rule</td>
+  </tr>
+  <tr>
+  <td>Pump runs abnormally long, any cause</td>
+  <td>switch On too long</td>
+  <td>จำกัดเวลา rule</td>
+  </tr>
+  <tr>
+  <td>Laptop off WiFi, or Home Assistant down</td>
+  <td>it cannot see or command the pump</td>
+  <td><strong>nothing</strong> — the pump stays in its last state</td>
+  </tr>
+  </tbody>
+  </table></div>
+  <h4>Wrap-up · ~10 min</h4>
+  <p><strong>Done when</strong> every table has walked the lunch checklist: <strong>the VM stays running</strong> (Session 3's
+  history block reads this morning), <code>รดน้ำ - เปิดปั๊ม</code> is off and the relay is Off so a dry pump cannot
+  run unattended, both boards keep power, answers downloaded. The five learning points are read, not
+  taught. The worksheet no longer scripts a debrief discussion or the control-box demo (Roger, 16 Sep
+  2026: instructor-run, may not happen as written).</p>
+  <p><strong>The control-box demo, when you run it.</strong> A real Auto / Off / Manual pump box wired to the
+  instructor kit: flip it while the watering automation runs and the pump obeys the switch, not Home
+  Assistant. Then one layer down: with Home Assistant shut down, the relay board's own button still
+  toggles the relay (bench-verified), an override that lives in the board rather than the wiring. It
+  is the answer to the end-of-activity question and links back to the Session 1 seed; it needs no
+  worksheet item.</p>
   <h3>Session 3 · Reading the recorded data (20 min)</h3>
   <h4>Open the history</h4>
   <p><strong>Done when</strong> History shows humidity, light and the relay switch from the start of Session 2 until now.</p>
@@ -717,96 +782,124 @@ figcaption {
   a machine that stays on, with power through the night. This feeds the power step in Activity 7.</p>
   <h3>Session 3 · Activity 6 — Dashboard (35 min)</h3>
   <p>Plan 5 · build 25 · test with someone else 5.</p>
-  <h4>6.1 The user · 6.2 What they see and control</h4>
-  <p><strong>Done when</strong> one named user is chosen (owner on a phone, worker on a tablet, manager on a big screen).
-  There are three things the user must <em>see</em> and two they must <em>control</em>, written in the user's words
-  ("air humidity", "is the water up to the float?", "start the pump"), not entity names.</p>
+  <h4>6.1 Who will use it · 6.2 What to show and control</h4>
+  <p><strong>Done when</strong> the group has named who will use the dashboard (one or several: owner on a phone, worker on a tablet, manager on a big screen).
+  There are three values to <em>show</em> and two things to <em>control</em>, written in plain words the user understands
+  ("air humidity", "is the water up to the float?", "start the pump").</p>
   <h4>6.3 Build</h4>
-  <p><strong>Done when</strong> the four minimum cards are on the dashboard: humidity <strong>Gauge</strong>, float <strong>Tile</strong> named for the
-  user (the worksheet suggests <code>ระดับน้ำที่ลูกลอย</code>), pump <strong>Tile</strong> (<code>สั่งปั๊ม</code>), and an <strong>Entities</strong> card listing the automations. History graph,
-  severity colours and icons come only after that.</p>
+  <p><strong>Done when</strong> the four minimum cards are on a new blank dashboard (the Activity 4 Farm Dashboard is auto-generated and not editable): humidity <strong>Gauge</strong>, float <strong>Tile</strong> named for the
+  user (the worksheet suggests <code>ระดับน้ำที่ลูกลอย</code>), pump <strong>Tile</strong> (<code>สั่งปั๊ม</code>), and a <strong>Tile</strong> for <code>Pump Auto Mode</code> named so that On reads as Auto
+  (the worksheet suggests <code>โหมดรดน้ำอัตโนมัติ</code>). History graph, severity colours and extra cards are optional and come only after that.</p>
   <h4>6.4 Someone else tries it</h4>
   <p><strong>Done when</strong> someone who did not build the dashboard (a member of the paired team, or a teammate who took no part) answers all
-  three questions within 30 seconds on a phone: what is the humidity, is the water up to the float,
-  where is the pump control.</p>
+  four questions within 30 seconds on a phone: what is the humidity, is the water up to the float,
+  where is the pump control, is it in Auto or Manual now.</p>
   <p><strong>If stuck</strong> The phone must be on the zone WiFi and use the VM's IP. The new dashboard is in the left menu
   under the name the team gave it, not under <em>Overview</em>.</p>
   <h4>End-of-activity question</h4>
   <p><strong>A good answer</strong> names the question the tester struggled with and the specific change made:
   moving a card up, renaming a tile, adding a colour.</p>
   <h3>Session 3 · Activity 7 — Design challenge (85 min)</h3>
-  <p>Pick 5 · network 20 · power 15 · fill the canvas 30 · exchange 10 · revise 5. The design canvas
-  itself is at the end of the team record sheet; the checklist holds the decision steps.</p>
+  <p>Pick 5 · network 20 · power 15 · design 30 · presentation and exchange 15 (instructor-led). Since 18 Sep 2026
+  there is no separate design canvas: the design is the four blocks of worksheet step 7.6 (sensor and actuator,
+  connectivity, power, test plan), filled in the worksheet and mirrored in the record sheet.</p>
   <h4>7.1 Pick the scenario</h4>
-  <p><strong>Done when</strong> a scenario is written down (card A–E) and the farm and its problem are written at the
-  top of the canvas. Recommend <strong>E</strong> (a member's own farm) when one exists. C and D are advanced; teams
+  <p><strong>Done when</strong> a scenario is written down (A–E; the worksheet calls them โจทย์, not cards, since 18 Sep 2026) and the farm and its problem are written in 7.1. Recommend <strong>E</strong> (a member's own farm) when one exists. C and D are advanced; teams
   choosing them may put the specialist parts under "not sure yet".</p>
-  <h4>7.2 The network we already use</h4>
-  <p><strong>Done when</strong> the team has found <code>ssid</code>, <code>name_add_mac_suffix</code> and <code>api</code> in the ESPHome file, and has opened the board's page
-  from the IP entity Home Assistant shows. There is no fixed IP in the file: the router hands it out.</p>
-  <h4>7.3 Choose the farm network</h4>
+  <h4>7.2 Choose the farm network</h4>
   <p><strong>Done when</strong> both links have a distance, whether the far end has power, what was eliminated and why, and what
-  remains. The instructor models card B on screen (400 m, no mains: WiFi and Zigbee out on distance,
-  cellular out on power; ESP-NOW, LoRa and RS-485 remain). The two canvas rows are filled from the
+  remains. The instructor models scenario B on screen (400 m, no mains: WiFi and Zigbee out on distance,
+  cellular out on power; ESP-NOW, LoRa and RS-485 remain). The two rows in 7.2 are filled from the
   survivors, with a reason.</p>
   <p><strong>If stuck</strong> The weak answer is "WiFi, because the workshop used WiFi". Ask for the distance and the power
   at the far end first.</p>
-  <p>The worksheet's reference table carries no range figures (cut 15 Sep 2026), so give them on screen
-  before the elimination: WiFi about 30–50 m from the router in the open, ESP-NOW 100–200 m board to
-  board, Zigbee 10–30 m per hop, LoRa 1–10 km, RS-485 up to about 1 km of cable, cellular wherever
-  there is signal. General estimates; กำพล to confirm against what they teach.</p>
-  <h4>7.4 If the internet goes down</h4>
-  <p><strong>Done when</strong></p>
-  <ul>
-  <li><em>Our system:</em> automations yes, dashboard on the farm WiFi yes, live data from outside no, new data still logged yes.</li>
-  <li><em>Cloud-run system:</em> automations no, farm dashboard no, live data from outside no, nothing new logged.</li>
-  </ul>
-  <h4>7.5 Home Assistant Cloud demo</h4>
-  <p><strong>Done when</strong> the answers are <em>mobile internet</em> and <em>on the farm (laptop)</em>. The cloud service is only a
-  door in; the farm's Home Assistant still decides and records.</p>
-  <h4>7.6 Choose remote access for the team's farm</h4>
-  <p><strong>Done when</strong> need, method and "what is lost if the farm's internet dies" are consistent. For example,
-  notifications only means only messages are lost; the farm keeps running. The canvas's third
-  communication row and "where the logic runs" are filled.</p>
-  <p>The worksheet's menu has four options since 15 Sep 2026: notifications only, Home Assistant Cloud,
-  VPN, and pushing data to a cloud platform. "Opening a door yourself" (port forwarding, DDNS, a
-  tunnel) was cut; mention it live if a team asks, with the warning that a bad setup exposes the farm.</p>
-  <h4>Question after step 1</h4>
-  <p><strong>A good answer</strong> says that with the internet down, local automations, the dashboard on the farm WiFi and logging carry on,
-  while remote viewing and notifications stop. With Home Assistant down, automations, logging and the
-  dashboard all stop. Only protection in the board or the wiring, and the manual switch, remain.</p>
-  <h4>7.7 The supply box</h4>
-  <p><strong>Done when</strong> the screen reads about 12 V and the battery icon reads <strong>not full</strong>. A charged lead-acid
-  battery sits at 12.7–13.0 V. The controller judges only from the voltage it measures, just like Home
-  Assistant.</p>
-  <h4>7.8 How many panels, and a battery?</h4>
-  <p><strong>Done when</strong> the table matches the answer table folded under ตรวจคำตอบ on the worksheet (Wh/day
-  and panels only since 15 Sep 2026; the battery remarks below are talking points):</p>
-  <ul>
-  <li><em>Sensor board:</em> 12 Wh/day, 1 panel, battery yes. Its night is 6 Wh, which the board's 18650 covers.</li>
-  <li><em>Router + Home Assistant host:</em> 240 Wh/day, 4 panels, battery yes, about 20 Ah at 12 V for a night.</li>
-  <li><em>Kit pump:</em> 36 Wh/day, 1 panel, no battery if it runs in daylight.</li>
-  <li><em>Farm pump:</em> 2,250 Wh/day, 38 of our panels, no battery. It runs direct from the panels in daylight, and the farm stores water, not electricity.</li>
-  <li><em>One night:</em> sensor board 6 Wh; farm pump at night 2,250 Wh.</li>
-  </ul>
-  <p><strong>If stuck</strong> Panels are rounded <strong>up</strong> to a whole panel, and Wh per day is watts × hours (0.5 W × 24 h = 12 Wh).</p>
-  <h4>Question after step 2</h4>
+  <p>The worksheet's table carries range figures again since 18 Sep 2026 (Roger: show range, benefits and
+  limitations), with power draw, benefits, limits and cost per option: WiFi about 30–50 m from the router in
+  the open, ESP-NOW 100–200 m board to board, Zigbee 10–30 m per hop, LoRa 1–10 km, RS-485 up to about
+  1 km of cable, cellular wherever there is signal. General estimates; กำพล to confirm against what they teach.</p>
+  <h4>7.3 Remote access and the cloud · instructor talk, listen only</h4>
+  <p>Rewritten 18 Sep 2026 (Roger): no task in the worksheet; the team listens and ticks three boxes to say
+  it has understood. Make the three points in this order, in the words on the worksheet:</p>
+  <ol>
+  <li><strong>As built, the system is reachable only on the local network.</strong> A phone or computer that wants the
+     dashboard must be on the same WiFi as Home Assistant.</li>
+  <li><strong>Remote access needs a cloud service as the door in, and which one depends on the framework.</strong>
+     Home Assistant uses Nabu Casa's paid Home Assistant Cloud. Some consumer ecosystems, Tuya and Xiaomi
+     for example, give a free cloud. Home Assistant itself stays on a machine in the farm because it must
+     reach the boards and any Zigbee or LoRa receiver locally; never present a cloud-hosted Home Assistant
+     as an option. Other doors (a VPN, pushing a copy of the data to a cloud platform, port forwarding or a
+     tunnel) exist; mention them only if asked, with the warning that a badly set up door exposes the farm.
+     The worksheet links nabucasa.com. If asked for smart-farm or IoT platforms that come with a cloud: in
+     Thailand, NECTEC's NETPIE (netpie.io, a general IoT platform with a free tier) and HandySense
+     (handysense.io, NECTEC's open smart-farm kit and cloud); maker clouds such as Blynk, ThingSpeak and
+     Arduino Cloud; consumer device clouds such as Tuya / Smart Life, Xiaomi Mi Home and Sonoff eWeLink;
+     irrigation-vendor clouds such as Netafim NetBeat. All of them decide or display in the vendor's cloud,
+     so point 3 applies to every one of them.</li>
+  <li><strong>Our Home Assistant keeps running its local rules when the internet is down;</strong> cloud-only products
+     do not. A team that adopts a cloud-only product must give its critical parts a fail-safe of their own.</li>
+  </ol>
+  <p><strong>Demo, optional, instructor kit</strong> Open <strong>Settings → Home Assistant Cloud</strong>, show the <strong>Remote access</strong>
+  switch and the address. Phone off WiFi, on mobile data, opens the same dashboard the room saw on the zone
+  WiFi. Blow on the board, watch the value change on the phone, send one pump command. Point out that the
+  farm's Home Assistant still decided and recorded; the cloud only carried the connection.</p>
+  <p><strong>Done when</strong> all three boxes are ticked and the team can restate point 3 in its own words: with the
+  internet down, automations, the dashboard on the farm WiFi and logging carry on, while remote viewing and
+  notifications stop; with Home Assistant down, automations, logging and the dashboard all stop, and only
+  protection in the board or the wiring, and the manual switch, remain. The team writes its remote-access
+  choice in 7.6, third communication row; "not needed" is a valid answer.</p>
+  <h4>7.4 Choose a battery for solar</h4>
+  <p>Rewritten 18 Sep 2026 (Roger: focus on the battery types used with solar and how to choose). The box
+  tour is one step; the controller-settings and LCD-icon steps were cut later the same day as a distraction,
+  replaced by two sentences and two diagrams: what the controller does and that it must support the battery
+  type in use; a 220 V AC load needs an inverter. Nothing to do there, just read.</p>
+  <p><strong>Done when</strong> the team can say which battery type fits its scenario and why, in this order: does
+  anything run at night; how many Wh per night and the usable share (about half for lead-acid, 80–90 %
+  for LiFePO4); who maintains it; first cost against lifetime; weight, place and heat. Nobody touches the
+  controller's menu: it stays on <strong>b01</strong> (lead-acid), because the adapter is not a battery.</p>
+  <p>The worksheet's figures are general estimates (cycle life, usable depth of discharge, relative price); กำพล to confirm against what they teach and current Thai prices. Talking points:
+  LiFePO4 costs 2–3× per Ah but gives 5–10× the cycles, so it is cheaper per cycle and needs no care;
+  lead-acid still wins for a one-off low budget or where a local shop can service it; NMC (18650,
+  power banks, EV cells) suits small or portable gear, not a fixed farm install; NiMH only in garden
+  lamps; sodium-ion is arriving but not yet common. If asked why the type matters to the controller: each type has its own charge voltages, so the
+  controller has a battery-type setting; lead-acid equalisation would overcharge lithium, gel dries out at
+  flooded voltages, and LiFePO4 must not be charged below 0 °C. The LCD icon reads not full on the 12.0 V
+  adapter because a full lead-acid sits at 12.7–13.0 V; the controller judges only from voltage.</p>
+  <p><strong>If stuck</strong> Ask two questions first: does anything have to run at night, and will anyone come to top
+  up water? The answers usually settle the type before price does.</p>
+  <h4>7.5 Work out the power, then choose the source</h4>
+  <p>Rewritten 18 Sep 2026 (Roger): the worksheet now opens with the four calculation steps and two worked
+  examples; the kit-load table and the folded answer table are gone.</p>
+  <p><strong>Done when</strong> the team can run the four steps on its own main load and say which source it leads to:
+  W = V × A from the label; Wh per day = W × hours; battery at least that much, converted with Ah = Wh ÷ 12
+  and grossed up for the usable share (about half for lead-acid, 80–90 % for LiFePO4); panels sized for the
+  worst day, 3 full-sun hours, with W of panel = Wh per day ÷ 3, rounded up to whole panels.</p>
+  <p>The two examples on the worksheet, in case a team gets a different number: LED 50 W × 8 h at night =
+  400 Wh, so about 33 Ah usable at 12 V (lead-acid about 70 Ah rated, LiFePO4 about 40 Ah) and 133 W of
+  panel, one 150 W panel or nine of the kit's 15 W. Pump 1,100 W × 2 h = 2,200 Wh, so about 183 Ah usable
+  (lead-acid about 370 Ah, LiFePO4 about 220 Ah) and 733 W of panel, five 150 W panels. The pump example
+  makes the point: run a big pump in daylight straight from the panels and store water, not electricity,
+  with panels that can deliver more than 1,100 W while it runs and a tank that covers cloudy days.</p>
+  <p>Kit loads, if a team asks for closer numbers: sensor board 0.5 W × 24 h = 12 Wh per day, one small panel,
+  a night is 6 Wh which the board's 18650 covers; router plus Home Assistant host 10 W × 24 h = 240 Wh,
+  about 20 Ah at 12 V for a night; kit pump 18 W × 2 h = 36 Wh, no battery if it runs in daylight.</p>
+  <p><strong>If stuck</strong> Start from the label on the device: volts times amps. Then ask whether it runs at night.
+  Panels are rounded <strong>up</strong> to a whole panel.</p>
+  <h4>End-of-block question</h4>
   <p><strong>A good answer</strong> splits the team's own loads into daylight-only (pumps) and must-run-overnight
   (sensors, network, controller). For three cloudy days it names the numbers needed: each load's
-  Wh per day, the usable battery capacity (about half the rated capacity), and what the panels still
-  produce under cloud.</p>
-  <h4>7.9 Fill the canvas</h4>
-  <p><strong>Done when</strong> every canvas section has something: Input, Output (with how the team knows it actually runs),
-  Logic, at least one fail-safe plus a manual override, care and budget, the first pilot, and what the team is not
-  sure of yet.</p>
-  <h4>7.10 Paired exchange and revise</h4>
-  <p><strong>Done when</strong> both teams have pitched in one minute and given three minutes of feedback on two points:
-  the best-reasoned decision, and the part with no answer to "what happens if it fails". One change is
-  recorded in <code>d.revise</code>. There is no plenary.</p>
-  <h4>7.11 Check against the rubric</h4>
-  <p><strong>Done when</strong> the team has walked its canvas down the rubric: parts chosen from specs, with real prices;
-  network chosen on all four factors; power source per location; at least one fail-safe and a manual override; a named
-  carer and schedule; a budget that fits the farm; open questions and how they will be checked.</p>
+  Wh per day, the usable battery capacity (about half the rated capacity for lead-acid), and what the
+  panels still produce under cloud.</p>
+  <h4>7.6 Design for one pilot point</h4>
+  <p><strong>Done when</strong> the four blocks read as one plan: a sensor and an actuator named; the three communication
+  rows and the power plan carried over from 7.2, 7.3 and 7.5 and still consistent with the parts chosen; and a
+  test plan that says what the team will watch or measure and what result counts as "works as intended".
+  Unknowns are written into the block they belong to, not guessed.</p>
+  <h4>Presentation and exchange · 15 min, instructor-led</h4>
+  <p>Not in the worksheet since 18 Sep 2026 (Roger: the instructor directs it). Pair the teams. Each team tells
+  its plan in one minute from the four blocks: the problem, what senses and what acts, how it connects and is
+  powered, and how they will know it works. The other team has three minutes for two questions: which
+  decision is best reasoned, and what happens if one part fails. Swap. Teams change their answers in 7.6
+  directly; there is no separate revision box, no rubric walk and no plenary.</p>
   <hr>
   <h2>Still missing</h2>
   <p>Nobody has produced these yet:</p>

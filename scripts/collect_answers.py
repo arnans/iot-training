@@ -5,8 +5,8 @@
 
 Each `farm-team-<n>-<zone>.json` (the "ดาวน์โหลดคำตอบ" button in the worksheet) becomes one
 row; each field key becomes one column. Team and zone come first, then the keys in sorted
-order, which groups them by session and activity (s1.*, s2.*, s3.*, d.* for the design
-canvas). Written as UTF-8 with BOM so Excel opens the Thai text correctly.
+order, which groups them by session and activity (s1.*, s2.*, s3.*, d.* for the Activity 7
+design). Written as UTF-8 with BOM so Excel opens the Thai text correctly.
 
 Key conventions and the storage format: webapp/FILLABLE-WORKSHEET.md.
 """

@@ -528,7 +528,7 @@ Thai worksheets and clarify teaching flow"). Roger kept the result as is. Claude
 evening: renders regenerated, strict MkDocs build clean, the field-sync test passing on all four
 pages, every session key present on the record sheet, no broken anchors, images or links. The
 planning docs (INSTRUCTOR-RESOURCES, COURSE-DESIGN, SESSION-OVERVIEW, TEST-PLAN) were then brought
-into line with the new worksheet, including the renumbered sub-steps (4.1–4.8, 6.1–6.4, 7.1–7.11).
+into line with the new worksheet, including the renumbered sub-steps (4.1–4.8, 6.1–6.4, 7.1–7.6).
 
 **Codex changes that are improvements, now propagated to the run sheet**
 
@@ -543,14 +543,16 @@ into line with the new worksheet, including the renumbered sub-steps (4.1–4.8,
 
 **Codex changes Roger may want to reconsider** (none blocking; the run sheet covers each live)
 
-1. **Network table lost its range figures.** Step 7.3 asks teams to eliminate options by distance,
+1. **Network table lost its range figures.** Step 7.2 asks teams to eliminate options by distance,
    but the table no longer states any distance (WiFi 30–50 m, ESP-NOW 100–200 m, Zigbee 10–30 m per
    hop, LoRa 1–10 km, RS-485 ~1 km). The 9 Sep handoff kept them pending กำพล's confirmation. The
-   instructor now gives them on screen (INSTRUCTOR-RESOURCES 7.3). Restoring one column to the table
-   would let the exercise stand on its own.
+   instructor now gives them on screen (INSTRUCTOR-RESOURCES 7.2). Restoring one column to the table
+   would let the exercise stand on its own. **Resolved 18 Sep 2026:** the table now has range, power,
+   benefits, limitations and cost columns.
 2. **Remote-access menu went from five ways to four.** "Opening a door yourself" (port forwarding,
    DDNS, a tunnel) was dropped, along with the Tailscale/WireGuard, LINE/Telegram examples.
-   Mentioned live; SESSION-OVERVIEW and COURSE-DESIGN now say four.
+   Mentioned live; SESSION-OVERVIEW and COURSE-DESIGN now say four. The menu table itself was cut on
+   18 Sep 2026 (item 14).
 3. **The take-home shopping table is gone** (Raspberry Pi / Home Assistant Green, ESP32 relay
    module, capacitive soil probe, DC solar pump, VPN options) and nothing on `docs/resources.md`
    replaces it. Cheapest fix: move that table to `resources.md`, which Session 3's closing already
@@ -568,7 +570,68 @@ into line with the new worksheet, including the renumbered sub-steps (4.1–4.8,
    planning docs moved with them; every number in this file was rewritten to the new scheme, including
    entries dated before 16 Sep. Step-image filenames such as `s2-a5-04-add-trigger.png` were left alone.
 8. **Sub-step numbers changed** (4.3 split into 4.3/4.4, 4.5 into 4.6/4.7, 6.1 into 6.1/6.2, 7.2/7.3
-   into 7.2–7.8). Anchors were kept, so old links still land; only prose references had to move.
+   into 7.2–7.8, now 7.2–7.5). Anchors were kept, so old links still land; only prose references had to move.
+9. **7.2 "Survey the room network" cut on 18 Sep 2026** (Roger: no clear point). It had teams find
+   `ssid`, `name_add_mac_suffix` and `api` in the ESPHome file and open the board's own page by the IP
+   Home Assistant shows; nothing later used it. 7.3–7.11 became 7.2–7.10 in the worksheet, the run
+   sheet and the assessment references; anchors (`#a7-2b`…) were kept. The network block still
+H. **7.4 "Home Assistant Cloud demo" and 7.5 "Choose remote access" cut on 18 Sep 2026** (Roger:
+    the block is instructor-led; 7.3 covers it, no need for separate sub-activities). The demo script now
+    lives only in the run sheet (7.3); the one written output, the canvas row "จากฟาร์มถึงเจ้าของนอกฟาร์ม"
+    (`d.comm.3.*`), became step 3 of 7.3. 7.6–7.10 became 7.4–7.8; anchors kept; assessment
+    references moved. The network block still says 20 min. Cut text in
+    `archive/session-3-activity-7-4-7-5-remote-access.md`.
+11. **Design canvas, 7.7 and 7.8 cut on 18 Sep 2026** (Roger: the instructor directs the peer presentation, it
+    need not be in the workbook; with four design dimensions there is no need for a separate แบบร่างระบบ,
+    students fill the worksheet directly). 7.6 is now four blocks with fields inline: sensor and actuator
+    (`d.in.1.sensor`, `d.out.1.device`), connectivity (the `d.comm.*` rows from 7.2–7.3, shown again),
+    power (`d.power*` from 7.5, shown again) and a test plan (`d.test.how`, `d.test.pass`, new). 7.1 now
+    holds `d.problem`. The record sheet's canvas section became a plain Activity 7 mirror of those fields; the
+    other canvas keys (`d.in.1.qty/spec`, `d.out.1.va/driver/verify`, `d.rule.*`, `d.logic.*`, `d.fs1.*`,
+    `d.manual`, `d.care.*`, `d.budget.*`, `d.unknown`, `d.pilot.*`) no longer exist. The presentation and
+    exchange (15 min) is described in the run sheet only. Cut text in
+    `archive/session-3-activity-7-canvas-and-exchange.md`.
+12. **7.4 rewritten on 18 Sep 2026** (Roger: focus on battery types for solar and how to choose; the charge
+    controller matters because each type needs its own charge parameters). Now: one-step box tour; a table of
+    flooded and sealed lead-acid, LiFePO4 and NMC (price per Ah, usable share, cycle life, weight and care,
+    cautions), NiMH and sodium-ion in one line; a choosing order (night use, Wh per night and usable share, who
+    maintains, first cost against lifetime, weight and heat); the controller's b01/b02 option with a
+    per-type charge-voltage table; the LCD icon point kept as one step; new field `d.battery`, also shown
+    in 7.6 and the record sheet. All figures are general estimates for กำพล to confirm. The power block is
+    still budgeted at 15 min; 7.4 grew, so watch it in rehearsal.
+13. **18 Sep 2026, wording and cloud framing.** The scenarios are โจทย์, not บัตร (Roger). 7.2's table now
+    shows range, power draw, benefits, limitations and cost per option. 7.3 no longer compares "our system"
+    with a system that decides on the cloud as if Home Assistant could live there: Home Assistant must reach
+    boards and gateways locally (WiFi LAN, USB Zigbee or LoRa receiver), so it sits on a machine in the farm and
+    the cloud is only a door in or a copy of the data (Roger: never make students feel a cloud-hosted Home
+    Assistant is a possibility). The vendor-cloud contrast that S3-POST-03 relies on is kept as a callout about
+    ready-made products.
+14. **7.3 became listen-only on 18 Sep 2026** (Roger: no action; students only listen to the instructor
+    explain the cloud concept; the worksheet holds only checkboxes to acknowledge the key points). Three
+    boxes: local-only access as built; remote access needs a cloud door that depends on the framework (paid
+    Nabu Casa for Home Assistant, free vendor clouds for Tuya or Xiaomi); our local rules keep running when
+    the internet is down, so cloud-only products need their own fail-safes. The four-way menu table, the
+    choice step with `d.comm.3.*` and the end-of-block question are gone from the worksheet; the choice is
+    written in 7.6's third communication row (the keys survive there and in the record sheet). The
+    instructor talk, the optional cloud demo and the model answer are in the run sheet. Cut text in
+    `archive/session-3-activity-7-3-remote-access-menu.md`.
+    `scripts/test_worksheet_steps.cjs` accepts such a section when its source has checkbox items and no
+    numbered step, and then requires the render to show checkboxes and no `<ol>`.
+15. **7.4 lost its charge-controller steps on 18 Sep 2026** (Roger: a distraction). The b01/b02 menu
+    step, the per-type charge-voltage table and the LCD-icon step are gone; 7.4 is now the box tour,
+    the battery table, the choosing order and the `d.battery` field. Charge voltages per type and the
+    icon point stay in the run sheet as if-asked notes. Cut text in
+    `archive/session-3-activity-7-4-controller-steps.md`. Replaced the same day by two sentences and two SVG
+    figures from `scripts/power_figures.py` (the workshop controller's photo, cropped from the Activity 2
+    wiring photo, with panel, battery and LED lamp; and an inverter on the battery terminals, through a fuse, driving
+    a 220 V AC pump; Roger first asked for it on the controller's load output, then moved it to the battery the
+    same day).
+16. **7.5 rewritten on 18 Sep 2026** (Roger: start with how to calculate). Four steps: W = V × A; Wh per
+    day = W × h; battery at least that (Ah = Wh ÷ 12, grossed up for the usable share from 7.4); panels for
+    the worst day, 3 full-sun hours, rounded up. Two worked examples in a table: LED 50 W × 8 h at night
+    (400 Wh, 133 W of panel) and a 1,100 W pump 2 h a day (2,200 Wh, 733 W of panel), with the
+    store-water-not-electricity callout. The 15 W panel ≈ 60 Wh/day rule, the kit-load table and the folded
+    answer table are gone from the worksheet; the kit numbers survive in the run sheet. Fields unchanged.
 
 Pre-existing, not from Codex: History is opened "from the start of Session 2", yet the gap
 question asks about the overnight break before it. Opening from the end of Session 1 would show the

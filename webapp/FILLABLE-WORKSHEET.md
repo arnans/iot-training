@@ -60,11 +60,11 @@ every team's saved answer for it, so add new keys rather than rename.
 | `ha.ip1` `ha.ip2` `board.iot.*` `board.relay.*` `farm.problem` | addresses and the one-sentence farm problem, filled at the start of Session 1 |
 | `s1.*` `s2.*` `s3.*` | session observations and end-of-activity answers (`s1.q1` … `s3.q7` are the textareas) |
 | `s2.sab.<round>.*` `s2.maint.<item>.*` `s3.comm.<tech>.*` `s3.dash.<row>.*` | table cells, row then column |
-| `d.*` | the design canvas at the end of the record sheet |
+| `d.*` | the Activity 7 design: scenario and problem (7.1), connectivity (7.2, 7.3), power (7.5) and the four design blocks (7.6); mirrored in the record sheet since the canvas was cut on 18 Sep 2026 |
 
 The record sheet is the canonical list: `grep -o '{{[^}]*}}' docs/record-sheet.md`. Every key
 used in a session page must also appear on the record sheet with the same kind and options;
-the only record-sheet-only keys are `team.wifi` and the design canvas (`d.*`). After editing,
+the only record-sheet-only keys are `team.wifi` and `ha.ip2`. After editing,
 a quick check is to extract the markers from all four files and diff the key sets.
 
 ### Storage format (`localStorage["farm-worksheet.v1"]`)
@@ -100,8 +100,8 @@ Same as the storage blob plus `kind: "iot-farm-worksheet"`, `team`, `zone`, `exp
 
 ### Same key in two places
 
-Two boxes with the same `data-k` on one page (record sheet header and canvas both show
-`team.no`) are kept in sync on every keystroke. Across tabs, a `storage` event refreshes the
+Two boxes with the same `data-k` on one page (Activity 7 shows `d.comm.1.tech` in 7.2 and
+again in 7.6) are kept in sync on every keystroke. Across tabs, a `storage` event refreshes the
 other tab. Across devices, only export/import.
 
 ### Print
@@ -140,7 +140,7 @@ the workshop is the paper fallback.
   in Thai or ASCII digits, stored as plain digits without leading zeros. A box holding anything
   else gets a red underline and the toolbar says why; export and the progress tracker refuse it.
   The toolbar carries a `team.no` box so the number can be typed on any page.
-- The table cells with many boxes (comparison, maintenance, design canvas) scroll horizontally
+- The table cells with many boxes (comparison, maintenance, communication) scroll horizontally
   on phones like any wide table in Material.
 - `size` is in characters; Thai glyphs are narrower than the browser's estimate, so boxes look
   roomy. They grow to fit anyway.

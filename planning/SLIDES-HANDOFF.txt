@@ -1,0 +1,147 @@
+Workshop Google Slides — continuation handoff
+Updated: 18 September 2026
+
+RESUME REQUEST
+Read this handoff and the current participant worksheets. Continue Activities 2–7
+in the existing native Google Slides file, using its current Activity 1 slides as
+the design reference. Do not start the remaining activities until the user asks
+to resume. This handoff records preferences; it is not a background work request.
+
+DELIVERABLE AND AUTHORIZATION
+Deck: https://docs.google.com/presentation/d/1yoNUpS3mo2z2zOZJHEQtuMfSuLxuXltwDT22UHVSHzo/edit
+Presentation ID: 1yoNUpS3mo2z2zOZJHEQtuMfSuLxuXltwDT22UHVSHzo
+Drive folder: ChatGPT (1W9AJocOCPrv32XUCojPV7lX94CAxO9oD).
+The user explicitly chose direct creation/editing of native Google Slides in
+Drive and does not want repeated PPTX uploads/imports. Edit this same file in
+place, preserving its link. No PPTX is needed. Do not change sharing permissions.
+Current title: IoT Workshop — กิจกรรมที่ 1: รู้จักและทดลองอ่านค่าเซนเซอร์.
+When expanding the deck, a title covering Activities 1–7 is appropriate.
+
+CURRENT STATE
+Activity 1 is complete: nine slides, worksheet sections 1.1–1.5 plus closing
+question, Thai instructor notes on every slide. Its formatting received two
+further reviews and refinements. Use the live deck, not early local snapshots.
+Slide IDs in order: p, a1_slide_2, a1_slide_3, a1_slide_4, a1_slide_5,
+a1_slide_6, a1_slide_7, a1_slide_8, a1_slide_9.
+Slide 8 deliberately contains a labeled image placeholder. Suggested photo:
+hand covering sensor board, live light reading, and stopwatch.
+Activities 2–7 have not been created.
+
+USER PREFERENCES
+- Audience: Thai-speaking students; use the worksheet's Thai and technical terms.
+- Scope: the seven activities, not a separate course introduction or wrap-up.
+- Purpose: show where the room is in the worksheet and supply useful explanations
+  beyond worksheet instructions, especially communication and power in Activity 7.
+- Minimal prose: short keywords, instructions, comparisons, questions, diagrams.
+- Instructor notes contain demo cues, explanations, timing if useful, sources.
+- Prefer images already in docs/images/. If an appropriate image is missing,
+  use a clearly labeled placeholder describing the needed picture.
+- The user authorized redesign for aesthetics, structure, and readability;
+  there is no requirement to copy book-cs1 exactly. The current deck is the
+  more recent design reference. No need to ask the initial questions again.
+- Slide count is flexible. Do not cram to meet the earlier 20–25-slide estimate.
+
+CURRENT DESIGN SYSTEM
+Canvas: 720 x 405 pt, widescreen 16:9. Font: Prompt.
+Header: pale blue #EAF1F8, full width, y=0–35 pt. Activity label left, 11 pt
+regular #43566C. Worksheet section right-aligned, 13 pt bold #174A7C.
+Title: x=30, y=43, w=665, h=51; 32 pt bold #172B42; one line.
+Title accent: short blue #1565C0 rule at x=35, y=96, w=34, h=3.
+Main content: roughly x=35–685, y=110–329. Keep images proportional and leave
+space before the action band. Use different compositions to fit the content.
+Body: usually 21–25 pt #263445; blue for key labels/numbers, muted #536477
+for supporting captions. Do not make every line bold or blue.
+Action/takeaway band: x=30, y=337, w=660, h=33, pale amber #FFF3D9;
+3 pt left accent #DBA331. Label at x=41: ลงมือทำ / จำไว้ / คุยกัน,
+12 pt bold #906819. Instruction x=121, w=565, 16.5 pt #493C23.
+Footer: full width, y=375–405, #F0F3F6. Worksheet section title left,
+10.5 pt #536477. Page counter right at x=619, w=75, right-aligned.
+Current counters read 01 / 09 etc. Update consistently if extending the deck.
+Layouts to reuse: slide 1 large annotated image; slide 2 numbered steps + photo;
+slide 3 instructions + screenshot; slide 4 aligned labels/values; slide 6
+two-column experiment list with fine separators; slide 7 comparison; slide 8
+numbered experiment + placeholder; slide 9 paired discussion questions.
+Preserve instructor notes, editable text, and actual image assets.
+
+CONTENT SOURCES
+Read docs/activity-2.md through docs/activity-7.md at the time of resuming;
+worksheets have changed during this project. Exact worksheet wording, section
+numbers, current UI steps and required outputs take precedence over older plans.
+planning/INSTRUCTOR-RESOURCES.md supplies instructor context, but check it against
+the worksheets. Do not use archive/ as the current activity specification.
+The initial 45-slide outline in ignored .tmp/ is an early draft, not authoritative.
+
+REMAINING COVERAGE — FLEXIBLE SLIDE BREAKDOWN
+Activity 2: 2.1 relay terminals; 2.2 board identity/IP and unloaded relay test;
+2.3 power supply; 2.4 lamp wiring with power disconnected; 2.5 real ON/OFF
+verification. Explain relay as switch versus load power. Use relay-board-
+terminals.png, activity2-2-relay-wiring-diagram.png, session2-relay-led-wiring.jpg.
+
+Activity 3: 3.1 correct boards in HA; 3.2 laptop/phone control; 3.3 measured
+threshold; 3.4 two plain-language rules; 3.5 build and test three cycles;
+3.6 optional timer, disabled afterward; closing threshold-hover question.
+Use docs/images/steps/ automation screenshots and relevant activity1/ GIFs.
+Explain threshold crossing, not continuous below/above checking.
+
+Activity 4: each of 4.1–4.8 needs a clear screen cue. Measure chatter; explain
+hysteresis and retaining state between thresholds; distinguish trigger/condition/
+action; predict darkness-before-time and add time trigger; notification;
+safe lamp-to-pump changeover; humidity control; Auto/Manual helper.
+Air humidity is a classroom stand-in for soil moisture, not its measurement.
+Manual mode does not mean power isolation or bypassing protective rules.
+
+Activity 5: introduce simulate → observe → fix → repeat. Then 5.1 low water;
+5.2 commanded ON without vibration (15 s); 5.3 unavailable/unknown sensor;
+5.4 run-time cutoff (30 s classroom setting); 5.5 maintenance and controller
+failure discussion. Follow current worksheet order. Power off before wiring.
+ON command does not prove pump operation; vibration does not prove water flow.
+Use Traces to identify the actual stopping rule when protections overlap.
+
+Activity 6: 6.1–6.2 user and information/control choices; 6.3 four required cards;
+6.4 peer usability test and improvements. Current minimum: humidity Gauge,
+float Tile, pump-command Tile, Pump Auto Mode Tile. An automation list is an
+outdated requirement. History graph is optional; separate session History work
+is outside the requested seven-activity scope unless the user adds it.
+
+Activity 7: allow multiple explanation slides per section.
+7.1 one problem and one trial point, based on worksheet scenarios.
+7.2 distance/power/data/cost; WiFi, ESP-NOW, Zigbee; LoRa, cellular, RS-485;
+separate sensor-to-controller and controller-to-actuator choices with reasons.
+7.3 local versus remote access; workshop cloud example; internet loss versus
+LAN/controller/power loss. Do not claim cloud is the only remote-access method.
+7.4 whether batteries are needed; battery-type tradeoffs; compatibility of
+battery, voltage and charge-controller settings. Do not change classroom settings.
+7.5 W x hours = Wh; worked worksheet assumptions; instantaneous/startup power
+versus daily energy; backup duration per subsystem. Read revised worksheet first.
+7.6 four blocks: devices, communication, power, test plan; measurable success;
+paired discussion. Do not restore the removed separate design canvas or rubric.
+Use primary-source verification for added technical claims; avoid presenting
+generic radio ranges, battery life, pricing or charger settings as guarantees.
+
+DIRECT EDITING WORKFLOW
+Use Presentations and Google Drive/Slides skills as applicable. The user explicitly
+authorized the direct native Slides route, overriding the default PPTX-first route.
+Read the live deck first and inspect current notes/objects before writing.
+Available connector actions in this session were get_presentation,
+batch_update_presentation, get_slide_thumbnail, and update_file (metadata).
+Duplicate suitable live exemplars, replace their specific content, then adapt
+geometry locally. Remove copied media/notes that do not belong on the new slide.
+For local images, batch_update_presentation accepted image_uris as an absolute
+image path, matched by the same path in createImage/replaceImage URL fields.
+Use fresh revisions for writes when practical. Re-read note IDs after duplication.
+Google Slides updateSlidesPosition requires each submitted list in CURRENT
+presentation order. To establish another order, move individual slides in reverse
+desired order to insertionIndex 0; never submit a shuffled list as one move.
+
+VALIDATION AND FILE HYGIENE
+Inspect every final slide at full size. Check Thai wrapping/diacritics, contrast,
+image proportions, safe margins, footer counter, note content and slide order.
+In this session, the required local artifact runtime/dependency loader was absent.
+Native get_slide_thumbnail plus downloading contentUrl and view_image worked
+for visual QA; thumbnails returned an image pointer/URL rather than inline pixels.
+This was a runtime fallback, not a reason to abandon verification. Use the
+normal render workflow if available in the next session.
+Put previews, source snapshots and intermediate plans under .tmp/workshop-slides/.
+/.tmp/ is ignored. Do not commit signed image URLs or connector snapshots.
+The deck link is also in planning/INSTRUCTOR-RESOURCES.md. Update that entry when
+scope changes. Google Slides content lives in Drive, not in the git repository.

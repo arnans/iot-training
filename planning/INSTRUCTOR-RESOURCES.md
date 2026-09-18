@@ -77,6 +77,7 @@ The `renders/` pages are self-contained: open one once and it keeps working with
 |---|---|
 | What happens in each session, and why | [SESSION-OVERVIEW.md](https://github.com/arnans/iot-training/blob/main/planning/SESSION-OVERVIEW.md) *(repo)* |
 | Full course design — timings, kit list, risks, open decisions | [COURSE-DESIGN.md](https://github.com/arnans/iot-training/blob/main/planning/COURSE-DESIGN.md) *(repo)* |
+| Activity 1 — Thai presentation, worksheet sections 1.1–1.5 and closing question | [Google Slides — 9 slides with instructor notes](https://docs.google.com/presentation/d/1yoNUpS3mo2z2zOZJHEQtuMfSuLxuXltwDT22UHVSHzo/edit) *(edit this same deck in place; slide 8 has an image placeholder)* |
 | Known gaps and assumptions in the worksheets | [WORKSHEET-TODO.md](https://github.com/arnans/iot-training/blob/main/planning/WORKSHEET-TODO.md) *(repo)* |
 | Network spec to hand the venue's provider — Thai | [network-requirements.html](https://arnans.github.io/iot-training/network-requirements.html) |
 | Network spec — English | [network-requirements-en.html](https://arnans.github.io/iot-training/network-requirements-en.html) |

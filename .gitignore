@@ -4,6 +4,9 @@ __pycache__/
 .DS_Store
 Thumbs.db
 
+# Temporary artifact builds, slide previews, and connector snapshots
+/.tmp/
+
 # ESPHome secrets (workshop SSID, shared API key)
 firmware/secrets.yaml
 firmware/.esphome/

@@ -2,7 +2,8 @@
 """Build (and optionally flash) the workshop firmware for every zone.
 
 One YAML per board type, compiled once per zone with the zone name and WiFi
-credentials injected as ESPHome substitutions. Binaries land in dist/.
+credentials injected as ESPHome substitutions. Binaries land in dist/ and are
+published to docs/firmware/ in the same step; commit and push to make them live.
 
     python build-zones.py                     # all zones, both boards
     python build-zones.py --zone red          # one zone
@@ -20,6 +21,8 @@ from pathlib import Path
 import yaml
 
 HERE = Path(__file__).parent
+# Served by GitHub Pages; every worksheet and the instructor sheet link here.
+PUBLISHED = HERE.parent / "docs" / "firmware"
 BOARDS = {
     # key: (yaml file, device base name, esptool chip)
     "sensor": ("gogo-iot-workshop.yaml", "gogo-iot", "esp32c3"),
@@ -68,6 +71,13 @@ def build(board, zone, cfg):
     dst = dist / f"{name}.factory.bin"
     shutil.copy2(src, dst)
     print(f"-> {dst}  ({dst.stat().st_size // 1024} KB)")
+
+    # Publish in the same step. docs/firmware/ is what GitHub Pages serves and
+    # what every worksheet links to; when this copy was manual it silently went
+    # three days stale, so teams flashed firmware that did not match the YAML.
+    PUBLISHED.mkdir(parents=True, exist_ok=True)
+    shutil.copy2(src, PUBLISHED / f"{name}.factory.bin")
+    print(f"-> {PUBLISHED / f'{name}.factory.bin'}  (published)")
     return dst
 
 

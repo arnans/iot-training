@@ -27,8 +27,14 @@ cp secrets.example.yaml secrets.yaml     # OTA + fallback AP passwords
 cp zones.example.yaml zones.yaml         # three SSIDs + passwords
 python build-zones.py                    # -> dist/gogo-iot-{red,green,blue}.factory.bin
                                          #    dist/gogo-relay-{red,green,blue}.factory.bin
+                                         #    and the same six into ../docs/firmware/
 python build-zones.py --flash red sensor COM7
 ```
+
+The build also writes into `docs/firmware/`, which is what GitHub Pages serves and what every
+worksheet links to. **Commit and push those six files to publish** — building alone does not
+update the site. Check `git status` after a build; if the binaries are unchanged there, the site
+is already current.
 
 **On Windows, build from PowerShell or cmd — not Git Bash.** ESP-IDF's installer refuses to run
 under MSYS/MinGW and fails with `ERROR: MSys/Mingw is not supported` before compiling anything.

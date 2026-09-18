@@ -9,10 +9,10 @@ follow later if time runs short.
 
 ## Already done for you
 
-- **ESPHome 2026.6.5 is installed** on this machine.
+- **ESPHome 2026.8.2 is installed** on this machine.
 - **Both sources compile clean, including through the zone pipeline.** Current builds, with the
-  embedded `web_server` assets included: `gogo-iot-red.factory.bin` **0.94 MB**,
-  `gogo-relay-red.factory.bin` **0.97 MB**, on 4 MB parts — no larger than before `web_server`
+  embedded `web_server` assets included: `gogo-iot-red.factory.bin` **0.95 MB**,
+  `gogo-relay-red.factory.bin` **1.00 MB**, on 4 MB parts — no larger than before `web_server`
   was added, because the embedded page is only ~13 kB (verified, see test J). Plenty of headroom.
   ESP-IDF toolchains for both C3 and C6 are downloaded and the build cache is warm, so rebuilds
   are quick. `build-zones.py` is the production path (six binaries into `dist/`); it refuses to

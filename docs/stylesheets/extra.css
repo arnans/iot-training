@@ -450,6 +450,54 @@
   text-align: right;
 }
 
+/* the footer once extra.js has added the "ทำข้อนี้เสร็จแล้ว" box: the box is the team's input
+   (marigold), the back link stays quiet beside it; a ticked box turns the structure green */
+.md-typeset p.ws-foot {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 0.6em 1.4em;
+  margin: 1.4em 0 0;
+}
+
+.md-typeset label.ws-done {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em;
+  padding: 0.4em 1em 0.4em 0.8em;
+  border: 1px solid var(--ag-chip-border);
+  border-radius: 2em;
+  background: var(--ag-chip-bg);
+  color: var(--ag-chip-fg);
+  font-weight: 500;
+  line-height: 1.3;
+  cursor: pointer;
+  user-select: none;
+}
+
+.md-typeset label.ws-done:hover {
+  border-color: var(--ag-marigold);
+}
+
+.md-typeset label.ws-done:has(input:checked) {
+  background: var(--ag-green);
+  border-color: var(--ag-green);
+  color: #fff;
+}
+
+.md-typeset label.ws-done input.ws-mirror {
+  width: 1.15em;
+  height: 1.15em;
+  margin: 0;
+  accent-color: var(--ag-green);
+  cursor: pointer;
+}
+
+.md-typeset label.ws-done:has(input:checked) input.ws-mirror {
+  accent-color: #fff;
+}
+
 .md-typeset a.ws-back {
   font-size: 0.8em;
   color: var(--md-default-fg-color--light);
@@ -926,7 +974,8 @@
   #ws-bar,
   #shot-hover,
   .md-typeset a.glightbox,
-  .md-typeset a.ws-back {
+  .md-typeset a.ws-back,
+  .md-typeset label.ws-done {
     display: none !important;
   }
 

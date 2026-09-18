@@ -32,7 +32,10 @@ scripts/test_progress.js       node checks for progress.js
 
 ### When the worksheet sends
 
-- Any task checkbox `change` — immediately, with the tick as `last`
+- Any task checkbox `change` — immediately, with the tick as `last`. The **ทำข้อนี้เสร็จแล้ว**
+  box at the foot of a sub-section forwards to its row in the task list, so it counts once.
+  Boxes inside `<div class="ws-untracked" markdown>` (Activity 7.3's acknowledgements) are
+  remembered in the browser but never counted or sent
 - Any field `input` or radio `change`, and an import — 1.5 s after the last one
 - Page load, tab becoming visible again, browser coming back online — 1.5 s later
 - Never while the team number is empty or invalid

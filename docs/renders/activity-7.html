@@ -635,6 +635,54 @@ body {
   text-align: right;
 }
 
+/* the footer once extra.js has added the "ทำข้อนี้เสร็จแล้ว" box: the box is the team's input
+   (marigold), the back link stays quiet beside it; a ticked box turns the structure green */
+.md-typeset p.ws-foot {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 0.6em 1.4em;
+  margin: 1.4em 0 0;
+}
+
+.md-typeset label.ws-done {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em;
+  padding: 0.4em 1em 0.4em 0.8em;
+  border: 1px solid var(--ag-chip-border);
+  border-radius: 2em;
+  background: var(--ag-chip-bg);
+  color: var(--ag-chip-fg);
+  font-weight: 500;
+  line-height: 1.3;
+  cursor: pointer;
+  user-select: none;
+}
+
+.md-typeset label.ws-done:hover {
+  border-color: var(--ag-marigold);
+}
+
+.md-typeset label.ws-done:has(input:checked) {
+  background: var(--ag-green);
+  border-color: var(--ag-green);
+  color: #fff;
+}
+
+.md-typeset label.ws-done input.ws-mirror {
+  width: 1.15em;
+  height: 1.15em;
+  margin: 0;
+  accent-color: var(--ag-green);
+  cursor: pointer;
+}
+
+.md-typeset label.ws-done:has(input:checked) input.ws-mirror {
+  accent-color: #fff;
+}
+
 .md-typeset a.ws-back {
   font-size: 0.8em;
   color: var(--md-default-fg-color--light);
@@ -1111,7 +1159,8 @@ body {
   #ws-bar,
   #shot-hover,
   .md-typeset a.glightbox,
-  .md-typeset a.ws-back {
+  .md-typeset a.ws-back,
+  .md-typeset label.ws-done {
     display: none !important;
   }
 
@@ -1425,11 +1474,13 @@ body {
 <p><a class="ws-back" href="#a7">↑ กลับไปที่ใบงาน</a></p>
 <h3 id="a7-2c"><span class="sub-num">7.3</span>การเข้าถึงจากนอกฟาร์มและคลาวด์</h3>
 <p>ทำเครื่องหมายเมื่อสมาชิกในทีมเข้าใจประเด็นต่อไปนี้</p>
+<div class="ws-untracked">
 <ul class="task-list">
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> <strong>ระบบที่เราสร้างในกิจกรรมนี้เข้าถึงได้เฉพาะในเครือข่ายภายใน</strong> โทรศัพท์หรือคอมพิวเตอร์ที่จะดูแดชบอร์ดต้องต่อ WiFi เดียวกับ Home Assistant</li>
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> <strong>ถ้าต้องดูหรือสั่งงานจากภายนอก ต้องมีบริการคลาวด์เป็นทางเข้า</strong> ซึ่งวิธีการขึ้นกับระบบที่ใช้: Home Assistant ใช้บริการ Home Assistant Cloud ของ Nabu Casa (<a href="https://www.nabucasa.com">nabucasa.com</a>) ซึ่งมีค่าใช้จ่าย ส่วนอุปกรณ์สำเร็จรูปบางยี่ห้อ เช่น Tuya หรือ Xiaomi มีคลาวด์ให้ใช้ฟรี หรือจ่ายเพิ่มเมื่อต้องการความสามารถเฉพาะทาง</li>
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> <strong>ระบบของเรายังทำงานตามกฎได้แม้อินเทอร์เน็ตดับ</strong> ต่างจากระบบที่ทำงานผ่านคลาวด์อย่างเดียว ถ้าเลือกใช้ระบบแบบคลาวด์อย่างเดียว ส่วนที่สำคัญต้องมีกลไกป้องกัน (fail-safe) ในตัว</li>
 </ul>
+</div>
 <p><a class="ws-back" href="#a7">↑ กลับไปที่ใบงาน</a></p>
 <h3 id="a7-3"><span class="sub-num">7.4</span>เลือกแบตเตอรี่สำหรับระบบโซลาร์</h3>
 <p><strong>Charge controller</strong> ในกล่องจ่ายไฟของกลุ่มควบคุมการชาร์จแบตเตอรี่จากแผงโซลาร์เซลล์ และจ่ายไฟให้โหลด ชุดอบรมใช้อะแดปเตอร์ 12V ที่ขั้วแบตเตอรี่แทนแบตเตอรี่จริง จึง<strong>ไม่ต่อแผงโซลาร์เซลล์ในชุดนี้</strong> เพราะไม่มีแบตเตอรี่รับพลังงานจากการชาร์จ</p>
@@ -1501,9 +1552,9 @@ body {
 </ol>
 <p class="ws-phase"><strong>Charge controller และอินเวอร์เตอร์</strong></p>
 <p>Charge controller รับไฟจากแผงโซลาร์เซลล์มาชาร์จแบตเตอรี่ให้พอดี ไม่ชาร์จเกิน และจ่ายไฟจากแบตเตอรี่ไปยังโหลด ต้องเลือกรุ่นที่รองรับชนิดแบตเตอรี่ที่ใช้ เพราะแต่ละชนิดต้องการแรงดันชาร์จต่างกัน</p>
-<p><img alt="แผนภาพ: แผงโซลาร์เซลล์และแบตเตอรี่ต่อเข้า charge controller ส่วนหลอด LED ต่อที่ช่องโหลดของ controller" src="../images/power-controller-wiring.svg" width="85%" /></p>
+<p><img alt="แผนภาพ: แผงโซลาร์เซลล์และแบตเตอรี่ต่อเข้า charge controller ส่วนหลอด LED ต่อที่ช่องโหลดของ controller" src="../images/power-controller-wiring.png" width="85%" /></p>
 <p>ถ้าอุปกรณ์ต้องการไฟต่างจากแบตเตอรี่ ต้องมีตัวแปลงไฟ เช่น ปั๊มหรืออุปกรณ์ที่ใช้ไฟบ้าน 220 V AC ต้องใช้ <strong>อินเวอร์เตอร์</strong> แปลง 12 V DC เป็น 220 V AC อินเวอร์เตอร์ต่อกับขั้วแบตเตอรี่โดยตรงผ่านฟิวส์ ไม่ต่อผ่านช่องโหลดของ controller เพราะช่องโหลดจ่ายกระแสได้จำกัด</p>
-<p><img alt="แผนภาพ: แบตเตอรี่ต่อกับ charge controller และจ่ายไฟให้อินเวอร์เตอร์ผ่านฟิวส์ อินเวอร์เตอร์แปลง 12 V DC เป็น 220 V AC แล้วจ่ายให้ปั๊ม" src="../images/power-inverter.svg" width="85%" /></p>
+<p><img alt="แผนภาพ: แบตเตอรี่ต่อกับ charge controller และจ่ายไฟให้อินเวอร์เตอร์ผ่านฟิวส์ อินเวอร์เตอร์แปลง 12 V DC เป็น 220 V AC แล้วจ่ายให้ปั๊ม" src="../images/power-inverter.png" width="85%" /></p>
 <p class="ws-phase"><strong>จดข้อสรุป</strong></p>
 <ol start="4" style="counter-reset: step 3">
 <li>ชนิดแบตเตอรี่ที่เหมาะกับโจทย์ของกลุ่มและเหตุผล (ถ้าไม่ต้องใช้แบตเตอรี่ ให้ระบุว่าไม่ใช้) <input class="fld" type="text" data-k="d.battery" data-size="50" size="50" autocomplete="off" spellcheck="false"></li>
@@ -1560,13 +1611,14 @@ body {
 </tr>
 <tr>
 <td>4. แผงเมื่อได้แดดเต็มเพียง 3 ชั่วโมง</td>
-<td>400 Wh ÷ 3 ชม. ≈ 133 W → แผง 150 W หนึ่งแผง (แผง 15 W แบบในชุดต้องใช้ 9 แผง)</td>
+<td>400 Wh ÷ 3 ชม. ≈ 133 W → แผง 150 W หนึ่งแผง</td>
 <td>2,200 Wh ÷ 3 ชม. ≈ 733 W → แผง 150 W ห้าแผง</td>
 </tr>
 </tbody>
 </table></div>
 <blockquote>
-<p>ตัวอย่างที่ 2 บอกว่าปั๊มใหญ่ไม่ควรพึ่งแบตเตอรี่ ให้เดินปั๊มตอนแดดจัดจากแผงโดยตรง แล้วเก็บน้ำไว้ในถังแทนการเก็บไฟ แต่แผงต้องจ่ายกำลังได้มากกว่า 1,100 W ขณะเดินเครื่อง และถังต้องมีน้ำพอสำหรับวันฟ้าครึ้ม จำนวนแผงจากพลังงานต่อวันจึงยังไม่พอสำหรับเลือกซื้อ ต้องตรวจด้วยว่ากำลังขณะใช้งานและตอนเริ่มเดินเครื่องเพียงพอ</p>
+<p>นอกจากปัจจับข้อต้นแล้ว ต้องดูด้วยว่าอุปกรณ์รองรับกระแสสูงสุดที่ต้องใช้ด้วยหรือไม่ เช่น ปั๊ม 1,100 W ใช้กับ Charge Controller ใน workshop นี้ไม่ได้ เพราะจ่ายไฟได้สูงสุด 390 W เท่านั้น</p>
+<p>อุปกรณ์เช่น ปั๊มน้ำมักต้องการกระแสตอนเริ่มทำงานสูงกว่าพิกัด อุปกรณ์ที่เผื่อความต้องการนี้ด้วย เช่น ปั๊ม 1,100 W อาจต้องการพลังงานสูงถึง 3,000 W ขณะเริ่มทำงานเป็นต้น</p>
 </blockquote>
 <p class="ws-phase"><strong>จดเฉพาะแผนพลังงานของกลุ่ม</strong></p>
 <ol start="5" style="counter-reset: step 4">
@@ -1678,6 +1730,8 @@ body {
       hooks/fields.py generated, plus the task-list checkboxes, is saved to localStorage as the
       team types and restored on every page load. A toolbar under the page title offers
       download (JSON), import (merge), print, and clear. Design notes: webapp/FILLABLE-WORKSHEET.md.
+   4. Each sub-activity ends with a "ทำข้อนี้เสร็จแล้ว" box: a second view of its item in the
+      task list at the top, so a team that has just finished need not scroll back to tick.
    Runs on every page load, including Material's instant navigation. */
 (function () {
   var ROLES = { Hardware: "hardware", Driver: "driver", Recorder: "recorder", Tester: "tester" };
@@ -1853,6 +1907,74 @@ body {
     );
   }
 
+  /* boxes inside <div class="ws-untracked" markdown> are remembered like any other but never
+     reported: acknowledgement lists ("we understood these three points") are not progress */
+  function tracked(cb) { return !(cb.closest && cb.closest(".ws-untracked")); }
+
+  /* ---- "ทำข้อนี้เสร็จแล้ว": the foot of each sub-activity mirrors its box in the task list ----
+     The list at the top is where a team plans; the foot of a sub-activity is where it has just
+     finished, so the tick is offered there too. One state, two boxes: the mirror sets the list
+     box and fires its change event, so saving and the dashboard report run as for any tick.
+     A row's target is the element its bold link points at (a heading, or the paragraph of the
+     end question); the section runs to the next heading, the next row's target, or the pager.
+     The box joins the section's "back to the list" line where there is one (a discussion prompt
+     may follow it), and closes the section on a line of its own otherwise. */
+  var DONE_LABEL = "ทำข้อนี้เสร็จแล้ว";
+  var mirrors = [];                                // [{ cb: list box, m: mirror box }] for the page on screen
+
+  function isBackLine(el) {
+    return el.tagName === "P" && el.children.length === 1 && el.children[0].classList.contains("ws-back");
+  }
+
+  /* { back: the section's back-link line or null, last: its last element } */
+  function sectionEnd(target, targets) {
+    var out = { back: null, last: target };
+    for (var el = target.nextElementSibling; el; el = el.nextElementSibling) {
+      if (/^(H2|H3|NAV|FOOTER)$/.test(el.tagName) || targets.indexOf(el) >= 0) break;
+      if (isBackLine(el)) out.back = el;
+      out.last = el;
+    }
+    return out;
+  }
+
+  function addMirrors() {
+    mirrors = [];
+    var rows = [];
+    taskBoxes().forEach(function (cb) {
+      var li = cb.closest("li");
+      if (!li || !li.closest(".ws-tasks") || !tracked(cb)) return;
+      var a = li.querySelector("strong a[href^='#']");
+      var target = a && document.getElementById(decodeURIComponent(a.getAttribute("href").slice(1)));
+      if (target) rows.push({ cb: cb, target: target });
+    });
+    var targets = rows.map(function (r) { return r.target; });
+    rows.forEach(function (r) {
+      if (r.target.closest(".ws-tasks")) return;    // a row pointing into the list itself
+      var end = sectionEnd(r.target, targets);
+      var label = document.createElement("label");
+      label.className = "ws-done";
+      var m = document.createElement("input");
+      m.type = "checkbox";
+      m.className = "ws-mirror";
+      label.appendChild(m);
+      label.appendChild(document.createTextNode(" " + DONE_LABEL));
+      var foot = end.back;
+      if (foot) {
+        foot.insertBefore(label, foot.firstChild);
+      } else {
+        foot = document.createElement("p");
+        foot.appendChild(label);
+        end.last.parentNode.insertBefore(foot, end.last.nextSibling);
+      }
+      foot.classList.add("ws-foot");
+      mirrors.push({ cb: r.cb, m: m });
+    });
+  }
+
+  function syncMirrors() {
+    mirrors.forEach(function (pair) { pair.m.checked = pair.cb.checked; });
+  }
+
   /* a box grows to fit what is typed, so nothing is clipped on screen or in print */
   function grow(el) {
     if (el.tagName === "TEXTAREA") {
@@ -1959,7 +2081,7 @@ body {
       if (a.name && !names[a.id]) names[a.id] = a.name;
       return a.id;
     }
-    taskBoxes().forEach(function (cb) {
+    taskBoxes().filter(tracked).forEach(function (cb) {
       var id = act(cb);
       acts[id].total++;
       if (cb.checked) acts[id].done++;
@@ -2122,6 +2244,7 @@ body {
       cb.disabled = false;
       cb.checked = !!store.checks[pid + "#" + i];
     });
+    syncMirrors();
   }
 
   function hasFields(root) {
@@ -2340,12 +2463,21 @@ body {
       pushNow();                                   // verifies the number first; the dot appears once it is confirmed
       return;
     }
+    if (el.classList && el.classList.contains("ws-mirror")) {
+      var pair = mirrors.filter(function (p) { return p.m === el; })[0];
+      if (!pair) return;
+      pair.cb.checked = el.checked;                // the list box is the one that is saved and reported
+      pair.cb.dispatchEvent(new Event("change", { bubbles: true }));
+      return;
+    }
     if (el.type === "checkbox" && el.closest && el.closest(".task-list-item")) {
       var i = taskBoxes().indexOf(el);
       if (i < 0) return;
       var key = pageId() + "#" + i;
       if (el.checked) store.checks[key] = true; else delete store.checks[key];
       saveNow();
+      syncMirrors();
+      if (!tracked(el)) return;                    // remembered, not reported
       pushNow({                                    // every tick reaches the dashboard at once
         page: sessionKey(), act: actId(el), on: !!el.checked, ts: Date.now(), label: stepLabel(el)
       });
@@ -2379,6 +2511,7 @@ body {
   function init() {
     decorate(document);
     bindHover(document);
+    addMirrors();
     store = loadStore();
     buildBar();                                   // first, so the toolbar's team box is filled with the rest
     fillFields(document);

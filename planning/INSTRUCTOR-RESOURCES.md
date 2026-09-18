@@ -96,6 +96,7 @@ team card as one matching set.
 
 | Tool | Used for |
 |---|---|
+| [progress.html](https://arnans.github.io/iot-training/progress.html) | **Team progress board.** Live during the workshop: which activity each team is on, ticks per step, help requests (🙋) and messages. One tab per session (ช่วงที่ 1–3); pick the day at the top if it is not today. Tap a team's cell for its devices and a reset. No login: open it on every TA phone and bookmark it. Design notes in `webapp/PROGRESS-DASHBOARD.md` |
 | <https://web.esphome.io> | Flashing boards and reading a board's name from its USB log. Chrome or Edge only |
 | <https://www.home-assistant.io/docs/> | Home Assistant reference |
 | <https://esphome.io/> | ESPHome reference |
@@ -113,6 +114,11 @@ check first). Minutes are the design estimate, not a rehearsed timing.
 
 **How to run it.** Project the checklist and talk through it one item at a time; teams work down
 it while you talk. The prose under each item is for the team that falls behind or wants the reason.
+Keep the [progress board](https://arnans.github.io/iot-training/progress.html) open on a TA phone:
+every tick a team makes lands there within seconds, so it shows who is behind before they raise a
+hand. A team ticks either the item in the checklist or the **ทำข้อนี้เสร็จแล้ว** box at the foot
+of the sub-section; both are the same tick. The three "we understood this" boxes in 7.3 are not
+counted.
 
 The two questions from the Activity 4 pilot, `s2.time.trace` and `s2.time.why`, and the Session 1 lighting keys (`s1.light.on`,
 `s1.rule.dark.*`, `s1.rule.bright.*`, `s1.auto.pass`, `s1.timer.at`, `s1.timer.ok`) are on the

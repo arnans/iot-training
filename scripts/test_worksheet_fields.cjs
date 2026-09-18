@@ -105,8 +105,68 @@ async function testProgressMerge() {
   dom.window.close();
   console.log('PASS progress: activity page reports under its session, merged in course order');
 }
+// Every task-list row whose bold link names a section gets a "ทำข้อนี้เสร็จแล้ว" box at the foot of
+// that section. It is a second view of the row's box: ticking either sets both, only the row's box is
+// saved (no extra check keys) and reported. Boxes in a ws-untracked list are saved but never reported.
+async function testDoneBoxes() {
+  const saved = JSON.stringify({ fields: { 'team.no': '17' }, checks: {}, sentAs: '17', dev: 'devtest' });
+  const calls = [];
+  let dom = await open('activity-7', saved, calls);
+  let w = dom.window, d = w.document;
+  const rows = [...d.querySelectorAll('.ws-tasks .task-list-item')];
+  const mirrors = [...d.querySelectorAll('label.ws-done input.ws-mirror')];
+  assert.equal(mirrors.length, rows.length, 'one done box per task-list row');
+  assert.equal(rows.length, 6);
+  for (const row of rows) {                      // each box sits at the foot of the section its row links to
+    const id = decodeURIComponent(row.querySelector('strong a').getAttribute('href').slice(1));
+    let el = d.getElementById(id), foot = null;
+    for (el = el.nextElementSibling; el && !/^H[23]$/.test(el.tagName); el = el.nextElementSibling) {
+      if (el.classList.contains('ws-foot')) foot = el;
+    }
+    assert.ok(foot && foot.querySelector('label.ws-done') && foot.querySelector('a.ws-back'), `${id}: done box and back link on one footer line`);
+  }
+  const untracked = [...d.querySelectorAll('.ws-untracked .task-list-item input[type=checkbox]')];
+  assert.equal(untracked.length, 3, '7.3 acknowledgement boxes');
+  // tick the second mirror: its row box follows, is saved under the row's index, and is reported
+  const listBoxes = [...d.querySelectorAll('.task-list-item input[type=checkbox]')];
+  calls.length = 0;
+  mirrors[1].checked = true;
+  mirrors[1].dispatchEvent(new w.Event('change', { bubbles: true }));
+  await wait(50);
+  const rowBox = rows[1].querySelector('input[type=checkbox]');
+  assert.ok(rowBox.checked, 'row box follows the done box');
+  const checks = JSON.parse(w.localStorage.getItem(storeKey)).checks;
+  assert.deepEqual(Object.keys(checks), [`/activity-7/#${listBoxes.indexOf(rowBox)}`], 'only the row box is saved');
+  let put = calls.filter(c => c.opts && c.opts.method === 'PUT').pop();
+  assert.ok(put, 'done box reported');
+  let a7 = JSON.parse(put.opts.body).pages['session-3'].acts.a7;
+  assert.deepEqual([a7.done, a7.total], [1, 6], 'activity 7 counts the six list boxes only');
+  assert.equal(JSON.parse(put.opts.body).last.label.slice(0, 3), '7.2');
+  // untick from the list: the mirror follows
+  rowBox.checked = false;
+  rowBox.dispatchEvent(new w.Event('change', { bubbles: true }));
+  assert.equal(mirrors[1].checked, false, 'done box follows the row box');
+  // an acknowledgement box is remembered but not reported
+  calls.length = 0;
+  untracked[0].checked = true;
+  untracked[0].dispatchEvent(new w.Event('change', { bubbles: true }));
+  await wait(50);
+  assert.equal(calls.filter(c => c.opts && c.opts.method === 'PUT').length, 0, 'untracked tick not sent');
+  assert.equal(Object.keys(JSON.parse(w.localStorage.getItem(storeKey)).checks).length, 1, 'untracked tick saved');
+  const kept = w.localStorage.getItem(storeKey);
+  dom.window.close();
+  // reload: the saved state reaches both views
+  rowBox.checked = true; rowBox.dispatchEvent(new w.Event('change', { bubbles: true }));
+  dom = await open('activity-7', kept.replace('"checks":{', `"checks":{"/activity-7/#${listBoxes.indexOf(rowBox)}":true,`), calls);
+  w = dom.window; d = w.document;
+  assert.ok([...d.querySelectorAll('label.ws-done input.ws-mirror')][1].checked, 'done box restored with its row');
+  assert.ok(d.querySelectorAll('.ws-untracked input[type=checkbox]')[0].checked, 'acknowledgement restored');
+  dom.window.close();
+  console.log('PASS done boxes: one per task-list row at the foot of its section, one state with the row, 7.3 acknowledgements saved but not counted');
+}
 (async () => {
   for (const slug of ['session-1-start', 'activity-1', 'activity-2', 'activity-3', 'activity-4', 'activity-5',
                       'session-3-history', 'activity-6', 'activity-7', 'record-sheet']) await testPage(slug);
+  await testDoneBoxes();
   await testProgressMerge();
 })().catch(err => { console.error(err); process.exit(1); });

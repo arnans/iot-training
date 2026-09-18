@@ -635,6 +635,54 @@ body {
   text-align: right;
 }
 
+/* the footer once extra.js has added the "ทำข้อนี้เสร็จแล้ว" box: the box is the team's input
+   (marigold), the back link stays quiet beside it; a ticked box turns the structure green */
+.md-typeset p.ws-foot {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 0.6em 1.4em;
+  margin: 1.4em 0 0;
+}
+
+.md-typeset label.ws-done {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em;
+  padding: 0.4em 1em 0.4em 0.8em;
+  border: 1px solid var(--ag-chip-border);
+  border-radius: 2em;
+  background: var(--ag-chip-bg);
+  color: var(--ag-chip-fg);
+  font-weight: 500;
+  line-height: 1.3;
+  cursor: pointer;
+  user-select: none;
+}
+
+.md-typeset label.ws-done:hover {
+  border-color: var(--ag-marigold);
+}
+
+.md-typeset label.ws-done:has(input:checked) {
+  background: var(--ag-green);
+  border-color: var(--ag-green);
+  color: #fff;
+}
+
+.md-typeset label.ws-done input.ws-mirror {
+  width: 1.15em;
+  height: 1.15em;
+  margin: 0;
+  accent-color: var(--ag-green);
+  cursor: pointer;
+}
+
+.md-typeset label.ws-done:has(input:checked) input.ws-mirror {
+  accent-color: #fff;
+}
+
 .md-typeset a.ws-back {
   font-size: 0.8em;
   color: var(--md-default-fg-color--light);
@@ -1111,7 +1159,8 @@ body {
   #ws-bar,
   #shot-hover,
   .md-typeset a.glightbox,
-  .md-typeset a.ws-back {
+  .md-typeset a.ws-back,
+  .md-typeset label.ws-done {
     display: none !important;
   }
 
@@ -1452,6 +1501,8 @@ body {
       hooks/fields.py generated, plus the task-list checkboxes, is saved to localStorage as the
       team types and restored on every page load. A toolbar under the page title offers
       download (JSON), import (merge), print, and clear. Design notes: webapp/FILLABLE-WORKSHEET.md.
+   4. Each sub-activity ends with a "ทำข้อนี้เสร็จแล้ว" box: a second view of its item in the
+      task list at the top, so a team that has just finished need not scroll back to tick.
    Runs on every page load, including Material's instant navigation. */
 (function () {
   var ROLES = { Hardware: "hardware", Driver: "driver", Recorder: "recorder", Tester: "tester" };
@@ -1627,6 +1678,74 @@ body {
     );
   }
 
+  /* boxes inside <div class="ws-untracked" markdown> are remembered like any other but never
+     reported: acknowledgement lists ("we understood these three points") are not progress */
+  function tracked(cb) { return !(cb.closest && cb.closest(".ws-untracked")); }
+
+  /* ---- "ทำข้อนี้เสร็จแล้ว": the foot of each sub-activity mirrors its box in the task list ----
+     The list at the top is where a team plans; the foot of a sub-activity is where it has just
+     finished, so the tick is offered there too. One state, two boxes: the mirror sets the list
+     box and fires its change event, so saving and the dashboard report run as for any tick.
+     A row's target is the element its bold link points at (a heading, or the paragraph of the
+     end question); the section runs to the next heading, the next row's target, or the pager.
+     The box joins the section's "back to the list" line where there is one (a discussion prompt
+     may follow it), and closes the section on a line of its own otherwise. */
+  var DONE_LABEL = "ทำข้อนี้เสร็จแล้ว";
+  var mirrors = [];                                // [{ cb: list box, m: mirror box }] for the page on screen
+
+  function isBackLine(el) {
+    return el.tagName === "P" && el.children.length === 1 && el.children[0].classList.contains("ws-back");
+  }
+
+  /* { back: the section's back-link line or null, last: its last element } */
+  function sectionEnd(target, targets) {
+    var out = { back: null, last: target };
+    for (var el = target.nextElementSibling; el; el = el.nextElementSibling) {
+      if (/^(H2|H3|NAV|FOOTER)$/.test(el.tagName) || targets.indexOf(el) >= 0) break;
+      if (isBackLine(el)) out.back = el;
+      out.last = el;
+    }
+    return out;
+  }
+
+  function addMirrors() {
+    mirrors = [];
+    var rows = [];
+    taskBoxes().forEach(function (cb) {
+      var li = cb.closest("li");
+      if (!li || !li.closest(".ws-tasks") || !tracked(cb)) return;
+      var a = li.querySelector("strong a[href^='#']");
+      var target = a && document.getElementById(decodeURIComponent(a.getAttribute("href").slice(1)));
+      if (target) rows.push({ cb: cb, target: target });
+    });
+    var targets = rows.map(function (r) { return r.target; });
+    rows.forEach(function (r) {
+      if (r.target.closest(".ws-tasks")) return;    // a row pointing into the list itself
+      var end = sectionEnd(r.target, targets);
+      var label = document.createElement("label");
+      label.className = "ws-done";
+      var m = document.createElement("input");
+      m.type = "checkbox";
+      m.className = "ws-mirror";
+      label.appendChild(m);
+      label.appendChild(document.createTextNode(" " + DONE_LABEL));
+      var foot = end.back;
+      if (foot) {
+        foot.insertBefore(label, foot.firstChild);
+      } else {
+        foot = document.createElement("p");
+        foot.appendChild(label);
+        end.last.parentNode.insertBefore(foot, end.last.nextSibling);
+      }
+      foot.classList.add("ws-foot");
+      mirrors.push({ cb: r.cb, m: m });
+    });
+  }
+
+  function syncMirrors() {
+    mirrors.forEach(function (pair) { pair.m.checked = pair.cb.checked; });
+  }
+
   /* a box grows to fit what is typed, so nothing is clipped on screen or in print */
   function grow(el) {
     if (el.tagName === "TEXTAREA") {
@@ -1733,7 +1852,7 @@ body {
       if (a.name && !names[a.id]) names[a.id] = a.name;
       return a.id;
     }
-    taskBoxes().forEach(function (cb) {
+    taskBoxes().filter(tracked).forEach(function (cb) {
       var id = act(cb);
       acts[id].total++;
       if (cb.checked) acts[id].done++;
@@ -1896,6 +2015,7 @@ body {
       cb.disabled = false;
       cb.checked = !!store.checks[pid + "#" + i];
     });
+    syncMirrors();
   }
 
   function hasFields(root) {
@@ -2114,12 +2234,21 @@ body {
       pushNow();                                   // verifies the number first; the dot appears once it is confirmed
       return;
     }
+    if (el.classList && el.classList.contains("ws-mirror")) {
+      var pair = mirrors.filter(function (p) { return p.m === el; })[0];
+      if (!pair) return;
+      pair.cb.checked = el.checked;                // the list box is the one that is saved and reported
+      pair.cb.dispatchEvent(new Event("change", { bubbles: true }));
+      return;
+    }
     if (el.type === "checkbox" && el.closest && el.closest(".task-list-item")) {
       var i = taskBoxes().indexOf(el);
       if (i < 0) return;
       var key = pageId() + "#" + i;
       if (el.checked) store.checks[key] = true; else delete store.checks[key];
       saveNow();
+      syncMirrors();
+      if (!tracked(el)) return;                    // remembered, not reported
       pushNow({                                    // every tick reaches the dashboard at once
         page: sessionKey(), act: actId(el), on: !!el.checked, ts: Date.now(), label: stepLabel(el)
       });
@@ -2153,6 +2282,7 @@ body {
   function init() {
     decorate(document);
     bindHover(document);
+    addMirrors();
     store = loadStore();
     buildBar();                                   // first, so the toolbar's team box is filled with the rest
     fillFields(document);

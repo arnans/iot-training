@@ -1,12 +1,14 @@
 # กิจกรรมที่ 5 — จำลองปัญหาและเพิ่มระบบป้องกัน (Failure lab)
 
-![](images/activity-banners/activity-05-protection.png){ .activity-banner width="1800" height="300" loading="lazy" decoding="async" }
+![](images/activity-banners/activity-05-protection.webp){ .activity-banner width="1600" height="267" loading="lazy" decoding="async" }
 
 **55 นาที**
 
 **อุปกรณ์ที่ใช้** ระบบรดน้ำทำงานอยู่ ปั๊มต่อกับรีเลย์และเดินแห้ง สวิตช์ลูกลอยในแก้วน้ำ
 
 จับคู่กับกลุ่มข้าง ๆ ผลัดกัน **จำลองปัญหาแล้วสังเกตผล จากนั้นเพิ่มกฎเพื่อแก้ไข แล้วทดลองอีกครั้งว่าแก้ปัญหาได้หรือไม่**
+
+![](images/activity-dividers/flower-led.webp){ .activity-divider width="1200" height="79" loading="lazy" decoding="async" }
 
 ### ใบงาน { #a5 }
 
@@ -32,6 +34,8 @@
 
 </div>
 
+![](images/activity-dividers/orchard.webp){ .activity-divider width="1200" height="105" loading="lazy" decoding="async" }
+
 ### ก่อนจำลองปัญหาทุกข้อ { #a5-0 }
 
 **ตรวจความพร้อมก่อนทดสอบ**
@@ -40,6 +44,8 @@
 2. ตรวจว่าปั๊มต่อกับรีเลย์แล้ว ลูกลอยอยู่ในแก้วน้ำและแสดง **Wet**
 3. ตรวจว่าบอร์ดทั้งสองแสดงค่าปัจจุบัน เปิดหน้าอุปกรณ์ไว้คนละแท็บ
 4. ใช้ปุ่มสั่งปั๊มในการทดสอบ ไม่ต้องเปลี่ยนเกณฑ์ความชื้น
+
+![](images/activity-dividers/greenhouse.webp){ .activity-divider width="1200" height="58" loading="lazy" decoding="async" }
 
 ### 5.1 น้ำต่ำแต่ปั๊มยังเดิน { #a5-1 }
 
@@ -79,6 +85,8 @@
 > กฎเปิดปั๊มต้องเห็น **Wet** จึงจะเริ่มได้ ถ้าสายลูกลอยหลุดแล้วอ่านค่าได้เป็น Dry หรือบอร์ดขาดการเชื่อมต่อแล้วค่าเป็น unavailable ทั้งสองกรณีจะไม่ผ่านเงื่อนไข
 
 [↑ กลับไปที่ใบงาน](#a5){ .ws-back }
+
+![](images/activity-dividers/farmhouse.webp){ .activity-divider width="1200" height="64" loading="lazy" decoding="async" }
 
 ### 5.2 สั่งแล้วปั๊มไม่เดิน { #a5-2 }
 
@@ -124,6 +132,8 @@
 
 [↑ กลับไปที่ใบงาน](#a5){ .ws-back }
 
+![](images/activity-dividers/flower-led.webp){ .activity-divider width="1200" height="79" loading="lazy" decoding="async" }
+
 ### 5.3 บอร์ดเซนเซอร์ดับ { #a5-3 }
 
 ![ตำแหน่งสวิตช์ ON/OFF ทางซ้ายของบอร์ด GoGo-IoT ใกล้ช่อง USB-C และกลุ่มเซนเซอร์ทางขวา](images/gogo-iot-main-parts.png){ width="100%" }
@@ -164,6 +174,8 @@
 
 [↑ กลับไปที่ใบงาน](#a5){ .ws-back }
 
+![](images/activity-dividers/orchard.webp){ .activity-divider width="1200" height="105" loading="lazy" decoding="async" }
+
 ### 5.4 ปั๊มเดินนานเกินไป { #a5-4 }
 
 **จำลองปัญหา**
@@ -195,6 +207,8 @@
 > เมื่อตัดปั๊มแล้ว ให้ตรวจสาเหตุก่อนเริ่มใหม่ กฎรดน้ำจะเริ่มอีกครั้งเมื่อความชื้นข้ามเกณฑ์เปิด ไม่ใช่ทันทีที่ปัญหาหมดไป
 
 [↑ กลับไปที่ใบงาน](#a5){ .ws-back }
+
+![](images/activity-dividers/sprinklers.webp){ .activity-divider width="1200" height="96" loading="lazy" decoding="async" }
 
 ### 5.5 วางแผนบำรุงรักษา { #a5-5 }
 

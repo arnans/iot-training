@@ -749,6 +749,34 @@ body {
   break-after: avoid;
 }
 
+/* Transparent farm strips replace the rule at each activity-page H3. */
+.md-typeset img.activity-divider:not(.twemoji):not(.emojione) {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 0;
+  box-shadow: none;
+  background: transparent;
+}
+
+/* The strip stands in for the H3 rule, so it keeps that rule's rhythm: the 3em margin
+   above (~62px at the H3's size) is what makes a sub-activity read as a new section, and
+   4rem holds that gap. Below it needs more than the rule's 1.1em -- the artwork sits flush
+   on the bottom edge, so a tight gap leaves the number badge sitting in the soil. */
+.md-typeset p:has(> img.activity-divider) {
+  margin: 4rem 0 2.75rem;
+  padding: 0;
+  line-height: 0;
+  break-inside: avoid;
+  break-after: avoid;
+}
+
+.md-typeset p:has(> img.activity-divider) + h3 {
+  margin-top: 0;        /* the strip's own margin-bottom sets the gap */
+  padding-top: 0;
+  border-top: 0;
+}
+
 /* ---------- admonitions on the palette ---------- */
 .md-typeset .admonition,
 .md-typeset details {
@@ -1323,10 +1351,11 @@ body {
 <nav class="ws-side" aria-label="หน้าในชุดใบงาน"><ul class="ws-pages"><li class="ws-group" data-group="ก่อนการอบรม"><a href="install.html">ก่อนการอบรม</a></li><li data-page="install" data-group="ก่อนการอบรม"><a href="install.html"><span class="ws-g">ก่อนการอบรม</span><span class="ws-t">เตรียมแล็ปท็อป</span></a></li><li class="ws-group in-group" data-group="ช่วงที่ 1"><a href="session-1-start.html">ช่วงที่ 1</a></li><li data-page="session-1-start" data-group="ช่วงที่ 1" class="in-group"><a href="session-1-start.html"><span class="ws-g">ช่วง 1</span><span class="ws-t">เตรียมพร้อมก่อนเริ่ม</span></a></li><li data-page="activity-1" data-group="ช่วงที่ 1" class="is-current in-group"><a href="activity-1.html" aria-current="page" data-n="1"><span class="ws-g">ช่วง 1</span><span class="ws-n">กิจกรรม 1</span><span class="ws-t">อ่านค่าเซนเซอร์ (Sense)</span></a><ul class="ws-toc"><li><a href="#a1">ใบงาน</a></li><li><a href="#a1-1">1.1 รู้จักบอร์ดและต่อสวิตช์ลูกลอย</a></li><li><a href="#a1-2">1.2 อ่านชื่อและหมายเลข IP ของบอร์ด</a></li><li><a href="#a1-3">1.3 เปิดหน้าเว็บของบอร์ด</a></li><li><a href="#a1-4">1.4 ทดลองอ่านค่าเซนเซอร์</a></li><li><a href="#a1-4b">1.5 สังเกตเวลาตอบสนอง</a></li></ul></li><li data-page="activity-2" data-group="ช่วงที่ 1" class="in-group"><a href="activity-2.html" data-n="2"><span class="ws-g">ช่วง 1</span><span class="ws-n">กิจกรรม 2</span><span class="ws-t">ต่อวงจรและสั่งงานหลอดไฟ (Act)</span></a></li><li data-page="activity-3" data-group="ช่วงที่ 1" class="in-group"><a href="activity-3.html" data-n="3"><span class="ws-g">ช่วง 1</span><span class="ws-n">กิจกรรม 3</span><span class="ws-t">สร้างกฎควบคุมระบบ (Logic)</span></a></li><li class="ws-group" data-group="ช่วงที่ 2"><a href="activity-4.html">ช่วงที่ 2</a></li><li data-page="activity-4" data-group="ช่วงที่ 2"><a href="activity-4.html" data-n="4"><span class="ws-g">ช่วง 2</span><span class="ws-n">กิจกรรม 4</span><span class="ws-t">ตั้งกฎอัตโนมัติ (Think)</span></a></li><li data-page="activity-5" data-group="ช่วงที่ 2"><a href="activity-5.html" data-n="5"><span class="ws-g">ช่วง 2</span><span class="ws-n">กิจกรรม 5</span><span class="ws-t">จำลองปัญหาและป้องกัน (Failure lab)</span></a></li><li class="ws-group" data-group="ช่วงที่ 3"><a href="session-3-history.html">ช่วงที่ 3</a></li><li data-page="session-3-history" data-group="ช่วงที่ 3"><a href="session-3-history.html"><span class="ws-g">ช่วง 3</span><span class="ws-t">อ่านข้อมูลย้อนหลัง</span></a></li><li data-page="activity-6" data-group="ช่วงที่ 3"><a href="activity-6.html" data-n="6"><span class="ws-g">ช่วง 3</span><span class="ws-n">กิจกรรม 6</span><span class="ws-t">สร้างแดชบอร์ด (Dashboard)</span></a></li><li data-page="activity-7" data-group="ช่วงที่ 3"><a href="activity-7.html" data-n="7"><span class="ws-g">ช่วง 3</span><span class="ws-n">กิจกรรม 7</span><span class="ws-t">ออกแบบระบบฟาร์ม (Design)</span></a></li></ul></nav>
 <main class="md-content__inner md-typeset" id="ws-main">
 <h1 id="กจกรรมท-1--รจกและทดลองอานคาเซนเซอร-sense">กิจกรรมที่ 1 — รู้จักและทดลองอ่านค่าเซนเซอร์ (Sense)</h1>
-<p><img alt="" class="activity-banner" decoding="async" height="300" loading="lazy" src="../images/activity-banners/activity-01-sensors.png" width="1800" /></p>
+<p><img alt="" class="activity-banner" decoding="async" height="267" loading="lazy" src="../images/activity-banners/activity-01-sensors.webp" width="1600" /></p>
 <p><strong>35 นาที</strong></p>
 <p><strong>อุปกรณ์ที่ใช้</strong> บอร์ด GoGo-IoT, สวิตช์ลูกลอยพร้อมตัวแปลงและสาย Grove, แก้วน้ำ, สาย USB-C, แล็ปท็อป</p>
 <p>เราจะเปิดหน้าเว็บของบอร์ดเพื่อดูค่าเซนเซอร์ แล้วทดลองเปลี่ยนสภาพรอบบอร์ดทีละอย่าง สังเกตว่าค่าใดเปลี่ยนไป และคิดว่าจะนำค่านั้นไปใช้ตัดสินใจเรื่องใดในฟาร์มได้บ้าง</p>
+<p><img alt="" class="activity-divider" decoding="async" height="58" loading="lazy" src="../images/activity-dividers/greenhouse.webp" width="1200" /></p>
 <h3 id="a1">ใบงาน</h3>
 <div class="ws-tasks">
 <p>คลิกชื่อหัวข้อเพื่อดูวิธีทำ เมื่อทำเสร็จให้ทำเครื่องหมายและบันทึกผลในช่องที่กำหนด กรอกที่นี่หรือในขั้นตอนด้านล่างก็ได้ คำตอบจะปรากฏทั้งสองจุด</p>
@@ -1346,6 +1375,7 @@ body {
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> <strong><a href="#a1-q">คำถามท้ายกิจกรรม</a></strong> ถ้าเราจะสร้างระบบรดน้ำ แล้วต้องตัดสินใจว่าจะรดน้ำเมื่อไร ควรวัดค่าอะไรบ้าง และสวิตช์ลูกลอยช่วยบอกข้อมูลอะไรได้บ้าง <textarea class="fld fld-ta" data-k="s1.q1" rows="2"></textarea></li>
 </ul>
 </div>
+<p><img alt="" class="activity-divider" decoding="async" height="96" loading="lazy" src="../images/activity-dividers/sprinklers.webp" width="1200" /></p>
 <h3 id="a1-1"><span class="sub-num">1.1</span>รู้จักบอร์ดและต่อสวิตช์ลูกลอย</h3>
 <p>บอร์ดตัวนี้มีคอนโทรลเลอร์ ESP32-C3 และเซนเซอร์ในตัวสำหรับวัดห้าค่า ได้แก่ <strong>อุณหภูมิ ความชื้นอากาศ แสง ความกดอากาศ และความเร่ง</strong> (บอร์ดแปลงความเร่งเป็นค่า <strong>ความสั่นสะเทือน</strong> ให้เราแล้ว) นอกจากนั้นมีช่องต่อเซนเซอร์เพิ่มแบบ Grove เราจะต่อ <strong>สวิตช์ลูกลอย</strong> เข้าที่ <strong>ช่อง 1</strong> ซึ่งตั้งค่าไว้แล้วให้อ่านเป็นสัญญาณดิจิทัล</p>
 <p><img alt="ส่วนประกอบหลักของบอร์ด GoGo-IoT: ช่อง USB-C สวิตช์ ON/OFF ช่อง Grove 1 คอนโทรลเลอร์ ESP32-C3 ปุ่ม BOOT และกลุ่มเซนเซอร์ในตัว" src="../images/gogo-iot-main-parts.png" width="100%" /></p>
@@ -1358,6 +1388,7 @@ body {
 <li>วางสวิตช์ลูกลอยลงแก้วน้ำที่มีน้ำครึ่งแก้ว ให้ลูกลอยลอยขึ้น</li>
 </ol>
 <p><a class="ws-back" href="#a1">↑ กลับไปที่ใบงาน</a></p>
+<p><img alt="" class="activity-divider" decoding="async" height="64" loading="lazy" src="../images/activity-dividers/farmhouse.webp" width="1200" /></p>
 <h3 id="a1-2"><span class="sub-num">1.2</span>อ่านชื่อและหมายเลข IP ของบอร์ด</h3>
 <p class="ws-phase"><strong>เชื่อมต่อบอร์ด</strong></p>
 <ol>
@@ -1379,6 +1410,7 @@ body {
 ถ้าเห็นชื่อบอร์ดแล้ว แต่รอครบหนึ่งนาทียังไม่เห็นหมายเลข IP แปลว่าบอร์ดต่อ WiFi ไม่ได้ ให้ตรวจสีในชื่ออีกครั้ง แล้วยกมือ</p>
 </blockquote>
 <p><a class="ws-back" href="#a1">↑ กลับไปที่ใบงาน</a></p>
+<p><img alt="" class="activity-divider" decoding="async" height="105" loading="lazy" src="../images/activity-dividers/orchard.webp" width="1200" /></p>
 <h3 id="a1-3"><span class="sub-num">1.3</span>เปิดหน้าเว็บของบอร์ด</h3>
 <p>บอร์ดมีหน้าเว็บสำหรับแสดงค่าในตัว เรียกว่า <strong>เว็บเซิร์ฟเวอร์</strong> เราจึงเปิดดูค่าผ่านเบราว์เซอร์ได้โดยตรงเมื่อเชื่อมต่อ WiFi โซนเดียวกัน โดยยังไม่ต้องใช้ Home Assistant</p>
 <p class="ws-phase"><strong>เปิดหน้าเว็บและดูค่า</strong></p>
@@ -1391,6 +1423,7 @@ body {
 <p>ถ้าลองเปิดแล้วหน้าเว็บไม่ขึ้น ให้ตรวจว่าแล็ปท็อปอยู่บน <code>farm-laptop-สีเดียวกัน</code> กับสีในชื่อบอร์ด เพราะหน้านี้อยู่บนตัวบอร์ด ไม่ได้อยู่บนอินเทอร์เน็ต</p>
 </blockquote>
 <p><a class="ws-back" href="#a1">↑ กลับไปที่ใบงาน</a></p>
+<p><img alt="" class="activity-divider" decoding="async" height="79" loading="lazy" src="../images/activity-dividers/flower-led.webp" width="1200" /></p>
 <h3 id="a1-4"><span class="sub-num">1.4</span>ทดลองอ่านค่าเซนเซอร์</h3>
 <p>ให้คนหนึ่งทดลอง อีกคนสังเกตและบันทึกค่า รอให้ค่าใกล้เคียงเดิมก่อนทดลองอย่างถัดไป</p>
 <p class="ws-phase"><strong>บันทึกค่าก่อนทดลอง</strong></p>
@@ -1454,6 +1487,7 @@ body {
 <blockquote>
 <p><strong>ค่าตัวเลขกับสถานะต่างกันอย่างไร</strong> ความชื้นและความสว่างบอกปริมาณเป็นตัวเลข ส่วนสวิตช์ลูกลอยบอกได้เพียงว่าน้ำถึงระดับที่ติดตั้งไว้หรือไม่ ไม่ได้บอกปริมาตรน้ำที่เหลือ ในหน้าเว็บของบอร์ดจะเห็น <strong>ON / OFF</strong> ส่วน Home Assistant จะแสดง <strong>Wet / Dry</strong> ตามลำดับ ข้อมูลทั้งหมดที่เราเห็นบนหน้าเว็บถูกส่งมาในรูปแบบดิจิทัล แม้ค่าบางชนิดจะใช้แทนปริมาณที่เปลี่ยนแปลงต่อเนื่องก็ตาม</p>
 </blockquote>
+<p><img alt="" class="activity-divider" decoding="async" height="64" loading="lazy" src="../images/activity-dividers/farmhouse.webp" width="1200" /></p>
 <h3 id="a1-4b"><span class="sub-num">1.5</span>สังเกตเวลาตอบสนอง</h3>
 <p class="ws-phase"><strong>จับเวลาตอบสนอง</strong></p>
 <ol>

@@ -749,6 +749,34 @@ body {
   break-after: avoid;
 }
 
+/* Transparent farm strips replace the rule at each activity-page H3. */
+.md-typeset img.activity-divider:not(.twemoji):not(.emojione) {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 0;
+  box-shadow: none;
+  background: transparent;
+}
+
+/* The strip stands in for the H3 rule, so it keeps that rule's rhythm: the 3em margin
+   above (~62px at the H3's size) is what makes a sub-activity read as a new section, and
+   4rem holds that gap. Below it needs more than the rule's 1.1em -- the artwork sits flush
+   on the bottom edge, so a tight gap leaves the number badge sitting in the soil. */
+.md-typeset p:has(> img.activity-divider) {
+  margin: 4rem 0 2.75rem;
+  padding: 0;
+  line-height: 0;
+  break-inside: avoid;
+  break-after: avoid;
+}
+
+.md-typeset p:has(> img.activity-divider) + h3 {
+  margin-top: 0;        /* the strip's own margin-bottom sets the gap */
+  padding-top: 0;
+  border-top: 0;
+}
+
 /* ---------- admonitions on the palette ---------- */
 .md-typeset .admonition,
 .md-typeset details {
@@ -1325,9 +1353,10 @@ body {
 <h1 id="กจกรรมท-4--ตงกฎใหระบบทำงานอตโนมต-think">กิจกรรมที่ 4 — ตั้งกฎให้ระบบทำงานอัตโนมัติ (Think)</h1>
 <p class="ws-phase"><strong>ให้โปรแกรมตัดสินใจและสั่งงานแทนเรา</strong></p>
 <p>ช่วงนี้เราจะศึกษาหลักการ Hysteresis ฝึกเพิ่มเงื่อนไขเวลา จำลองปัญหาและเพิ่มกฎป้องกันความเสียหาย (fail-safe) ที่มีประโยชน์สำหรับหน้างานจริง</p>
-<p><img alt="" class="activity-banner" decoding="async" height="300" loading="lazy" src="../images/activity-banners/activity-04-irrigation.png" width="1800" /></p>
+<p><img alt="" class="activity-banner" decoding="async" height="267" loading="lazy" src="../images/activity-banners/activity-04-irrigation.webp" width="1600" /></p>
 <p><strong>70 นาที</strong> รวมต่อปั๊มแทนหลอดไฟ</p>
 <p><strong>อุปกรณ์ที่ใช้</strong> บอร์ด GoGo-IoT, บอร์ดรีเลย์, หลอด LED 12V ที่ต่ออยู่, <strong>ปั๊มตู้ปลา 12V, สวิตช์ลูกลอยและแก้วน้ำจากช่วงที่ 1</strong>, ไขควง, แล็ปท็อป</p>
+<p><img alt="" class="activity-divider" decoding="async" height="64" loading="lazy" src="../images/activity-dividers/farmhouse.webp" width="1200" /></p>
 <h3 id="a4">ใบงาน</h3>
 <div class="ws-tasks">
 <p>คลิกหัวข้อเพื่อดูวิธีทำ ทำเสร็จแล้วทำเครื่องหมายและบันทึกผล กรอกที่นี่หรือในขั้นตอนด้านล่างก็ได้</p>
@@ -1343,6 +1372,7 @@ body {
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> <strong><a href="#a4-q">คำถามท้ายกิจกรรม</a></strong> เกณฑ์เปิดและเกณฑ์ปิดของระบบไฟสวนคือเท่าไร ทำไมสองค่านี้ต้องต่างกัน และเราเอาบทเรียนนี้ไปใช้กับระบบรดน้ำอย่างไร <textarea class="fld fld-ta" data-k="s2.q4" rows="2"></textarea></li>
 </ul>
 </div>
+<p><img alt="" class="activity-divider" decoding="async" height="105" loading="lazy" src="../images/activity-dividers/orchard.webp" width="1200" /></p>
 <h3 id="a4-1"><span class="sub-num">4.1</span>สังเกตปัญหาไฟกะพริบ</h3>
 <p class="ws-phase"><strong>เตรียมทดสอบ</strong></p>
 <ol>
@@ -1358,6 +1388,7 @@ body {
 <p><strong>Chattering</strong> คือการเปิด–ปิดถี่เมื่อค่าแกว่งข้ามเกณฑ์ไปมา ทำให้รีเลย์และอุปกรณ์สึกหรอเร็ว</p>
 </blockquote>
 <p><a class="ws-back" href="#a4">↑ กลับไปที่ใบงาน</a></p>
+<p><img alt="" class="activity-divider" decoding="async" height="58" loading="lazy" src="../images/activity-dividers/greenhouse.webp" width="1200" /></p>
 <h3 id="a4-2"><span class="sub-num">4.2</span>แก้ไขด้วยการแยกเกณฑ์เปิดและปิด</h3>
 <p class="ws-phase"><strong>แยกเกณฑ์เปิดและปิด</strong></p>
 <ol>
@@ -1377,6 +1408,7 @@ body {
 <p>ถ้ายังกะพริบ ให้เพิ่มระยะห่างของเกณฑ์ ถ้าไฟไม่ติดหรือไม่ดับ ให้ตรวจว่าเกณฑ์ทั้งสองยังอยู่ระหว่างค่ามืดกับค่าสว่างที่วัดได้</p>
 </blockquote>
 <p><a class="ws-back" href="#a4">↑ กลับไปที่ใบงาน</a></p>
+<p><img alt="" class="activity-divider" decoding="async" height="79" loading="lazy" src="../images/activity-dividers/flower-led.webp" width="1200" /></p>
 <h3 id="a4-3"><span class="sub-num">4.3</span>เพิ่มการจำกัดช่วงเวลาเปิดไฟ</h3>
 <p>ถ้าเราต้องการให้ไฟเปิดเฉพาะช่วงเวลาที่กำหนด แล้ววันนั้นฟ้ามืดก่อนเวลา ไฟก็ยังไม่ควรเปิด เช่น ต้องการให้เปิดได้หลัง 18.30 น. เท่านั้น เราจึงต้องตรวจทั้งค่าแสงและเวลาควบคู่กัน</p>
 <p>กฎจากช่วงที่ 1 มีแค่ <strong>When</strong> (trigger) กับ <strong>Then do</strong> (action) ส่วน <strong>And if</strong> คือ <strong>condition</strong> เงื่อนไขเพิ่มเติมที่ต้องผ่านทุกข้อ กฎจึงจะสั่งงาน</p>
@@ -1398,6 +1430,7 @@ body {
 <li>รอบล่าสุดใน Traces หยุดที่ส่วนใด <input class="fld" type="text" data-k="s2.time.trace" data-size="16" size="16" autocomplete="off" spellcheck="false"></li>
 </ol>
 <p><a class="ws-back" href="#a4">↑ กลับไปที่ใบงาน</a></p>
+<p><img alt="" class="activity-divider" decoding="async" height="64" loading="lazy" src="../images/activity-dividers/farmhouse.webp" width="1200" /></p>
 <h3 id="a4-3b"><span class="sub-num">4.4</span>เพิ่ม Trigger ให้รองรับทุกกรณี ให้ไฟเปิดได้เมื่อถึงเวลา</h3>
 <p>ถ้าเราใช้ Trigger ที่เริ่มกฎเมื่อค่าแสงข้ามเกณฑ์ แล้วฟ้ามืดก่อนถึงเวลาที่กำหนด กฎจะเริ่มแต่ไม่ผ่านเงื่อนไขเวลา พอถึงเวลาไฟก็ยังไม่ติด เพราะค่าแสงข้ามเกณฑ์ไปแล้วและไม่มีเหตุการณ์ใหม่มาเริ่มกฎ เราจึงต้องเพิ่ม trigger เวลา แล้วตรวจค่าแสงตอนนั้นด้วย</p>
 <p><strong>ทำนายผลก่อนแก้กฎ</strong> ด้วยกฎใน Automation ปัจจุบัน ถ้ากำหนดให้ไฟติดได้ระหว่าง 18.30 ถึง 07.30 น. วันถัดไป</p>
@@ -1430,6 +1463,7 @@ body {
 <li>ถ้าเพิ่ม trigger เวลาแล้ว ทำไมเรายังต้องตรวจค่าความสว่างในส่วน And if อีก <input class="fld" type="text" data-k="s2.time.why" data-size="30" size="30" autocomplete="off" spellcheck="false"></li>
 </ol>
 <p><a class="ws-back" href="#a4">↑ กลับไปที่ใบงาน</a></p>
+<p><img alt="" class="activity-divider" decoding="async" height="96" loading="lazy" src="../images/activity-dividers/sprinklers.webp" width="1200" /></p>
 <h3 id="a4-4"><span class="sub-num">4.5</span>ลองเพิ่มการแจ้งเตือน</h3>
 <p>Home Assistant สามารถส่งข้อความแจ้งเตือนได้ผ่านทางหน้า Web หรือทาง Mobile App (ต้องติดตั้ง App ก่อนจาก Play Store / App Store)</p>
 <p class="ws-phase"><strong>เพิ่มข้อความแจ้งเตือน</strong></p>
@@ -1445,6 +1479,7 @@ body {
 <li>ถ้าเข้า Home Assistant ผ่านแอป Companion ไว้แล้ว ลองใช้ <strong>Send a notification via mobile_app</strong> เพื่อส่งข้อความไปยังโทรศัพท์</li>
 </ol>
 <p><a class="ws-back" href="#a4">↑ กลับไปที่ใบงาน</a></p>
+<p><img alt="" class="activity-divider" decoding="async" height="58" loading="lazy" src="../images/activity-dividers/greenhouse.webp" width="1200" /></p>
 <h3 id="a4-5"><span class="sub-num">4.6</span>ต่อปั๊มแทนหลอดไฟ</h3>
 <p>ใช้รีเลย์ตัวเดิมควบคุมปั๊มแทนหลอดไฟ ในห้องนี้ปั๊ม<strong>เดินแห้ง</strong> ไม่ต่อสายยางและไม่ใช้น้ำ เราดูว่าปั๊มเดินหรือหยุดจากเสียงและการสั่นของตัวปั๊ม</p>
 <p class="ws-phase"><strong>หยุดระบบและถอดปลั๊ก</strong></p>
@@ -1469,6 +1504,7 @@ body {
 <strong>ยังไม่ต้องเพิ่มกฎตรวจลูกลอย</strong> ในฟาร์มจริงเราต้องตรวจเสมอว่าน้ำในถังแห้งหรือไม่  เราจะเพิ่มการป้องกันนี้ในกิจกรรมที่ 5</p>
 </blockquote>
 <p><a class="ws-back" href="#a4">↑ กลับไปที่ใบงาน</a></p>
+<p><img alt="" class="activity-divider" decoding="async" height="96" loading="lazy" src="../images/activity-dividers/sprinklers.webp" width="1200" /></p>
 <h3 id="a4-5b"><span class="sub-num">4.7</span>สร้างกฎรดน้ำ</h3>
 <p><strong>ใช้ความชื้นอากาศจำลองค่าความชื้นดิน</strong> ใช้ลมปากเพิ่มค่าความชื้นเพื่อจำลองดินเปียก </p>
 <p class="ws-phase"><strong>ตรวจค่าก่อนเลือกเกณฑ์</strong></p>
@@ -1490,6 +1526,7 @@ body {
 <li>ลองแยกค่าเกณฑ์ความชื้นอากาศที่ใช้เปิดและปิดปั๊ม ตามหลักการ Hysteresis เปิดปั๊มเมื่อต่ำกว่า <input class="fld" type="text" data-k="s2.hum.on" data-size="4" size="4" inputmode="decimal" autocomplete="off" spellcheck="false"> % ปิดปั๊มเมื่อสูงกว่า <input class="fld" type="text" data-k="s2.hum.off" data-size="4" size="4" inputmode="decimal" autocomplete="off" spellcheck="false"> % </li>
 </ol>
 <p><a class="ws-back" href="#a4">↑ กลับไปที่ใบงาน</a></p>
+<p><img alt="" class="activity-divider" decoding="async" height="64" loading="lazy" src="../images/activity-dividers/farmhouse.webp" width="1200" /></p>
 <h3 id="a4-6"><span class="sub-num">4.8</span>สร้างโหมด Auto และ Manual</h3>
 <p>ในหน้างานจริงมักใช้โหมดอัตโนมัติควบคู่กับโหมดสั่งเองด้วยมือ เวลาซ่อมอุปกรณ์หรือทดสอบข้อผิดพลาด เราจะได้เลือกเปิดหรือปิดปั๊มเองได้ โดยไม่ต้องพึ่งระบบอัตโนมัติเพียงอย่างเดียว</p>
 <p>Home Assistant ปิดกฎแต่ละข้อได้อยู่แล้ว แต่ถ้าสร้างสวิตช์เลือกโหมดเพื่อใช้งานผ่านแดชบอร์ดจะสะดวกกว่า และเป็นหลักเดียวกับตู้ควบคุม Auto / Off / Manual ที่ใช้งานจริง</p>

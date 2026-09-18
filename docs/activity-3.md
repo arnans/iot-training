@@ -1,12 +1,14 @@
 # กิจกรรมที่ 3 — สร้างกฎควบคุมระบบ (Logic)
 
-![](images/activity-banners/activity-03-rules.png){ .activity-banner width="1800" height="300" loading="lazy" decoding="async" }
+![](images/activity-banners/activity-03-rules.webp){ .activity-banner width="1600" height="267" loading="lazy" decoding="async" }
 
 **40 นาที**
 
 **อุปกรณ์ที่ใช้** แล็ปท็อปของตัวแทนกลุ่มที่เปิดหน้า Login ของ Home Assistant ไว้, โทรศัพท์ 1 เครื่อง, อุปกรณ์ทั้งหมดจากกิจกรรมที่ 1–2
 
 เพิ่มบอร์ดทั้งสองเข้า Home Assistant แล้วสร้างกฎให้ไฟสวนเปิดเองเมื่อมืดและปิดเองเมื่อสว่าง
+
+![](images/activity-dividers/sprinklers.webp){ .activity-divider width="1200" height="96" loading="lazy" decoding="async" }
 
 ### ใบงาน { #a3 }
 
@@ -24,6 +26,8 @@
 - [ ] **[คำถามท้ายกิจกรรม](#a3-q)** ถ้าค่าแสงอยู่ใกล้เกณฑ์พอดี แล้วมีเมฆลอยผ่านตอนพลบค่ำจนค่าแสงแกว่งไปมา ระบบจะเปิด–ปิดไฟอย่างไร {{ta:s1.q3}}
 
 </div>
+
+![](images/activity-dividers/farmhouse.webp){ .activity-divider width="1200" height="64" loading="lazy" decoding="async" }
 
 ### 3.1 เพิ่มบอร์ดทั้งสองเข้า Home Assistant { #a3-1 }
 
@@ -47,6 +51,8 @@
 
 [↑ กลับไปที่ใบงาน](#a3){ .ws-back }
 
+![](images/activity-dividers/flower-led.webp){ .activity-divider width="1200" height="79" loading="lazy" decoding="async" }
+
 ### 3.2 ทดสอบบอร์ดใน Home Assistant { #a3-2 }
 
 
@@ -63,6 +69,8 @@
 
 [↑ กลับไปที่ใบงาน](#a3){ .ws-back }
 
+![](images/activity-dividers/sprinklers.webp){ .activity-divider width="1200" height="96" loading="lazy" decoding="async" }
+
 ### 3.3 เลือกเกณฑ์ความสว่าง { #a3-3 }
 
 **สถานการณ์จำลอง** เราต้องการให้ไฟสวนเปิดเมื่อมืดและปิดเมื่อสว่าง ในห้องทดลองนี้ ใช้หลอด LED แทนไฟสวน และใช้มือครอบบอร์ดเพื่อจำลองว่าฟ้ามืด ระบบจะอ่านค่าจาก **เซนเซอร์แสง** แล้วสั่ง **หลอดไฟ** ผ่านรีเลย์
@@ -77,6 +85,8 @@
 
 [↑ กลับไปที่ใบงาน](#a3){ .ws-back }
 
+![](images/activity-dividers/orchard.webp){ .activity-divider width="1200" height="105" loading="lazy" decoding="async" }
+
 ### 3.4 เขียนกฎเปิด–ปิดไฟ { #a3-3b }
 
 **เขียนกฎจากเกณฑ์ที่เลือก**
@@ -90,6 +100,8 @@
 ใน Home Assistant เราสร้างกฎอัตโนมัติที่เรียกว่า **automation** โดยกำหนด **trigger** คือเหตุการณ์ที่เริ่มให้กฎทำงาน และ **action** คือสิ่งที่ระบบต้องทำ สำหรับกฎนี้ เหตุการณ์คือค่าความสว่างเปลี่ยนข้ามเกณฑ์ ส่วนคำสั่งคือเปิดหรือปิดรีเลย์
 
 [↑ กลับไปที่ใบงาน](#a3){ .ws-back }
+
+![](images/activity-dividers/greenhouse.webp){ .activity-divider width="1200" height="58" loading="lazy" decoding="async" }
 
 ### 3.5 สร้างและทดสอบกฎอัตโนมัติ { #a3-3c }
 
@@ -132,6 +144,8 @@ https://youtu.be/Q2D7aAni7Xo
 > **ครอบแล้วไฟไม่ติด** กฎแบบ crossed threshold ทำงานเฉพาะตอนค่า **ข้าม** เกณฑ์ ต้องให้ค่าอยู่เหนือเกณฑ์ก่อนแล้วค่อยครอบ · ตรวจว่ากฎทั้งสองเปิดอยู่ trigger ชี้ที่ `ความสว่าง (light)` และ action ชี้ที่รีเลย์ของ **กลุ่มเรา** · ถ้าไฟกะพริบเมื่อค่าแสงเปลี่ยนขึ้นลงใกล้เกณฑ์ อาจเกิดจากการใช้เกณฑ์เดียวกันทั้งเปิดและปิด ให้ลองครอบบอร์ดให้มิดและค้างมือไว้นิ่ง ๆ เราจะทดลองและแก้ปัญหานี้ในช่วงที่ 2
 
 [↑ กลับไปที่ใบงาน](#a3){ .ws-back }
+
+![](images/activity-dividers/flower-led.webp){ .activity-divider width="1200" height="79" loading="lazy" decoding="async" }
 
 ### 3.6 โจทย์เสริม: ปิดไฟตามเวลา (ไม่บังคับทำ) { #a3-4 }
 

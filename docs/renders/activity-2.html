@@ -749,6 +749,34 @@ body {
   break-after: avoid;
 }
 
+/* Transparent farm strips replace the rule at each activity-page H3. */
+.md-typeset img.activity-divider:not(.twemoji):not(.emojione) {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 0;
+  box-shadow: none;
+  background: transparent;
+}
+
+/* The strip stands in for the H3 rule, so it keeps that rule's rhythm: the 3em margin
+   above (~62px at the H3's size) is what makes a sub-activity read as a new section, and
+   4rem holds that gap. Below it needs more than the rule's 1.1em -- the artwork sits flush
+   on the bottom edge, so a tight gap leaves the number badge sitting in the soil. */
+.md-typeset p:has(> img.activity-divider) {
+  margin: 4rem 0 2.75rem;
+  padding: 0;
+  line-height: 0;
+  break-inside: avoid;
+  break-after: avoid;
+}
+
+.md-typeset p:has(> img.activity-divider) + h3 {
+  margin-top: 0;        /* the strip's own margin-bottom sets the gap */
+  padding-top: 0;
+  border-top: 0;
+}
+
 /* ---------- admonitions on the palette ---------- */
 .md-typeset .admonition,
 .md-typeset details {
@@ -1323,10 +1351,11 @@ body {
 <nav class="ws-side" aria-label="หน้าในชุดใบงาน"><ul class="ws-pages"><li class="ws-group" data-group="ก่อนการอบรม"><a href="install.html">ก่อนการอบรม</a></li><li data-page="install" data-group="ก่อนการอบรม"><a href="install.html"><span class="ws-g">ก่อนการอบรม</span><span class="ws-t">เตรียมแล็ปท็อป</span></a></li><li class="ws-group in-group" data-group="ช่วงที่ 1"><a href="session-1-start.html">ช่วงที่ 1</a></li><li data-page="session-1-start" data-group="ช่วงที่ 1" class="in-group"><a href="session-1-start.html"><span class="ws-g">ช่วง 1</span><span class="ws-t">เตรียมพร้อมก่อนเริ่ม</span></a></li><li data-page="activity-1" data-group="ช่วงที่ 1" class="in-group"><a href="activity-1.html" data-n="1"><span class="ws-g">ช่วง 1</span><span class="ws-n">กิจกรรม 1</span><span class="ws-t">อ่านค่าเซนเซอร์ (Sense)</span></a></li><li data-page="activity-2" data-group="ช่วงที่ 1" class="is-current in-group"><a href="activity-2.html" aria-current="page" data-n="2"><span class="ws-g">ช่วง 1</span><span class="ws-n">กิจกรรม 2</span><span class="ws-t">ต่อวงจรและสั่งงานหลอดไฟ (Act)</span></a><ul class="ws-toc"><li><a href="#a2">ใบงาน</a></li><li><a href="#a2-1">2.1 รู้จักบอร์ดรีเลย์</a></li><li><a href="#a2-1b">2.2 อ่านชื่อและหมายเลข IP แล้วลองสั่งรีเลย์</a></li><li><a href="#a2-2">2.3 รู้จักกล่องจ่ายไฟและวงจรหลอดไฟ</a></li><li><a href="#a2-2b">2.4 ต่อสายวงจรหลอดไฟ</a></li><li><a href="#a2-2c">2.5 จ่ายไฟและทดสอบหลอดไฟ</a></li></ul></li><li data-page="activity-3" data-group="ช่วงที่ 1" class="in-group"><a href="activity-3.html" data-n="3"><span class="ws-g">ช่วง 1</span><span class="ws-n">กิจกรรม 3</span><span class="ws-t">สร้างกฎควบคุมระบบ (Logic)</span></a></li><li class="ws-group" data-group="ช่วงที่ 2"><a href="activity-4.html">ช่วงที่ 2</a></li><li data-page="activity-4" data-group="ช่วงที่ 2"><a href="activity-4.html" data-n="4"><span class="ws-g">ช่วง 2</span><span class="ws-n">กิจกรรม 4</span><span class="ws-t">ตั้งกฎอัตโนมัติ (Think)</span></a></li><li data-page="activity-5" data-group="ช่วงที่ 2"><a href="activity-5.html" data-n="5"><span class="ws-g">ช่วง 2</span><span class="ws-n">กิจกรรม 5</span><span class="ws-t">จำลองปัญหาและป้องกัน (Failure lab)</span></a></li><li class="ws-group" data-group="ช่วงที่ 3"><a href="session-3-history.html">ช่วงที่ 3</a></li><li data-page="session-3-history" data-group="ช่วงที่ 3"><a href="session-3-history.html"><span class="ws-g">ช่วง 3</span><span class="ws-t">อ่านข้อมูลย้อนหลัง</span></a></li><li data-page="activity-6" data-group="ช่วงที่ 3"><a href="activity-6.html" data-n="6"><span class="ws-g">ช่วง 3</span><span class="ws-n">กิจกรรม 6</span><span class="ws-t">สร้างแดชบอร์ด (Dashboard)</span></a></li><li data-page="activity-7" data-group="ช่วงที่ 3"><a href="activity-7.html" data-n="7"><span class="ws-g">ช่วง 3</span><span class="ws-n">กิจกรรม 7</span><span class="ws-t">ออกแบบระบบฟาร์ม (Design)</span></a></li></ul></nav>
 <main class="md-content__inner md-typeset" id="ws-main">
 <h1 id="กจกรรมท-2--ตอวงจรและสงงานหลอดไฟ-act">กิจกรรมที่ 2 — ต่อวงจรและสั่งงานหลอดไฟ (Act)</h1>
-<p><img alt="" class="activity-banner" decoding="async" height="300" loading="lazy" src="../images/activity-banners/activity-02-led.png" width="1800" /></p>
+<p><img alt="" class="activity-banner" decoding="async" height="267" loading="lazy" src="../images/activity-banners/activity-02-led.webp" width="1600" /></p>
 <p><strong>40 นาที</strong></p>
 <p><strong>อุปกรณ์ที่ใช้</strong> บอร์ดรีเลย์, กล่องจ่ายไฟ (charge controller), อะแดปเตอร์ 12V, สาย USB-C, แล็ปท็อป, สายไฟ, เต๋าต่อสาย, หลอด LED 12V, ไขควง</p>
 <p>เริ่มจากลองสั่งรีเลย์โดยยังไม่ต่อหลอดไฟ เพื่อสังเกตการทำงานของสวิตช์ จากนั้นจึงต่อแหล่งจ่ายไฟและหลอดไฟ แล้วทดสอบว่าคำสั่งบนหน้าเว็บควบคุมหลอดไฟได้จริง</p>
+<p><img alt="" class="activity-divider" decoding="async" height="79" loading="lazy" src="../images/activity-dividers/flower-led.webp" width="1200" /></p>
 <h3 id="a2">ใบงาน</h3>
 <div class="ws-tasks">
 <p>คลิกชื่อหัวข้อเพื่อดูวิธีทำ เมื่อทำเสร็จให้ทำเครื่องหมายและบันทึกผลในช่องที่กำหนด กรอกที่นี่หรือในขั้นตอนด้านล่างก็ได้ คำตอบจะปรากฏทั้งสองจุด</p>
@@ -1339,6 +1368,7 @@ body {
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> <strong><a href="#a2-q">คำถามท้ายกิจกรรม</a></strong> ถ้าเราจะนำแนวคิดนี้ไปควบคุมปั๊มน้ำ 220V ในฟาร์มจริง แล้วต้องเลือกอุปกรณ์และติดตั้งระบบ ควรพิจารณาความปลอดภัยเรื่องใดบ้าง และให้ใครเป็นผู้ติดตั้ง <textarea class="fld fld-ta" data-k="s1.q2" rows="2"></textarea> ก่อนพัก สั่งรีเลย์เป็น <strong>Off</strong> แล้วดูว่าหลอดดับจริง</li>
 </ul>
 </div>
+<p><img alt="" class="activity-divider" decoding="async" height="58" loading="lazy" src="../images/activity-dividers/greenhouse.webp" width="1200" /></p>
 <h3 id="a2-1"><span class="sub-num">2.1</span>รู้จักบอร์ดรีเลย์</h3>
 <p>บอร์ดรีเลย์เป็นบอร์ดคนละตัวกับบอร์ดเซนเซอร์ มีคอนโทรลเลอร์ของตัวเอง (ESP32-C6) และมีขั้วต่อสองกลุ่ม ดูตำแหน่งขั้วต่อจากแผนภาพนี้ก่อนต่อสาย</p>
 <p><img alt="แผนภาพบอร์ดรีเลย์ ESP32-C6 ชี้ตำแหน่งขั้ว NO COM NC ทางซ้าย ขั้วไฟเข้า 7-60 Input และ GND ทางขวา ช่อง USB Type-C ปุ่มบนบอร์ด ไฟ LED และไฟแสดงสถานะรีเลย์" src="../images/relay-board-terminals.png" width="100%" /></p>
@@ -1388,6 +1418,7 @@ body {
 </tbody>
 </table></div>
 <p><a class="ws-back" href="#a2">↑ กลับไปที่ใบงาน</a></p>
+<p><img alt="" class="activity-divider" decoding="async" height="96" loading="lazy" src="../images/activity-dividers/sprinklers.webp" width="1200" /></p>
 <h3 id="a2-1b"><span class="sub-num">2.2</span>อ่านชื่อและหมายเลข IP แล้วลองสั่งรีเลย์</h3>
 <p class="ws-phase"><strong>อ่านข้อมูลบอร์ด</strong></p>
 <ol>
@@ -1408,6 +1439,7 @@ body {
 <p>เสียงคลิกเกิดจากหน้าสัมผัสของรีเลย์เปลี่ยนตำแหน่งเพื่อเปิดหรือปิดวงจร ขณะนี้ยังไม่ได้ต่ออุปกรณ์ที่ขั้วรีเลย์ จึงได้ยินเพียงเสียงคลิก <strong>รีเลย์ทำหน้าที่เป็นสวิตช์</strong> ไม่ได้จ่ายไฟให้หลอดไฟเอง เราจะต่อแหล่งจ่ายไฟและหลอดไฟในข้อ 2.4</p>
 </blockquote>
 <p><a class="ws-back" href="#a2">↑ กลับไปที่ใบงาน</a></p>
+<p><img alt="" class="activity-divider" decoding="async" height="105" loading="lazy" src="../images/activity-dividers/orchard.webp" width="1200" /></p>
 <h3 id="a2-2"><span class="sub-num">2.3</span>รู้จักกล่องจ่ายไฟและวงจรหลอดไฟ</h3>
 <p class="ws-phase"><strong>สำรวจขั้วต่อและทางเดินไฟ</strong></p>
 <p>ชุดทดลองใช้ <strong>charge controller เป็นกล่องจ่ายไฟ</strong> ให้หลอดไฟและบอร์ด</p>
@@ -1417,6 +1449,7 @@ body {
 <p>หลอด LED ใช้ไฟ 12V ถ้าเราต่อหลอดตรงกับแหล่งจ่ายไฟ แล้วจ่ายไฟเข้า หลอดจะติดตลอดโดยไม่มีรีเลย์คอยตัดต่อ เราจึงต่อสายบวกผ่านขั้ว <strong>COM</strong> และ <strong>NO</strong> ของรีเลย์ไว้ ถ้าสั่ง On แล้วหน้าสัมผัสต่อถึงกัน วงจรจะครบและหลอดติด พอสั่ง Off หน้าสัมผัสจะแยกออกและหลอดดับ</p>
 <p><img alt="แผนภาพวงจร: ไฟ +12V จาก charge controller ผ่านขั้ว COM และ NO ของรีเลย์ไปยังหลอด LED ส่วนสายลบต่อตรง" src="../images/activity2-2-relay-wiring-diagram.png" width="85%" /></p>
 <p><a class="ws-back" href="#a2">↑ กลับไปที่ใบงาน</a></p>
+<p><img alt="" class="activity-divider" decoding="async" height="58" loading="lazy" src="../images/activity-dividers/greenhouse.webp" width="1200" /></p>
 <h3 id="a2-2b"><span class="sub-num">2.4</span>ต่อสายวงจรหลอดไฟ</h3>
 <p><strong>ยังไม่เสียบปลั๊กอะแดปเตอร์ระหว่างต่อสาย</strong> และตรวจว่าถอดสาย USB ของบอร์ดรีเลย์ออกจากแล็ปท็อปแล้ว ต่อสายตามแผนภาพ แล้วให้สมาชิกอีกคนช่วยตรวจในข้อ 6</p>
 <p class="ws-phase"><strong>ต่อสายไฟและหลอด LED</strong></p>
@@ -1439,6 +1472,7 @@ body {
 <p><strong>ทำไมรีเลย์ต่ออยู่ที่สายบวกเพียงเส้นเดียว</strong> กระแสไฟจะไหลได้เมื่อวงจรครบ การเปิดหน้าสัมผัสรีเลย์ที่จุดเดียวจึงทำให้หลอดดับได้ ในวงจร 12V นี้ เราให้รีเลย์ตัดต่อสายบวก ส่วนสายลบต่อกลับไปยังกล่องจ่ายไฟโดยตรง</p>
 </blockquote>
 <p><a class="ws-back" href="#a2">↑ กลับไปที่ใบงาน</a></p>
+<p><img alt="" class="activity-divider" decoding="async" height="105" loading="lazy" src="../images/activity-dividers/orchard.webp" width="1200" /></p>
 <h3 id="a2-2c"><span class="sub-num">2.5</span>จ่ายไฟและทดสอบหลอดไฟ</h3>
 <p class="ws-phase"><strong>จัดอุปกรณ์และจ่ายไฟ</strong></p>
 <ol>

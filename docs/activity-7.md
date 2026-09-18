@@ -1,8 +1,10 @@
 # กิจกรรมที่ 7 — ออกแบบระบบสำหรับฟาร์ม (Design)
 
-![](images/activity-banners/activity-07-design.png){ .activity-banner width="1800" height="300" loading="lazy" decoding="async" }
+![](images/activity-banners/activity-07-design.webp){ .activity-banner width="1600" height="267" loading="lazy" decoding="async" }
 
 **85 นาที** เลือกโจทย์ 5 · การสื่อสาร 20 · พลังงาน 15 · ออกแบบระบบ 30 · นำเสนอและแลกเปลี่ยนกับกลุ่มคู่ 15
+
+![](images/activity-dividers/orchard.webp){ .activity-divider width="1200" height="105" loading="lazy" decoding="async" }
 
 ### ใบงาน { #a7 }
 
@@ -16,6 +18,8 @@
 - [ ] **[7.6 ออกแบบระบบ](#a7-4)** สรุปเซนเซอร์และอุปกรณ์ วิธีสื่อสาร แหล่งพลังงาน และแผนทดสอบ
 
 </div>
+
+![](images/activity-dividers/sprinklers.webp){ .activity-divider width="1200" height="96" loading="lazy" decoding="async" }
 
 ### 7.1 เลือกโจทย์ { #a7-1 }
 
@@ -41,6 +45,8 @@
 {{ta:d.problem}}
 
 [↑ กลับไปที่ใบงาน](#a7){ .ws-back }
+
+![](images/activity-dividers/farmhouse.webp){ .activity-divider width="1200" height="64" loading="lazy" decoding="async" }
 
 ### 7.2 เลือกเครือข่ายในฟาร์ม { #a7-2b }
 
@@ -71,6 +77,8 @@
 
 [↑ กลับไปที่ใบงาน](#a7){ .ws-back }
 
+![](images/activity-dividers/flower-led.webp){ .activity-divider width="1200" height="79" loading="lazy" decoding="async" }
+
 ### 7.3 การเข้าถึงจากนอกฟาร์มและคลาวด์ { #a7-2c }
 
 ทำเครื่องหมายเมื่อสมาชิกในทีมเข้าใจประเด็นต่อไปนี้
@@ -84,6 +92,8 @@
 </div>
 
 [↑ กลับไปที่ใบงาน](#a7){ .ws-back }
+
+![](images/activity-dividers/greenhouse.webp){ .activity-divider width="1200" height="58" loading="lazy" decoding="async" }
 
 ### 7.4 เลือกแบตเตอรี่สำหรับระบบโซลาร์ { #a7-3 }
 
@@ -130,6 +140,8 @@ Charge controller รับไฟจากแผงโซลาร์เซล�
 4. ชนิดแบตเตอรี่ที่เหมาะกับโจทย์ของกลุ่มและเหตุผล (ถ้าไม่ต้องใช้แบตเตอรี่ ให้ระบุว่าไม่ใช้) {{f:d.battery|50}}
 
 [↑ กลับไปที่ใบงาน](#a7){ .ws-back }
+
+![](images/activity-dividers/sprinklers.webp){ .activity-divider width="1200" height="96" loading="lazy" decoding="async" }
 
 ### 7.5 คำนวณพลังงานแล้วเลือกแหล่งจ่ายไฟ { #a7-3b }
 
@@ -187,6 +199,8 @@ Charge controller รับไฟจากแผงโซลาร์เซล�
 
 **คุยท้ายเรื่อง** ถ้าฟ้าครึ้มต่อเนื่องสามวัน แล้วระบบต้องทำงานต่อ เราต้องรู้ข้อมูลอะไรเพิ่มก่อนเลือกขนาดไฟสำรอง จดเฉพาะสิ่งที่เกี่ยวกับโจทย์ของกลุ่มไว้ต่อท้ายคำตอบเรื่องไฟสำรองในข้อ 5
 {: #a7-3q }
+
+![](images/activity-dividers/flower-led.webp){ .activity-divider width="1200" height="79" loading="lazy" decoding="async" }
 
 ### 7.6 ออกแบบระบบสำหรับทดลองหนึ่งจุด { #a7-4 }
 

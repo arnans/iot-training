@@ -564,6 +564,34 @@
   break-after: avoid;
 }
 
+/* Transparent farm strips replace the rule at each activity-page H3. */
+.md-typeset img.activity-divider:not(.twemoji):not(.emojione) {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 0;
+  box-shadow: none;
+  background: transparent;
+}
+
+/* The strip stands in for the H3 rule, so it keeps that rule's rhythm: the 3em margin
+   above (~62px at the H3's size) is what makes a sub-activity read as a new section, and
+   4rem holds that gap. Below it needs more than the rule's 1.1em -- the artwork sits flush
+   on the bottom edge, so a tight gap leaves the number badge sitting in the soil. */
+.md-typeset p:has(> img.activity-divider) {
+  margin: 4rem 0 2.75rem;
+  padding: 0;
+  line-height: 0;
+  break-inside: avoid;
+  break-after: avoid;
+}
+
+.md-typeset p:has(> img.activity-divider) + h3 {
+  margin-top: 0;        /* the strip's own margin-bottom sets the gap */
+  padding-top: 0;
+  border-top: 0;
+}
+
 /* ---------- admonitions on the palette ---------- */
 .md-typeset .admonition,
 .md-typeset details {

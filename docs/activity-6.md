@@ -1,12 +1,14 @@
 # กิจกรรมที่ 6 — สร้างหน้าจอติดตามและควบคุมฟาร์ม (Dashboard)
 
-![](images/activity-banners/activity-06-dashboard.png){ .activity-banner width="1800" height="300" loading="lazy" decoding="async" }
+![](images/activity-banners/activity-06-dashboard.webp){ .activity-banner width="1600" height="267" loading="lazy" decoding="async" }
 
 **35 นาที** วางแผน 5 นาที · สร้าง 25 นาที · ทดสอบ 5 นาที
 
 **อุปกรณ์ที่ใช้** ระบบทั้งหมด และโทรศัพท์ 1 เครื่อง
 
 สร้างแดชบอร์ดที่ช่วยให้การสังเกตการณ์และควบคุมการทำงานอุปกรณ์ในฟาร์มทำได้คล่องตัวขึ้น แดชบอร์ดที่ดีควรทำความเข้าใจและใช้งานได้ง่าย
+
+![](images/activity-dividers/flower-led.webp){ .activity-divider width="1200" height="79" loading="lazy" decoding="async" }
 
 ### ใบงาน { #a6 }
 
@@ -26,6 +28,8 @@
 
 </div>
 
+![](images/activity-dividers/orchard.webp){ .activity-divider width="1200" height="105" loading="lazy" decoding="async" }
+
 ### 6.1 ใครจะใช้งานแดชบอร์ด { #a6-1 }
 
 **ระบุผู้ใช้**
@@ -35,6 +39,8 @@
 ผู้ที่จะใช้แดชบอร์ด {{f:s3.dash.user|44}}
 
 [↑ กลับไปที่ใบงาน](#a6){ .ws-back }
+
+![](images/activity-dividers/sprinklers.webp){ .activity-divider width="1200" height="96" loading="lazy" decoding="async" }
 
 ### 6.2 เลือกข้อมูลที่จะแสดงและควบคุม { #a6-plan }
 
@@ -58,6 +64,8 @@
 2. วางข้อมูลสำคัญและปุ่มที่ใช้บ่อยไว้ด้านบน ใช้ชื่อที่ผู้ใช้เข้าใจตรงกัน
 
 [↑ กลับไปที่ใบงาน](#a6){ .ws-back }
+
+![](images/activity-dividers/farmhouse.webp){ .activity-divider width="1200" height="64" loading="lazy" decoding="async" }
 
 ### 6.3 สร้างแดชบอร์ด { #a6-2 }
 
@@ -90,6 +98,8 @@
 4. ลองเพิ่มการ์ดอื่น ๆ ที่น่าสนใจ เช่น เพิ่ม **History graph** ตั้ง **Hours to show: 24** หรือปรับสี Gauge เป็นต้น
 
 [↑ กลับไปที่ใบงาน](#a6){ .ws-back }
+
+![](images/activity-dividers/greenhouse.webp){ .activity-divider width="1200" height="58" loading="lazy" decoding="async" }
 
 ### 6.4 ทดสอบ - ให้ผู้อื่นทดลองใช้ { #a6-3 }
 

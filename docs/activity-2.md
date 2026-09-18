@@ -1,12 +1,14 @@
 # กิจกรรมที่ 2 — ต่อวงจรและสั่งงานหลอดไฟ (Act)
 
-![](images/activity-banners/activity-02-led.png){ .activity-banner width="1800" height="300" loading="lazy" decoding="async" }
+![](images/activity-banners/activity-02-led.webp){ .activity-banner width="1600" height="267" loading="lazy" decoding="async" }
 
 **40 นาที**
 
 **อุปกรณ์ที่ใช้** บอร์ดรีเลย์, กล่องจ่ายไฟ (charge controller), อะแดปเตอร์ 12V, สาย USB-C, แล็ปท็อป, สายไฟ, เต๋าต่อสาย, หลอด LED 12V, ไขควง
 
 เริ่มจากลองสั่งรีเลย์โดยยังไม่ต่อหลอดไฟ เพื่อสังเกตการทำงานของสวิตช์ จากนั้นจึงต่อแหล่งจ่ายไฟและหลอดไฟ แล้วทดสอบว่าคำสั่งบนหน้าเว็บควบคุมหลอดไฟได้จริง
+
+![](images/activity-dividers/flower-led.webp){ .activity-divider width="1200" height="79" loading="lazy" decoding="async" }
 
 ### ใบงาน { #a2 }
 
@@ -21,6 +23,8 @@
 - [ ] **[คำถามท้ายกิจกรรม](#a2-q)** ถ้าเราจะนำแนวคิดนี้ไปควบคุมปั๊มน้ำ 220V ในฟาร์มจริง แล้วต้องเลือกอุปกรณ์และติดตั้งระบบ ควรพิจารณาความปลอดภัยเรื่องใดบ้าง และให้ใครเป็นผู้ติดตั้ง {{ta:s1.q2}} ก่อนพัก สั่งรีเลย์เป็น **Off** แล้วดูว่าหลอดดับจริง
 
 </div>
+
+![](images/activity-dividers/greenhouse.webp){ .activity-divider width="1200" height="58" loading="lazy" decoding="async" }
 
 ### 2.1 รู้จักบอร์ดรีเลย์ { #a2-1 }
 
@@ -42,6 +46,8 @@
 | **Programmable keys** | ปุ่มบนบอร์ด | กดสั่งรีเลย์ด้วยมือได้ แม้ไม่มี Home Assistant |
 
 [↑ กลับไปที่ใบงาน](#a2){ .ws-back }
+
+![](images/activity-dividers/sprinklers.webp){ .activity-divider width="1200" height="96" loading="lazy" decoding="async" }
 
 ### 2.2 อ่านชื่อและหมายเลข IP แล้วลองสั่งรีเลย์ { #a2-1b }
 
@@ -65,6 +71,8 @@
 
 [↑ กลับไปที่ใบงาน](#a2){ .ws-back }
 
+![](images/activity-dividers/orchard.webp){ .activity-divider width="1200" height="105" loading="lazy" decoding="async" }
+
 ### 2.3 รู้จักกล่องจ่ายไฟและวงจรหลอดไฟ { #a2-2 }
 
 **สำรวจขั้วต่อและทางเดินไฟ**
@@ -78,6 +86,8 @@
 ![แผนภาพวงจร: ไฟ +12V จาก charge controller ผ่านขั้ว COM และ NO ของรีเลย์ไปยังหลอด LED ส่วนสายลบต่อตรง](images/activity2-2-relay-wiring-diagram.png){ width="85%" }
 
 [↑ กลับไปที่ใบงาน](#a2){ .ws-back }
+
+![](images/activity-dividers/greenhouse.webp){ .activity-divider width="1200" height="58" loading="lazy" decoding="async" }
 
 ### 2.4 ต่อสายวงจรหลอดไฟ { #a2-2b }
 
@@ -103,6 +113,8 @@
 > **ทำไมรีเลย์ต่ออยู่ที่สายบวกเพียงเส้นเดียว** กระแสไฟจะไหลได้เมื่อวงจรครบ การเปิดหน้าสัมผัสรีเลย์ที่จุดเดียวจึงทำให้หลอดดับได้ ในวงจร 12V นี้ เราให้รีเลย์ตัดต่อสายบวก ส่วนสายลบต่อกลับไปยังกล่องจ่ายไฟโดยตรง
 
 [↑ กลับไปที่ใบงาน](#a2){ .ws-back }
+
+![](images/activity-dividers/orchard.webp){ .activity-divider width="1200" height="105" loading="lazy" decoding="async" }
 
 ### 2.5 จ่ายไฟและทดสอบหลอดไฟ { #a2-2c }
 

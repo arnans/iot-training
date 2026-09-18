@@ -4,11 +4,13 @@
 
 ช่วงนี้เราจะศึกษาหลักการ Hysteresis ฝึกเพิ่มเงื่อนไขเวลา จำลองปัญหาและเพิ่มกฎป้องกันความเสียหาย (fail-safe) ที่มีประโยชน์สำหรับหน้างานจริง
 
-![](images/activity-banners/activity-04-irrigation.png){ .activity-banner width="1800" height="300" loading="lazy" decoding="async" }
+![](images/activity-banners/activity-04-irrigation.webp){ .activity-banner width="1600" height="267" loading="lazy" decoding="async" }
 
 **70 นาที** รวมต่อปั๊มแทนหลอดไฟ
 
 **อุปกรณ์ที่ใช้** บอร์ด GoGo-IoT, บอร์ดรีเลย์, หลอด LED 12V ที่ต่ออยู่, **ปั๊มตู้ปลา 12V, สวิตช์ลูกลอยและแก้วน้ำจากช่วงที่ 1**, ไขควง, แล็ปท็อป
+
+![](images/activity-dividers/farmhouse.webp){ .activity-divider width="1200" height="64" loading="lazy" decoding="async" }
 
 ### ใบงาน { #a4 }
 
@@ -27,6 +29,8 @@
 
 </div>
 
+![](images/activity-dividers/orchard.webp){ .activity-divider width="1200" height="105" loading="lazy" decoding="async" }
+
 ### 4.1 สังเกตปัญหาไฟกะพริบ { #a4-1 }
 
 **เตรียมทดสอบ**
@@ -42,6 +46,8 @@
 > **Chattering** คือการเปิด–ปิดถี่เมื่อค่าแกว่งข้ามเกณฑ์ไปมา ทำให้รีเลย์และอุปกรณ์สึกหรอเร็ว
 
 [↑ กลับไปที่ใบงาน](#a4){ .ws-back }
+
+![](images/activity-dividers/greenhouse.webp){ .activity-divider width="1200" height="58" loading="lazy" decoding="async" }
 
 ### 4.2 แก้ไขด้วยการแยกเกณฑ์เปิดและปิด { #a4-2 }
 
@@ -64,6 +70,8 @@
 > ถ้ายังกะพริบ ให้เพิ่มระยะห่างของเกณฑ์ ถ้าไฟไม่ติดหรือไม่ดับ ให้ตรวจว่าเกณฑ์ทั้งสองยังอยู่ระหว่างค่ามืดกับค่าสว่างที่วัดได้
 
 [↑ กลับไปที่ใบงาน](#a4){ .ws-back }
+
+![](images/activity-dividers/flower-led.webp){ .activity-divider width="1200" height="79" loading="lazy" decoding="async" }
 
 ### 4.3 เพิ่มการจำกัดช่วงเวลาเปิดไฟ { #a4-3 }
 
@@ -89,6 +97,8 @@
 4. รอบล่าสุดใน Traces หยุดที่ส่วนใด {{f:s2.time.trace|16}}
 
 [↑ กลับไปที่ใบงาน](#a4){ .ws-back }
+
+![](images/activity-dividers/farmhouse.webp){ .activity-divider width="1200" height="64" loading="lazy" decoding="async" }
 
 ### 4.4 เพิ่ม Trigger ให้รองรับทุกกรณี ให้ไฟเปิดได้เมื่อถึงเวลา { #a4-3b }
 
@@ -125,6 +135,8 @@
 
 [↑ กลับไปที่ใบงาน](#a4){ .ws-back }
 
+![](images/activity-dividers/sprinklers.webp){ .activity-divider width="1200" height="96" loading="lazy" decoding="async" }
+
 ### 4.5 ลองเพิ่มการแจ้งเตือน { #a4-4 }
 
 Home Assistant สามารถส่งข้อความแจ้งเตือนได้ผ่านทางหน้า Web หรือทาง Mobile App (ต้องติดตั้ง App ก่อนจาก Play Store / App Store)
@@ -142,6 +154,8 @@ Home Assistant สามารถส่งข้อความแจ้งเ�
 3. ถ้าเข้า Home Assistant ผ่านแอป Companion ไว้แล้ว ลองใช้ **Send a notification via mobile_app** เพื่อส่งข้อความไปยังโทรศัพท์
 
 [↑ กลับไปที่ใบงาน](#a4){ .ws-back }
+
+![](images/activity-dividers/greenhouse.webp){ .activity-divider width="1200" height="58" loading="lazy" decoding="async" }
 
 ### 4.6 ต่อปั๊มแทนหลอดไฟ { #a4-5 }
 
@@ -169,6 +183,8 @@ Home Assistant สามารถส่งข้อความแจ้งเ�
 
 [↑ กลับไปที่ใบงาน](#a4){ .ws-back }
 
+![](images/activity-dividers/sprinklers.webp){ .activity-divider width="1200" height="96" loading="lazy" decoding="async" }
+
 ### 4.7 สร้างกฎรดน้ำ { #a4-5b }
 
 **ใช้ความชื้นอากาศจำลองค่าความชื้นดิน** ใช้ลมปากเพิ่มค่าความชื้นเพื่อจำลองดินเปียก 
@@ -192,6 +208,8 @@ Home Assistant สามารถส่งข้อความแจ้งเ�
 6. ลองแยกค่าเกณฑ์ความชื้นอากาศที่ใช้เปิดและปิดปั๊ม ตามหลักการ Hysteresis เปิดปั๊มเมื่อต่ำกว่า {{n:s2.hum.on|4}} % ปิดปั๊มเมื่อสูงกว่า {{n:s2.hum.off|4}} % 
 
 [↑ กลับไปที่ใบงาน](#a4){ .ws-back }
+
+![](images/activity-dividers/farmhouse.webp){ .activity-divider width="1200" height="64" loading="lazy" decoding="async" }
 
 ### 4.8 สร้างโหมด Auto และ Manual { #a4-6 }
 

@@ -495,8 +495,8 @@ def data_uri(rel: str) -> str:
     if rel not in _uri_cache:
         path = DOCS / rel
         mime = mimetypes.guess_type(path.name)[0] or "application/octet-stream"
-        if path.suffix == ".svg":
-            mime = "image/svg+xml"
+        # Windows answers from the registry, where .svg and .webp are often missing or wrong
+        mime = {".svg": "image/svg+xml", ".webp": "image/webp"}.get(path.suffix, mime)
         _uri_cache[rel] = f"data:{mime};base64," + base64.b64encode(path.read_bytes()).decode("ascii")
     return _uri_cache[rel]
 

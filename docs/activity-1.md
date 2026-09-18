@@ -1,12 +1,14 @@
 # กิจกรรมที่ 1 — รู้จักและทดลองอ่านค่าเซนเซอร์ (Sense)
 
-![](images/activity-banners/activity-01-sensors.png){ .activity-banner width="1800" height="300" loading="lazy" decoding="async" }
+![](images/activity-banners/activity-01-sensors.webp){ .activity-banner width="1600" height="267" loading="lazy" decoding="async" }
 
 **35 นาที**
 
 **อุปกรณ์ที่ใช้** บอร์ด GoGo-IoT, สวิตช์ลูกลอยพร้อมตัวแปลงและสาย Grove, แก้วน้ำ, สาย USB-C, แล็ปท็อป
 
 เราจะเปิดหน้าเว็บของบอร์ดเพื่อดูค่าเซนเซอร์ แล้วทดลองเปลี่ยนสภาพรอบบอร์ดทีละอย่าง สังเกตว่าค่าใดเปลี่ยนไป และคิดว่าจะนำค่านั้นไปใช้ตัดสินใจเรื่องใดในฟาร์มได้บ้าง
+
+![](images/activity-dividers/greenhouse.webp){ .activity-divider width="1200" height="58" loading="lazy" decoding="async" }
 
 ### ใบงาน { #a1 }
 
@@ -27,6 +29,8 @@
 
 </div>
 
+![](images/activity-dividers/sprinklers.webp){ .activity-divider width="1200" height="96" loading="lazy" decoding="async" }
+
 ### 1.1 รู้จักบอร์ดและต่อสวิตช์ลูกลอย { #a1-1 }
 
 บอร์ดตัวนี้มีคอนโทรลเลอร์ ESP32-C3 และเซนเซอร์ในตัวสำหรับวัดห้าค่า ได้แก่ **อุณหภูมิ ความชื้นอากาศ แสง ความกดอากาศ และความเร่ง** (บอร์ดแปลงความเร่งเป็นค่า **ความสั่นสะเทือน** ให้เราแล้ว) นอกจากนั้นมีช่องต่อเซนเซอร์เพิ่มแบบ Grove เราจะต่อ **สวิตช์ลูกลอย** เข้าที่ **ช่อง 1** ซึ่งตั้งค่าไว้แล้วให้อ่านเป็นสัญญาณดิจิทัล
@@ -44,6 +48,8 @@
 3. วางสวิตช์ลูกลอยลงแก้วน้ำที่มีน้ำครึ่งแก้ว ให้ลูกลอยลอยขึ้น
 
 [↑ กลับไปที่ใบงาน](#a1){ .ws-back }
+
+![](images/activity-dividers/farmhouse.webp){ .activity-divider width="1200" height="64" loading="lazy" decoding="async" }
 
 ### 1.2 อ่านชื่อและหมายเลข IP ของบอร์ด { #a1-2 }
 
@@ -68,6 +74,8 @@
 
 [↑ กลับไปที่ใบงาน](#a1){ .ws-back }
 
+![](images/activity-dividers/orchard.webp){ .activity-divider width="1200" height="105" loading="lazy" decoding="async" }
+
 ### 1.3 เปิดหน้าเว็บของบอร์ด { #a1-3 }
 
 บอร์ดมีหน้าเว็บสำหรับแสดงค่าในตัว เรียกว่า **เว็บเซิร์ฟเวอร์** เราจึงเปิดดูค่าผ่านเบราว์เซอร์ได้โดยตรงเมื่อเชื่อมต่อ WiFi โซนเดียวกัน โดยยังไม่ต้องใช้ Home Assistant
@@ -82,6 +90,8 @@
 > ถ้าลองเปิดแล้วหน้าเว็บไม่ขึ้น ให้ตรวจว่าแล็ปท็อปอยู่บน `farm-laptop-สีเดียวกัน` กับสีในชื่อบอร์ด เพราะหน้านี้อยู่บนตัวบอร์ด ไม่ได้อยู่บนอินเทอร์เน็ต
 
 [↑ กลับไปที่ใบงาน](#a1){ .ws-back }
+
+![](images/activity-dividers/flower-led.webp){ .activity-divider width="1200" height="79" loading="lazy" decoding="async" }
 
 ### 1.4 ทดลองอ่านค่าเซนเซอร์ { #a1-4 }
 
@@ -113,6 +123,8 @@
 [↑ กลับไปที่ใบงาน](#a1){ .ws-back }
 
 > **ค่าตัวเลขกับสถานะต่างกันอย่างไร** ความชื้นและความสว่างบอกปริมาณเป็นตัวเลข ส่วนสวิตช์ลูกลอยบอกได้เพียงว่าน้ำถึงระดับที่ติดตั้งไว้หรือไม่ ไม่ได้บอกปริมาตรน้ำที่เหลือ ในหน้าเว็บของบอร์ดจะเห็น **ON / OFF** ส่วน Home Assistant จะแสดง **Wet / Dry** ตามลำดับ ข้อมูลทั้งหมดที่เราเห็นบนหน้าเว็บถูกส่งมาในรูปแบบดิจิทัล แม้ค่าบางชนิดจะใช้แทนปริมาณที่เปลี่ยนแปลงต่อเนื่องก็ตาม
+
+![](images/activity-dividers/farmhouse.webp){ .activity-divider width="1200" height="64" loading="lazy" decoding="async" }
 
 ### 1.5 สังเกตเวลาตอบสนอง { #a1-4b }
 

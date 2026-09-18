@@ -749,6 +749,34 @@ body {
   break-after: avoid;
 }
 
+/* Transparent farm strips replace the rule at each activity-page H3. */
+.md-typeset img.activity-divider:not(.twemoji):not(.emojione) {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 0;
+  box-shadow: none;
+  background: transparent;
+}
+
+/* The strip stands in for the H3 rule, so it keeps that rule's rhythm: the 3em margin
+   above (~62px at the H3's size) is what makes a sub-activity read as a new section, and
+   4rem holds that gap. Below it needs more than the rule's 1.1em -- the artwork sits flush
+   on the bottom edge, so a tight gap leaves the number badge sitting in the soil. */
+.md-typeset p:has(> img.activity-divider) {
+  margin: 4rem 0 2.75rem;
+  padding: 0;
+  line-height: 0;
+  break-inside: avoid;
+  break-after: avoid;
+}
+
+.md-typeset p:has(> img.activity-divider) + h3 {
+  margin-top: 0;        /* the strip's own margin-bottom sets the gap */
+  padding-top: 0;
+  border-top: 0;
+}
+
 /* ---------- admonitions on the palette ---------- */
 .md-typeset .admonition,
 .md-typeset details {
@@ -1323,10 +1351,11 @@ body {
 <nav class="ws-side" aria-label="หน้าในชุดใบงาน"><ul class="ws-pages"><li class="ws-group" data-group="ก่อนการอบรม"><a href="install.html">ก่อนการอบรม</a></li><li data-page="install" data-group="ก่อนการอบรม"><a href="install.html"><span class="ws-g">ก่อนการอบรม</span><span class="ws-t">เตรียมแล็ปท็อป</span></a></li><li class="ws-group in-group" data-group="ช่วงที่ 1"><a href="session-1-start.html">ช่วงที่ 1</a></li><li data-page="session-1-start" data-group="ช่วงที่ 1" class="in-group"><a href="session-1-start.html"><span class="ws-g">ช่วง 1</span><span class="ws-t">เตรียมพร้อมก่อนเริ่ม</span></a></li><li data-page="activity-1" data-group="ช่วงที่ 1" class="in-group"><a href="activity-1.html" data-n="1"><span class="ws-g">ช่วง 1</span><span class="ws-n">กิจกรรม 1</span><span class="ws-t">อ่านค่าเซนเซอร์ (Sense)</span></a></li><li data-page="activity-2" data-group="ช่วงที่ 1" class="in-group"><a href="activity-2.html" data-n="2"><span class="ws-g">ช่วง 1</span><span class="ws-n">กิจกรรม 2</span><span class="ws-t">ต่อวงจรและสั่งงานหลอดไฟ (Act)</span></a></li><li data-page="activity-3" data-group="ช่วงที่ 1" class="is-current in-group"><a href="activity-3.html" aria-current="page" data-n="3"><span class="ws-g">ช่วง 1</span><span class="ws-n">กิจกรรม 3</span><span class="ws-t">สร้างกฎควบคุมระบบ (Logic)</span></a><ul class="ws-toc"><li><a href="#a3">ใบงาน</a></li><li><a href="#a3-1">3.1 เพิ่มบอร์ดทั้งสองเข้า Home Assistant</a></li><li><a href="#a3-2">3.2 ทดสอบบอร์ดใน Home Assistant</a></li><li><a href="#a3-3">3.3 เลือกเกณฑ์ความสว่าง</a></li><li><a href="#a3-3b">3.4 เขียนกฎเปิด–ปิดไฟ</a></li><li><a href="#a3-3c">3.5 สร้างและทดสอบกฎอัตโนมัติ</a></li><li><a href="#a3-4">3.6 โจทย์เสริม: ปิดไฟตามเวลา (ไม่บังคับทำ)</a></li><li><a href="#กอนออกจากหอง">ก่อนออกจากห้อง</a></li></ul></li><li class="ws-group" data-group="ช่วงที่ 2"><a href="activity-4.html">ช่วงที่ 2</a></li><li data-page="activity-4" data-group="ช่วงที่ 2"><a href="activity-4.html" data-n="4"><span class="ws-g">ช่วง 2</span><span class="ws-n">กิจกรรม 4</span><span class="ws-t">ตั้งกฎอัตโนมัติ (Think)</span></a></li><li data-page="activity-5" data-group="ช่วงที่ 2"><a href="activity-5.html" data-n="5"><span class="ws-g">ช่วง 2</span><span class="ws-n">กิจกรรม 5</span><span class="ws-t">จำลองปัญหาและป้องกัน (Failure lab)</span></a></li><li class="ws-group" data-group="ช่วงที่ 3"><a href="session-3-history.html">ช่วงที่ 3</a></li><li data-page="session-3-history" data-group="ช่วงที่ 3"><a href="session-3-history.html"><span class="ws-g">ช่วง 3</span><span class="ws-t">อ่านข้อมูลย้อนหลัง</span></a></li><li data-page="activity-6" data-group="ช่วงที่ 3"><a href="activity-6.html" data-n="6"><span class="ws-g">ช่วง 3</span><span class="ws-n">กิจกรรม 6</span><span class="ws-t">สร้างแดชบอร์ด (Dashboard)</span></a></li><li data-page="activity-7" data-group="ช่วงที่ 3"><a href="activity-7.html" data-n="7"><span class="ws-g">ช่วง 3</span><span class="ws-n">กิจกรรม 7</span><span class="ws-t">ออกแบบระบบฟาร์ม (Design)</span></a></li></ul></nav>
 <main class="md-content__inner md-typeset" id="ws-main">
 <h1 id="กจกรรมท-3--สรางกฎควบคมระบบ-logic">กิจกรรมที่ 3 — สร้างกฎควบคุมระบบ (Logic)</h1>
-<p><img alt="" class="activity-banner" decoding="async" height="300" loading="lazy" src="../images/activity-banners/activity-03-rules.png" width="1800" /></p>
+<p><img alt="" class="activity-banner" decoding="async" height="267" loading="lazy" src="../images/activity-banners/activity-03-rules.webp" width="1600" /></p>
 <p><strong>40 นาที</strong></p>
 <p><strong>อุปกรณ์ที่ใช้</strong> แล็ปท็อปของตัวแทนกลุ่มที่เปิดหน้า Login ของ Home Assistant ไว้, โทรศัพท์ 1 เครื่อง, อุปกรณ์ทั้งหมดจากกิจกรรมที่ 1–2</p>
 <p>เพิ่มบอร์ดทั้งสองเข้า Home Assistant แล้วสร้างกฎให้ไฟสวนเปิดเองเมื่อมืดและปิดเองเมื่อสว่าง</p>
+<p><img alt="" class="activity-divider" decoding="async" height="96" loading="lazy" src="../images/activity-dividers/sprinklers.webp" width="1200" /></p>
 <h3 id="a3">ใบงาน</h3>
 <div class="ws-tasks">
 <p>คลิกชื่อหัวข้อเพื่อดูวิธีทำ เมื่อทำเสร็จให้ทำเครื่องหมายและบันทึกผลในช่องที่กำหนด กรอกที่นี่หรือในขั้นตอนด้านล่างก็ได้ คำตอบจะปรากฏทั้งสองจุด</p>
@@ -1344,6 +1373,7 @@ body {
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> <strong><a href="#a3-q">คำถามท้ายกิจกรรม</a></strong> ถ้าค่าแสงอยู่ใกล้เกณฑ์พอดี แล้วมีเมฆลอยผ่านตอนพลบค่ำจนค่าแสงแกว่งไปมา ระบบจะเปิด–ปิดไฟอย่างไร <textarea class="fld fld-ta" data-k="s1.q3" rows="2"></textarea></li>
 </ul>
 </div>
+<p><img alt="" class="activity-divider" decoding="async" height="64" loading="lazy" src="../images/activity-dividers/farmhouse.webp" width="1200" /></p>
 <h3 id="a3-1"><span class="sub-num">3.1</span>เพิ่มบอร์ดทั้งสองเข้า Home Assistant</h3>
 <p class="ws-phase"><strong>เข้าสู่ Home Assistant</strong></p>
 <ol>
@@ -1362,6 +1392,7 @@ body {
 <p><strong>ตรวจชื่อบอร์ดให้ตรงกับที่จดไว้ทั้งชื่อ</strong> โดยเฉพาะรหัสหกตัวท้าย หากเพิ่มบอร์ดของกลุ่มอื่น เราอาจดูค่าหรือสั่งงานอุปกรณ์ผิดกลุ่มได้</p>
 </blockquote>
 <p><a class="ws-back" href="#a3">↑ กลับไปที่ใบงาน</a></p>
+<p><img alt="" class="activity-divider" decoding="async" height="79" loading="lazy" src="../images/activity-dividers/flower-led.webp" width="1200" /></p>
 <h3 id="a3-2"><span class="sub-num">3.2</span>ทดสอบบอร์ดใน Home Assistant</h3>
 <p class="ws-phase"><strong>ทดสอบจากแล็ปท็อป</strong></p>
 <ol>
@@ -1376,6 +1407,7 @@ body {
 <p>ถ้าลองเปิดจากโทรศัพท์แล้วเข้าไม่ได้ ให้ตรวจว่าอยู่บน WiFi โซนเดียวกับแล็ปท็อป และพิมพ์ที่อยู่ตรงกับที่จดไว้ หากตรวจแล้วแต่ยังเข้าไม่ได้ ให้ข้ามไปก่อนแล้วบอกผู้สอน</p>
 </blockquote>
 <p><a class="ws-back" href="#a3">↑ กลับไปที่ใบงาน</a></p>
+<p><img alt="" class="activity-divider" decoding="async" height="96" loading="lazy" src="../images/activity-dividers/sprinklers.webp" width="1200" /></p>
 <h3 id="a3-3"><span class="sub-num">3.3</span>เลือกเกณฑ์ความสว่าง</h3>
 <p><strong>สถานการณ์จำลอง</strong> เราต้องการให้ไฟสวนเปิดเมื่อมืดและปิดเมื่อสว่าง ในห้องทดลองนี้ ใช้หลอด LED แทนไฟสวน และใช้มือครอบบอร์ดเพื่อจำลองว่าฟ้ามืด ระบบจะอ่านค่าจาก <strong>เซนเซอร์แสง</strong> แล้วสั่ง <strong>หลอดไฟ</strong> ผ่านรีเลย์</p>
 <p class="ws-phase"><strong>อ่านค่าแสง</strong></p>
@@ -1387,6 +1419,7 @@ body {
 <li>เลือกค่ากลาง ๆ ระหว่างสองค่านั้นเป็น <strong>เกณฑ์</strong> ที่ถือว่ามืด เช่น เปิดโล่ง 80 ครอบ 7 เกณฑ์อาจเป็น 40 · ค่าเกณฑ์ของกลุ่ม <input class="fld" type="text" data-k="s1.light.on" data-size="4" size="4" inputmode="decimal" autocomplete="off" spellcheck="false"></li>
 </ol>
 <p><a class="ws-back" href="#a3">↑ กลับไปที่ใบงาน</a></p>
+<p><img alt="" class="activity-divider" decoding="async" height="105" loading="lazy" src="../images/activity-dividers/orchard.webp" width="1200" /></p>
 <h3 id="a3-3b"><span class="sub-num">3.4</span>เขียนกฎเปิด–ปิดไฟ</h3>
 <p class="ws-phase"><strong>เขียนกฎจากเกณฑ์ที่เลือก</strong></p>
 <ol>
@@ -1398,6 +1431,7 @@ body {
 </blockquote>
 <p>ใน Home Assistant เราสร้างกฎอัตโนมัติที่เรียกว่า <strong>automation</strong> โดยกำหนด <strong>trigger</strong> คือเหตุการณ์ที่เริ่มให้กฎทำงาน และ <strong>action</strong> คือสิ่งที่ระบบต้องทำ สำหรับกฎนี้ เหตุการณ์คือค่าความสว่างเปลี่ยนข้ามเกณฑ์ ส่วนคำสั่งคือเปิดหรือปิดรีเลย์</p>
 <p><a class="ws-back" href="#a3">↑ กลับไปที่ใบงาน</a></p>
+<p><img alt="" class="activity-divider" decoding="async" height="58" loading="lazy" src="../images/activity-dividers/greenhouse.webp" width="1200" /></p>
 <h3 id="a3-3c"><span class="sub-num">3.5</span>สร้างและทดสอบกฎอัตโนมัติ</h3>
 <div class="video"><div class="video-frame"><iframe src="https://www.youtube-nocookie.com/embed/Q2D7aAni7Xo?rel=0" title="วิดีโอสาธิต" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div><p class="video-link"><a href="https://youtu.be/Q2D7aAni7Xo" target="_blank" rel="noopener">▶ เปิดวิดีโอใน YouTube</a></p></div>
 <p>วางเมาส์บนป้าย 📷 ท้ายข้อเพื่อดูภาพหน้าจอของขั้นนั้น (หน้าจอสัมผัสให้แตะ)</p>
@@ -1436,6 +1470,7 @@ body {
 <p><strong>ครอบแล้วไฟไม่ติด</strong> กฎแบบ crossed threshold ทำงานเฉพาะตอนค่า <strong>ข้าม</strong> เกณฑ์ ต้องให้ค่าอยู่เหนือเกณฑ์ก่อนแล้วค่อยครอบ · ตรวจว่ากฎทั้งสองเปิดอยู่ trigger ชี้ที่ <code>ความสว่าง (light)</code> และ action ชี้ที่รีเลย์ของ <strong>กลุ่มเรา</strong> · ถ้าไฟกะพริบเมื่อค่าแสงเปลี่ยนขึ้นลงใกล้เกณฑ์ อาจเกิดจากการใช้เกณฑ์เดียวกันทั้งเปิดและปิด ให้ลองครอบบอร์ดให้มิดและค้างมือไว้นิ่ง ๆ เราจะทดลองและแก้ปัญหานี้ในช่วงที่ 2</p>
 </blockquote>
 <p><a class="ws-back" href="#a3">↑ กลับไปที่ใบงาน</a></p>
+<p><img alt="" class="activity-divider" decoding="async" height="79" loading="lazy" src="../images/activity-dividers/flower-led.webp" width="1200" /></p>
 <h3 id="a3-4"><span class="sub-num">3.6</span>โจทย์เสริม: ปิดไฟตามเวลา (ไม่บังคับทำ)</h3>
 <p>ทำข้อนี้เมื่อทดสอบกฎเปิด–ปิดไฟครบแล้วและยังมีเวลาเหลือ เราจะใช้เวลาเป็นตัวเริ่มคำสั่งปิดไฟ</p>
 <p class="ws-phase"><strong>ตั้งเวลาปิดไฟ</strong></p>

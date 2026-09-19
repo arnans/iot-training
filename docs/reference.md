@@ -29,7 +29,7 @@
 | Trigger | Moisture cleared / Moisture detected | สวิตช์ลูกลอยเปลี่ยนเป็น Dry / Wet | น้ำหมด |
 | Trigger | Switch turned on / Switch turned off | รีเลย์เปลี่ยนสถานะ ใส่ **For at least** ถ้าต้องคงอยู่ครบเวลา | ปั๊ม On นาน 30 วินาที |
 | Trigger | Time and sun → Time | ถึงเวลาที่กำหนด | At time 18:30 |
-| Trigger | State (แท็บ **By type**) | ต้องการจับ `unavailable` หรือ entity ที่ไม่มีรายการเฉพาะ | ความชื้นอากาศ To unavailable |
+| Trigger | State changed (ช่อง **To**) | ต้องการจับ Unavailable / Unknown หรือ entity ที่ไม่มีรายการเฉพาะ | ความชื้นอากาศ To Unavailable, Unknown |
 | Condition | ช่อง **State** ในแผงด้านขวา (On / Off / Unavailable / Unknown) | entity ที่ไม่มีเงื่อนไขเฉพาะ | ปั๊มกำลังทำงาน เป็น Off |
 | Condition | Moisture is detected / Moisture is not detected | ตรวจว่าลูกลอยเป็น Wet / Dry | รดน้ำได้เฉพาะเมื่อน้ำพอ |
 | Condition | Illuminance · Relative humidity | ตรวจค่าตัวเลขตอนกฎเริ่ม | แสง Below 200 |

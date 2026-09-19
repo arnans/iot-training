@@ -1513,7 +1513,7 @@ body {
 <p>กฎตัวอย่างนี้หยุดปั๊มเพื่อป้องกันการสูบน้ำต่อโดยไม่มีข้อมูล</p>
 <ol start="4" style="counter-reset: step 3">
 <li>สร้าง automation ชื่อ <code>Fail-safe - เซนเซอร์หาย</code></li>
-<li>Trigger: ใช้ trigger ทั่วไป <strong>State</strong> จากแท็บ <strong>By type</strong> (trigger เฉพาะของความชื้นดูแค่ค่าตัวเลข ไม่จับสถานะ unavailable) เลือก <code>ความชื้นอากาศ (humidity)</code> ช่อง <strong>To</strong> เลือก <code>unavailable</code> แล้วเพิ่ม trigger อีกอันแบบเดียวกันแต่ To เป็น <code>unknown</code></li>
+<li>Trigger: กด <strong>+ Add trigger</strong> พิมพ์ <strong>ความชื้นอากาศ</strong> แล้วกดที่ <strong>ความชื้นอากาศ (humidity)</strong> ในแผงด้านขวาเลือก <strong>State changed</strong> ช่อง <strong>To</strong> เลือก <strong>Unavailable</strong> แล้วเพิ่ม <strong>Unknown</strong> อีกค่าในช่องเดียวกัน</li>
 <li>Action: เลือกรีเลย์ → <strong>Turn off switch</strong> และเพิ่ม <strong>Send a persistent notification</strong> ข้อความ <code>ไม่ได้รับค่าจากเซนเซอร์ หยุดปั๊มเพื่อความปลอดภัย</code></li>
 </ol>
 <p class="ws-phase"><strong>ทดสอบกฎ</strong></p>

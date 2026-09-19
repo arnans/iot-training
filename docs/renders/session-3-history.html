@@ -533,25 +533,32 @@ body {
   background: var(--ag-panel-caution);
 }
 
-/* phase labels: the action groups of a procedure, scannable like a table of contents */
+/* phase labels: the action groups of a procedure. Each starts a segment, so the label sits in
+   a pill with a rule running to the right edge -- a divider, not a panel (panels are callouts),
+   and lighter than the H3 rule + number badge a sub-activity starts with. */
 .md-typeset p.ws-phase {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  margin: 1.9em 0 0.5em;
-  font-size: 0.88em;
+  gap: 0.75rem;
+  margin: 2.4em 0 0.8em;
+  font-size: 1em;
   color: var(--ag-phase-fg);
 }
 
-.md-typeset p.ws-phase::before {
-  content: "";
+.md-typeset p.ws-phase strong {
   flex: none;
-  width: 1rem;
-  border-top: 2px solid var(--ag-leaf);
+  padding: 0.2em 0.95em;
+  border: 1.5px solid var(--ag-rule);
+  border-radius: 999px;
+  background: var(--ag-panel);
+  font-weight: 600;
 }
 
-.md-typeset p.ws-phase strong {
-  font-weight: 600;
+.md-typeset p.ws-phase::after {
+  content: "";
+  flex: 1;
+  border-top: 2px solid var(--ag-rule);
+  opacity: 0.55;
 }
 
 .md-typeset blockquote.note-record {
@@ -1361,7 +1368,7 @@ body {
 <nav class="ws-side" aria-label="หน้าในชุดใบงาน"><ul class="ws-pages"><li class="ws-group" data-group="ก่อนการอบรม"><a href="install.html">ก่อนการอบรม</a></li><li data-page="install" data-group="ก่อนการอบรม"><a href="install.html"><span class="ws-g">ก่อนการอบรม</span><span class="ws-t">เตรียมแล็ปท็อป</span></a></li><li class="ws-group" data-group="ช่วงที่ 1"><a href="session-1-start.html">ช่วงที่ 1</a></li><li data-page="session-1-start" data-group="ช่วงที่ 1"><a href="session-1-start.html"><span class="ws-g">ช่วง 1</span><span class="ws-t">เตรียมพร้อมก่อนเริ่ม</span></a></li><li data-page="activity-1" data-group="ช่วงที่ 1"><a href="activity-1.html" data-n="1"><span class="ws-g">ช่วง 1</span><span class="ws-n">กิจกรรม 1</span><span class="ws-t">อ่านค่าเซนเซอร์ (Sense)</span></a></li><li data-page="activity-2" data-group="ช่วงที่ 1"><a href="activity-2.html" data-n="2"><span class="ws-g">ช่วง 1</span><span class="ws-n">กิจกรรม 2</span><span class="ws-t">ต่อวงจรและสั่งงานหลอดไฟ (Act)</span></a></li><li data-page="activity-3" data-group="ช่วงที่ 1"><a href="activity-3.html" data-n="3"><span class="ws-g">ช่วง 1</span><span class="ws-n">กิจกรรม 3</span><span class="ws-t">สร้างกฎควบคุมระบบ (Logic)</span></a></li><li class="ws-group" data-group="ช่วงที่ 2"><a href="activity-4.html">ช่วงที่ 2</a></li><li data-page="activity-4" data-group="ช่วงที่ 2"><a href="activity-4.html" data-n="4"><span class="ws-g">ช่วง 2</span><span class="ws-n">กิจกรรม 4</span><span class="ws-t">ตั้งกฎอัตโนมัติ (Think)</span></a></li><li data-page="activity-5" data-group="ช่วงที่ 2"><a href="activity-5.html" data-n="5"><span class="ws-g">ช่วง 2</span><span class="ws-n">กิจกรรม 5</span><span class="ws-t">จำลองปัญหาและป้องกัน (Failure lab)</span></a></li><li class="ws-group in-group" data-group="ช่วงที่ 3"><a href="session-3-history.html">ช่วงที่ 3</a></li><li data-page="session-3-history" data-group="ช่วงที่ 3" class="is-current in-group"><a href="session-3-history.html" aria-current="page"><span class="ws-g">ช่วง 3</span><span class="ws-t">อ่านข้อมูลย้อนหลัง</span></a><ul class="ws-toc"><li><a href="#hist">ใบงาน</a></li><li><a href="#hist-1">การเปิดกราฟดูข้อมูลย้อนหลัง</a></li><li><a href="#hist-2">เชื่อมกราฟกับการทดลอง</a></li><li><a href="#hist-3">อ่านค่าต่ำสุด–สูงสุด</a></li><li><a href="#hist-4">หาสาเหตุของข้อมูลที่ขาดหาย</a></li></ul></li><li data-page="activity-6" data-group="ช่วงที่ 3" class="in-group"><a href="activity-6.html" data-n="6"><span class="ws-g">ช่วง 3</span><span class="ws-n">กิจกรรม 6</span><span class="ws-t">สร้างแดชบอร์ด (Dashboard)</span></a></li><li data-page="activity-7" data-group="ช่วงที่ 3" class="in-group"><a href="activity-7.html" data-n="7"><span class="ws-g">ช่วง 3</span><span class="ws-n">กิจกรรม 7</span><span class="ws-t">ออกแบบระบบฟาร์ม (Design)</span></a></li></ul></nav>
 <main class="md-content__inner md-typeset" id="ws-main">
 <h1 id="การอานขอมลทบนทกไวยอนหลง">การอ่านข้อมูลที่บันทึกไว้ย้อนหลัง</h1>
-<p class="ws-phase"><strong>การย้อนดูข้อมูล สร้างแดชบอร์ด และออกแบบระบบที่เหมาะกับฟาร์มของเรา</strong></p>
+<p><strong>การย้อนดูข้อมูล สร้างแดชบอร์ด และออกแบบระบบที่เหมาะกับฟาร์มของเรา</strong></p>
 <p><strong>20 นาที</strong></p>
 <p><strong>อุปกรณ์ที่ใช้</strong> แล็ปท็อป</p>
 <p>เปิดข้อมูลที่เริ่มบันทึกไว้ตั้งแต่ช่วงที่ 2 ที่ผ่านมา หาว่าการเปลี่ยนแปลงบนกราฟตรงกับการทดลองใด แล้วคิดว่าถ้าเกิดในฟาร์มจริงควรตรวจอะไร</p>
@@ -1370,14 +1377,14 @@ body {
 <p>คลิกที่หัวข้อเพื่อดูวิธีทำ เมื่อทำเสร็จแล้วขอให้ทำเครื่องหมายและตอบคำถามด้วย</p>
 <ul class="task-list">
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> <strong><a href="#hist-1">เปิดกราฟย้อนหลัง</a></strong> เปิดหน้า History ให้แสดงความชื้นอากาศ แสง และสวิตช์ของบอร์ดรีเลย์ ตั้งแต่เริ่มช่วงที่ 2 ถึงปัจจุบัน</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> <strong><a href="#hist-2">เชื่อมกราฟกับการทดลอง</a></strong> ลองดูกราฟแล้วทบทวนว่าสามารถเชื่อมโยงการเปลี่ยนแปลงใดในกราฟที่เกิดจากกิจกรรมก่อนหน้านี้บ้าง  เลือกอธิบาย 3 จุด<ul>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> <strong><a href="#hist-2">เชื่อมกราฟกับการทดลอง</a></strong> ลองดูกราฟแล้วทบทวนว่า การเปลี่ยนแปลงแต่ละช่วงตรงกับการทดลองใดที่เราทำไปแล้ว จากนั้นเลือกมาอธิบาย 3 จุด<ul>
 <li>จุดที่ 1 เห็นอะไร <input class="fld" type="text" data-k="s3.hist.ev1.what" data-size="12" size="12" autocomplete="off" spellcheck="false"> เวลา <input class="fld" type="text" data-k="s3.hist.ev1.t" data-size="5" size="5" autocomplete="off" spellcheck="false"> น. · ตอนนั้นเราทำอะไร <input class="fld" type="text" data-k="s3.hist.ev1.cause" data-size="16" size="16" autocomplete="off" spellcheck="false"> </li>
 <li>จุดที่ 2 เห็นอะไร <input class="fld" type="text" data-k="s3.hist.ev2.what" data-size="12" size="12" autocomplete="off" spellcheck="false"> เวลา <input class="fld" type="text" data-k="s3.hist.ev2.t" data-size="5" size="5" autocomplete="off" spellcheck="false"> น. · ตอนนั้นเราทำอะไร <input class="fld" type="text" data-k="s3.hist.ev2.cause" data-size="16" size="16" autocomplete="off" spellcheck="false"> </li>
 <li>จุดที่ 3 เห็นอะไร <input class="fld" type="text" data-k="s3.hist.ev3.what" data-size="12" size="12" autocomplete="off" spellcheck="false"> เวลา <input class="fld" type="text" data-k="s3.hist.ev3.t" data-size="5" size="5" autocomplete="off" spellcheck="false"> น. · ตอนนั้นเราทำอะไร <input class="fld" type="text" data-k="s3.hist.ev3.cause" data-size="16" size="16" autocomplete="off" spellcheck="false"> </li>
 </ul>
 </li>
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> <strong><a href="#hist-3">อ่านค่าต่ำสุด–สูงสุด</a></strong> ความชื้นอากาศตั้งแต่ช่วงที่ 2 ต่ำสุด <input class="fld" type="text" data-k="s3.hist.hum_min" data-size="4" size="4" inputmode="decimal" autocomplete="off" spellcheck="false"> % ตอน <input class="fld" type="text" data-k="s3.hist.hum_min_t" data-size="5" size="5" autocomplete="off" spellcheck="false"> น. สูงสุด <input class="fld" type="text" data-k="s3.hist.hum_max" data-size="4" size="4" inputmode="decimal" autocomplete="off" spellcheck="false"> % ตอน <input class="fld" type="text" data-k="s3.hist.hum_max_t" data-size="5" size="5" autocomplete="off" spellcheck="false"> น.</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> <strong><a href="#hist-4">หาสาเหตุของข้อมูลที่ขาดหาย</a></strong> หากเปิดกราฟแล้วพบว่าข้อมูลบางช่วงขาดหาย เราอธิบายได้หรือไม่ว่าเกิดจากอะไร <input class="fld" type="text" data-k="s3.hist.why_gap" data-size="30" size="30" autocomplete="off" spellcheck="false"> ถ้าเกิดปัญหานี้กับฟาร์มจริง แล้วเราต้องการเก็บข้อมูลให้ครบ ควรแก้ไขอย่างไร <input class="fld" type="text" data-k="s3.hist.farm_change" data-size="30" size="30" autocomplete="off" spellcheck="false"></li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> <strong><a href="#hist-4">หาสาเหตุของข้อมูลที่ขาดหาย</a></strong> ลองสมมติว่าช่วงพักหลังช่วงที่ 1 บอร์ดยังมีไฟ แต่ Home Assistant ถูกปิด เหตุใดจึงไม่มีข้อมูลช่วงนั้น <input class="fld" type="text" data-k="s3.hist.why_gap" data-size="30" size="30" autocomplete="off" spellcheck="false"> หากต้องการเก็บข้อมูลในฟาร์มให้ต่อเนื่อง ควรเปลี่ยนอะไรบ้าง <input class="fld" type="text" data-k="s3.hist.farm_change" data-size="30" size="30" autocomplete="off" spellcheck="false"></li>
 </ul>
 </div>
 <h3 id="hist-1">การเปิดกราฟดูข้อมูลย้อนหลัง</h3>
@@ -1387,6 +1394,9 @@ body {
 <li>กด <strong>Add target</strong> แล้วเลือกความชื้นอากาศ แสง และ <strong>สวิตช์ของบอร์ดรีเลย์</strong></li>
 <li>เลือกช่วงเวลาตั้งแต่เริ่มช่วงที่ 2 จนถึงปัจจุบัน กราฟแสดงได้เฉพาะช่วงที่มีข้อมูลบันทึกไว้</li>
 </ol>
+<blockquote>
+<p>หากข้อมูลของกลุ่มมีน้อยจนเลือกเหตุการณ์มาอธิบายไม่ได้ ให้แจ้งผู้สอน แล้วใช้กราฟตัวอย่างที่ผู้สอนเปิดให้ดู หรือขอดูกราฟจากกลุ่มข้าง ๆ เมื่อบันทึกผล ให้ระบุในช่อง “เห็นอะไรบนกราฟ” ว่าใช้กราฟของผู้สอนหรือของกลุ่มใด และสอบถามเจ้าของกราฟว่าตอนนั้นทดลองอะไร</p>
+</blockquote>
 <p><video class="walkthrough" src="../images/walkthroughs/hist-1-history-graph.mp4" poster="../images/walkthroughs/hist-1-history-graph.png" aria-label="ขั้นตอนเปิดหน้า History เพิ่มความชื้นอากาศ ความสว่าง และรีเลย์ด้วย Add target แล้วเลือกช่วงเวลา" style="width:85%" controls muted loop playsinline preload="none">ขั้นตอนเปิดหน้า History เพิ่มความชื้นอากาศ ความสว่าง และรีเลย์ด้วย Add target แล้วเลือกช่วงเวลา</video></p>
 <!-- Recorder persists history in the database: https://www.home-assistant.io/integrations/recorder/ -->
 
@@ -1436,8 +1446,11 @@ body {
 <h3 id="hist-4">หาสาเหตุของข้อมูลที่ขาดหาย</h3>
 <p class="ws-phase"><strong>วิเคราะห์ช่องว่างของข้อมูล</strong></p>
 <ol>
-<li>อภิปรายและตอบคำถาม: ถ้าช่วงพักหลังช่วงที่ 1 บอร์ดยังมีไฟ แต่ Home Assistant ถูกปิดหรือนำออกจากห้อง แล้วเราเปิดกราฟดูย้อนหลัง เหตุใดจึงไม่มีข้อมูลช่วงนั้น <input class="fld" type="text" data-k="s3.hist.why_gap" data-size="30" size="30" autocomplete="off" spellcheck="false"> หากนำระบบนี้ไปใช้ที่ฟาร์ม แล้วต้องการเก็บข้อมูลต่อเนื่อง เราต้องเปลี่ยนอะไรบ้าง <input class="fld" type="text" data-k="s3.hist.farm_change" data-size="30" size="30" autocomplete="off" spellcheck="false"></li>
+<li>ลองสมมติว่าช่วงพักหลังช่วงที่ 1 บอร์ดยังมีไฟ แต่ Home Assistant ถูกปิดหรือนำออกจากห้อง เหตุใดจึงไม่มีข้อมูลช่วงนั้น <input class="fld" type="text" data-k="s3.hist.why_gap" data-size="30" size="30" autocomplete="off" spellcheck="false"> หากนำระบบนี้ไปใช้ที่ฟาร์ม แล้วต้องการเก็บข้อมูลต่อเนื่อง เราต้องเปลี่ยนอะไรบ้าง <input class="fld" type="text" data-k="s3.hist.farm_change" data-size="30" size="30" autocomplete="off" spellcheck="false"></li>
 </ol>
+<blockquote>
+<p>ข้อนี้เป็นคำถามให้คิดจากการทำงานของระบบ ไม่ต้องหาช่วงพักดังกล่าวในกราฟที่เปิดอยู่ เพราะเราเลือกดูข้อมูลตั้งแต่เริ่มช่วงที่ 2</p>
+</blockquote>
 <p><a class="ws-back" href="#hist">↑ กลับไปที่ใบงาน</a></p><nav class="ws-pager" aria-label="หน้าก่อนหน้าและถัดไป"><a class="ws-prev" href="activity-5.html"><span class="ws-pager__k">← ก่อนหน้า</span><span class="ws-pager__t">กิจกรรม 5 · จำลองปัญหาและป้องกัน (Failure lab)</span></a><a class="ws-next" href="activity-6.html"><span class="ws-pager__k">ถัดไป →</span><span class="ws-pager__t">กิจกรรม 6 · สร้างแดชบอร์ด (Dashboard)</span></a></nav>
 <footer class="ws-disclosure">เอกสารนี้เรียบเรียงขึ้นด้วย AI (Fable 5.1 และ GPT-6 Astra) ภายใต้การกำกับอย่างใกล้ชิดของผู้จัดทำ และรับรองว่าเนื้อหาเป็นไปตามเจตนาของผู้จัดทำทุกประการ</footer>
 </main>
@@ -1959,7 +1972,7 @@ body {
         if (r.ok) {
           var f = document.querySelector("#ws-bar .ws-msg input[type=text]");
           if (f) f.value = "";
-          composerNote(kind === "help" ? "แจ้งผู้สอนแล้ว กำลังไปหา 🙋" : "ส่งแล้ว ✓");
+          composerNote(kind === "help" ? "ส่งคำขอความช่วยเหลือแล้ว กรุณารอผู้สอน 🙋" : "ส่งแล้ว ✓");
         } else composerNote("ส่งไม่สำเร็จ ลองอีกครั้ง", true);
       }, function () { composerNote("ส่งไม่สำเร็จ ลองอีกครั้ง", true); });
   }

@@ -533,25 +533,32 @@ body {
   background: var(--ag-panel-caution);
 }
 
-/* phase labels: the action groups of a procedure, scannable like a table of contents */
+/* phase labels: the action groups of a procedure. Each starts a segment, so the label sits in
+   a pill with a rule running to the right edge -- a divider, not a panel (panels are callouts),
+   and lighter than the H3 rule + number badge a sub-activity starts with. */
 .md-typeset p.ws-phase {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  margin: 1.9em 0 0.5em;
-  font-size: 0.88em;
+  gap: 0.75rem;
+  margin: 2.4em 0 0.8em;
+  font-size: 1em;
   color: var(--ag-phase-fg);
 }
 
-.md-typeset p.ws-phase::before {
-  content: "";
+.md-typeset p.ws-phase strong {
   flex: none;
-  width: 1rem;
-  border-top: 2px solid var(--ag-leaf);
+  padding: 0.2em 0.95em;
+  border: 1.5px solid var(--ag-rule);
+  border-radius: 999px;
+  background: var(--ag-panel);
+  font-weight: 600;
 }
 
-.md-typeset p.ws-phase strong {
-  font-weight: 600;
+.md-typeset p.ws-phase::after {
+  content: "";
+  flex: 1;
+  border-top: 2px solid var(--ag-rule);
+  opacity: 0.55;
 }
 
 .md-typeset blockquote.note-record {
@@ -1996,7 +2003,7 @@ body {
         if (r.ok) {
           var f = document.querySelector("#ws-bar .ws-msg input[type=text]");
           if (f) f.value = "";
-          composerNote(kind === "help" ? "แจ้งผู้สอนแล้ว กำลังไปหา 🙋" : "ส่งแล้ว ✓");
+          composerNote(kind === "help" ? "ส่งคำขอความช่วยเหลือแล้ว กรุณารอผู้สอน 🙋" : "ส่งแล้ว ✓");
         } else composerNote("ส่งไม่สำเร็จ ลองอีกครั้ง", true);
       }, function () { composerNote("ส่งไม่สำเร็จ ลองอีกครั้ง", true); });
   }

@@ -215,7 +215,7 @@ figcaption {
   <header class="doc-head">
     <p class="kicker">Instructor & TA handbook</p>
     <h1>Instructor & TA resources</h1>
-    <p class="meta">IoT in Smart Farming workshop · Last updated 2026-09-18</p>
+    <p class="meta">IoT in Smart Farming workshop · Last updated 2026-09-19</p>
     <p class="disclosure">This document was compiled with Claude AI. Its content was designed and reviewed by those responsible, who certify that it reflects the intent of the preparing team in every respect.</p>
   </header>
   <p>Every file and link needed to prepare for and run the workshop, in one place.
@@ -356,6 +356,10 @@ figcaption {
   <tr>
   <td>Full course design — timings, kit list, risks, open decisions</td>
   <td><a href="https://github.com/arnans/iot-training/blob/main/planning/COURSE-DESIGN.md">COURSE-DESIGN.md</a> <em>(repo)</em></td>
+  </tr>
+  <tr>
+  <td>Activity 1 — Thai presentation, worksheet sections 1.1–1.5 and closing question</td>
+  <td><a href="https://docs.google.com/presentation/d/1yoNUpS3mo2z2zOZJHEQtuMfSuLxuXltwDT22UHVSHzo/edit">Google Slides — 9 slides with instructor notes</a> <em>(edit this same deck in place; slide 8 has an image placeholder)</em></td>
   </tr>
   <tr>
   <td>Known gaps and assumptions in the worksheets</td>
@@ -627,15 +631,17 @@ figcaption {
   <em>Switch is on</em> for it. With the toggle off, the blow-and-wait test from 4.7 no longer starts the
   pump while the relay's device page still runs it; with the toggle on, the pump starts again
   (<code>s2.mode.off</code> = ไม่เริ่ม, <code>s2.mode.on</code> = เริ่ม). Rebuilt by Roger on 16 Sep 2026 from "disable a
-  rule, run the pump by hand": same point, a software Auto / Manual switch, and it mirrors the
-  control-box demo at the end of the session. The Automations list ends as: <code>รดน้ำ - เปิดปั๊ม</code>,
+  rule, run the pump by hand": the toggle gates automatic starting only. Manual still allows the
+  humidity stop rule and every protection rule to operate; switching the toggle off does not stop a
+  running pump or isolate power. Switching it on while humidity is already below the threshold does
+  not start the pump until a new crossing occurs. The Automations list ends as: <code>รดน้ำ - เปิดปั๊ม</code>,
   <code>รดน้ำ - ปิดปั๊ม</code> <strong>on</strong>; <code>มืด-เปิดไฟ</code>, <code>สว่าง-ปิดไฟ</code> and <code>ปิดไฟตามเวลา</code> <strong>off</strong>; <code>Pump Auto Mode</code> <strong>on</strong>.</p>
   <p><strong>If stuck</strong> The toggle is not on the new dashboard: check the team picked <strong>Overview (Legacy)</strong>, which
   lists every entity, and scroll. The default Overview of current Home Assistant releases does not show
   helpers, which is the whole reason 4.8 adds the legacy dashboard. The condition search finds nothing: <strong>Create</strong> was
   not pressed, so the helper does not exist. Only <code>รดน้ำ - เปิดปั๊ม</code> gets the condition; the fail-safes
-  built in Activity 5 must work in every mode, so they never check it. A team that gated
-  <code>รดน้ำ - ปิดปั๊ม</code> too has done no harm, but say why the off rule is better left free.</p>
+  built in Activity 5 must work in every mode, so they never check it. If a team also gated
+  <code>รดน้ำ - ปิดปั๊ม</code>, remove that condition so its behavior matches the worksheet's definition of Manual.</p>
   <p><strong>Check this list at every table before the break.</strong> Activity 5's sabotage rounds assume exactly
   this state. A lamp rule left on switches the relay whenever the room light changes, and a timer rule left on
   switches it off at the same minute every day. Those are the likeliest causes of a pump "running by
@@ -832,11 +838,12 @@ figcaption {
   <ol>
   <li><strong>As built, the system is reachable only on the local network.</strong> A phone or computer that wants the
      dashboard must be on the same WiFi as Home Assistant.</li>
-  <li><strong>Remote access needs a cloud service as the door in, and which one depends on the framework.</strong>
-     Home Assistant uses Nabu Casa's paid Home Assistant Cloud. Some consumer ecosystems, Tuya and Xiaomi
-     for example, give a free cloud. Home Assistant itself stays on a machine in the farm because it must
+  <li><strong>Remote access needs an additional access method.</strong> Nabu Casa's paid Home Assistant Cloud is the
+     example taught here; a VPN into the farm network is another route. Consumer ecosystems such as Tuya
+     and Xiaomi have vendor cloud services with features and charges that depend on the service.
+     Home Assistant itself stays on a machine in the farm because it must
      reach the boards and any Zigbee or LoRa receiver locally; never present a cloud-hosted Home Assistant
-     as an option. Other doors (a VPN, pushing a copy of the data to a cloud platform, port forwarding or a
+     as an option. Other approaches (pushing a copy of the data to a cloud platform, port forwarding or a
      tunnel) exist; mention them only if asked, with the warning that a badly set up door exposes the farm.
      The worksheet links nabucasa.com. If asked for smart-farm or IoT platforms that come with a cloud: in
      Thailand, NECTEC's NETPIE (netpie.io, a general IoT platform with a free tier) and HandySense
@@ -899,9 +906,11 @@ figcaption {
   Wh per day, the usable battery capacity (about half the rated capacity for lead-acid), and what the
   panels still produce under cloud.</p>
   <h4>7.6 Design for one pilot point</h4>
-  <p><strong>Done when</strong> the four blocks read as one plan: a sensor and an actuator named; the three communication
-  rows and the power plan carried over from 7.2, 7.3 and 7.5 and still consistent with the parts chosen; and a
-  test plan that says what the team will watch or measure and what result counts as "works as intended".
+  <p><strong>Done when</strong> the four blocks read as one plan: a sensor and an actuator named, with a control rule and
+  a response to sensor/communication failure; the two local communication rows carried over from 7.2,
+  a remote-access choice informed by 7.3, and the battery/power answers from 7.4–7.5 consistent with the
+  parts chosen; and a test plan covering normal operation and the chosen failure case, with observable
+  pass criteria.
   Unknowns are written into the block they belong to, not guessed.</p>
   <h4>Presentation and exchange · 15 min, instructor-led</h4>
   <p>Not in the worksheet since 18 Sep 2026 (Roger: the instructor directs it). Pair the teams. Each team tells
@@ -911,6 +920,18 @@ figcaption {
   directly; there is no separate revision box, no rubric walk and no plenary.</p>
   <hr>
   <h2>Still missing</h2>
+  <p><strong>Answer hand-in:</strong> the destination is still to be decided (likely an upload form; confirmed with the
+  organizer on 19 Sep). Announce the actual destination before the final activity. Ask each recorder to
+  download the JSON file, check its team number, submit it, and keep a local copy. A TA checks that the
+  file was received and can be opened for that team; progress on the live board is not answer submission.
+  Publish the form link in the worksheet and front page once it is available. A printed record sheet
+  should be collected directly from teams using paper.</p>
+  <p><strong>Timed rehearsal:</strong> run Activities 4, 5 and 7 with a novice-paced team before delivery. Record actual
+  durations, allow for fault recovery, and agree where TAs provide a prepared working setup to keep a
+  team moving. Check the real venue's zone WiFi, board discovery, VM/phone access, vibration detection,
+  and progress reporting. Prepare an instructor history graph for teams with insufficient data. Pump
+  run times must follow the verified limit of the actual model; see the
+  <a href="https://github.com/arnans/iot-training/blob/main/planning/WORKSHOP-READINESS-ACTIONS.md">readiness action plan</a>.</p>
   <p>Nobody has produced these yet:</p>
   <ul>
   <li><strong>The ARM64 Farm Workshop OVA</strong> (<code>farm-workshop-arm64.ova</code>) — blocks sending the install guide

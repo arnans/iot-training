@@ -533,25 +533,32 @@ body {
   background: var(--ag-panel-caution);
 }
 
-/* phase labels: the action groups of a procedure, scannable like a table of contents */
+/* phase labels: the action groups of a procedure. Each starts a segment, so the label sits in
+   a pill with a rule running to the right edge -- a divider, not a panel (panels are callouts),
+   and lighter than the H3 rule + number badge a sub-activity starts with. */
 .md-typeset p.ws-phase {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  margin: 1.9em 0 0.5em;
-  font-size: 0.88em;
+  gap: 0.75rem;
+  margin: 2.4em 0 0.8em;
+  font-size: 1em;
   color: var(--ag-phase-fg);
 }
 
-.md-typeset p.ws-phase::before {
-  content: "";
+.md-typeset p.ws-phase strong {
   flex: none;
-  width: 1rem;
-  border-top: 2px solid var(--ag-leaf);
+  padding: 0.2em 0.95em;
+  border: 1.5px solid var(--ag-rule);
+  border-radius: 999px;
+  background: var(--ag-panel);
+  font-weight: 600;
 }
 
-.md-typeset p.ws-phase strong {
-  font-weight: 600;
+.md-typeset p.ws-phase::after {
+  content: "";
+  flex: 1;
+  border-top: 2px solid var(--ag-rule);
+  opacity: 0.55;
 }
 
 .md-typeset blockquote.note-record {
@@ -1363,7 +1370,7 @@ body {
 <h1 id="ใบบนทกของกลม">ใบบันทึกของกลุ่ม</h1>
 <blockquote>
 <p>หน้านี้รวมช่องบันทึกทุกช่องจากใบงานทั้งสามช่วงไว้ที่เดียว ค่าที่กรอกในใบงานจะมาแสดงที่นี่เอง และกรอกที่หน้านี้ก็ได้ เพราะเป็นช่องเดียวกัน
-คำตอบเก็บอยู่ในเบราว์เซอร์ของเครื่องที่กรอกเท่านั้น ก่อนจบการอบรมให้กด <strong>ดาวน์โหลดคำตอบ</strong> เก็บไฟล์ไว้ส่งผู้สอน และกด <strong>พิมพ์ / บันทึก PDF</strong> หน้านี้ไว้อ้างอิง
+คำตอบเก็บอยู่ในเบราว์เซอร์ของเครื่องที่กรอกเท่านั้น ก่อนจบการอบรม ให้เปิดเมนู <strong>เครื่องมือ → ดาวน์โหลดคำตอบ (ไฟล์ JSON)</strong> แล้วส่งไฟล์ผ่านช่องทางที่ผู้สอนแจ้ง ตรวจว่าผู้สอนได้รับไฟล์ของกลุ่มแล้ว และเก็บไฟล์ไว้ในเครื่องด้วย จากนั้นเลือก <strong>พิมพ์ / บันทึก PDF</strong> หน้านี้ไว้อ้างอิง แดชบอร์ดของผู้สอนรับเฉพาะความคืบหน้า ไม่ได้รับคำตอบที่กรอก
 กลุ่มที่สะดวกเขียนกระดาษ พิมพ์หน้านี้ตอนยังว่างแล้วเขียนด้วยมือได้</p>
 </blockquote>
 <p><strong>กลุ่มที่</strong> <input class="fld" type="text" data-k="team.no" data-size="4" size="4" autocomplete="off" spellcheck="false"> · <strong>โซนของกลุ่ม</strong> <span class="fld-radio" data-k="team.zone"><label><input class="fld" type="radio" name="team.zone" data-k="team.zone" value="แดง"> แดง</label><label><input class="fld" type="radio" name="team.zone" data-k="team.zone" value="เขียว"> เขียว</label><label><input class="fld" type="radio" name="team.zone" data-k="team.zone" value="น้ำเงิน"> น้ำเงิน</label></span> · WiFi แล็ปท็อป <code>farm-laptop-</code><input class="fld" type="text" data-k="team.wifi" data-size="6" size="6" autocomplete="off" spellcheck="false"></p>
@@ -1571,7 +1578,7 @@ body {
 </tbody>
 </table></div>
 <p><strong>ความชื้นอากาศตั้งแต่ช่วงที่ 2</strong> ต่ำสุด <input class="fld" type="text" data-k="s3.hist.hum_min" data-size="4" size="4" inputmode="decimal" autocomplete="off" spellcheck="false"> % ตอน <input class="fld" type="text" data-k="s3.hist.hum_min_t" data-size="5" size="5" autocomplete="off" spellcheck="false"> น. สูงสุด <input class="fld" type="text" data-k="s3.hist.hum_max" data-size="4" size="4" inputmode="decimal" autocomplete="off" spellcheck="false"> % ตอน <input class="fld" type="text" data-k="s3.hist.hum_max_t" data-size="5" size="5" autocomplete="off" spellcheck="false"> น.</p>
-<p><strong>ทำไมกราฟไม่มีข้อมูลช่วงพักหลังช่วงที่ 1</strong> <input class="fld" type="text" data-k="s3.hist.why_gap" data-size="30" size="30" autocomplete="off" spellcheck="false"> <strong>ฟาร์มจริงต้องเปลี่ยนอะไร</strong> <input class="fld" type="text" data-k="s3.hist.farm_change" data-size="30" size="30" autocomplete="off" spellcheck="false"></p>
+<p><strong>คำถามสมมติ: หากบอร์ดยังมีไฟ แต่ Home Assistant ถูกปิดในช่วงพักหลังช่วงที่ 1 เหตุใดจึงไม่มีข้อมูลช่วงนั้น</strong> <input class="fld" type="text" data-k="s3.hist.why_gap" data-size="30" size="30" autocomplete="off" spellcheck="false"> <strong>หากต้องการเก็บข้อมูลในฟาร์มให้ต่อเนื่อง ควรเปลี่ยนอะไรบ้าง</strong> <input class="fld" type="text" data-k="s3.hist.farm_change" data-size="30" size="30" autocomplete="off" spellcheck="false"></p>
 <h3 id="วางแผนหนาจอแดชบอรด">วางแผนหน้าจอแดชบอร์ด</h3>
 <p>ผู้ที่จะใช้แดชบอร์ด <input class="fld" type="text" data-k="s3.dash.user" data-size="44" size="44" autocomplete="off" spellcheck="false"></p>
 <div class="table-wrap"><table>
@@ -1614,7 +1621,7 @@ body {
 </tr>
 </tbody>
 </table></div>
-<p><strong>คำถามท้ายกิจกรรมที่ 6</strong> ถ้าเรามีเวลาเพิ่มแล้วจะนำ Dashboard นี้ไปใช้งานจริง ควรปรับส่วนใดบ้างให้เหมาะกับผู้ใช้</p>
+<p><strong>คำถามท้ายกิจกรรมที่ 6</strong> หากจะนำแดชบอร์ดนี้ไปใช้งานจริง และมีเวลาปรับปรุงเพิ่มเติม เราควรปรับส่วนใดบ้างให้เหมาะกับผู้ใช้</p>
 <textarea class="fld fld-ta" data-k="s3.q6" rows="2"></textarea>
 
 <h3 id="กจกรรมท-7--ออกแบบระบบสำหรบทดลองหนงจด">กิจกรรมที่ 7 — ออกแบบระบบสำหรับทดลองหนึ่งจุด</h3>
@@ -1623,6 +1630,8 @@ body {
 <textarea class="fld fld-ta" data-k="d.problem" rows="2"></textarea>
 
 <p><strong>เซนเซอร์และอุปกรณ์ที่สั่งงาน</strong> เซนเซอร์ <input class="fld" type="text" data-k="d.in.1.sensor" data-size="30" size="30" autocomplete="off" spellcheck="false"> อุปกรณ์ที่สั่งงาน <input class="fld" type="text" data-k="d.out.1.device" data-size="30" size="30" autocomplete="off" spellcheck="false"></p>
+<p><strong>เมื่อเกิดอะไร ระบบจะสั่งให้อุปกรณ์ทำอะไร</strong> (เขียนเป็นประโยค “ถ้า… แล้วให้…”) <textarea class="fld fld-ta" data-k="d.control.rule" rows="2"></textarea></p>
+<p><strong>หากเซนเซอร์หรือการสื่อสารขัดข้อง ระบบควรทำอย่างไร และส่วนใดจะทำหน้าที่ป้องกัน</strong> <textarea class="fld fld-ta" data-k="d.control.failure" rows="2"></textarea></p>
 <p class="ws-phase"><strong>วิธีสื่อสาร</strong></p>
 <div class="table-wrap"><table>
 <thead>
@@ -2172,7 +2181,7 @@ body {
         if (r.ok) {
           var f = document.querySelector("#ws-bar .ws-msg input[type=text]");
           if (f) f.value = "";
-          composerNote(kind === "help" ? "แจ้งผู้สอนแล้ว กำลังไปหา 🙋" : "ส่งแล้ว ✓");
+          composerNote(kind === "help" ? "ส่งคำขอความช่วยเหลือแล้ว กรุณารอผู้สอน 🙋" : "ส่งแล้ว ✓");
         } else composerNote("ส่งไม่สำเร็จ ลองอีกครั้ง", true);
       }, function () { composerNote("ส่งไม่สำเร็จ ลองอีกครั้ง", true); });
   }

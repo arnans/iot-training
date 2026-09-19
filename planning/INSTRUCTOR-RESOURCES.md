@@ -399,16 +399,18 @@ room reading, so the value never crosses it on the way down.
 *Switch is on* for it. With the toggle off, the blow-and-wait test from 4.7 no longer starts the
 pump while the relay's device page still runs it; with the toggle on, the pump starts again
 (`s2.mode.off` = ไม่เริ่ม, `s2.mode.on` = เริ่ม). Rebuilt by Roger on 16 Sep 2026 from "disable a
-rule, run the pump by hand": same point, a software Auto / Manual switch, and it mirrors the
-control-box demo at the end of the session. The Automations list ends as: `รดน้ำ - เปิดปั๊ม`,
+rule, run the pump by hand": the toggle gates automatic starting only. Manual still allows the
+humidity stop rule and every protection rule to operate; switching the toggle off does not stop a
+running pump or isolate power. Switching it on while humidity is already below the threshold does
+not start the pump until a new crossing occurs. The Automations list ends as: `รดน้ำ - เปิดปั๊ม`,
 `รดน้ำ - ปิดปั๊ม` **on**; `มืด-เปิดไฟ`, `สว่าง-ปิดไฟ` and `ปิดไฟตามเวลา` **off**; `Pump Auto Mode` **on**.
 
 **If stuck** The toggle is not on the new dashboard: check the team picked **Overview (Legacy)**, which
 lists every entity, and scroll. The default Overview of current Home Assistant releases does not show
 helpers, which is the whole reason 4.8 adds the legacy dashboard. The condition search finds nothing: **Create** was
 not pressed, so the helper does not exist. Only `รดน้ำ - เปิดปั๊ม` gets the condition; the fail-safes
-built in Activity 5 must work in every mode, so they never check it. A team that gated
-`รดน้ำ - ปิดปั๊ม` too has done no harm, but say why the off rule is better left free.
+built in Activity 5 must work in every mode, so they never check it. If a team also gated
+`รดน้ำ - ปิดปั๊ม`, remove that condition so its behavior matches the worksheet's definition of Manual.
 
 **Check this list at every table before the break.** Activity 5's sabotage rounds assume exactly
 this state. A lamp rule left on switches the relay whenever the room light changes, and a timer rule left on
@@ -630,11 +632,12 @@ it has understood. Make the three points in this order, in the words on the work
 
 1. **As built, the system is reachable only on the local network.** A phone or computer that wants the
    dashboard must be on the same WiFi as Home Assistant.
-2. **Remote access needs a cloud service as the door in, and which one depends on the framework.**
-   Home Assistant uses Nabu Casa's paid Home Assistant Cloud. Some consumer ecosystems, Tuya and Xiaomi
-   for example, give a free cloud. Home Assistant itself stays on a machine in the farm because it must
+2. **Remote access needs an additional access method.** Nabu Casa's paid Home Assistant Cloud is the
+   example taught here; a VPN into the farm network is another route. Consumer ecosystems such as Tuya
+   and Xiaomi have vendor cloud services with features and charges that depend on the service.
+   Home Assistant itself stays on a machine in the farm because it must
    reach the boards and any Zigbee or LoRa receiver locally; never present a cloud-hosted Home Assistant
-   as an option. Other doors (a VPN, pushing a copy of the data to a cloud platform, port forwarding or a
+   as an option. Other approaches (pushing a copy of the data to a cloud platform, port forwarding or a
    tunnel) exist; mention them only if asked, with the warning that a badly set up door exposes the farm.
    The worksheet links nabucasa.com. If asked for smart-farm or IoT platforms that come with a cloud: in
    Thailand, NECTEC's NETPIE (netpie.io, a general IoT platform with a free tier) and HandySense
@@ -713,9 +716,11 @@ panels still produce under cloud.
 
 #### 7.6 Design for one pilot point
 
-**Done when** the four blocks read as one plan: a sensor and an actuator named; the three communication
-rows and the power plan carried over from 7.2, 7.3 and 7.5 and still consistent with the parts chosen; and a
-test plan that says what the team will watch or measure and what result counts as "works as intended".
+**Done when** the four blocks read as one plan: a sensor and an actuator named, with a control rule and
+a response to sensor/communication failure; the two local communication rows carried over from 7.2,
+a remote-access choice informed by 7.3, and the battery/power answers from 7.4–7.5 consistent with the
+parts chosen; and a test plan covering normal operation and the chosen failure case, with observable
+pass criteria.
 Unknowns are written into the block they belong to, not guessed.
 
 #### Presentation and exchange · 15 min, instructor-led
@@ -729,6 +734,20 @@ directly; there is no separate revision box, no rubric walk and no plenary.
 ---
 
 ## Still missing
+
+**Answer hand-in:** the destination is still to be decided (likely an upload form; confirmed with the
+organizer on 19 Sep). Announce the actual destination before the final activity. Ask each recorder to
+download the JSON file, check its team number, submit it, and keep a local copy. A TA checks that the
+file was received and can be opened for that team; progress on the live board is not answer submission.
+Publish the form link in the worksheet and front page once it is available. A printed record sheet
+should be collected directly from teams using paper.
+
+**Timed rehearsal:** run Activities 4, 5 and 7 with a novice-paced team before delivery. Record actual
+durations, allow for fault recovery, and agree where TAs provide a prepared working setup to keep a
+team moving. Check the real venue's zone WiFi, board discovery, VM/phone access, vibration detection,
+and progress reporting. Prepare an instructor history graph for teams with insufficient data. Pump
+run times must follow the verified limit of the actual model; see the
+[readiness action plan](https://github.com/arnans/iot-training/blob/main/planning/WORKSHOP-READINESS-ACTIONS.md).
 
 Nobody has produced these yet:
 

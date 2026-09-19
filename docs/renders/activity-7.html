@@ -533,25 +533,32 @@ body {
   background: var(--ag-panel-caution);
 }
 
-/* phase labels: the action groups of a procedure, scannable like a table of contents */
+/* phase labels: the action groups of a procedure. Each starts a segment, so the label sits in
+   a pill with a rule running to the right edge -- a divider, not a panel (panels are callouts),
+   and lighter than the H3 rule + number badge a sub-activity starts with. */
 .md-typeset p.ws-phase {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  margin: 1.9em 0 0.5em;
-  font-size: 0.88em;
+  gap: 0.75rem;
+  margin: 2.4em 0 0.8em;
+  font-size: 1em;
   color: var(--ag-phase-fg);
 }
 
-.md-typeset p.ws-phase::before {
-  content: "";
+.md-typeset p.ws-phase strong {
   flex: none;
-  width: 1rem;
-  border-top: 2px solid var(--ag-leaf);
+  padding: 0.2em 0.95em;
+  border: 1.5px solid var(--ag-rule);
+  border-radius: 999px;
+  background: var(--ag-panel);
+  font-weight: 600;
 }
 
-.md-typeset p.ws-phase strong {
-  font-weight: 600;
+.md-typeset p.ws-phase::after {
+  content: "";
+  flex: 1;
+  border-top: 2px solid var(--ag-rule);
+  opacity: 0.55;
 }
 
 .md-typeset blockquote.note-record {
@@ -1379,7 +1386,7 @@ body {
 <h3 id="a7-1"><span class="sub-num">7.1</span>เลือกโจทย์</h3>
 <p class="ws-phase"><strong>กำหนดโจทย์ของกลุ่ม</strong></p>
 <ol>
-<li>เลือกสถานการณ์จากสถานการสมมุติที่กำหนด หรือใช้โจทย์จริงจากสมาชิกในกลุ่มก็ได้ จดสถานการณ์และปัญหาที่ต้องการแก้ไว้ในข้อ 2 </li>
+<li>เลือกหนึ่งสถานการณ์จากตารางด้านล่าง หรือใช้ปัญหาจริงของสมาชิกในกลุ่มก็ได้ จากนั้นจดสถานการณ์และปัญหาที่ต้องการแก้ไว้ในข้อ 2</li>
 </ol>
 <div class="table-wrap"><table>
 <thead>
@@ -1395,7 +1402,7 @@ body {
 </tr>
 <tr>
 <td><strong>B สวนผลไม้ 10 ไร่</strong></td>
-<td>ลำไยหรือมะม่วง อยู่ติดบ้าน แปลงยาว 400 เมตร ต้องการรู้ความชื้นดิน 3–4 จุดกระจายทั่วสวน และสั่งวาล์วน้ำหยดเป็นโซน ต้องการใช้โซล่าร์เป็นแหล่งพลังงาน</td>
+<td>ลำไยหรือมะม่วง อยู่ติดบ้าน แปลงยาว 400 เมตร ต้องการรู้ความชื้นดิน 3–4 จุดกระจายทั่วสวน และสั่งวาล์วน้ำหยดเป็นโซน ต้องการใช้โซลาร์เป็นแหล่งพลังงาน</td>
 </tr>
 <tr>
 <td><strong>C ไฮโดรโปนิกส์</strong> (ขั้นสูง)</td>
@@ -1519,7 +1526,7 @@ body {
 <div class="ws-untracked">
 <ul class="task-list">
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> <strong>ระบบที่เราสร้างในกิจกรรมนี้เข้าถึงได้เฉพาะในเครือข่ายภายใน</strong> โทรศัพท์หรือคอมพิวเตอร์ที่จะดูแดชบอร์ดต้องต่อ WiFi เดียวกับ Home Assistant</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> <strong>ถ้าต้องดูหรือสั่งงานจากภายนอก ต้องมีบริการคลาวด์เป็นทางเข้า</strong> ซึ่งวิธีการขึ้นกับระบบที่ใช้: Home Assistant ใช้บริการ Home Assistant Cloud ของ Nabu Casa (<a href="https://www.nabucasa.com">nabucasa.com</a>) ซึ่งมีค่าใช้จ่าย ส่วนอุปกรณ์สำเร็จรูปบางยี่ห้อ เช่น Tuya หรือ Xiaomi มีคลาวด์ให้ใช้ฟรี หรือจ่ายเพิ่มเมื่อต้องการความสามารถเฉพาะทาง</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> <strong>ถ้าต้องดูหรือสั่งงานจากนอกฟาร์ม ต้องตั้งค่าวิธีเข้าถึงจากภายนอกเพิ่มเติม</strong> วิธีหนึ่งสำหรับ Home Assistant คือบริการ Home Assistant Cloud ของ Nabu Casa (<a href="https://www.nabucasa.com">nabucasa.com</a>) ซึ่งมีค่าใช้จ่าย อีกทางหนึ่งคือเชื่อมต่อผ่าน VPN เพื่อเข้าถึงเครือข่ายในฟาร์ม ส่วนอุปกรณ์สำเร็จรูปบางยี่ห้อ เช่น Tuya หรือ Xiaomi มีบริการคลาวด์ของผู้ผลิต โดยค่าใช้จ่ายและความสามารถขึ้นอยู่กับบริการที่เลือก</li>
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> <strong>ระบบของเรายังทำงานตามกฎได้แม้อินเทอร์เน็ตดับ</strong> ต่างจากระบบที่ทำงานผ่านคลาวด์อย่างเดียว ถ้าเลือกใช้ระบบแบบคลาวด์อย่างเดียว ส่วนที่สำคัญต้องมีกลไกป้องกัน (fail-safe) ในตัว</li>
 </ul>
 </div>
@@ -1661,8 +1668,8 @@ body {
 </tbody>
 </table></div>
 <blockquote>
-<p>นอกจากปัจจับข้อต้นแล้ว ต้องดูด้วยว่าอุปกรณ์รองรับกระแสสูงสุดที่ต้องใช้ด้วยหรือไม่ เช่น ปั๊ม 1,100 W ใช้กับ Charge Controller ใน workshop นี้ไม่ได้ เพราะจ่ายไฟได้สูงสุด 390 W เท่านั้น</p>
-<p>อุปกรณ์เช่น ปั๊มน้ำมักต้องการกระแสตอนเริ่มทำงานสูงกว่าพิกัด อุปกรณ์ที่เผื่อความต้องการนี้ด้วย เช่น ปั๊ม 1,100 W อาจต้องการพลังงานสูงถึง 3,000 W ขณะเริ่มทำงานเป็นต้น</p>
+<p>นอกจากการคำนวณข้างต้นแล้ว ต้องตรวจว่าอุปกรณ์รองรับกระแสสูงสุดที่ต้องใช้ได้หรือไม่ เช่น ปั๊ม 1,100 W ใช้กับ charge controller ในชุดอบรมนี้ไม่ได้ เพราะจ่ายไฟได้สูงสุด 390 W เท่านั้น</p>
+<p>อุปกรณ์บางชนิด เช่น ปั๊มน้ำ ต้องการกระแสขณะเริ่มทำงานสูงกว่าขณะเดินตามปกติ จึงต้องเลือกอุปกรณ์ที่รองรับกระแสช่วงนี้ได้ด้วย ตัวอย่างเช่น ปั๊มที่ใช้กำลังไฟ 1,100 W ขณะเดิน อาจต้องการกำลังไฟสูงถึง 3,000 W ขณะเริ่มทำงาน ทั้งนี้ต้องตรวจจากสเปกของปั๊มและอุปกรณ์ที่ใช้ร่วมกัน</p>
 </blockquote>
 <p class="ws-phase"><strong>จดเฉพาะแผนพลังงานของกลุ่ม</strong></p>
 <ol start="5" style="counter-reset: step 4">
@@ -1677,12 +1684,14 @@ body {
 <p id="a7-3q"><strong>คุยท้ายเรื่อง</strong> ถ้าฟ้าครึ้มต่อเนื่องสามวัน แล้วระบบต้องทำงานต่อ เราต้องรู้ข้อมูลอะไรเพิ่มก่อนเลือกขนาดไฟสำรอง จดเฉพาะสิ่งที่เกี่ยวกับโจทย์ของกลุ่มไว้ต่อท้ายคำตอบเรื่องไฟสำรองในข้อ 5</p>
 <p><img alt="" class="activity-divider" decoding="async" height="79" loading="lazy" src="../images/activity-dividers/flower-led.webp" width="1200" /></p>
 <h3 id="a7-4"><span class="sub-num">7.6</span>ออกแบบระบบสำหรับทดลองหนึ่งจุด</h3>
-<p>สรุปแบบที่กลุ่มเลือกเป็นสี่ส่วน ส่วนที่จดไว้แล้วใน 7.2 7.3 และ 7.5 จะแสดงให้เอง ถ้ายังไม่รู้ข้อมูลบางอย่าง ให้จดว่าต้องตรวจอะไรเพิ่มไว้ในช่องนั้น</p>
+<p>สรุปแบบที่กลุ่มเลือกเป็นสี่ส่วน คำตอบที่กรอกไว้ในข้อ 7.2, 7.4 และ 7.5 จะปรากฏในส่วนนี้โดยอัตโนมัติ หากยังไม่รู้ข้อมูลบางอย่าง ให้จดว่าต้องตรวจอะไรเพิ่มไว้ในช่องนั้น</p>
 <p class="ws-phase"><strong>เซนเซอร์และอุปกรณ์ที่สั่งงาน</strong></p>
 <ol>
 <li>ระบุเซนเซอร์หลักและอุปกรณ์ที่จะสั่งงาน อุปกรณ์เพิ่มเติมที่โจทย์ต้องใช้ให้จดรวมได้</li>
 </ol>
 <p>เซนเซอร์ <input class="fld" type="text" data-k="d.in.1.sensor" data-size="30" size="30" autocomplete="off" spellcheck="false"> อุปกรณ์ที่สั่งงาน <input class="fld" type="text" data-k="d.out.1.device" data-size="30" size="30" autocomplete="off" spellcheck="false"></p>
+<p>เมื่อเกิดอะไร ระบบจะสั่งให้อุปกรณ์ทำอะไร (เขียนเป็นประโยค “ถ้า… แล้วให้…”) <textarea class="fld fld-ta" data-k="d.control.rule" rows="2"></textarea></p>
+<p>หากเซนเซอร์หรือการสื่อสารขัดข้อง ระบบควรทำอย่างไร และส่วนใดจะทำหน้าที่ป้องกัน <textarea class="fld fld-ta" data-k="d.control.failure" rows="2"></textarea></p>
 <p class="ws-phase"><strong>วิธีสื่อสาร</strong></p>
 <ol start="2" style="counter-reset: step 1">
 <li>สองแถวแรกมาจาก 7.2 แถวที่สามให้เลือกจากที่ฟังใน 7.3 ว่าเจ้าของต้องดูหรือสั่งงานจากนอกฟาร์มหรือไม่ ถ้าไม่ต้อง ให้ระบุว่า “ไม่ใช้”</li>
@@ -1722,7 +1731,7 @@ body {
 <p>อุปกรณ์ที่ต้องมีไฟสำรองและระยะเวลาที่ต้องการ (ถ้าไม่มี ให้ระบุว่าไม่มี) <input class="fld" type="text" data-k="d.power.backup" data-size="40" size="40" autocomplete="off" spellcheck="false"></p>
 <p class="ws-phase"><strong>แผนทดสอบ</strong></p>
 <ol start="4" style="counter-reset: step 3">
-<li>เขียนว่าจะรู้ได้อย่างไรว่าระบบทำงานตามที่ตั้งใจ: จะดูหรือวัดอะไร และผลแบบใดจึงถือว่าใช้ได้</li>
+<li>เขียนว่าจะรู้ได้อย่างไรว่าระบบทำงานตามที่ตั้งใจ ทั้งเมื่อทำงานตามปกติและเมื่อเกิดปัญหาที่ระบุในข้อ 1: จะดูหรือวัดอะไร และผลแบบใดจึงถือว่าใช้ได้</li>
 </ol>
 <p>จะดูหรือวัดอะไร <input class="fld" type="text" data-k="d.test.how" data-size="50" size="50" autocomplete="off" spellcheck="false"></p>
 <p>ผลแบบใดจึงถือว่าระบบทำงานตามที่ตั้งใจ <input class="fld" type="text" data-k="d.test.pass" data-size="50" size="50" autocomplete="off" spellcheck="false"></p>
@@ -1735,8 +1744,11 @@ body {
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> ถอดอะแดปเตอร์ออกจากปลั๊ก ปิดสวิตช์บอร์ด GoGo-IoT แล้วถอด USB ของบอร์ดทั้งสอง ก่อนถอดสายโหลดและสายอะแดปเตอร์จากกล่องจ่ายไฟ</li>
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> เมื่อไม่มีไฟแล้ว ยกสวิตช์ลูกลอยออกจากแก้ว เช็ดให้แห้ง เทน้ำในแก้วทิ้ง</li>
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> ตรวจรายการอุปกรณ์ตาม หน้าแรก แล้วคืนทั้งชุดพร้อมบัตรประจำกลุ่ม</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> <strong>เก็บคำตอบของกลุ่มไว้</strong> กด <strong>ดาวน์โหลดคำตอบ</strong> ที่หัวหน้านี้แล้วส่งไฟล์ให้ผู้สอน จากนั้นเปิด<a href="record-sheet.html">ใบบันทึกของกลุ่ม</a> แล้วกด <strong>พิมพ์ / บันทึก PDF</strong> เก็บไว้ใช้วางแผนทดลองในฟาร์มต่อ</li>
-</ul><nav class="ws-pager" aria-label="หน้าก่อนหน้าและถัดไป"><a class="ws-prev" href="activity-6.html"><span class="ws-pager__k">← ก่อนหน้า</span><span class="ws-pager__t">กิจกรรม 6 · สร้างแดชบอร์ด (Dashboard)</span></a></nav>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> <strong>ส่งและเก็บคำตอบของกลุ่ม</strong> ให้ผู้บันทึกเปิดเมนู <strong>เครื่องมือ → ดาวน์โหลดคำตอบ (ไฟล์ JSON)</strong> แล้วส่งไฟล์ผ่านช่องทางที่ผู้สอนแจ้ง ตรวจหมายเลขกลุ่มในชื่อไฟล์ และให้ผู้สอนยืนยันว่าได้รับไฟล์ของกลุ่มแล้ว จากนั้นเปิด<a href="record-sheet.html">ใบบันทึกของกลุ่ม</a> แล้วเลือก <strong>เครื่องมือ → พิมพ์ / บันทึก PDF</strong> เก็บไว้ใช้วางแผนทดลองในฟาร์มต่อ</li>
+</ul>
+<blockquote>
+<p>แดชบอร์ดของผู้สอนแสดงความคืบหน้าในการทำกิจกรรม แต่ไม่ได้รับคำตอบที่เรากรอก การเห็นสถานะ “เชื่อมต่อผู้สอนแล้ว” จึงไม่ได้หมายความว่าส่งไฟล์คำตอบแล้ว ให้เก็บไฟล์ JSON ไว้ในเครื่องด้วย</p>
+</blockquote><nav class="ws-pager" aria-label="หน้าก่อนหน้าและถัดไป"><a class="ws-prev" href="activity-6.html"><span class="ws-pager__k">← ก่อนหน้า</span><span class="ws-pager__t">กิจกรรม 6 · สร้างแดชบอร์ด (Dashboard)</span></a></nav>
 <footer class="ws-disclosure">เอกสารนี้เรียบเรียงขึ้นด้วย AI (Fable 5.1 และ GPT-6 Astra) ภายใต้การกำกับอย่างใกล้ชิดของผู้จัดทำ และรับรองว่าเนื้อหาเป็นไปตามเจตนาของผู้จัดทำทุกประการ</footer>
 </main>
 </div>
@@ -2257,7 +2269,7 @@ body {
         if (r.ok) {
           var f = document.querySelector("#ws-bar .ws-msg input[type=text]");
           if (f) f.value = "";
-          composerNote(kind === "help" ? "แจ้งผู้สอนแล้ว กำลังไปหา 🙋" : "ส่งแล้ว ✓");
+          composerNote(kind === "help" ? "ส่งคำขอความช่วยเหลือแล้ว กรุณารอผู้สอน 🙋" : "ส่งแล้ว ✓");
         } else composerNote("ส่งไม่สำเร็จ ลองอีกครั้ง", true);
       }, function () { composerNote("ส่งไม่สำเร็จ ลองอีกครั้ง", true); });
   }

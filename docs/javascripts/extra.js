@@ -491,7 +491,7 @@
         if (r.ok) {
           var f = document.querySelector("#ws-bar .ws-msg input[type=text]");
           if (f) f.value = "";
-          composerNote(kind === "help" ? "แจ้งผู้สอนแล้ว กำลังไปหา 🙋" : "ส่งแล้ว ✓");
+          composerNote(kind === "help" ? "ส่งคำขอความช่วยเหลือแล้ว กรุณารอผู้สอน 🙋" : "ส่งแล้ว ✓");
         } else composerNote("ส่งไม่สำเร็จ ลองอีกครั้ง", true);
       }, function () { composerNote("ส่งไม่สำเร็จ ลองอีกครั้ง", true); });
   }

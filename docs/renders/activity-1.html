@@ -533,25 +533,32 @@ body {
   background: var(--ag-panel-caution);
 }
 
-/* phase labels: the action groups of a procedure, scannable like a table of contents */
+/* phase labels: the action groups of a procedure. Each starts a segment, so the label sits in
+   a pill with a rule running to the right edge -- a divider, not a panel (panels are callouts),
+   and lighter than the H3 rule + number badge a sub-activity starts with. */
 .md-typeset p.ws-phase {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  margin: 1.9em 0 0.5em;
-  font-size: 0.88em;
+  gap: 0.75rem;
+  margin: 2.4em 0 0.8em;
+  font-size: 1em;
   color: var(--ag-phase-fg);
 }
 
-.md-typeset p.ws-phase::before {
-  content: "";
+.md-typeset p.ws-phase strong {
   flex: none;
-  width: 1rem;
-  border-top: 2px solid var(--ag-leaf);
+  padding: 0.2em 0.95em;
+  border: 1.5px solid var(--ag-rule);
+  border-radius: 999px;
+  background: var(--ag-panel);
+  font-weight: 600;
 }
 
-.md-typeset p.ws-phase strong {
-  font-weight: 600;
+.md-typeset p.ws-phase::after {
+  content: "";
+  flex: 1;
+  border-top: 2px solid var(--ag-rule);
+  opacity: 0.55;
 }
 
 .md-typeset blockquote.note-record {
@@ -1414,7 +1421,7 @@ body {
 <li><strong>ตรวจชื่อบอร์ด</strong> ชื่อต้องตรงกับโซนของเรา (<code>red</code> / <code>green</code> / <code>blue</code>) ถ้าไม่ตรง บอร์ดนี้จะเชื่อมต่อเครือข่ายของโซนเราไม่ได้ ให้ยกมือขอเปลี่ยนบอร์ด</li>
 <li><strong>จดชื่อและหมายเลข IP</strong> ชื่อบอร์ด <input class="fld" type="text" data-k="board.iot.name" data-size="22" size="22" autocomplete="off" spellcheck="false"> IP <input class="fld" type="text" data-k="board.iot.ip" data-size="15" size="15" autocomplete="off" spellcheck="false"> แล้วปิดหน้าต่างนี้</li>
 </ol>
-<p><img alt="หน้าจอ web.esphome.io หลังกด Connect และกดปุ่ม Reset device ในหน้าเว็บ แสดง log ของบอร์ด มีกรอบเน้นแถบ DEVICE NAME และแถบ IP ADDRESS และกรอบเน้นปุ่ม Reset device ที่มุมล่างขวา" src="../images/activity1/a1-name-ip-lookup.webp" width="60%" /></p>
+<p><video class="walkthrough" src="../images/walkthroughs/a1-2-name-ip-lookup.mp4" poster="../images/walkthroughs/a1-2-name-ip-lookup.png" aria-label="หน้าจอ web.esphome.io หลังกด Connect และกดปุ่ม Reset device ในหน้าเว็บ แสดง log ของบอร์ด มีกรอบเน้นแถบ DEVICE NAME และแถบ IP ADDRESS และกรอบเน้นปุ่ม Reset device ที่มุมล่างขวา" style="width:85%" controls muted loop playsinline preload="none">หน้าจอ web.esphome.io หลังกด Connect และกดปุ่ม Reset device ในหน้าเว็บ แสดง log ของบอร์ด มีกรอบเน้นแถบ DEVICE NAME และแถบ IP ADDRESS และกรอบเน้นปุ่ม Reset device ที่มุมล่างขวา</video></p>
 <blockquote>
 <p>ถ้าหน้าต่าง log ว่างเปล่า หรือชื่อเลื่อนผ่านไปแล้ว ให้กดปุ่ม <strong>Reset device</strong> ในหน้าเว็บอีกครั้ง <strong>อย่าถอดสาย USB และอย่ากดปุ่มบนบอร์ด</strong> สองอย่างนั้นจะตัดการเชื่อมต่อของเบราว์เซอร์ และชื่อจะไม่ขึ้น
 ถ้าเห็นชื่อบอร์ดแล้ว แต่รอครบหนึ่งนาทียังไม่เห็นหมายเลข IP แปลว่าบอร์ดต่อ WiFi ไม่ได้ ให้ตรวจสีในชื่ออีกครั้ง แล้วยกมือ</p>
@@ -2027,7 +2034,7 @@ body {
         if (r.ok) {
           var f = document.querySelector("#ws-bar .ws-msg input[type=text]");
           if (f) f.value = "";
-          composerNote(kind === "help" ? "แจ้งผู้สอนแล้ว กำลังไปหา 🙋" : "ส่งแล้ว ✓");
+          composerNote(kind === "help" ? "ส่งคำขอความช่วยเหลือแล้ว กรุณารอผู้สอน 🙋" : "ส่งแล้ว ✓");
         } else composerNote("ส่งไม่สำเร็จ ลองอีกครั้ง", true);
       }, function () { composerNote("ส่งไม่สำเร็จ ลองอีกครั้ง", true); });
   }

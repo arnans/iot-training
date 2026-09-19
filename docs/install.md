@@ -12,8 +12,8 @@
 
 | แล็ปท็อป | VirtualBox | ไฟล์ Farm Workshop (TODO GB) |
 |---------|-----------|------------------------------|
-| Windows | [Windows hosts](https://www.virtualbox.org/wiki/Downloads) | [farm-workshop-x86-64.ova](https://drive.google.com/file/d/1OdS3sBFBDT3OUg7olJJABfEBeRGMHrIW/view?usp=sharing) |
-| Mac ชิป Intel | [macOS / Intel hosts](https://www.virtualbox.org/wiki/Downloads) | [farm-workshop-x86-64.ova](https://drive.google.com/file/d/1OdS3sBFBDT3OUg7olJJABfEBeRGMHrIW/view?usp=sharing) |
+| Windows | [Windows hosts](https://www.virtualbox.org/wiki/Downloads) | [farm-workshop-x86-64-1.1.ova](https://drive.google.com/file/d/1GWS_Mk74MWxRo_mUM1nFinUM0xifLnG9/view?usp=sharing) |
+| Mac ชิป Intel | [macOS / Intel hosts](https://www.virtualbox.org/wiki/Downloads) | [farm-workshop-x86-64-1.1.ova](https://drive.google.com/file/d/1GWS_Mk74MWxRo_mUM1nFinUM0xifLnG9/view?usp=sharing) |
 | Mac ชิป Apple (M1 ขึ้นไป) | [macOS / Apple Silicon hosts](https://www.virtualbox.org/wiki/Downloads) | [farm-workshop-arm64.ova](https://TODO/farm-workshop-arm64.ova) |
 
 ติดตั้ง VirtualBox ตามค่าที่ตั้งไว้ กด Next หรือ Yes จนจบ

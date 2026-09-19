@@ -39,7 +39,7 @@ The same image participants install. Put it on the instructor kit and on every r
 
 | Laptop | VirtualBox | Farm Workshop VM |
 |---|---|---|
-| Windows / Intel Mac | [Downloads](https://www.virtualbox.org/wiki/Downloads) | [`farm-workshop-x86-64.ova`](https://drive.google.com/file/d/1OdS3sBFBDT3OUg7olJJABfEBeRGMHrIW/view?usp=sharing) (Google Drive) |
+| Windows / Intel Mac | [Downloads](https://www.virtualbox.org/wiki/Downloads) | [`farm-workshop-x86-64-1.1.ova`](https://drive.google.com/file/d/1GWS_Mk74MWxRo_mUM1nFinUM0xifLnG9/view?usp=sharing) (Google Drive) |
 | Apple Silicon Mac (M1+) | [Downloads](https://www.virtualbox.org/wiki/Downloads) | `farm-workshop-arm64.ova` — **not built yet** |
 
 Import steps, settings and the login are in the participant guide:

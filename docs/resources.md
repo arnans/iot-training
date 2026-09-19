@@ -12,8 +12,8 @@
 
 | แล็ปท็อป | VirtualBox | ไฟล์ Farm Workshop (TODO GB) |
 |---------|-----------|------------------------------|
-| Windows | [Windows hosts](https://www.virtualbox.org/wiki/Downloads) | [farm-workshop-x86-64.ova](https://drive.google.com/file/d/1OdS3sBFBDT3OUg7olJJABfEBeRGMHrIW/view?usp=sharing) |
-| Mac ชิป Intel | [macOS / Intel hosts](https://www.virtualbox.org/wiki/Downloads) | [farm-workshop-x86-64.ova](https://drive.google.com/file/d/1OdS3sBFBDT3OUg7olJJABfEBeRGMHrIW/view?usp=sharing) |
+| Windows | [Windows hosts](https://www.virtualbox.org/wiki/Downloads) | [farm-workshop-x86-64-1.1.ova](https://drive.google.com/file/d/1GWS_Mk74MWxRo_mUM1nFinUM0xifLnG9/view?usp=sharing) |
+| Mac ชิป Intel | [macOS / Intel hosts](https://www.virtualbox.org/wiki/Downloads) | [farm-workshop-x86-64-1.1.ova](https://drive.google.com/file/d/1GWS_Mk74MWxRo_mUM1nFinUM0xifLnG9/view?usp=sharing) |
 | Mac ชิป Apple (M1 ขึ้นไป) | [macOS / Apple Silicon hosts](https://www.virtualbox.org/wiki/Downloads) | [farm-workshop-arm64.ova](https://TODO/farm-workshop-arm64.ova) |
 
 > ไฟล์ `.ova` มีขนาดใหญ่ **ดาวน์โหลดที่บ้านหรือที่ทำงานล่วงหน้า** ดาวน์โหลดที่สถานที่อบรมไม่ทัน · ต้องมี RAM 8 GB และพื้นที่ว่าง 20 GB ขึ้นไป · Chromebook, iPad และ Windows ชิป ARM ใช้ไม่ได้

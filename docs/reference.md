@@ -21,14 +21,20 @@
 
 ## trigger, condition, action ที่ใช้ในหลักสูตร
 
-| ชื่อในเมนู | ใช้เมื่อ | ตัวอย่าง |
-|-----------|---------|----------|
-| Entity → Numeric state | ค่าตัวเลขเปลี่ยนจนข้ามเกณฑ์ที่กำหนด | แสง Below 200 · ความชื้นอากาศ Below 45 |
-| Entity → State | สถานะเปลี่ยน หรือคงอยู่ครบเวลาที่กำหนด | สวิตช์ลูกลอย To Dry (น้ำหมด) · ปั๊ม To On For 30 วินาที · ความชื้นอากาศ To unavailable |
-| Condition → State | ให้กฎทำงานเฉพาะเมื่ออีก entity อยู่ในสถานะที่กำหนด | รดน้ำได้เฉพาะเมื่อสวิตช์ลูกลอยบอกว่าน้ำพอ |
-| Condition → Time | จำกัดช่วงเวลาที่กฎทำงาน | After 06:00 Before 18:00 |
-| Action → Switch → Turn on / Turn off | สั่งอุปกรณ์ให้ทำงานหรือหยุด | สวิตช์ปั๊ม |
-| Action → Send a persistent notification | แจ้งเตือนบนหน้าจอ Home Assistant | ปั๊มเดินเกินเวลา |
+กด **+ Add trigger**, **+ Add condition** หรือ **+ Add action** แล้วพิมพ์ชื่อ entity ในช่อง Search กดที่ entity แล้วเลือกรายการจากชื่อด้านล่าง
+
+| ส่วน | ชื่อในรายการ | ใช้เมื่อ | ตัวอย่าง |
+|------|-------------|---------|----------|
+| Trigger | Illuminance crossed threshold · Relative humidity crossed threshold | ค่าตัวเลขข้ามเกณฑ์ (Threshold type: Below / Above) | แสง Below 200 · ความชื้นอากาศ Below 45 |
+| Trigger | Moisture cleared / Moisture detected | สวิตช์ลูกลอยเปลี่ยนเป็น Dry / Wet | น้ำหมด |
+| Trigger | Switch turned on / Switch turned off | รีเลย์เปลี่ยนสถานะ ใส่ **For at least** ถ้าต้องคงอยู่ครบเวลา | ปั๊ม On นาน 30 วินาที |
+| Trigger | Time and sun → Time | ถึงเวลาที่กำหนด | At time 18:30 |
+| Trigger / Condition | State (แท็บ **By type**) | entity ที่ไม่มีรายการเฉพาะ หรือต้องการจับ `unavailable` | ความชื้นอากาศ To unavailable · ปั๊มกำลังทำงาน เป็น Off |
+| Condition | Moisture is detected / Moisture is not detected | ตรวจว่าลูกลอยเป็น Wet / Dry | รดน้ำได้เฉพาะเมื่อน้ำพอ |
+| Condition | Illuminance · Relative humidity | ตรวจค่าตัวเลขตอนกฎเริ่ม | แสง Below 200 |
+| Condition | Time and sun → Time | จำกัดช่วงเวลาที่กฎทำงาน | After 06:00 Before 18:00 |
+| Action | Turn on switch / Turn off switch | สั่งรีเลย์ให้ทำงานหรือหยุด | สวิตช์ปั๊ม |
+| Action | Send a persistent notification | แจ้งเตือนบนหน้าจอ Home Assistant | ปั๊มเดินเกินเวลา |
 
 ## รูปแบบการ์ดบนแดชบอร์ด
 

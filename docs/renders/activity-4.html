@@ -1414,7 +1414,7 @@ body {
 <p>กฎจากช่วงที่ 1 มีแค่ <strong>When</strong> (trigger) กับ <strong>Then do</strong> (action) ส่วน <strong>And if</strong> คือ <strong>condition</strong> เงื่อนไขเพิ่มเติมที่ต้องผ่านทุกข้อ กฎจึงจะสั่งงาน</p>
 <p class="ws-phase"><strong>เพิ่มเงื่อนไขเวลา</strong></p>
 <ol>
-<li>เปิด <code>มืด-เปิดไฟ</code> ใน <strong>And if</strong> กด <strong>+ Add condition → Time</strong> ตั้งช่วงเวลา <strong>After</strong> และ <strong>Before</strong> ตามความเหมาะสมแล้วกด <strong>Save</strong></li>
+<li>เปิด <code>มืด-เปิดไฟ</code> ใน <strong>And if</strong> กด <strong>+ Add condition</strong> เลือก <strong>Time and sun → Time</strong> ตั้งช่วงเวลา <strong>After</strong> และ <strong>Before</strong> ตามความเหมาะสมแล้วกด <strong>Save</strong></li>
 </ol>
 <p class="ws-phase"><strong>ทดสอบในและนอกช่วงเวลา</strong></p>
 <p><strong>ก่อนทดสอบแต่ละรอบ:</strong> เอามือออก รอให้ค่าแสงสูงกว่าเกณฑ์เปิด และสั่งรีเลย์ <strong>Off</strong> เพื่อให้เริ่มจากสภาพเดียวกัน</p>
@@ -1441,9 +1441,9 @@ body {
 <p>การทำให้ระบบทำงานได้สมบูรณ์นั้น จำเป็นต้องเพิ่ม Trigger เมื่อถึงเวลา 18.30 น. เพิ่มเติม</p>
 <p class="ws-phase"><strong>เพิ่มเหตุการณ์เวลาและเงื่อนไขแสง</strong></p>
 <ol start="3" style="counter-reset: step 2">
-<li>ใน <code>มืด-เปิดไฟ</code> เพิ่ม <strong>When → + Add trigger → Time</strong> ตั้งเวลา <strong>At time</strong> ให้ตรงกับค่าเวลา <strong>After</strong> ใน 4.3</li>
-<li>เพิ่ม <strong>And if → + Add condition</strong> ค้นหาคำว่า <strong>ความสว่าง (light)</strong> ใส่ค่าเกณฑ์เปิดใน <strong>Below</strong></li>
-<li>ใน <code>สว่าง-ปิดไฟ</code> เพิ่ม <strong>Time trigger</strong> ตั้ง <strong>At</strong> ให้ตรงกับ <strong>Before</strong> ของกฎเปิดไฟ แล้วบันทึกทั้งสองกฎ</li>
+<li>ใน <code>มืด-เปิดไฟ</code> ส่วน <strong>When</strong> กด <strong>+ Add trigger</strong> เลือก <strong>Time and sun → Time</strong> ตั้งเวลา <strong>At time</strong> ให้ตรงกับค่าเวลา <strong>After</strong> ใน 4.3</li>
+<li>ในส่วน <strong>And if</strong> กด <strong>+ Add condition</strong> พิมพ์ <strong>ความสว่าง</strong> แล้วกดที่ <strong>ความสว่าง (light)</strong> เลือก <strong>Illuminance</strong> ตั้งเป็น <strong>Below</strong> แล้วใส่ค่าเกณฑ์เปิด</li>
+<li>ใน <code>สว่าง-ปิดไฟ</code> เพิ่ม trigger <strong>Time and sun → Time</strong> แบบเดียวกัน ตั้ง <strong>At time</strong> ให้ตรงกับ <strong>Before</strong> ของกฎเปิดไฟ แล้วบันทึกทั้งสองกฎ</li>
 </ol>
 <p><strong>ทดสอบ</strong> จำลองฟ้ามืดก่อนเวลา แล้วไม่แตะเซนเซอร์อีก</p>
 <ol start="6" style="counter-reset: step 5">
@@ -1468,7 +1468,7 @@ body {
 <p>Home Assistant สามารถส่งข้อความแจ้งเตือนได้ผ่านทางหน้า Web หรือทาง Mobile App (ต้องติดตั้ง App ก่อนจาก Play Store / App Store)</p>
 <p class="ws-phase"><strong>เพิ่มข้อความแจ้งเตือน</strong></p>
 <ol>
-<li>ใน <code>มืด-เปิดไฟ</code> เพิ่ม <strong>Action → Send a persistent notification</strong> ใส่ข้อความ เช่น <code>ไฟสวนเปิดแล้ว</code> แล้วกด <strong>Save</strong> ข้อความจะอยู่ที่ไอคอนกระดิ่ง</li>
+<li>ใน <code>มืด-เปิดไฟ</code> ส่วน <strong>Then do</strong> กด <strong>+ Add action</strong> พิมพ์ <strong>notification</strong> แล้วเลือก <strong>Send a persistent notification</strong> ใส่ข้อความ เช่น <code>ไฟสวนเปิดแล้ว</code> แล้วกด <strong>Save</strong> ข้อความจะอยู่ที่ไอคอนกระดิ่ง</li>
 </ol>
 <p class="ws-phase"><strong>ทดสอบการแจ้งเตือน</strong></p>
 <ol start="2" style="counter-reset: step 1">
@@ -1513,16 +1513,17 @@ body {
 </ol>
 <p class="ws-phase"><strong>สร้างกฎเปิด–ปิดปั๊ม</strong></p>
 <ol start="2" style="counter-reset: step 1">
-<li>สร้าง <code>รดน้ำ - เปิดปั๊ม</code> เลือก <strong>Trigger → Entity → Numeric state → ความชื้นอากาศ</strong> ตั้ง <strong>Below</strong> สูงกว่าค่าห้องเล็กน้อย และ <strong>Action → Switch → Turn on</strong> รีเลย์ของกลุ่ม</li>
-<li>สร้าง <code>รดน้ำ - ปิดปั๊ม</code> ด้วยวิธีเดียวกัน ตั้ง <strong>Above</strong> สูงกว่าเกณฑ์เปิด 5–10 จุดเปอร์เซ็นต์ และ <strong>Action → Switch → Turn off</strong> บันทึกทั้งสองกฎ</li>
+<li>สร้าง automation ใหม่ ในส่วน <strong>When</strong> กด <strong>+ Add trigger</strong> พิมพ์ <strong>ความชื้นอากาศ</strong> แล้วกดที่ <strong>ความชื้นอากาศ (humidity)</strong> เลือก <strong>Relative humidity crossed threshold</strong> · <strong>Threshold type</strong> เลือก <strong>Below</strong> ใส่ค่าที่สูงกว่าค่าห้องเล็กน้อย</li>
+<li>ในส่วน <strong>Then do</strong> กด <strong>+ Add action</strong> พิมพ์ <strong>รีเลย์</strong> แล้วกดที่ <strong>รีเลย์ (relay)</strong> ของกลุ่ม เลือก <strong>Turn on switch</strong> บันทึกชื่อ <code>รดน้ำ - เปิดปั๊ม</code></li>
+<li>สร้าง <code>รดน้ำ - ปิดปั๊ม</code> ด้วยวิธีเดียวกัน แต่ <strong>Threshold type</strong> เลือก <strong>Above</strong> ใส่ค่าที่สูงกว่าเกณฑ์เปิด 5–10 จุดเปอร์เซ็นต์ และ action เลือก <strong>Turn off switch</strong> บันทึกทั้งสองกฎ</li>
 </ol>
 <p class="ws-phase"><strong>ทดสอบการทำงาน</strong></p>
-<ol start="4" style="counter-reset: step 3">
+<ol start="5" style="counter-reset: step 4">
 <li>สั่งปั๊ม <strong>On</strong> จากหน้าอุปกรณ์ เป่าลมจนความชื้นสูงกว่าเกณฑ์ปิด ปั๊มต้องหยุด</li>
 <li>รอให้ค่าลดต่ำกว่าเกณฑ์เปิด ปั๊มต้องกลับมาเดิน ถ้าค่าไม่ข้ามเกณฑ์ ให้ปรับเกณฑ์ให้อยู่ในช่วงที่ทดลองได้</li>
 </ol>
 <p class="ws-phase"><strong>บันทึกผล</strong></p>
-<ol start="6" style="counter-reset: step 5">
+<ol start="7" style="counter-reset: step 6">
 <li>ลองแยกค่าเกณฑ์ความชื้นอากาศที่ใช้เปิดและปิดปั๊ม ตามหลักการ Hysteresis เปิดปั๊มเมื่อต่ำกว่า <input class="fld" type="text" data-k="s2.hum.on" data-size="4" size="4" inputmode="decimal" autocomplete="off" spellcheck="false"> % ปิดปั๊มเมื่อสูงกว่า <input class="fld" type="text" data-k="s2.hum.off" data-size="4" size="4" inputmode="decimal" autocomplete="off" spellcheck="false"> % </li>
 </ol>
 <p><a class="ws-back" href="#a4">↑ กลับไปที่ใบงาน</a></p>
@@ -1545,7 +1546,7 @@ body {
 <p class="ws-phase"><strong>แก้ไข Automation เพื่อให้กฎรดน้ำตรวจโหมดก่อนสั่งปั๊ม</strong></p>
 <ol start="7" style="counter-reset: step 6">
 <li>เปิด <strong>Settings → Automations &amp; scenes</strong> เลือก <code>รดน้ำ - เปิดปั๊ม</code></li>
-<li>ในส่วน <strong>And if</strong> กด <strong>+ Add condition</strong> พิมพ์ในช่องค้นหา <code>Pump Auto Mode</code> แล้วเลือกเงื่อนไข <strong>Switch is on</strong>  กด <strong>Save</strong></li>
+<li>ในส่วน <strong>And if</strong> กด <strong>+ Add condition</strong> พิมพ์ในช่องค้นหา <code>Pump Auto Mode</code> แล้วกดที่ helper นั้น เลือกเงื่อนไขที่ตรวจว่าสถานะเป็น <strong>On</strong> (เช่น <strong>State</strong> ตั้ง <strong>On</strong>) กด <strong>Save</strong></li>
 </ol>
 <p><strong>ทดสอบ</strong> ใช้วิธีเป่าลมแบบเดียวกับ 4.7 และสั่งรีเลย์ <strong>Off</strong> ก่อนทุกรอบ</p>
 <ol start="9" style="counter-reset: step 8">

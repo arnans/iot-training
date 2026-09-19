@@ -1408,11 +1408,11 @@ body {
 <p class="ws-phase"><strong>สร้างกฎป้องกัน</strong></p>
 <p>ถ้าน้ำลดต่ำลงจนลูกลอยเป็น Dry แล้วปั๊มยังเดินอยู่ ให้สั่งหยุด และถ้าลูกลอยเป็น Dry อยู่ก่อนแล้วมีคนสั่ง On ก็ต้องหยุดปั๊มด้วย</p>
 <ol start="3" style="counter-reset: step 2">
-<li>สร้างกฎใหม่ เพิ่ม <strong>Trigger → Entity → State</strong> เลือกลูกลอย <strong>To: Dry</strong></li>
-<li>เพิ่ม trigger อีกข้อ เลือกสวิตช์รีเลย์ <strong>To: On</strong></li>
-<li>เพิ่ม <strong>Condition → Entity → State</strong> เลือกลูกลอย <strong>Dry</strong></li>
-<li>เพิ่ม <strong>Action → Switch → Turn off</strong> รีเลย์ และ <strong>Send a persistent notification</strong> ข้อความ <code>น้ำในถังต่ำ หยุดปั๊มแล้ว</code> บันทึกชื่อ <code>Fail-safe - น้ำหมด</code></li>
-<li>เปิดกฎ <code>รดน้ำ - เปิดปั๊ม</code> เพิ่ม condition ให้ลูกลอยเป็น <strong>Wet</strong> ก่อนเริ่มปั๊ม แล้วบันทึก</li>
+<li>สร้างกฎใหม่ ส่วน <strong>When</strong> กด <strong>+ Add trigger</strong> พิมพ์ <strong>ลูกลอย</strong> กดที่ <strong>สวิตช์ลูกลอย (float switch)</strong> เลือก <strong>Moisture cleared</strong> (ลูกลอยเปลี่ยนเป็น Dry)</li>
+<li>กด <strong>+ Add trigger</strong> อีกครั้ง พิมพ์ <strong>รีเลย์</strong> กดที่ <strong>รีเลย์ (relay)</strong> เลือก <strong>Switch turned on</strong></li>
+<li>ส่วน <strong>And if</strong> กด <strong>+ Add condition</strong> เลือกสวิตช์ลูกลอยแบบเดียวกัน แล้วเลือก <strong>Moisture is not detected</strong> (Dry)</li>
+<li>ส่วน <strong>Then do</strong> กด <strong>+ Add action</strong> เลือกรีเลย์ → <strong>Turn off switch</strong> แล้วเพิ่ม action <strong>Send a persistent notification</strong> ข้อความ <code>น้ำในถังต่ำ หยุดปั๊มแล้ว</code> บันทึกชื่อ <code>Fail-safe - น้ำหมด</code></li>
+<li>เปิดกฎ <code>รดน้ำ - เปิดปั๊ม</code> ส่วน <strong>And if</strong> เพิ่ม condition สวิตช์ลูกลอย <strong>Moisture is detected</strong> (Wet) แล้วบันทึก</li>
 </ol>
 <p class="ws-phase"><strong>ทดสอบให้ผ่านทั้งสองแบบ</strong></p>
 <ol start="8" style="counter-reset: step 7">
@@ -1470,9 +1470,9 @@ body {
 </table></div>
 <ol start="4" style="counter-reset: step 3">
 <li>สร้าง automation ชื่อ <code>Fail-safe - สั่งแล้วไม่เดิน</code></li>
-<li>Trigger: <strong>Entity → State</strong> เลือกสวิตช์ปั๊ม ช่อง <strong>To</strong> ใส่ <code>On</code> ช่อง <strong>For</strong> ใส่ <strong>15 วินาที</strong> (สั้นกว่ากฎจำกัดเวลาที่จะสร้างในข้อ 5.4 จึงแยกได้ว่ากฎใดเป็นผู้ตัด)</li>
-<li>Condition: <strong>Entity → State</strong> เลือก <code>ปั๊มกำลังทำงาน</code> สถานะ <strong>Off</strong></li>
-<li>Action: <strong>Switch → Turn off</strong> สวิตช์ปั๊ม และแจ้งเตือน <code>สั่งปั๊มแล้วแต่ไม่มีการสั่น ตรวจสายและระดับน้ำ</code></li>
+<li>Trigger: เลือก <strong>รีเลย์ (relay)</strong> → <strong>Switch turned on</strong> ช่อง <strong>For at least</strong> ใส่ <strong>15 วินาที</strong> (สั้นกว่ากฎจำกัดเวลาที่จะสร้างในข้อ 5.4 จึงแยกได้ว่ากฎใดเป็นผู้ตัด)</li>
+<li>Condition: <code>ปั๊มกำลังทำงาน</code> ไม่มีเงื่อนไขเฉพาะในรายการ ให้ใช้เงื่อนไขทั่วไป <strong>State</strong> จากแท็บ <strong>By type</strong> เลือก entity <code>ปั๊มกำลังทำงาน (pump running)</code> สถานะ <strong>Off</strong></li>
+<li>Action: เลือกรีเลย์ → <strong>Turn off switch</strong> และเพิ่ม <strong>Send a persistent notification</strong> ข้อความ <code>สั่งปั๊มแล้วแต่ไม่มีการสั่น ตรวจสายและระดับน้ำ</code></li>
 </ol>
 <p class="ws-phase"><strong>ทดสอบกฎ</strong></p>
 <ol start="8" style="counter-reset: step 7">
@@ -1513,8 +1513,8 @@ body {
 <p>กฎตัวอย่างนี้หยุดปั๊มเพื่อป้องกันการสูบน้ำต่อโดยไม่มีข้อมูล</p>
 <ol start="4" style="counter-reset: step 3">
 <li>สร้าง automation ชื่อ <code>Fail-safe - เซนเซอร์หาย</code></li>
-<li>Trigger: <strong>Entity → State</strong> เลือกความชื้นอากาศ ช่อง <strong>To</strong> พิมพ์ <code>unavailable</code> แล้วเพิ่ม trigger อีกอันแบบเดียวกันแต่ To เป็น <code>unknown</code></li>
-<li>Action: <strong>Switch → Turn off</strong> สวิตช์ปั๊ม และแจ้งเตือน <code>ไม่ได้รับค่าจากเซนเซอร์ หยุดปั๊มเพื่อความปลอดภัย</code></li>
+<li>Trigger: ใช้ trigger ทั่วไป <strong>State</strong> จากแท็บ <strong>By type</strong> (trigger เฉพาะของความชื้นดูแค่ค่าตัวเลข ไม่จับสถานะ unavailable) เลือก <code>ความชื้นอากาศ (humidity)</code> ช่อง <strong>To</strong> เลือก <code>unavailable</code> แล้วเพิ่ม trigger อีกอันแบบเดียวกันแต่ To เป็น <code>unknown</code></li>
+<li>Action: เลือกรีเลย์ → <strong>Turn off switch</strong> และเพิ่ม <strong>Send a persistent notification</strong> ข้อความ <code>ไม่ได้รับค่าจากเซนเซอร์ หยุดปั๊มเพื่อความปลอดภัย</code></li>
 </ol>
 <p class="ws-phase"><strong>ทดสอบกฎ</strong></p>
 <ol start="7" style="counter-reset: step 6">
@@ -1544,8 +1544,8 @@ body {
 <p class="ws-phase"><strong>สร้างกฎจำกัดเวลา</strong></p>
 <ol start="3" style="counter-reset: step 2">
 <li>สร้าง automation ชื่อ <code>Fail-safe - จำกัดเวลาเปิดปั๊ม</code></li>
-<li>Trigger: <strong>Entity → State</strong> เลือกสวิตช์ปั๊ม ช่อง <strong>To</strong> เลือก <strong>On</strong> ช่อง <strong>For</strong> ตั้ง <strong>30 วินาที</strong> (ใช้สำหรับการทดลองนี้ และยาวกว่ากฎสั่งแล้วไม่เดิน 15 วินาที)</li>
-<li>Action: <strong>Switch → Turn off</strong> สวิตช์ปั๊ม และแจ้งเตือน <code>ปั๊มเดินเกินเวลา ตัดการทำงานแล้ว โปรดตรวจสอบ</code></li>
+<li>Trigger: เลือก <strong>รีเลย์ (relay)</strong> → <strong>Switch turned on</strong> ช่อง <strong>For at least</strong> ตั้ง <strong>30 วินาที</strong> (ใช้สำหรับการทดลองนี้ และยาวกว่ากฎสั่งแล้วไม่เดิน 15 วินาที)</li>
+<li>Action: เลือกรีเลย์ → <strong>Turn off switch</strong> และเพิ่ม <strong>Send a persistent notification</strong> ข้อความ <code>ปั๊มเดินเกินเวลา ตัดการทำงานแล้ว โปรดตรวจสอบ</code></li>
 </ol>
 <p class="ws-phase"><strong>ทดสอบการหยุดตามเวลา</strong></p>
 <ol start="6" style="counter-reset: step 5">

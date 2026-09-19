@@ -1412,42 +1412,74 @@ body {
 </tbody>
 </table></div>
 <h2 id="trigger-condition-action-ทใชในหลกสตร">trigger, condition, action ที่ใช้ในหลักสูตร</h2>
+<p>กด <strong>+ Add trigger</strong>, <strong>+ Add condition</strong> หรือ <strong>+ Add action</strong> แล้วพิมพ์ชื่อ entity ในช่อง Search กดที่ entity แล้วเลือกรายการจากชื่อด้านล่าง</p>
 <div class="table-wrap"><table>
 <thead>
 <tr>
-<th>ชื่อในเมนู</th>
+<th>ส่วน</th>
+<th>ชื่อในรายการ</th>
 <th>ใช้เมื่อ</th>
 <th>ตัวอย่าง</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>Entity → Numeric state</td>
-<td>ค่าตัวเลขเปลี่ยนจนข้ามเกณฑ์ที่กำหนด</td>
+<td>Trigger</td>
+<td>Illuminance crossed threshold · Relative humidity crossed threshold</td>
+<td>ค่าตัวเลขข้ามเกณฑ์ (Threshold type: Below / Above)</td>
 <td>แสง Below 200 · ความชื้นอากาศ Below 45</td>
 </tr>
 <tr>
-<td>Entity → State</td>
-<td>สถานะเปลี่ยน หรือคงอยู่ครบเวลาที่กำหนด</td>
-<td>สวิตช์ลูกลอย To Dry (น้ำหมด) · ปั๊ม To On For 30 วินาที · ความชื้นอากาศ To unavailable</td>
+<td>Trigger</td>
+<td>Moisture cleared / Moisture detected</td>
+<td>สวิตช์ลูกลอยเปลี่ยนเป็น Dry / Wet</td>
+<td>น้ำหมด</td>
 </tr>
 <tr>
-<td>Condition → State</td>
-<td>ให้กฎทำงานเฉพาะเมื่ออีก entity อยู่ในสถานะที่กำหนด</td>
-<td>รดน้ำได้เฉพาะเมื่อสวิตช์ลูกลอยบอกว่าน้ำพอ</td>
+<td>Trigger</td>
+<td>Switch turned on / Switch turned off</td>
+<td>รีเลย์เปลี่ยนสถานะ ใส่ <strong>For at least</strong> ถ้าต้องคงอยู่ครบเวลา</td>
+<td>ปั๊ม On นาน 30 วินาที</td>
 </tr>
 <tr>
-<td>Condition → Time</td>
+<td>Trigger</td>
+<td>Time and sun → Time</td>
+<td>ถึงเวลาที่กำหนด</td>
+<td>At time 18:30</td>
+</tr>
+<tr>
+<td>Trigger / Condition</td>
+<td>State (แท็บ <strong>By type</strong>)</td>
+<td>entity ที่ไม่มีรายการเฉพาะ หรือต้องการจับ <code>unavailable</code></td>
+<td>ความชื้นอากาศ To unavailable · ปั๊มกำลังทำงาน เป็น Off</td>
+</tr>
+<tr>
+<td>Condition</td>
+<td>Moisture is detected / Moisture is not detected</td>
+<td>ตรวจว่าลูกลอยเป็น Wet / Dry</td>
+<td>รดน้ำได้เฉพาะเมื่อน้ำพอ</td>
+</tr>
+<tr>
+<td>Condition</td>
+<td>Illuminance · Relative humidity</td>
+<td>ตรวจค่าตัวเลขตอนกฎเริ่ม</td>
+<td>แสง Below 200</td>
+</tr>
+<tr>
+<td>Condition</td>
+<td>Time and sun → Time</td>
 <td>จำกัดช่วงเวลาที่กฎทำงาน</td>
 <td>After 06:00 Before 18:00</td>
 </tr>
 <tr>
-<td>Action → Switch → Turn on / Turn off</td>
-<td>สั่งอุปกรณ์ให้ทำงานหรือหยุด</td>
+<td>Action</td>
+<td>Turn on switch / Turn off switch</td>
+<td>สั่งรีเลย์ให้ทำงานหรือหยุด</td>
 <td>สวิตช์ปั๊ม</td>
 </tr>
 <tr>
-<td>Action → Send a persistent notification</td>
+<td>Action</td>
+<td>Send a persistent notification</td>
 <td>แจ้งเตือนบนหน้าจอ Home Assistant</td>
 <td>ปั๊มเดินเกินเวลา</td>
 </tr>

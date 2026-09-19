@@ -1471,7 +1471,7 @@ body {
 <ol start="4" style="counter-reset: step 3">
 <li>สร้าง automation ชื่อ <code>Fail-safe - สั่งแล้วไม่เดิน</code></li>
 <li>Trigger: เลือก <strong>รีเลย์ (relay)</strong> → <strong>Switch turned on</strong> ช่อง <strong>For at least</strong> ใส่ <strong>15 วินาที</strong> (สั้นกว่ากฎจำกัดเวลาที่จะสร้างในข้อ 5.4 จึงแยกได้ว่ากฎใดเป็นผู้ตัด)</li>
-<li>Condition: <code>ปั๊มกำลังทำงาน</code> ไม่มีเงื่อนไขเฉพาะในรายการ ให้ใช้เงื่อนไขทั่วไป <strong>State</strong> จากแท็บ <strong>By type</strong> เลือก entity <code>ปั๊มกำลังทำงาน (pump running)</code> สถานะ <strong>Off</strong></li>
+<li>Condition: กด <strong>+ Add condition</strong> พิมพ์ <strong>ปั๊มกำลังทำงาน</strong> แล้วกดที่ <strong>ปั๊มกำลังทำงาน (pump running)</strong> ในแผงด้านขวากดช่อง <strong>State</strong> แล้วเลือก <strong>Off</strong></li>
 <li>Action: เลือกรีเลย์ → <strong>Turn off switch</strong> และเพิ่ม <strong>Send a persistent notification</strong> ข้อความ <code>สั่งปั๊มแล้วแต่ไม่มีการสั่น ตรวจสายและระดับน้ำ</code></li>
 </ol>
 <p class="ws-phase"><strong>ทดสอบกฎ</strong></p>

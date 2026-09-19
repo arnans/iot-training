@@ -56,6 +56,8 @@
 
 1. เปิดกฎ `สว่าง-ปิดไฟ` ปรับ **Above** ให้สูงกว่าเกณฑ์เปิด แต่ต่ำกว่าค่าแสงเมื่อไม่บังเซนเซอร์ เช่น เปิดต่ำกว่า 40 ปิดสูงกว่า 60 เมื่อในห้องอ่านได้ 80
 
+![ขั้นตอนเปิดกฎ สว่าง-ปิดไฟ กดที่ trigger แล้วเปลี่ยนค่า Above ให้สูงกว่าเกณฑ์เปิด และกด Save](images/walkthroughs/a4-2-raise-off-threshold.mp4){ width="85%" }
+
 **ทดสอบและบันทึกผล**
 
 2. กด **Save** แล้วขยับมือแบบเดิม 1 นาที
@@ -82,6 +84,8 @@
 **เพิ่มเงื่อนไขเวลา**
 
 1. เปิด `มืด-เปิดไฟ` ใน **And if** กด **+ Add condition** เลือก **Time and sun → Time** ตั้งช่วงเวลา **After** และ **Before** ตามความเหมาะสมแล้วกด **Save**
+
+![ขั้นตอนเพิ่มเงื่อนไข Time ในกฎ มืด-เปิดไฟ: And if กด Add condition เลือก Time and sun → Time ตั้ง After และ Before แล้วกด Save](images/walkthroughs/a4-3-time-window.mp4){ width="85%" }
 
 **ทดสอบในและนอกช่วงเวลา**
 
@@ -117,6 +121,8 @@
 4. ในส่วน **And if** กด **+ Add condition** พิมพ์ **ความสว่าง** แล้วกดที่ **ความสว่าง (light)** เลือก **Illuminance** ตั้งเป็น **Below** แล้วใส่ค่าเกณฑ์เปิด
 5. ใน `สว่าง-ปิดไฟ` เพิ่ม trigger **Time and sun → Time** แบบเดียวกัน ตั้ง **At time** ให้ตรงกับ **Before** ของกฎเปิดไฟ แล้วบันทึกทั้งสองกฎ
 
+![ขั้นตอนเพิ่ม trigger เวลาและเงื่อนไขความสว่างในกฎ มืด-เปิดไฟ แล้วเพิ่ม trigger เวลาในกฎ สว่าง-ปิดไฟ และบันทึกทั้งสองกฎ](images/walkthroughs/a4-4-time-trigger.mp4){ width="85%" }
+
 **ทดสอบ** จำลองฟ้ามืดก่อนเวลา แล้วไม่แตะเซนเซอร์อีก
 
 6. สั่งรีเลย์ **Off** แล้วครอบเซนเซอร์ให้มืดค้างไว้
@@ -144,6 +150,8 @@ Home Assistant สามารถส่งข้อความแจ้งเ�
 **เพิ่มข้อความแจ้งเตือน**
 
 1. ใน `มืด-เปิดไฟ` ส่วน **Then do** กด **+ Add action** พิมพ์ **notification** แล้วเลือก **Send a persistent notification** ใส่ข้อความ เช่น `ไฟสวนเปิดแล้ว` แล้วกด **Save** ข้อความจะอยู่ที่ไอคอนกระดิ่ง
+
+![ขั้นตอนเพิ่ม action Send a persistent notification ในกฎ มืด-เปิดไฟ ใส่ข้อความ แล้วกด Save](images/walkthroughs/a4-5-notification.mp4){ width="85%" }
 
 **ทดสอบการแจ้งเตือน**
 
@@ -199,6 +207,8 @@ Home Assistant สามารถส่งข้อความแจ้งเ�
 3. ในส่วน **Then do** กด **+ Add action** พิมพ์ **รีเลย์** แล้วกดที่ **รีเลย์ (relay)** ของกลุ่ม เลือก **Turn on switch** บันทึกชื่อ `รดน้ำ - เปิดปั๊ม`
 4. สร้าง `รดน้ำ - ปิดปั๊ม` ด้วยวิธีเดียวกัน แต่ **Threshold type** เลือก **Above** ใส่ค่าที่สูงกว่าเกณฑ์เปิด 5–10 จุดเปอร์เซ็นต์ และ action เลือก **Turn off switch** บันทึกทั้งสองกฎ
 
+![ขั้นตอนสร้างกฎ รดน้ำ - เปิดปั๊ม: trigger ความชื้นอากาศ (humidity) แบบ Relative humidity crossed threshold ต่ำกว่าเกณฑ์ แล้วสั่งรีเลย์ Turn on switch และตั้งชื่อกฎ](images/walkthroughs/a4-7-watering-on.mp4){ width="85%" }
+
 **ทดสอบการทำงาน**
 
 5. สั่งปั๊ม **On** จากหน้าอุปกรณ์ เป่าลมจนความชื้นสูงกว่าเกณฑ์ปิด ปั๊มต้องหยุด
@@ -224,16 +234,22 @@ Home Assistant ปิดกฎแต่ละข้อได้อยู่แ�
 2. กด **+ Create helper** พิมพ์ค้นหา **"Toggle"** แล้วเลือก
 3. ตั้งชื่อ `Pump Auto Mode` แล้วกด **Create**
 
+![ขั้นตอนสร้าง helper แบบ Toggle ชื่อ Pump Auto Mode ใน Settings → Devices & services → Helpers](images/walkthroughs/a4-8a-auto-mode-helper.mp4){ width="85%" }
+
 **เปิดใช้แดชบอร์ดเพื่อดูสวิตช์ใหม่นี้**
 
 4. เปิด **Settings → Dashboards** กด **+ Add dashboard**
 5. เลือก **Overview (Legacy)** ตั้งชื่อว่า `Farm Dashboard` หรือชื่ออื่นที่ต้องการ ขอให้แน่ใจว่าเปิด **Add to sidebar** ไว้
 6. เปิด Dashboard ใหม่นี้จากเมนูด้านซ้าย สังเกตดูว่ามีอะไรบ้าง หา Toggle ชื่อ `Pump Auto Mode` แล้วลองกดเปิด–ปิด
 
+![ขั้นตอนเพิ่มแดชบอร์ดแบบ Overview (Legacy) ชื่อ Farm Dashboard และเปิด Add to sidebar ใน Settings → Dashboards](images/walkthroughs/a4-8b-farm-dashboard.mp4){ width="85%" }
+
 **แก้ไข Automation เพื่อให้กฎรดน้ำตรวจโหมดก่อนสั่งปั๊ม**
 
 7. เปิด **Settings → Automations & scenes** เลือก `รดน้ำ - เปิดปั๊ม`
 8. ในส่วน **And if** กด **+ Add condition** พิมพ์ในช่องค้นหา `Pump Auto Mode` แล้วกดที่ helper นั้น เลือกเงื่อนไข **Switch is on** กด **Save**
+
+![ขั้นตอนเพิ่มเงื่อนไข Pump Auto Mode แบบ Switch is on ในกฎ รดน้ำ - เปิดปั๊ม แล้วกด Save](images/walkthroughs/a4-8c-auto-mode-condition.mp4){ width="85%" }
 
 **ทดสอบ** ใช้วิธีเป่าลมแบบเดียวกับ 4.7 และสั่งรีเลย์ **Off** ก่อนทุกรอบ
 

@@ -729,6 +729,16 @@ body {
   box-shadow: 0 3px 14px var(--ag-shadow);
 }
 
+/* Walkthrough clips (hooks/videos.py): framed like the screenshots, never wider than the column. */
+.md-typeset video.walkthrough {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  border-radius: 0.7em;
+  box-shadow: 0 3px 14px var(--ag-shadow);
+  background: #1e2a1f;
+}
+
 /* Shallow activity illustrations separate sections without extending the reading flow. */
 .md-typeset img.activity-banner:not(.twemoji):not(.emojione) {
   display: block;
@@ -1484,6 +1494,7 @@ body {
 <ol start="3" style="counter-reset: step 2">
 <li>จัดการ์ดสำคัญไว้ด้านบน แล้วกด <strong>Done</strong></li>
 </ol>
+<p><video class="walkthrough" src="../images/walkthroughs/a6-3-build-dashboard.mp4" poster="../images/walkthroughs/a6-3-build-dashboard.png" aria-label="ขั้นตอนสร้างแดชบอร์ด แปลง 1 แล้วเพิ่มการ์ด Gauge ความชื้นอากาศ และ Tile ลูกลอย รีเลย์ และ Pump Auto Mode พร้อมตั้งชื่อบนจอ แล้วกด Done" style="width:85%" controls muted loop playsinline preload="none">ขั้นตอนสร้างแดชบอร์ด แปลง 1 แล้วเพิ่มการ์ด Gauge ความชื้นอากาศ และ Tile ลูกลอย รีเลย์ และ Pump Auto Mode พร้อมตั้งชื่อบนจอ แล้วกด Done</video></p>
 <p class="ws-phase"><strong>(ไม่บังคับทำ) เพิ่มการ์ดอื่น</strong></p>
 <ol start="4" style="counter-reset: step 3">
 <li>ลองเพิ่มการ์ดอื่น ๆ ที่น่าสนใจ เช่น เพิ่ม <strong>History graph</strong> ตั้ง <strong>Hours to show: 24</strong> หรือปรับสี Gauge เป็นต้น</li>
@@ -2323,8 +2334,25 @@ body {
     setStatus();
   });
 
+  /* walkthrough videos (hooks/videos.py): play while at least half is on screen, pause when
+     scrolled away, so a page with eight clips downloads only the one being watched.
+     Readers who ask for reduced motion start them with the play button instead. */
+  function playInView(root) {
+    var vids = root.querySelectorAll("video.walkthrough");
+    if (!vids.length || !("IntersectionObserver" in window)) return;
+    if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) { var p = e.target.play(); if (p && p.catch) p.catch(function () {}); }
+        else e.target.pause();
+      });
+    }, { threshold: 0.5 });
+    vids.forEach(function (v) { io.observe(v); });
+  }
+
   function init() {
     decorate(document);
+    playInView(document);
     bindHover(document);
     addMirrors();
     store = loadStore();

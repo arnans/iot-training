@@ -61,6 +61,7 @@ hooks:
   - hooks/steps.py    # seed the CSS step counter so numbering continues past action-group breaks
   - hooks/headings.py # "4.4" at the start of a sub-activity heading becomes a badge
   - hooks/callouts.py # cautions (bold ระวัง/ห้าม) and phase labels get a class to colour
+  - hooks/videos.py   # image syntax pointing at an .mp4 -> looping walkthrough <video>
 
 plugins:
   - search

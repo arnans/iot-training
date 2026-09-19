@@ -729,6 +729,16 @@ body {
   box-shadow: 0 3px 14px var(--ag-shadow);
 }
 
+/* Walkthrough clips (hooks/videos.py): framed like the screenshots, never wider than the column. */
+.md-typeset video.walkthrough {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  border-radius: 0.7em;
+  box-shadow: 0 3px 14px var(--ag-shadow);
+  background: #1e2a1f;
+}
+
 /* Shallow activity illustrations separate sections without extending the reading flow. */
 .md-typeset img.activity-banner:not(.twemoji):not(.emojione) {
   display: block;
@@ -1386,7 +1396,7 @@ body {
 <li>เพิ่ม <strong>บอร์ดรีเลย์</strong> เข้าไปใน Home Assistant ด้วยวิธีเดียวกัน</li>
 <li>เปลี่ยนชื่ออุปกรณ์ทั้งสองเป็นชื่อกลุ่มของเรา (ไม่บังคับทำ) เพื่อให้หาเจอง่าย</li>
 </ol>
-<p><img alt="ขั้นตอนเพิ่มบอร์ดใน Settings → Devices &amp; services: กดการ์ดที่ระบบค้นพบ ตรวจชื่อ แล้วกดเพิ่ม" src="../images/activity1/a3-add-esphome-devices-to-hass.gif" width="85%" /></p>
+<p><img alt="ขั้นตอนเพิ่มบอร์ดใน Settings → Devices &amp; services: กดการ์ดที่ระบบค้นพบ ตรวจชื่อ แล้วกดเพิ่ม" src="../images/activity1/a3-add-esphome-devices-to-hass.webp" width="85%" /></p>
 <blockquote>
 <p><strong>ถ้าไม่เห็นการ์ดของเรา</strong> กด <strong>+ Add integration</strong> มุมล่างขวา → ค้นหา <strong>ESPHome</strong> → กด <strong>Add device</strong> → เลือก <strong>Setup another instance of ESPHome</strong> → พิมพ์ชื่อบอร์ดที่จดไว้ <strong>โดยไม่ต้องมี <code>.local</code></strong> เช่น <code>gogo-iot-red-a1b2c3</code> แล้วกด Submit</p>
 <p><strong>ตรวจชื่อบอร์ดให้ตรงกับที่จดไว้ทั้งชื่อ</strong> โดยเฉพาะรหัสหกตัวท้าย หากเพิ่มบอร์ดของกลุ่มอื่น เราอาจดูค่าหรือสั่งงานอุปกรณ์ผิดกลุ่มได้</p>
@@ -1453,6 +1463,7 @@ body {
 <li>พิมพ์ <strong>รีเลย์</strong> แล้วกดที่ <strong>รีเลย์ (relay)</strong> <a class="glightbox" data-title="ค้นหา รีเลย์ แล้วกดที่ entity" href="../images/steps/s2-a5-10-search-relay.png">📷</a> เลือก <strong>Turn on switch</strong> <a class="glightbox" data-title="เลือก Turn on switch" href="../images/steps/s2-a5-11-turn-on-switch.png">📷</a></li>
 <li>กด <strong>Save</strong> <a class="glightbox" data-title="ปุ่ม Save" href="../images/steps/s2-a5-12-save.png">📷</a> ตั้งชื่อ <code>มืด-เปิดไฟ</code> แล้วกด <strong>Save</strong> อีกครั้ง <a class="glightbox" data-title="ตั้งชื่อ automation แล้ว Save" href="../images/steps/s2-a5-13-save-name.png">📷</a> กฎที่เสร็จมี trigger หนึ่งข้อและ action หนึ่งข้อ <a class="glightbox" data-title="กฎที่สร้างเสร็จ" href="../images/steps/s2-a5-15-editor-done.png">📷</a></li>
 </ol>
+<p><video class="walkthrough" src="../images/walkthroughs/a3-5-dark-lights-on.mp4" poster="../images/walkthroughs/a3-5-dark-lights-on.png" aria-label="ขั้นตอนสร้างกฎ มืด-เปิดไฟ: เปิด Automations &amp; scenes สร้าง automation ใหม่ ตั้ง trigger ความสว่าง (light) แบบ Illuminance crossed threshold ต่ำกว่าเกณฑ์ แล้วสั่งรีเลย์ Turn on switch และตั้งชื่อกฎ" style="width:85%" controls muted loop playsinline preload="none">ขั้นตอนสร้างกฎ มืด-เปิดไฟ: เปิด Automations &amp; scenes สร้าง automation ใหม่ ตั้ง trigger ความสว่าง (light) แบบ Illuminance crossed threshold ต่ำกว่าเกณฑ์ แล้วสั่งรีเลย์ Turn on switch และตั้งชื่อกฎ</video></p>
 <p class="ws-phase"><strong>ทดสอบกฎเปิดไฟ</strong></p>
 <ol start="10" style="counter-reset: step 9">
 <li>เริ่มจากเอามือออกและรอให้ค่าแสงสูงกว่าเกณฑ์ จากนั้นครอบบอร์ดให้มิด รอจนค่าบนหน้าจอต่ำกว่าเกณฑ์ โดยเผื่อเวลาตามที่วัดในข้อ 1.5 หลอดควรติดเอง เมื่อเอามือออก หลอดจะยังไม่ดับ เพราะยังไม่มีกฎสั่งปิด ให้สั่ง Off จากหน้าอุปกรณ์ก่อนทำข้อต่อไป</li>
@@ -1478,6 +1489,7 @@ body {
 <li>ดูนาฬิกาบนแล็ปท็อป เลือกเวลาประมาณ 2 นาทีข้างหน้า จดไว้ <input class="fld" type="text" data-k="s1.timer.at" data-size="5" size="5" autocomplete="off" spellcheck="false"> น.</li>
 <li>สร้าง automation ใหม่ trigger เลือก <strong>Time</strong> ตั้ง <strong>At</strong> เป็นเวลานั้น action ค้นหา <strong>รีเลย์ (relay)</strong> เลือก <strong>Turn off switch</strong> ตั้งชื่อ <code>ปิดไฟตามเวลา</code></li>
 </ol>
+<p><video class="walkthrough" src="../images/walkthroughs/a3-6-timer-off.mp4" poster="../images/walkthroughs/a3-6-timer-off.png" aria-label="ขั้นตอนสร้างกฎ ปิดไฟตามเวลา: trigger แบบ Time ตั้งเวลา At แล้วสั่งรีเลย์ Turn off switch และตั้งชื่อกฎ" style="width:85%" controls muted loop playsinline preload="none">ขั้นตอนสร้างกฎ ปิดไฟตามเวลา: trigger แบบ Time ตั้งเวลา At แล้วสั่งรีเลย์ Turn off switch และตั้งชื่อกฎ</video></p>
 <p class="ws-phase"><strong>ทดสอบและปิดกฎเสริม</strong></p>
 <ol start="3" style="counter-reset: step 2">
 <li>สั่งหลอดไฟ <strong>On</strong> จากหน้าอุปกรณ์ แล้วรักษาแสงรอบบอร์ดให้คงที่ระหว่างรอ เพื่อไม่ให้กฎตามความสว่างสั่งงานแทรก ไฟต้องดับเองเมื่อถึงเวลา ผล <span class="fld-radio" data-k="s1.timer.ok"><label><input class="fld" type="radio" name="s1.timer.ok" data-k="s1.timer.ok" value="ดับตรงเวลา"> ดับตรงเวลา</label><label><input class="fld" type="radio" name="s1.timer.ok" data-k="s1.timer.ok" value="ไม่ดับ"> ไม่ดับ</label><label><input class="fld" type="radio" name="s1.timer.ok" data-k="s1.timer.ok" value="ไม่ได้ทำ"> ไม่ได้ทำ</label></span></li>
@@ -2319,8 +2331,25 @@ body {
     setStatus();
   });
 
+  /* walkthrough videos (hooks/videos.py): play while at least half is on screen, pause when
+     scrolled away, so a page with eight clips downloads only the one being watched.
+     Readers who ask for reduced motion start them with the play button instead. */
+  function playInView(root) {
+    var vids = root.querySelectorAll("video.walkthrough");
+    if (!vids.length || !("IntersectionObserver" in window)) return;
+    if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) { var p = e.target.play(); if (p && p.catch) p.catch(function () {}); }
+        else e.target.pause();
+      });
+    }, { threshold: 0.5 });
+    vids.forEach(function (v) { io.observe(v); });
+  }
+
   function init() {
     decorate(document);
+    playInView(document);
     bindHover(document);
     addMirrors();
     store = loadStore();

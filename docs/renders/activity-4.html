@@ -729,6 +729,16 @@ body {
   box-shadow: 0 3px 14px var(--ag-shadow);
 }
 
+/* Walkthrough clips (hooks/videos.py): framed like the screenshots, never wider than the column. */
+.md-typeset video.walkthrough {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  border-radius: 0.7em;
+  box-shadow: 0 3px 14px var(--ag-shadow);
+  background: #1e2a1f;
+}
+
 /* Shallow activity illustrations separate sections without extending the reading flow. */
 .md-typeset img.activity-banner:not(.twemoji):not(.emojione) {
   display: block;
@@ -1394,6 +1404,7 @@ body {
 <ol>
 <li>เปิดกฎ <code>สว่าง-ปิดไฟ</code> ปรับ <strong>Above</strong> ให้สูงกว่าเกณฑ์เปิด แต่ต่ำกว่าค่าแสงเมื่อไม่บังเซนเซอร์ เช่น เปิดต่ำกว่า 40 ปิดสูงกว่า 60 เมื่อในห้องอ่านได้ 80</li>
 </ol>
+<p><video class="walkthrough" src="../images/walkthroughs/a4-2-raise-off-threshold.mp4" poster="../images/walkthroughs/a4-2-raise-off-threshold.png" aria-label="ขั้นตอนเปิดกฎ สว่าง-ปิดไฟ กดที่ trigger แล้วเปลี่ยนค่า Above ให้สูงกว่าเกณฑ์เปิด และกด Save" style="width:85%" controls muted loop playsinline preload="none">ขั้นตอนเปิดกฎ สว่าง-ปิดไฟ กดที่ trigger แล้วเปลี่ยนค่า Above ให้สูงกว่าเกณฑ์เปิด และกด Save</video></p>
 <p class="ws-phase"><strong>ทดสอบและบันทึกผล</strong></p>
 <ol start="2" style="counter-reset: step 1">
 <li>กด <strong>Save</strong> แล้วขยับมือแบบเดิม 1 นาที</li>
@@ -1416,6 +1427,7 @@ body {
 <ol>
 <li>เปิด <code>มืด-เปิดไฟ</code> ใน <strong>And if</strong> กด <strong>+ Add condition</strong> เลือก <strong>Time and sun → Time</strong> ตั้งช่วงเวลา <strong>After</strong> และ <strong>Before</strong> ตามความเหมาะสมแล้วกด <strong>Save</strong></li>
 </ol>
+<p><video class="walkthrough" src="../images/walkthroughs/a4-3-time-window.mp4" poster="../images/walkthroughs/a4-3-time-window.png" aria-label="ขั้นตอนเพิ่มเงื่อนไข Time ในกฎ มืด-เปิดไฟ: And if กด Add condition เลือก Time and sun → Time ตั้ง After และ Before แล้วกด Save" style="width:85%" controls muted loop playsinline preload="none">ขั้นตอนเพิ่มเงื่อนไข Time ในกฎ มืด-เปิดไฟ: And if กด Add condition เลือก Time and sun → Time ตั้ง After และ Before แล้วกด Save</video></p>
 <p class="ws-phase"><strong>ทดสอบในและนอกช่วงเวลา</strong></p>
 <p><strong>ก่อนทดสอบแต่ละรอบ:</strong> เอามือออก รอให้ค่าแสงสูงกว่าเกณฑ์เปิด และสั่งรีเลย์ <strong>Off</strong> เพื่อให้เริ่มจากสภาพเดียวกัน</p>
 <ol start="2" style="counter-reset: step 1">
@@ -1445,6 +1457,7 @@ body {
 <li>ในส่วน <strong>And if</strong> กด <strong>+ Add condition</strong> พิมพ์ <strong>ความสว่าง</strong> แล้วกดที่ <strong>ความสว่าง (light)</strong> เลือก <strong>Illuminance</strong> ตั้งเป็น <strong>Below</strong> แล้วใส่ค่าเกณฑ์เปิด</li>
 <li>ใน <code>สว่าง-ปิดไฟ</code> เพิ่ม trigger <strong>Time and sun → Time</strong> แบบเดียวกัน ตั้ง <strong>At time</strong> ให้ตรงกับ <strong>Before</strong> ของกฎเปิดไฟ แล้วบันทึกทั้งสองกฎ</li>
 </ol>
+<p><video class="walkthrough" src="../images/walkthroughs/a4-4-time-trigger.mp4" poster="../images/walkthroughs/a4-4-time-trigger.png" aria-label="ขั้นตอนเพิ่ม trigger เวลาและเงื่อนไขความสว่างในกฎ มืด-เปิดไฟ แล้วเพิ่ม trigger เวลาในกฎ สว่าง-ปิดไฟ และบันทึกทั้งสองกฎ" style="width:85%" controls muted loop playsinline preload="none">ขั้นตอนเพิ่ม trigger เวลาและเงื่อนไขความสว่างในกฎ มืด-เปิดไฟ แล้วเพิ่ม trigger เวลาในกฎ สว่าง-ปิดไฟ และบันทึกทั้งสองกฎ</video></p>
 <p><strong>ทดสอบ</strong> จำลองฟ้ามืดก่อนเวลา แล้วไม่แตะเซนเซอร์อีก</p>
 <ol start="6" style="counter-reset: step 5">
 <li>สั่งรีเลย์ <strong>Off</strong> แล้วครอบเซนเซอร์ให้มืดค้างไว้</li>
@@ -1470,6 +1483,7 @@ body {
 <ol>
 <li>ใน <code>มืด-เปิดไฟ</code> ส่วน <strong>Then do</strong> กด <strong>+ Add action</strong> พิมพ์ <strong>notification</strong> แล้วเลือก <strong>Send a persistent notification</strong> ใส่ข้อความ เช่น <code>ไฟสวนเปิดแล้ว</code> แล้วกด <strong>Save</strong> ข้อความจะอยู่ที่ไอคอนกระดิ่ง</li>
 </ol>
+<p><video class="walkthrough" src="../images/walkthroughs/a4-5-notification.mp4" poster="../images/walkthroughs/a4-5-notification.png" aria-label="ขั้นตอนเพิ่ม action Send a persistent notification ในกฎ มืด-เปิดไฟ ใส่ข้อความ แล้วกด Save" style="width:85%" controls muted loop playsinline preload="none">ขั้นตอนเพิ่ม action Send a persistent notification ในกฎ มืด-เปิดไฟ ใส่ข้อความ แล้วกด Save</video></p>
 <p class="ws-phase"><strong>ทดสอบการแจ้งเตือน</strong></p>
 <ol start="2" style="counter-reset: step 1">
 <li>ตั้งช่วง <strong>After–Before</strong> ให้ครอบคลุมเวลาปัจจุบัน เริ่มจากไฟดับและค่าแสงสูงกว่าเกณฑ์เปิด แล้วครอบเซนเซอร์ ไฟต้องติดและมีข้อความแจ้งเตือน</li>
@@ -1517,6 +1531,7 @@ body {
 <li>ในส่วน <strong>Then do</strong> กด <strong>+ Add action</strong> พิมพ์ <strong>รีเลย์</strong> แล้วกดที่ <strong>รีเลย์ (relay)</strong> ของกลุ่ม เลือก <strong>Turn on switch</strong> บันทึกชื่อ <code>รดน้ำ - เปิดปั๊ม</code></li>
 <li>สร้าง <code>รดน้ำ - ปิดปั๊ม</code> ด้วยวิธีเดียวกัน แต่ <strong>Threshold type</strong> เลือก <strong>Above</strong> ใส่ค่าที่สูงกว่าเกณฑ์เปิด 5–10 จุดเปอร์เซ็นต์ และ action เลือก <strong>Turn off switch</strong> บันทึกทั้งสองกฎ</li>
 </ol>
+<p><video class="walkthrough" src="../images/walkthroughs/a4-7-watering-on.mp4" poster="../images/walkthroughs/a4-7-watering-on.png" aria-label="ขั้นตอนสร้างกฎ รดน้ำ - เปิดปั๊ม: trigger ความชื้นอากาศ (humidity) แบบ Relative humidity crossed threshold ต่ำกว่าเกณฑ์ แล้วสั่งรีเลย์ Turn on switch และตั้งชื่อกฎ" style="width:85%" controls muted loop playsinline preload="none">ขั้นตอนสร้างกฎ รดน้ำ - เปิดปั๊ม: trigger ความชื้นอากาศ (humidity) แบบ Relative humidity crossed threshold ต่ำกว่าเกณฑ์ แล้วสั่งรีเลย์ Turn on switch และตั้งชื่อกฎ</video></p>
 <p class="ws-phase"><strong>ทดสอบการทำงาน</strong></p>
 <ol start="5" style="counter-reset: step 4">
 <li>สั่งปั๊ม <strong>On</strong> จากหน้าอุปกรณ์ เป่าลมจนความชื้นสูงกว่าเกณฑ์ปิด ปั๊มต้องหยุด</li>
@@ -1537,17 +1552,20 @@ body {
 <li>กด <strong>+ Create helper</strong> พิมพ์ค้นหา <strong>"Toggle"</strong> แล้วเลือก</li>
 <li>ตั้งชื่อ <code>Pump Auto Mode</code> แล้วกด <strong>Create</strong></li>
 </ol>
+<p><video class="walkthrough" src="../images/walkthroughs/a4-8a-auto-mode-helper.mp4" poster="../images/walkthroughs/a4-8a-auto-mode-helper.png" aria-label="ขั้นตอนสร้าง helper แบบ Toggle ชื่อ Pump Auto Mode ใน Settings → Devices &amp; services → Helpers" style="width:85%" controls muted loop playsinline preload="none">ขั้นตอนสร้าง helper แบบ Toggle ชื่อ Pump Auto Mode ใน Settings → Devices &amp; services → Helpers</video></p>
 <p class="ws-phase"><strong>เปิดใช้แดชบอร์ดเพื่อดูสวิตช์ใหม่นี้</strong></p>
 <ol start="4" style="counter-reset: step 3">
 <li>เปิด <strong>Settings → Dashboards</strong> กด <strong>+ Add dashboard</strong></li>
 <li>เลือก <strong>Overview (Legacy)</strong> ตั้งชื่อว่า <code>Farm Dashboard</code> หรือชื่ออื่นที่ต้องการ ขอให้แน่ใจว่าเปิด <strong>Add to sidebar</strong> ไว้</li>
 <li>เปิด Dashboard ใหม่นี้จากเมนูด้านซ้าย สังเกตดูว่ามีอะไรบ้าง หา Toggle ชื่อ <code>Pump Auto Mode</code> แล้วลองกดเปิด–ปิด</li>
 </ol>
+<p><video class="walkthrough" src="../images/walkthroughs/a4-8b-farm-dashboard.mp4" poster="../images/walkthroughs/a4-8b-farm-dashboard.png" aria-label="ขั้นตอนเพิ่มแดชบอร์ดแบบ Overview (Legacy) ชื่อ Farm Dashboard และเปิด Add to sidebar ใน Settings → Dashboards" style="width:85%" controls muted loop playsinline preload="none">ขั้นตอนเพิ่มแดชบอร์ดแบบ Overview (Legacy) ชื่อ Farm Dashboard และเปิด Add to sidebar ใน Settings → Dashboards</video></p>
 <p class="ws-phase"><strong>แก้ไข Automation เพื่อให้กฎรดน้ำตรวจโหมดก่อนสั่งปั๊ม</strong></p>
 <ol start="7" style="counter-reset: step 6">
 <li>เปิด <strong>Settings → Automations &amp; scenes</strong> เลือก <code>รดน้ำ - เปิดปั๊ม</code></li>
 <li>ในส่วน <strong>And if</strong> กด <strong>+ Add condition</strong> พิมพ์ในช่องค้นหา <code>Pump Auto Mode</code> แล้วกดที่ helper นั้น เลือกเงื่อนไข <strong>Switch is on</strong> กด <strong>Save</strong></li>
 </ol>
+<p><video class="walkthrough" src="../images/walkthroughs/a4-8c-auto-mode-condition.mp4" poster="../images/walkthroughs/a4-8c-auto-mode-condition.png" aria-label="ขั้นตอนเพิ่มเงื่อนไข Pump Auto Mode แบบ Switch is on ในกฎ รดน้ำ - เปิดปั๊ม แล้วกด Save" style="width:85%" controls muted loop playsinline preload="none">ขั้นตอนเพิ่มเงื่อนไข Pump Auto Mode แบบ Switch is on ในกฎ รดน้ำ - เปิดปั๊ม แล้วกด Save</video></p>
 <p><strong>ทดสอบ</strong> ใช้วิธีเป่าลมแบบเดียวกับ 4.7 และสั่งรีเลย์ <strong>Off</strong> ก่อนทุกรอบ</p>
 <ol start="9" style="counter-reset: step 8">
 <li>ทดสอบโหมด Manual - ให้ปิด <code>Pump Auto Mode</code> เป่าลมให้ความชื้นสูงกว่าเกณฑ์เปิด แล้วหยุดเป่า เมื่อค่าลดต่ำกว่าเกณฑ์ ปั๊มเริ่มเองหรือไม่ <span class="fld-radio" data-k="s2.mode.off"><label><input class="fld" type="radio" name="s2.mode.off" data-k="s2.mode.off" value="ไม่เริ่ม"> ไม่เริ่ม</label><label><input class="fld" type="radio" name="s2.mode.off" data-k="s2.mode.off" value="เริ่ม"> เริ่ม</label></span> ระหว่างนี้สั่งรีเลย์ <strong>On–Off</strong> จากหน้าอุปกรณ์ ปั๊มยังเดินและหยุดตามมือเรา นี่คือโหมด Manual</li>
@@ -2376,8 +2394,25 @@ body {
     setStatus();
   });
 
+  /* walkthrough videos (hooks/videos.py): play while at least half is on screen, pause when
+     scrolled away, so a page with eight clips downloads only the one being watched.
+     Readers who ask for reduced motion start them with the play button instead. */
+  function playInView(root) {
+    var vids = root.querySelectorAll("video.walkthrough");
+    if (!vids.length || !("IntersectionObserver" in window)) return;
+    if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) { var p = e.target.play(); if (p && p.catch) p.catch(function () {}); }
+        else e.target.pause();
+      });
+    }, { threshold: 0.5 });
+    vids.forEach(function (v) { io.observe(v); });
+  }
+
   function init() {
     decorate(document);
+    playInView(document);
     bindHover(document);
     addMirrors();
     store = loadStore();

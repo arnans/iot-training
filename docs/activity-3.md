@@ -43,7 +43,7 @@
 4. เพิ่ม **บอร์ดรีเลย์** เข้าไปใน Home Assistant ด้วยวิธีเดียวกัน
 5. เปลี่ยนชื่ออุปกรณ์ทั้งสองเป็นชื่อกลุ่มของเรา (ไม่บังคับทำ) เพื่อให้หาเจอง่าย
 
-![ขั้นตอนเพิ่มบอร์ดใน Settings → Devices & services: กดการ์ดที่ระบบค้นพบ ตรวจชื่อ แล้วกดเพิ่ม](images/activity1/a3-add-esphome-devices-to-hass.gif){ width="85%" }
+![ขั้นตอนเพิ่มบอร์ดใน Settings → Devices & services: กดการ์ดที่ระบบค้นพบ ตรวจชื่อ แล้วกดเพิ่ม](images/activity1/a3-add-esphome-devices-to-hass.webp){ width="85%" }
 
 > **ถ้าไม่เห็นการ์ดของเรา** กด **+ Add integration** มุมล่างขวา → ค้นหา **ESPHome** → กด **Add device** → เลือก **Setup another instance of ESPHome** → พิมพ์ชื่อบอร์ดที่จดไว้ **โดยไม่ต้องมี `.local`** เช่น `gogo-iot-red-a1b2c3` แล้วกด Submit
 
@@ -127,6 +127,8 @@ https://youtu.be/Q2D7aAni7Xo
 8. พิมพ์ **รีเลย์** แล้วกดที่ **รีเลย์ (relay)** [📷](images/steps/s2-a5-10-search-relay.png){ .glightbox data-title="ค้นหา รีเลย์ แล้วกดที่ entity" } เลือก **Turn on switch** [📷](images/steps/s2-a5-11-turn-on-switch.png){ .glightbox data-title="เลือก Turn on switch" }
 9. กด **Save** [📷](images/steps/s2-a5-12-save.png){ .glightbox data-title="ปุ่ม Save" } ตั้งชื่อ `มืด-เปิดไฟ` แล้วกด **Save** อีกครั้ง [📷](images/steps/s2-a5-13-save-name.png){ .glightbox data-title="ตั้งชื่อ automation แล้ว Save" } กฎที่เสร็จมี trigger หนึ่งข้อและ action หนึ่งข้อ [📷](images/steps/s2-a5-15-editor-done.png){ .glightbox data-title="กฎที่สร้างเสร็จ" }
 
+![ขั้นตอนสร้างกฎ มืด-เปิดไฟ: เปิด Automations & scenes สร้าง automation ใหม่ ตั้ง trigger ความสว่าง (light) แบบ Illuminance crossed threshold ต่ำกว่าเกณฑ์ แล้วสั่งรีเลย์ Turn on switch และตั้งชื่อกฎ](images/walkthroughs/a3-5-dark-lights-on.mp4){ width="85%" }
+
 **ทดสอบกฎเปิดไฟ**
 
 10. เริ่มจากเอามือออกและรอให้ค่าแสงสูงกว่าเกณฑ์ จากนั้นครอบบอร์ดให้มิด รอจนค่าบนหน้าจอต่ำกว่าเกณฑ์ โดยเผื่อเวลาตามที่วัดในข้อ 1.5 หลอดควรติดเอง เมื่อเอามือออก หลอดจะยังไม่ดับ เพราะยังไม่มีกฎสั่งปิด ให้สั่ง Off จากหน้าอุปกรณ์ก่อนทำข้อต่อไป
@@ -155,6 +157,8 @@ https://youtu.be/Q2D7aAni7Xo
 
 1. ดูนาฬิกาบนแล็ปท็อป เลือกเวลาประมาณ 2 นาทีข้างหน้า จดไว้ {{f:s1.timer.at|5}} น.
 2. สร้าง automation ใหม่ trigger เลือก **Time** ตั้ง **At** เป็นเวลานั้น action ค้นหา **รีเลย์ (relay)** เลือก **Turn off switch** ตั้งชื่อ `ปิดไฟตามเวลา`
+
+![ขั้นตอนสร้างกฎ ปิดไฟตามเวลา: trigger แบบ Time ตั้งเวลา At แล้วสั่งรีเลย์ Turn off switch และตั้งชื่อกฎ](images/walkthroughs/a3-6-timer-off.mp4){ width="85%" }
 
 **ทดสอบและปิดกฎเสริม**
 

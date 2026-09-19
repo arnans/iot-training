@@ -1,0 +1,27 @@
+const { txt, clk, pick, btn, type, at, nameIt, saveDialog } = require('../lib.cjs');
+module.exports = {
+  id: 'a3-5-dark-lights-on',
+  start: '/',
+  title: { kicker: 'กิจกรรมที่ 3.5 · สร้างและทดสอบกฎอัตโนมัติ', head: 'สร้างกฎเปิดไฟเมื่อมืด', name: 'มืด-เปิดไฟ', sub: 'Settings → Automations & scenes → Create automation' },
+  steps: [
+    [1, 'เปิด Settings จากเมนูด้านซ้าย', async p => clk(p, p.getByRole('link', { name: 'Settings' }).or(p.locator('ha-sidebar').getByText('Settings', { exact: true }))), 'click'],
+    [1, 'กด Automations & scenes', async p => clk(p, p.getByText('Automations & scenes', { exact: true })), 'click'],
+    [2, 'กด + Create automation', async p => clk(p, p.getByText('Create automation', { exact: true })), 'click'],
+    [2, 'เลือก Create new automation', async p => clk(p, p.getByText('Create new automation')), 'click'],
+    [3, 'ส่วน When กด + Add trigger', btn('Add trigger'), 'click'],
+    [4, 'พิมพ์ “ความสว่าง” เพื่อค้นหา', type('ความสว่าง'), 'type'],
+    [4, 'กดที่ ความสว่าง (light)', pick('ความสว่าง (light)'), 'click'],
+    [5, 'เลือก Illuminance crossed threshold', pick('Illuminance crossed threshold'), 'click'],
+    [6, 'Threshold type กดช่อง Fire when the value goes', at(935, 657), 'click'],
+    [6, 'เลือก Below — ค่าแสงลดลงต่ำกว่าเกณฑ์', txt('Below'), 'click'],
+    [6, 'กดช่อง Below', at(900, 783), 'click'],
+    [6, 'พิมพ์ค่าเกณฑ์ของกลุ่ม (ตัวอย่าง 50 lx)', type('50'), 'type'],
+    [7, 'ส่วน Then do กด + Add action', btn('Add action'), 'click'],
+    [8, 'พิมพ์ “รีเลย์” เพื่อค้นหา', type('รีเลย์'), 'type'],
+    [8, 'กดที่ รีเลย์ (relay)', pick('รีเลย์ (relay)'), 'click'],
+    [8, 'เลือก Turn on switch — สั่งเปิดไฟ', pick('Turn on switch'), 'click'],
+    [9, 'กด Save', btn('Save'), 'click'],
+    [9, 'ตั้งชื่อ มืด-เปิดไฟ แล้วกด Save อีกครั้ง', nameIt('มืด-เปิดไฟ'), 'type'],
+  ],
+  commit: saveDialog,
+};

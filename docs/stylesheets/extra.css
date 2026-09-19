@@ -544,6 +544,16 @@
   box-shadow: 0 3px 14px var(--ag-shadow);
 }
 
+/* Walkthrough clips (hooks/videos.py): framed like the screenshots, never wider than the column. */
+.md-typeset video.walkthrough {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  border-radius: 0.7em;
+  box-shadow: 0 3px 14px var(--ag-shadow);
+  background: #1e2a1f;
+}
+
 /* Shallow activity illustrations separate sections without extending the reading flow. */
 .md-typeset img.activity-banner:not(.twemoji):not(.emojione) {
   display: block;

@@ -729,6 +729,16 @@ body {
   box-shadow: 0 3px 14px var(--ag-shadow);
 }
 
+/* Walkthrough clips (hooks/videos.py): framed like the screenshots, never wider than the column. */
+.md-typeset video.walkthrough {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  border-radius: 0.7em;
+  box-shadow: 0 3px 14px var(--ag-shadow);
+  background: #1e2a1f;
+}
+
 /* Shallow activity illustrations separate sections without extending the reading flow. */
 .md-typeset img.activity-banner:not(.twemoji):not(.emojione) {
   display: block;
@@ -1414,6 +1424,7 @@ body {
 <li>ส่วน <strong>Then do</strong> กด <strong>+ Add action</strong> เลือกรีเลย์ → <strong>Turn off switch</strong> แล้วเพิ่ม action <strong>Send a persistent notification</strong> ข้อความ <code>น้ำในถังต่ำ หยุดปั๊มแล้ว</code> บันทึกชื่อ <code>Fail-safe - น้ำหมด</code></li>
 <li>เปิดกฎ <code>รดน้ำ - เปิดปั๊ม</code> ส่วน <strong>And if</strong> เพิ่ม condition สวิตช์ลูกลอย <strong>Moisture is detected</strong> (Wet) แล้วบันทึก</li>
 </ol>
+<p><video class="walkthrough" src="../images/walkthroughs/a5-1-low-water.mp4" poster="../images/walkthroughs/a5-1-low-water.png" aria-label="ขั้นตอนสร้างกฎ Fail-safe - น้ำหมด: เพิ่ม trigger ลูกลอยเป็น Dry และรีเลย์เปิด ตรวจเงื่อนไข Dry แล้วปิดรีเลย์และแจ้งเตือน" style="width:85%" controls muted loop playsinline preload="none">ขั้นตอนสร้างกฎ Fail-safe - น้ำหมด: เพิ่ม trigger ลูกลอยเป็น Dry และรีเลย์เปิด ตรวจเงื่อนไข Dry แล้วปิดรีเลย์และแจ้งเตือน</video></p>
 <p class="ws-phase"><strong>ทดสอบให้ผ่านทั้งสองแบบ</strong></p>
 <ol start="8" style="counter-reset: step 7">
 <li>ลูกลอยเป็น Dry แล้วสั่ง On ทั้งจากปุ่มบนบอร์ดและหน้าอุปกรณ์ ปั๊มต้องหยุดและมีแจ้งเตือน</li>
@@ -1471,9 +1482,10 @@ body {
 <ol start="4" style="counter-reset: step 3">
 <li>สร้าง automation ชื่อ <code>Fail-safe - สั่งแล้วไม่เดิน</code></li>
 <li>Trigger: เลือก <strong>รีเลย์ (relay)</strong> → <strong>Switch turned on</strong> ช่อง <strong>For at least</strong> ใส่ <strong>15 วินาที</strong> (สั้นกว่ากฎจำกัดเวลาที่จะสร้างในข้อ 5.4 จึงแยกได้ว่ากฎใดเป็นผู้ตัด)</li>
-<li>Condition: กด <strong>+ Add condition</strong> พิมพ์ <strong>ปั๊มกำลังทำงาน</strong> แล้วกดที่ <strong>ปั๊มกำลังทำงาน (pump running)</strong> ในแผงด้านขวากดช่อง <strong>State</strong> แล้วเลือก <strong>Off</strong></li>
+<li>Condition: กด <strong>+ Add condition</strong> พิมพ์ <strong>ปั๊มกำลังทำงาน</strong> แล้วกดที่ <strong>ปั๊มกำลังทำงาน (pump running)</strong> เลือก <strong>State</strong> ในแผงด้านขวา จากนั้นกดช่อง <strong>State</strong> แล้วเลือก <strong>Off</strong></li>
 <li>Action: เลือกรีเลย์ → <strong>Turn off switch</strong> และเพิ่ม <strong>Send a persistent notification</strong> ข้อความ <code>สั่งปั๊มแล้วแต่ไม่มีการสั่น ตรวจสายและระดับน้ำ</code></li>
 </ol>
+<p><video class="walkthrough" src="../images/walkthroughs/a5-2-pump-not-running.mp4" poster="../images/walkthroughs/a5-2-pump-not-running.png" aria-label="ขั้นตอนตั้งกฎ Fail-safe - สั่งแล้วไม่เดิน: รีเลย์เปิดครบ 15 วินาที ตรวจว่าปั๊มกำลังทำงานเป็น Off แล้วปิดรีเลย์และแจ้งเตือน" style="width:85%" controls muted loop playsinline preload="none">ขั้นตอนตั้งกฎ Fail-safe - สั่งแล้วไม่เดิน: รีเลย์เปิดครบ 15 วินาที ตรวจว่าปั๊มกำลังทำงานเป็น Off แล้วปิดรีเลย์และแจ้งเตือน</video></p>
 <p class="ws-phase"><strong>ทดสอบกฎ</strong></p>
 <ol start="8" style="counter-reset: step 7">
 <li>เมื่อสายยังถอดอยู่ สั่ง On กฎต้องปิดรีเลย์และแจ้งเตือนหลังครบประมาณ 15 วินาที</li>
@@ -1516,6 +1528,7 @@ body {
 <li>Trigger: กด <strong>+ Add trigger</strong> พิมพ์ <strong>ความชื้นอากาศ</strong> แล้วกดที่ <strong>ความชื้นอากาศ (humidity)</strong> ในแผงด้านขวาเลือก <strong>State changed</strong> ช่อง <strong>To</strong> เลือก <strong>Unavailable</strong> แล้วเพิ่ม <strong>Unknown</strong> อีกค่าในช่องเดียวกัน</li>
 <li>Action: เลือกรีเลย์ → <strong>Turn off switch</strong> และเพิ่ม <strong>Send a persistent notification</strong> ข้อความ <code>ไม่ได้รับค่าจากเซนเซอร์ หยุดปั๊มเพื่อความปลอดภัย</code></li>
 </ol>
+<p><video class="walkthrough" src="../images/walkthroughs/a5-3-sensor-unavailable.mp4" poster="../images/walkthroughs/a5-3-sensor-unavailable.png" aria-label="ขั้นตอนสร้างกฎ Fail-safe - เซนเซอร์หาย: เพิ่ม trigger State changed ของความชื้นอากาศ ตั้งช่อง To เป็น Unavailable แล้วเพิ่ม action Turn off switch ของรีเลย์ และบันทึกกฎ" style="width:85%" controls muted loop playsinline preload="none">ขั้นตอนสร้างกฎ Fail-safe - เซนเซอร์หาย: เพิ่ม trigger State changed ของความชื้นอากาศ ตั้งช่อง To เป็น Unavailable แล้วเพิ่ม action Turn off switch ของรีเลย์ และบันทึกกฎ</video></p>
 <p class="ws-phase"><strong>ทดสอบกฎ</strong></p>
 <ol start="7" style="counter-reset: step 6">
 <li>รอให้บอร์ดกลับมาแสดงค่า แล้วสั่งปั๊ม On และปิดบอร์ดอีกครั้ง ตรวจใน <strong>Traces</strong> ว่ากฎ <code>Fail-safe - เซนเซอร์หาย</code> ทำงานเมื่อค่าเป็น unavailable และสั่ง Off พร้อมแจ้งเตือน แม้กฎอื่นจะหยุดปั๊มไปก่อน จากนั้นเปิดบอร์ดกลับ</li>
@@ -1547,6 +1560,7 @@ body {
 <li>Trigger: เลือก <strong>รีเลย์ (relay)</strong> → <strong>Switch turned on</strong> ช่อง <strong>For at least</strong> ตั้ง <strong>30 วินาที</strong> (ใช้สำหรับการทดลองนี้ และยาวกว่ากฎสั่งแล้วไม่เดิน 15 วินาที)</li>
 <li>Action: เลือกรีเลย์ → <strong>Turn off switch</strong> และเพิ่ม <strong>Send a persistent notification</strong> ข้อความ <code>ปั๊มเดินเกินเวลา ตัดการทำงานแล้ว โปรดตรวจสอบ</code></li>
 </ol>
+<p><video class="walkthrough" src="../images/walkthroughs/a5-4-pump-timeout.mp4" poster="../images/walkthroughs/a5-4-pump-timeout.png" aria-label="ขั้นตอนสร้างกฎ Fail-safe - จำกัดเวลาเปิดปั๊ม: ตั้ง trigger รีเลย์เปิดครบ 30 วินาที เพิ่ม Turn off switch และข้อความแจ้งเตือน แล้วตั้งชื่อกฎ" style="width:85%" controls muted loop playsinline preload="none">ขั้นตอนสร้างกฎ Fail-safe - จำกัดเวลาเปิดปั๊ม: ตั้ง trigger รีเลย์เปิดครบ 30 วินาที เพิ่ม Turn off switch และข้อความแจ้งเตือน แล้วตั้งชื่อกฎ</video></p>
 <p class="ws-phase"><strong>ทดสอบการหยุดตามเวลา</strong></p>
 <ol start="6" style="counter-reset: step 5">
 <li>กดปุ่มให้ปั๊มเดินอีกครั้ง ปั๊มต้องหยุดเองที่ราว 30 วินาที พร้อมข้อความแจ้งเตือน</li>
@@ -2438,8 +2452,25 @@ body {
     setStatus();
   });
 
+  /* walkthrough videos (hooks/videos.py): play while at least half is on screen, pause when
+     scrolled away, so a page with eight clips downloads only the one being watched.
+     Readers who ask for reduced motion start them with the play button instead. */
+  function playInView(root) {
+    var vids = root.querySelectorAll("video.walkthrough");
+    if (!vids.length || !("IntersectionObserver" in window)) return;
+    if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) { var p = e.target.play(); if (p && p.catch) p.catch(function () {}); }
+        else e.target.pause();
+      });
+    }, { threshold: 0.5 });
+    vids.forEach(function (v) { io.observe(v); });
+  }
+
   function init() {
     decorate(document);
+    playInView(document);
     bindHover(document);
     addMirrors();
     store = loadStore();

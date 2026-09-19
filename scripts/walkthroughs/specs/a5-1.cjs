@@ -1,0 +1,31 @@
+const { pick, btn, type } = require('../lib.cjs');
+module.exports = {
+  id: 'a5-1-low-water',
+  title: { kicker: 'กิจกรรมที่ 5.1 · น้ำต่ำแต่ปั๊มยังเดิน', head: 'สร้างกฎหยุดปั๊มเมื่อน้ำในถังต่ำ', name: 'Fail-safe - น้ำหมด' },
+  // [worksheet step, caption, action, kind]
+  steps: [
+    [3, 'ส่วน When กด + Add trigger', btn('Add trigger'), 'click'],
+    [3, 'พิมพ์ “ลูกลอย” เพื่อค้นหา', type('ลูกลอย'), 'type'],
+    [3, 'กดที่ สวิตช์ลูกลอย (float switch)', pick('สวิตช์ลูกลอย (float switch)'), 'click'],
+    [3, 'เลือก Moisture cleared — ลูกลอยเปลี่ยนเป็น Dry', pick('Moisture cleared'), 'click'],
+    [4, 'กด + Add trigger อีกครั้ง', btn('Add trigger'), 'click'],
+    [4, 'พิมพ์ “รีเลย์” เพื่อค้นหา', type('รีเลย์'), 'type'],
+    [4, 'กดที่ รีเลย์ (relay)', pick('รีเลย์ (relay)'), 'click'],
+    [4, 'เลือก Switch turned on — มีคนสั่งปั๊มเปิด', pick('Switch turned on'), 'click'],
+    [5, 'ส่วน And if กด + Add condition', btn('Add condition'), 'click'],
+    [5, 'พิมพ์ “ลูกลอย” เพื่อค้นหา', type('ลูกลอย'), 'type'],
+    [5, 'กดที่ สวิตช์ลูกลอย (float switch)', pick('สวิตช์ลูกลอย (float switch)'), 'click'],
+    [5, 'เลือก Moisture is not detected — ลูกลอยเป็น Dry อยู่', pick('Moisture is not detected'), 'click'],
+    [6, 'ส่วน Then do กด + Add action', btn('Add action'), 'click'],
+    [6, 'พิมพ์ “รีเลย์” เพื่อค้นหา', type('รีเลย์'), 'type'],
+    [6, 'กดที่ รีเลย์ (relay)', pick('รีเลย์ (relay)'), 'click'],
+    [6, 'เลือก Turn off switch — สั่งหยุดปั๊ม', pick('Turn off switch'), 'click'],
+    [6, 'กด + Add action อีกครั้ง เพื่อเพิ่มการแจ้งเตือน', btn('Add action'), 'click'],
+    [6, 'พิมพ์ “persistent” เพื่อค้นหา', type('persistent'), 'type'],
+    [6, 'เลือก Send a persistent notification', pick('Send a persistent notification'), 'click'],
+    [6, 'กดช่อง Message', async p => p.mouse.click(935 / 1.2, 365 / 1.2), 'click'],
+    [6, 'พิมพ์ข้อความ “น้ำในถังต่ำ หยุดปั๊มแล้ว”', type('น้ำในถังต่ำ หยุดปั๊มแล้ว'), 'type'],
+    [6, 'กด Save', btn('Save'), 'click'],
+    [6, 'ตั้งชื่อ Fail-safe - น้ำหมด แล้วกด Save', async p => { await p.keyboard.press('Control+A'); await p.keyboard.type('Fail-safe - น้ำหมด'); }, 'type'],
+  ],
+};

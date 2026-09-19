@@ -12,7 +12,7 @@
 | ดูค่าจากบอร์ดโดยตรง ไม่ผ่าน Home Assistant | เบราว์เซอร์เปิด `http://` ตามด้วย IP ของบอร์ดที่จดไว้ · หรือใช้ชื่อ `http://<ชื่อบอร์ด>/` (ต้องมี `/` ปิดท้าย ไม่อย่างนั้นเบราว์เซอร์จะเอาไปค้นหาเว็บแทน) หรือ `<ชื่อบอร์ด>.local` |
 | แก้แดชบอร์ด | เปิดแดชบอร์ด → ไอคอนดินสอมุมบนขวา → + Add card → Done |
 | สร้างแดชบอร์ดใหม่ | Settings → Dashboards → + Add dashboard → New dashboard from scratch |
-| ดูกราฟย้อนหลัง | History → + Choose entity → เลือกช่วงเวลา |
+| ดูกราฟย้อนหลัง | History → Add target → เลือกช่วงเวลา |
 | ดูว่าใครสั่งอะไรเมื่อไร | Logbook |
 | สร้าง automation | Settings → Automations & scenes → + Create automation → Create new automation |
 | แก้หรือปิด automation | Settings → Automations & scenes → กดชื่อ (ใช้สวิตช์ด้านขวาเปิดหรือปิดการใช้งานกฎ) |

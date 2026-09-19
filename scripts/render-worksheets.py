@@ -92,6 +92,7 @@ FIELDS = _load_hook("fields")
 STEPS = _load_hook("steps")
 HEADINGS = _load_hook("headings")
 CALLOUTS = _load_hook("callouts")
+VIDEOS = _load_hook("videos")
 
 
 # ---------------------------------------------------------------- styles
@@ -530,7 +531,7 @@ def render_page(src: str, slug: str, combined: bool, inline: bool = False) -> di
             "pymdownx.tasklist": {"custom_checkbox": True, "clickable_checkbox": True},
         },
     )
-    body = CALLOUTS.classify(HEADINGS.number_badges(STEPS.continue_steps(md.convert(text))))
+    body = VIDEOS.walkthrough_videos(CALLOUTS.classify(HEADINGS.number_badges(STEPS.continue_steps(md.convert(text)))))
 
     prefix = f"{slug}--" if combined else ""
     if prefix:  # ids (headings, and paragraphs given one with attr_list) must stay unique once four pages share one document
@@ -548,7 +549,7 @@ def render_page(src: str, slug: str, combined: bool, inline: bool = False) -> di
         return f'<a href="{target}.html{anchor}">{inner}</a>'
 
     body = re.sub(r'<a href="([a-z0-9-]+)\.md(#[^"]*)?">(.*?)</a>', link, body, flags=re.S)
-    body = re.sub(r'(src|href)="(images/[^"]+)"',
+    body = re.sub(r'(src|href|poster)="(images/[^"]+)"',
                   lambda m: f'{m.group(1)}="{data_uri(m.group(2)) if inline else "../" + m.group(2)}"', body)
     body = body.replace("<table>", '<div class="table-wrap"><table>').replace("</table>", "</table></div>")
     body = YOUTUBE_LINE.sub(youtube_embed, body)

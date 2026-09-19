@@ -729,6 +729,16 @@ body {
   box-shadow: 0 3px 14px var(--ag-shadow);
 }
 
+/* Walkthrough clips (hooks/videos.py): framed like the screenshots, never wider than the column. */
+.md-typeset video.walkthrough {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  border-radius: 0.7em;
+  box-shadow: 0 3px 14px var(--ag-shadow);
+  background: #1e2a1f;
+}
+
 /* Shallow activity illustrations separate sections without extending the reading flow. */
 .md-typeset img.activity-banner:not(.twemoji):not(.emojione) {
   display: block;
@@ -1404,7 +1414,7 @@ body {
 <li><strong>ตรวจชื่อบอร์ด</strong> ชื่อต้องตรงกับโซนของเรา (<code>red</code> / <code>green</code> / <code>blue</code>) ถ้าไม่ตรง บอร์ดนี้จะเชื่อมต่อเครือข่ายของโซนเราไม่ได้ ให้ยกมือขอเปลี่ยนบอร์ด</li>
 <li><strong>จดชื่อและหมายเลข IP</strong> ชื่อบอร์ด <input class="fld" type="text" data-k="board.iot.name" data-size="22" size="22" autocomplete="off" spellcheck="false"> IP <input class="fld" type="text" data-k="board.iot.ip" data-size="15" size="15" autocomplete="off" spellcheck="false"> แล้วปิดหน้าต่างนี้</li>
 </ol>
-<p><img alt="หน้าจอ web.esphome.io หลังกด Connect และกดปุ่ม Reset device ในหน้าเว็บ แสดง log ของบอร์ด มีกรอบเน้นแถบ DEVICE NAME และแถบ IP ADDRESS และกรอบเน้นปุ่ม Reset device ที่มุมล่างขวา" src="../images/activity1/a1-name-ip-lookup.gif" width="60%" /></p>
+<p><img alt="หน้าจอ web.esphome.io หลังกด Connect และกดปุ่ม Reset device ในหน้าเว็บ แสดง log ของบอร์ด มีกรอบเน้นแถบ DEVICE NAME และแถบ IP ADDRESS และกรอบเน้นปุ่ม Reset device ที่มุมล่างขวา" src="../images/activity1/a1-name-ip-lookup.webp" width="60%" /></p>
 <blockquote>
 <p>ถ้าหน้าต่าง log ว่างเปล่า หรือชื่อเลื่อนผ่านไปแล้ว ให้กดปุ่ม <strong>Reset device</strong> ในหน้าเว็บอีกครั้ง <strong>อย่าถอดสาย USB และอย่ากดปุ่มบนบอร์ด</strong> สองอย่างนั้นจะตัดการเชื่อมต่อของเบราว์เซอร์ และชื่อจะไม่ขึ้น
 ถ้าเห็นชื่อบอร์ดแล้ว แต่รอครบหนึ่งนาทียังไม่เห็นหมายเลข IP แปลว่าบอร์ดต่อ WiFi ไม่ได้ ให้ตรวจสีในชื่ออีกครั้ง แล้วยกมือ</p>
@@ -2313,8 +2323,25 @@ body {
     setStatus();
   });
 
+  /* walkthrough videos (hooks/videos.py): play while at least half is on screen, pause when
+     scrolled away, so a page with eight clips downloads only the one being watched.
+     Readers who ask for reduced motion start them with the play button instead. */
+  function playInView(root) {
+    var vids = root.querySelectorAll("video.walkthrough");
+    if (!vids.length || !("IntersectionObserver" in window)) return;
+    if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) { var p = e.target.play(); if (p && p.catch) p.catch(function () {}); }
+        else e.target.pause();
+      });
+    }, { threshold: 0.5 });
+    vids.forEach(function (v) { io.observe(v); });
+  }
+
   function init() {
     decorate(document);
+    playInView(document);
     bindHover(document);
     addMirrors();
     store = loadStore();

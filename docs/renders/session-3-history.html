@@ -729,6 +729,16 @@ body {
   box-shadow: 0 3px 14px var(--ag-shadow);
 }
 
+/* Walkthrough clips (hooks/videos.py): framed like the screenshots, never wider than the column. */
+.md-typeset video.walkthrough {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  border-radius: 0.7em;
+  box-shadow: 0 3px 14px var(--ag-shadow);
+  background: #1e2a1f;
+}
+
 /* Shallow activity illustrations separate sections without extending the reading flow. */
 .md-typeset img.activity-banner:not(.twemoji):not(.emojione) {
   display: block;
@@ -1374,9 +1384,10 @@ body {
 <p class="ws-phase"><strong>เลือกข้อมูลและช่วงเวลา</strong></p>
 <ol>
 <li>เปิด <strong>History</strong> จากเมนูด้านซ้าย</li>
-<li>กด <strong>+ Choose entity</strong> แล้วเลือกความชื้นอากาศ แสง และ <strong>สวิตช์ของบอร์ดรีเลย์</strong></li>
+<li>กด <strong>Add target</strong> แล้วเลือกความชื้นอากาศ แสง และ <strong>สวิตช์ของบอร์ดรีเลย์</strong></li>
 <li>เลือกช่วงเวลาตั้งแต่เริ่มช่วงที่ 2 จนถึงปัจจุบัน กราฟแสดงได้เฉพาะช่วงที่มีข้อมูลบันทึกไว้</li>
 </ol>
+<p><video class="walkthrough" src="../images/walkthroughs/hist-1-history-graph.mp4" poster="../images/walkthroughs/hist-1-history-graph.png" aria-label="ขั้นตอนเปิดหน้า History เพิ่มความชื้นอากาศ ความสว่าง และรีเลย์ด้วย Add target แล้วเลือกช่วงเวลา" style="width:85%" controls muted loop playsinline preload="none">ขั้นตอนเปิดหน้า History เพิ่มความชื้นอากาศ ความสว่าง และรีเลย์ด้วย Add target แล้วเลือกช่วงเวลา</video></p>
 <!-- Recorder persists history in the database: https://www.home-assistant.io/integrations/recorder/ -->
 
 <p><a class="ws-back" href="#hist">↑ กลับไปที่ใบงาน</a></p>
@@ -2244,8 +2255,25 @@ body {
     setStatus();
   });
 
+  /* walkthrough videos (hooks/videos.py): play while at least half is on screen, pause when
+     scrolled away, so a page with eight clips downloads only the one being watched.
+     Readers who ask for reduced motion start them with the play button instead. */
+  function playInView(root) {
+    var vids = root.querySelectorAll("video.walkthrough");
+    if (!vids.length || !("IntersectionObserver" in window)) return;
+    if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) { var p = e.target.play(); if (p && p.catch) p.catch(function () {}); }
+        else e.target.pause();
+      });
+    }, { threshold: 0.5 });
+    vids.forEach(function (v) { io.observe(v); });
+  }
+
   function init() {
     decorate(document);
+    playInView(document);
     bindHover(document);
     addMirrors();
     store = loadStore();

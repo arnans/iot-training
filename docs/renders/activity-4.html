@@ -938,6 +938,11 @@ body {
 
 .ws-help:hover, .ws-help:focus-visible { background: var(--ag-tomato); color: #fff; outline: none; }
 
+/* while this team's own call is open the same button withdraws it: muted, so it never reads
+   as a second way to ask (extra.js swaps the label) */
+.ws-help.is-open { border-color: var(--ag-marigold-deep); color: var(--ag-marigold-deep); }
+.ws-help.is-open:hover, .ws-help.is-open:focus-visible { background: var(--ag-marigold-deep); color: #fff; }
+
 #ws-bar .ws-composer {
   position: relative;
   flex: 1 1 14rem;
@@ -1370,7 +1375,7 @@ body {
 <h1 id="กจกรรมท-4--ตงกฎใหระบบทำงานอตโนมต-think">กิจกรรมที่ 4 — ตั้งกฎให้ระบบทำงานอัตโนมัติ (Think)</h1>
 <p><strong>ให้โปรแกรมตัดสินใจและสั่งงานแทนเรา</strong></p>
 <p>ช่วงนี้เราจะศึกษาหลักการ Hysteresis ฝึกเพิ่มเงื่อนไขเวลา จำลองปัญหาและเพิ่มกฎป้องกันความเสียหาย (fail-safe) ที่มีประโยชน์สำหรับหน้างานจริง</p>
-<p><img alt="" class="activity-banner" decoding="async" height="267" loading="lazy" src="../images/activity-banners/activity-04-irrigation.webp" width="1600" /></p>
+<p><img alt="ระบบน้ำหยดทำงานในแปลงผัก ขณะที่เกษตรกรเก็บผลผลิต" class="activity-banner" decoding="async" height="267" loading="lazy" src="../images/activity-banners/activity-04-irrigation.webp" width="1600" /></p>
 <p><strong>70 นาที</strong> รวมต่อปั๊มแทนหลอดไฟ</p>
 <p><strong>อุปกรณ์ที่ใช้</strong> บอร์ด GoGo-IoT, บอร์ดรีเลย์, หลอด LED 12V ที่ต่ออยู่, <strong>ปั๊มตู้ปลา 12V, สวิตช์ลูกลอยและแก้วน้ำจากช่วงที่ 1</strong>, ไขควง, แล็ปท็อป</p>
 <p><img alt="" class="activity-divider" decoding="async" height="64" loading="lazy" src="../images/activity-dividers/farmhouse.webp" width="1200" /></p>
@@ -1378,14 +1383,14 @@ body {
 <div class="ws-tasks">
 <p>คลิกหัวข้อเพื่อดูวิธีทำ ทำเสร็จแล้วทำเครื่องหมายและบันทึกผล กรอกที่นี่หรือในขั้นตอนด้านล่างก็ได้</p>
 <ul class="task-list">
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> <strong><a href="#a4-1">4.1 สังเกตปัญหาไฟกะพริบ</a></strong> เกณฑ์เปิดไฟจากช่วงที่ 1 ต่ำกว่า <input class="fld" type="text" data-k="s1.light.on" data-size="4" size="4" inputmode="decimal" autocomplete="off" spellcheck="false"> ซึ่งเท่ากับเกณฑ์ปิด ขยับมือช้า ๆ อยู่ใกล้เกณฑ์ 1 นาที ไฟติดและดับรวมกี่ครั้ง <input class="fld" type="text" data-k="s2.chatter.before" data-size="3" size="3" inputmode="decimal" autocomplete="off" spellcheck="false"></li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> <strong><a href="#a4-2">4.2 แก้ไขด้วยการแยกเกณฑ์เปิดและปิด</a></strong> ปรับค่าเกณฑ์ปิดไฟ เพื่อให้มีช่องว่างระหว่างเกณฑ์เปิด ค่าเกณฑ์ปิดใหม่ที่เลือกคือ <input class="fld" type="text" data-k="s2.light.off" data-size="4" size="4" inputmode="decimal" autocomplete="off" spellcheck="false"> แล้วไฟติดดับเหลือกี่ครั้ง <input class="fld" type="text" data-k="s2.chatter.after" data-size="3" size="3" inputmode="decimal" autocomplete="off" spellcheck="false"> เงื่อนไข 3 ข้อที่ต้องผ่าน: ติดดับไม่เกิน 2 ครั้งใน 1 นาที · ครอบเซนเซอร์แล้วไฟติด · เอามือออกแล้วไฟดับ</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> <strong><a href="#a4-3">4.3 เพิ่มการจำกัดช่วงเวลาเปิดไฟ</a></strong> ตั้งช่วงเวลาที่ไม่ครอบคลุมเวลาปัจจุบัน แล้วลองครอบเซนเซอร์ ถ้าไฟไม่ติด ให้เปิด <strong>Traces</strong> ดูว่ารอบล่าสุดหยุดที่ส่วนใด <input class="fld" type="text" data-k="s2.time.trace" data-size="16" size="16" autocomplete="off" spellcheck="false"></li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> <strong><a href="#a4-3b">4.4 เพิ่มเหตุการณ์เวลา เพื่อให้ไฟเปิดได้แม้ฟ้ามืดก่อนเวลาที่กำหนด</a></strong> ทำนายผลก่อนแก้กฎ ถ้าถึงเวลา 18.30 น. แล้วแสงเพิ่งมืดหลังจากนั้น ไฟจะติดหรือไม่ <span class="fld-radio" data-k="s2.time.dark_after"><label><input class="fld" type="radio" name="s2.time.dark_after" data-k="s2.time.dark_after" value="ติด"> ติด</label><label><input class="fld" type="radio" name="s2.time.dark_after" data-k="s2.time.dark_after" value="ไม่ติด"> ไม่ติด</label></span> · ถ้าแสงมืดก่อน 18.30 น. แล้วพอถึงเวลา ไฟจะติดหรือไม่ <span class="fld-radio" data-k="s2.time.dark_before"><label><input class="fld" type="radio" name="s2.time.dark_before" data-k="s2.time.dark_before" value="ติด"> ติด</label><label><input class="fld" type="radio" name="s2.time.dark_before" data-k="s2.time.dark_before" value="ไม่ติด"> ไม่ติด</label></span> · หลังเพิ่ม trigger เวลาแล้ว ถ้าแสงมืดก่อนเวลา พอถึงเวลาไฟจะติดหรือไม่ <span class="fld-radio" data-k="s2.time.fixed"><label><input class="fld" type="radio" name="s2.time.fixed" data-k="s2.time.fixed" value="ติด"> ติด</label><label><input class="fld" type="radio" name="s2.time.fixed" data-k="s2.time.fixed" value="ไม่ติด"> ไม่ติด</label></span> · ทำไมยังต้องตรวจค่าความสว่างในส่วน <strong>And if</strong> อีก <input class="fld" type="text" data-k="s2.time.why" data-size="30" size="30" autocomplete="off" spellcheck="false"></li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> <strong><a href="#a4-1">4.1 สังเกตปัญหาไฟกะพริบ</a></strong> ค่าเกณฑ์ความสว่างจากข้อ 3.3 (กรอกตัวเลข) <input class="fld" type="text" data-k="s1.light.on" data-size="4" size="4" inputmode="decimal" autocomplete="off" spellcheck="false"> lux ตรวจว่าใช้ตัวเลขนี้ทั้งช่อง Below ของกฎเปิดไฟและช่อง Above ของกฎปิดไฟ ขยับมือช้า ๆ อยู่ใกล้เกณฑ์ 1 นาที ไฟเปลี่ยนจากดับเป็นติดหรือติดเป็นดับรวมกี่ครั้ง (นับการเปลี่ยนแต่ละครั้ง ไม่ใช่นับเป็นรอบ) <input class="fld" type="text" data-k="s2.chatter.before" data-size="3" size="3" inputmode="decimal" autocomplete="off" spellcheck="false"> ครั้ง</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> <strong><a href="#a4-2">4.2 แก้ไขด้วยการแยกเกณฑ์เปิดและปิด</a></strong> ปรับค่าเกณฑ์ปิดไฟ เพื่อให้มีช่องว่างระหว่างเกณฑ์เปิด ค่าเกณฑ์ปิดใหม่ที่เลือกคือ <input class="fld" type="text" data-k="s2.light.off" data-size="4" size="4" inputmode="decimal" autocomplete="off" spellcheck="false"> lux หลังปรับเกณฑ์แล้ว ไฟเปลี่ยนสถานะกี่ครั้งใน 1 นาที <input class="fld" type="text" data-k="s2.chatter.after" data-size="3" size="3" inputmode="decimal" autocomplete="off" spellcheck="false"> ครั้ง เงื่อนไข 3 ข้อที่ต้องผ่าน: ติดดับไม่เกิน 2 ครั้งใน 1 นาที · ครอบเซนเซอร์แล้วไฟติด · เอามือออกแล้วไฟดับ</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> <strong><a href="#a4-3">4.3 เพิ่มการจำกัดช่วงเวลาเปิดไฟ</a></strong> ตั้งช่วงเวลาที่ไม่ครอบคลุมเวลาปัจจุบัน แล้วลองครอบเซนเซอร์ ถ้าไฟไม่ติด ให้เปิด <strong>Traces</strong> บันทึกชื่อส่วนหรือเงื่อนไขที่ทำให้กฎไม่สั่งเปิดไฟ (หากกฎไม่เริ่ม ให้เขียนว่า “ไม่พบรอบการทำงาน”) <input class="fld" type="text" data-k="s2.time.trace" data-size="30" size="30" autocomplete="off" spellcheck="false"></li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> <strong><a href="#a4-3b">4.4 เพิ่มเหตุการณ์เวลา เพื่อให้ไฟเปิดได้แม้ฟ้ามืดก่อนเวลาที่กำหนด</a></strong> ทำนายผลก่อนแก้กฎ ถ้าถึงเวลา 18.30 น. แล้วแสงเพิ่งมืดหลังจากนั้น ไฟจะติดหรือไม่ <span class="fld-radio" data-k="s2.time.dark_after"><label><input class="fld" type="radio" name="s2.time.dark_after" data-k="s2.time.dark_after" value="ติด"> ติด</label><label><input class="fld" type="radio" name="s2.time.dark_after" data-k="s2.time.dark_after" value="ไม่ติด"> ไม่ติด</label></span> · ถ้าแสงมืดก่อน 18.30 น. แล้วพอถึงเวลา ไฟจะติดหรือไม่ <span class="fld-radio" data-k="s2.time.dark_before"><label><input class="fld" type="radio" name="s2.time.dark_before" data-k="s2.time.dark_before" value="ติด"> ติด</label><label><input class="fld" type="radio" name="s2.time.dark_before" data-k="s2.time.dark_before" value="ไม่ติด"> ไม่ติด</label></span> · ผลที่สังเกตหลังเพิ่ม trigger เวลา: ถ้าครอบให้มืดค้างไว้ก่อนเวลา พอถึงเวลาแล้วไฟติดหรือไม่ <span class="fld-radio" data-k="s2.time.fixed"><label><input class="fld" type="radio" name="s2.time.fixed" data-k="s2.time.fixed" value="ติด"> ติด</label><label><input class="fld" type="radio" name="s2.time.fixed" data-k="s2.time.fixed" value="ไม่ติด"> ไม่ติด</label></span> · ทำไมยังต้องตรวจค่าความสว่างในส่วน <strong>And if</strong> อีก <input class="fld" type="text" data-k="s2.time.why" data-size="30" size="30" autocomplete="off" spellcheck="false"></li>
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> <strong><a href="#a4-4">4.5 ลองเพิ่มการแจ้งเตือน</a></strong> ให้กฎ <code>มืด-เปิดไฟ</code> ทำงาน แล้วดูว่ามีข้อความที่ไอคอนกระดิ่งหรือไม่</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> <strong><a href="#a4-5">4.6 ต่อปั๊มแทนหลอดไฟ</a></strong> ปิดกฎ สั่ง Off และถอดปลั๊กก่อนเปลี่ยนสาย ต่อปั๊มแล้วสั่ง On–Off ทดสอบ ปั๊มเดินแห้ง ไม่ต้องต่อสายยางหรือใช้น้ำ · ต่อปั๊มเมื่อ <input class="fld" type="text" data-k="s2.pump_back_t" data-size="5" size="5" autocomplete="off" spellcheck="false"> น.</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> <strong><a href="#a4-5b">4.7 สร้างกฎรดน้ำ</a></strong> ความชื้นอากาศในห้อง = <input class="fld" type="text" data-k="s1.hum.room" data-size="6" size="6" inputmode="decimal" autocomplete="off" spellcheck="false"> % ค่าเกณฑ์ เปิดปั๊มเมื่อความชื้นต่ำกว่า <input class="fld" type="text" data-k="s2.hum.on" data-size="4" size="4" inputmode="decimal" autocomplete="off" spellcheck="false"> % ปิดปั๊มเมื่อสูงกว่า <input class="fld" type="text" data-k="s2.hum.off" data-size="4" size="4" inputmode="decimal" autocomplete="off" spellcheck="false"> %</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> <strong><a href="#a4-6">4.8 สร้างโหมด Auto และ Manual</a></strong> สร้าง Toggle <code>Pump Auto Mode</code> แสดงบนแดชบอร์ด และเพิ่มเป็นเงื่อนไขของกฎ <code>รดน้ำ - เปิดปั๊ม</code> · ถ้าปิดโหมดแล้วความชื้นลดต่ำกว่าเกณฑ์ ปั๊มจะเริ่มเองหรือไม่ <span class="fld-radio" data-k="s2.mode.off"><label><input class="fld" type="radio" name="s2.mode.off" data-k="s2.mode.off" value="ไม่เริ่ม"> ไม่เริ่ม</label><label><input class="fld" type="radio" name="s2.mode.off" data-k="s2.mode.off" value="เริ่ม"> เริ่ม</label></span> · ถ้าเปิดโหมดแล้วทดสอบซ้ำ ปั๊มจะเริ่มเองหรือไม่ <span class="fld-radio" data-k="s2.mode.on"><label><input class="fld" type="radio" name="s2.mode.on" data-k="s2.mode.on" value="เริ่ม"> เริ่ม</label><label><input class="fld" type="radio" name="s2.mode.on" data-k="s2.mode.on" value="ไม่เริ่ม"> ไม่เริ่ม</label></span> · ก่อนจบให้ <code>Pump Auto Mode</code> และกฎรดน้ำสองกฎ <strong>เปิดอยู่</strong> กฎไฟสวนกับกฎตั้งเวลา <strong>ปิดไว้</strong></li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> <strong><a href="#a4-5">4.6 ต่อปั๊มแทนหลอดไฟ</a></strong> ปิดกฎ สั่ง Off และถอดปลั๊กก่อนเปลี่ยนสาย ต่อปั๊มแล้วสั่ง On–Off ทดสอบ ปั๊มเดินแห้ง ไม่ต้องต่อสายยางหรือใช้น้ำ · เวลาที่เริ่มใช้ปั๊มแทนหลอดไฟ (เช่น 10:30) <input class="fld" type="text" data-k="s2.pump_back_t" data-size="5" size="5" autocomplete="off" spellcheck="false"> น.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> <strong><a href="#a4-5b">4.7 สร้างกฎรดน้ำ</a></strong> ค่าความชื้นอากาศในห้องที่บันทึกจากกิจกรรมที่ 1 <input class="fld" type="text" data-k="s1.hum.room" data-size="6" size="6" inputmode="decimal" autocomplete="off" spellcheck="false"> % (ทบทวนค่าเดิม ไม่กรอกเกณฑ์ในช่องนี้) บันทึกเกณฑ์ที่ตั้งในกฎ: เปิดปั๊มเมื่อความชื้นต่ำกว่า <input class="fld" type="text" data-k="s2.hum.on" data-size="4" size="4" inputmode="decimal" autocomplete="off" spellcheck="false"> % ปิดปั๊มเมื่อสูงกว่า <input class="fld" type="text" data-k="s2.hum.off" data-size="4" size="4" inputmode="decimal" autocomplete="off" spellcheck="false"> %</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> <strong><a href="#a4-6">4.8 สร้างโหมด Auto และ Manual</a></strong> สร้าง Toggle <code>Pump Auto Mode</code> แสดงบนแดชบอร์ด และเพิ่มเป็นเงื่อนไขของกฎ <code>รดน้ำ - เปิดปั๊ม</code> · ผลที่สังเกตเมื่อปิดโหมดและทดสอบให้ความชื้นลดข้ามเกณฑ์: ปั๊มเริ่มเองหรือไม่ <span class="fld-radio" data-k="s2.mode.off"><label><input class="fld" type="radio" name="s2.mode.off" data-k="s2.mode.off" value="ไม่เริ่ม"> ไม่เริ่ม</label><label><input class="fld" type="radio" name="s2.mode.off" data-k="s2.mode.off" value="เริ่ม"> เริ่ม</label></span> · ผลที่สังเกตเมื่อเปิดโหมดแล้วทดสอบซ้ำ: ปั๊มเริ่มเองหรือไม่ <span class="fld-radio" data-k="s2.mode.on"><label><input class="fld" type="radio" name="s2.mode.on" data-k="s2.mode.on" value="เริ่ม"> เริ่ม</label><label><input class="fld" type="radio" name="s2.mode.on" data-k="s2.mode.on" value="ไม่เริ่ม"> ไม่เริ่ม</label></span> · ก่อนจบให้ <code>Pump Auto Mode</code> และกฎรดน้ำสองกฎ <strong>เปิดอยู่</strong> กฎไฟสวนกับกฎตั้งเวลา <strong>ปิดไว้</strong></li>
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> <strong><a href="#a4-q">คำถามท้ายกิจกรรม</a></strong> เกณฑ์เปิดและเกณฑ์ปิดของระบบไฟสวนคือเท่าไร ทำไมสองค่านี้ต้องต่างกัน และเราเอาบทเรียนนี้ไปใช้กับระบบรดน้ำอย่างไร <textarea class="fld fld-ta" data-k="s2.q4" rows="2"></textarea></li>
 </ul>
 </div>
@@ -1393,13 +1398,17 @@ body {
 <h3 id="a4-1"><span class="sub-num">4.1</span>สังเกตปัญหาไฟกะพริบ</h3>
 <p class="ws-phase"><strong>เตรียมทดสอบ</strong></p>
 <ol>
-<li>ใช้หลอด LED แทนไฟสวน เปิดกฎ <code>มืด-เปิดไฟ</code> และ <code>สว่าง-ปิดไฟ</code> ไว้ทั้งคู่ ส่วนกฎ <code>ปิดไฟตามเวลา</code> (ถ้าสร้างไว้) ต้องปิดไว้ ขณะนี้เกณฑ์เปิดและปิดเป็นค่าเดียวกัน: <input class="fld" type="text" data-k="s1.light.on" data-size="4" size="4" inputmode="decimal" autocomplete="off" spellcheck="false"> หันหลอดออกจากเซนเซอร์ก่อนทดสอบ</li>
+<li>
+<p>ใช้หลอด LED แทนไฟสวน เปิดกฎ <code>มืด-เปิดไฟ</code> และ <code>สว่าง-ปิดไฟ</code> ไว้ทั้งคู่ ส่วนกฎ <code>ปิดไฟตามเวลา</code> (ถ้าสร้างไว้) ต้องปิดไว้ ตรวจว่าค่า Below ของกฎเปิดไฟและค่า Above ของกฎปิดไฟยังเป็นตัวเลขเดียวกันกับที่เลือกในข้อ 3.3</p>
+<p><strong>ค่าเกณฑ์ความสว่างจากข้อ 3.3 (กรอกตัวเลข)</strong> <input class="fld" type="text" data-k="s1.light.on" data-size="4" size="4" inputmode="decimal" autocomplete="off" spellcheck="false"> lux</p>
+<p>หากช่องนี้มีค่าอยู่แล้ว ให้ตรวจเทียบกับกฎทั้งสองโดยไม่ต้องกรอกใหม่ จากนั้นหันหลอดออกจากเซนเซอร์ก่อนทดสอบ</p>
+</li>
 </ol>
 <p class="ws-phase"><strong>สังเกตและนับการเปิด–ปิด</strong></p>
 <ol start="2" style="counter-reset: step 1">
 <li>เลื่อนมือจนค่าแสงอยู่ใกล้เกณฑ์ แล้วขยับมือขึ้นลงช้า ๆ</li>
 <li>ให้สมาชิกอีกคนจับเวลา 1 นาที นับทุกครั้งที่ไฟเปลี่ยนจากติดเป็นดับหรือดับเป็นติด</li>
-<li>บันทึกก่อนแก้ <input class="fld" type="text" data-k="s2.chatter.before" data-size="3" size="3" inputmode="decimal" autocomplete="off" spellcheck="false"> ครั้งใน 1 นาที</li>
+<li>บันทึกจำนวนครั้งที่ไฟเปลี่ยนสถานะก่อนแยกเกณฑ์ <input class="fld" type="text" data-k="s2.chatter.before" data-size="3" size="3" inputmode="decimal" autocomplete="off" spellcheck="false"> ครั้งใน 1 นาที (ติด→ดับนับ 1 ครั้ง และดับ→ติดนับอีก 1 ครั้ง)</li>
 </ol>
 <blockquote>
 <p><strong>Chattering</strong> คือการเปิด–ปิดถี่เมื่อค่าแกว่งข้ามเกณฑ์ไปมา ทำให้รีเลย์และอุปกรณ์สึกหรอเร็ว</p>
@@ -1415,7 +1424,7 @@ body {
 <p class="ws-phase"><strong>ทดสอบและบันทึกผล</strong></p>
 <ol start="2" style="counter-reset: step 1">
 <li>กด <strong>Save</strong> แล้วขยับมือแบบเดิม 1 นาที</li>
-<li>บันทึกเกณฑ์ปิด <input class="fld" type="text" data-k="s2.light.off" data-size="4" size="4" inputmode="decimal" autocomplete="off" spellcheck="false"> และจำนวนครั้งหลังแก้ <input class="fld" type="text" data-k="s2.chatter.after" data-size="3" size="3" inputmode="decimal" autocomplete="off" spellcheck="false"> ครั้ง</li>
+<li>บันทึกตัวเลข Above ที่ตั้งในกฎปิดไฟ <input class="fld" type="text" data-k="s2.light.off" data-size="4" size="4" inputmode="decimal" autocomplete="off" spellcheck="false"> lux และจำนวนครั้งที่ไฟเปลี่ยนสถานะหลังแยกเกณฑ์ <input class="fld" type="text" data-k="s2.chatter.after" data-size="3" size="3" inputmode="decimal" autocomplete="off" spellcheck="false"> ครั้งใน 1 นาที</li>
 </ol>
 <p>การเว้นระยะระหว่างเกณฑ์เปิดกับเกณฑ์ปิดเรียกว่า <strong>hysteresis</strong> ถ้าเราแยกเกณฑ์ไว้แบบนี้ แล้วค่าอยู่ระหว่างสองเกณฑ์ อุปกรณ์จะคงสถานะเดิม</p>
 <p class="ws-phase"><strong>ตรวจการทำงานหลังแก้</strong></p>
@@ -1446,7 +1455,7 @@ body {
 </blockquote>
 <p class="ws-phase"><strong>บันทึกผล</strong></p>
 <ol start="4" style="counter-reset: step 3">
-<li>รอบล่าสุดใน Traces หยุดที่ส่วนใด <input class="fld" type="text" data-k="s2.time.trace" data-size="16" size="16" autocomplete="off" spellcheck="false"></li>
+<li>ในการทดสอบนอกช่วงเวลา ส่วนใดใน Traces ที่ทำให้กฎไม่สั่งเปิดไฟ (ระบุชื่อส่วนหรือเงื่อนไขที่เห็น หากกฎไม่เริ่ม ให้เขียนว่า “ไม่พบรอบการทำงาน”) <input class="fld" type="text" data-k="s2.time.trace" data-size="30" size="30" autocomplete="off" spellcheck="false"></li>
 </ol>
 <p><a class="ws-back" href="#a4">↑ กลับไปที่ใบงาน</a></p>
 <p><img alt="" class="activity-divider" decoding="async" height="64" loading="lazy" src="../images/activity-dividers/farmhouse.webp" width="1200" /></p>
@@ -1454,8 +1463,8 @@ body {
 <p>ถ้าเราใช้ trigger ที่เริ่มกฎเมื่อค่าแสงข้ามเกณฑ์ แล้วฟ้ามืดก่อนถึงเวลาที่กำหนด กฎจะเริ่มแต่ไม่ผ่านเงื่อนไขเวลา พอถึงเวลาไฟก็ยังไม่ติด เพราะค่าแสงข้ามเกณฑ์ไปแล้วและไม่มีเหตุการณ์ใหม่มาเริ่มกฎ เราจึงต้องเพิ่ม trigger เวลา แล้วตรวจค่าแสงตอนนั้นด้วย</p>
 <p><strong>ทำนายผลก่อนแก้กฎ</strong> ลองพิจารณากฎที่มีอยู่ในขณะนี้ โดยสมมติว่าเรากำหนดให้ไฟเปิดได้ระหว่าง 18.30 น. ถึง 07.30 น. ของวันถัดไป</p>
 <ol>
-<li>ถ้าถึงเวลา 18.30 น. แล้วแสงเพิ่งมืดหลังจากนั้น ไฟจะติดหรือไม่ <span class="fld-radio" data-k="s2.time.dark_after"><label><input class="fld" type="radio" name="s2.time.dark_after" data-k="s2.time.dark_after" value="ติด"> ติด</label><label><input class="fld" type="radio" name="s2.time.dark_after" data-k="s2.time.dark_after" value="ไม่ติด"> ไม่ติด</label></span> เพราะ <input class="fld" type="text" data-k="s2.time.dark_after_why" data-size="24" size="24" autocomplete="off" spellcheck="false"></li>
-<li>ถ้าแสงมืดก่อน 18.30 น. แล้วพอถึงเวลา ไฟจะติดหรือไม่ <span class="fld-radio" data-k="s2.time.dark_before"><label><input class="fld" type="radio" name="s2.time.dark_before" data-k="s2.time.dark_before" value="ติด"> ติด</label><label><input class="fld" type="radio" name="s2.time.dark_before" data-k="s2.time.dark_before" value="ไม่ติด"> ไม่ติด</label></span> เพราะ <input class="fld" type="text" data-k="s2.time.dark_before_why" data-size="24" size="24" autocomplete="off" spellcheck="false"></li>
+<li>ถ้าถึงเวลา 18.30 น. แล้วแสงเพิ่งมืดหลังจากนั้น ไฟจะติดหรือไม่ <span class="fld-radio" data-k="s2.time.dark_after"><label><input class="fld" type="radio" name="s2.time.dark_after" data-k="s2.time.dark_after" value="ติด"> ติด</label><label><input class="fld" type="radio" name="s2.time.dark_after" data-k="s2.time.dark_after" value="ไม่ติด"> ไม่ติด</label></span> อธิบายเหตุผลจาก trigger และเงื่อนไขเวลา <input class="fld" type="text" data-k="s2.time.dark_after_why" data-size="24" size="24" autocomplete="off" spellcheck="false"></li>
+<li>ถ้าแสงมืดก่อน 18.30 น. แล้วพอถึงเวลา ไฟจะติดหรือไม่ <span class="fld-radio" data-k="s2.time.dark_before"><label><input class="fld" type="radio" name="s2.time.dark_before" data-k="s2.time.dark_before" value="ติด"> ติด</label><label><input class="fld" type="radio" name="s2.time.dark_before" data-k="s2.time.dark_before" value="ไม่ติด"> ไม่ติด</label></span> อธิบายเหตุผลจาก trigger และเงื่อนไขเวลา <input class="fld" type="text" data-k="s2.time.dark_before_why" data-size="24" size="24" autocomplete="off" spellcheck="false"></li>
 </ol>
 <p>เพื่อให้ไฟเปิดได้ในกรณีที่ฟ้ามืดก่อนเวลา เราจึงต้องเพิ่ม trigger อีกข้อให้เริ่มกฎเมื่อถึงเวลา 18.30 น.</p>
 <p class="ws-phase"><strong>เพิ่มเหตุการณ์เวลาและเงื่อนไขแสง</strong></p>
@@ -1473,7 +1482,7 @@ body {
 </ol>
 <p class="ws-phase"><strong>บันทึกผล</strong></p>
 <ol start="9" style="counter-reset: step 8">
-<li>ถ้าเพิ่ม trigger เวลาแล้วแสงมืดก่อนเวลาที่กำหนด พอถึงเวลาไฟติดหรือไม่ <span class="fld-radio" data-k="s2.time.fixed"><label><input class="fld" type="radio" name="s2.time.fixed" data-k="s2.time.fixed" value="ติด"> ติด</label><label><input class="fld" type="radio" name="s2.time.fixed" data-k="s2.time.fixed" value="ไม่ติด"> ไม่ติด</label></span></li>
+<li>ผลที่สังเกตหลังเพิ่ม trigger เวลา: เมื่อครอบเซนเซอร์ให้มืดค้างไว้ก่อนถึงเวลาเปิด พอถึงเวลาแล้วไฟติดหรือไม่ <span class="fld-radio" data-k="s2.time.fixed"><label><input class="fld" type="radio" name="s2.time.fixed" data-k="s2.time.fixed" value="ติด"> ติด</label><label><input class="fld" type="radio" name="s2.time.fixed" data-k="s2.time.fixed" value="ไม่ติด"> ไม่ติด</label></span></li>
 </ol>
 <blockquote>
 <p>หลาย trigger หมายถึงเกิดเหตุการณ์ใดเหตุการณ์หนึ่งก็เริ่มกฎได้ แต่ condition ทุกข้อยังต้องเป็นจริง</p>
@@ -1517,7 +1526,7 @@ body {
 <ol start="5" style="counter-reset: step 4">
 <li>เสียบอะแดปเตอร์ รอให้บอร์ดเชื่อมต่อ สถานะลูกลอยต้องแสดง <strong>Wet</strong></li>
 <li>สั่งปั๊ม <strong>On</strong> ประมาณ 10 วินาที แล้ว <strong>Off</strong> ฟังเสียงและแตะตัวปั๊ม ปั๊มต้องเดินแล้วหยุดตามคำสั่ง</li>
-<li>บันทึกเวลาปัจจุบัน <input class="fld" type="text" data-k="s2.pump_back_t" data-size="5" size="5" autocomplete="off" spellcheck="false"> น. เดี๋ยวจะใช้แยกแยะเหตุการณ์ใน Log เมื่ออ่านกราฟในกิจกรรมช่วงที่ 3</li>
+<li>บันทึกเวลาที่เริ่มใช้ปั๊มแทนหลอดไฟ โดยเขียนแบบ 24 ชั่วโมง เช่น 10:30 <input class="fld" type="text" data-k="s2.pump_back_t" data-size="5" size="5" autocomplete="off" spellcheck="false"> น. เราจะใช้เวลานี้แยกช่วงที่รีเลย์สั่งหลอดไฟออกจากช่วงที่สั่งปั๊มเมื่ออ่านกราฟในช่วงที่ 3</li>
 </ol>
 <blockquote>
 <p>ปั๊มเดินแห้งได้ครั้งละไม่นาน ทดสอบเสร็จให้สั่ง <strong>Off</strong> ทันที และไม่ปล่อยให้เดินทิ้งไว้เกิน 1 นาที
@@ -1527,10 +1536,10 @@ body {
 <p><a class="ws-back" href="#a4">↑ กลับไปที่ใบงาน</a></p>
 <p><img alt="" class="activity-divider" decoding="async" height="96" loading="lazy" src="../images/activity-dividers/sprinklers.webp" width="1200" /></p>
 <h3 id="a4-5b"><span class="sub-num">4.7</span>สร้างกฎรดน้ำ</h3>
-<p><strong>ใช้ความชื้นอากาศจำลองค่าความชื้นดิน</strong> ใช้ลมปากเพิ่มค่าความชื้นเพื่อจำลองดินเปียก </p>
+<p><strong>ใช้ความชื้นอากาศจำลองค่าความชื้นดิน</strong> ใช้ลมปากเพิ่มค่าความชื้นเพื่อจำลองดินเปียก</p>
 <p class="ws-phase"><strong>ตรวจค่าก่อนเลือกเกณฑ์</strong></p>
 <ol>
-<li>เลือกค่าเกณฑ์ที่แยกระหว่างดินแห้งกับดินเปียก ค่าที่เลือก = <input class="fld" type="text" data-k="s1.hum.room" data-size="6" size="6" inputmode="decimal" autocomplete="off" spellcheck="false"> % </li>
+<li>ทบทวนค่าความชื้นอากาศในห้องที่บันทึกจากกิจกรรมที่ 1: <input class="fld" type="text" data-k="s1.hum.room" data-size="6" size="6" inputmode="decimal" autocomplete="off" spellcheck="false"> % ช่องนี้เป็นค่าที่วัดได้ ไม่ใช่เกณฑ์เปิดปั๊ม หากมีคำตอบแล้วไม่ต้องกรอกใหม่ จากนั้นดูค่าปัจจุบันในหน้าอุปกรณ์ เพื่อใช้เลือกเกณฑ์เปิดและปิดในขั้นตอนถัดไป</li>
 </ol>
 <p class="ws-phase"><strong>สร้างกฎเปิด–ปิดปั๊ม</strong></p>
 <ol start="2" style="counter-reset: step 1">
@@ -1546,7 +1555,7 @@ body {
 </ol>
 <p class="ws-phase"><strong>บันทึกผล</strong></p>
 <ol start="7" style="counter-reset: step 6">
-<li>ลองแยกค่าเกณฑ์ความชื้นอากาศที่ใช้เปิดและปิดปั๊ม ตามหลักการ Hysteresis เปิดปั๊มเมื่อต่ำกว่า <input class="fld" type="text" data-k="s2.hum.on" data-size="4" size="4" inputmode="decimal" autocomplete="off" spellcheck="false"> % ปิดปั๊มเมื่อสูงกว่า <input class="fld" type="text" data-k="s2.hum.off" data-size="4" size="4" inputmode="decimal" autocomplete="off" spellcheck="false"> % </li>
+<li>ลองแยกค่าเกณฑ์ความชื้นอากาศที่ใช้เปิดและปิดปั๊ม ตามหลักการ Hysteresis เปิดปั๊มเมื่อต่ำกว่า <input class="fld" type="text" data-k="s2.hum.on" data-size="4" size="4" inputmode="decimal" autocomplete="off" spellcheck="false"> % ปิดปั๊มเมื่อสูงกว่า <input class="fld" type="text" data-k="s2.hum.off" data-size="4" size="4" inputmode="decimal" autocomplete="off" spellcheck="false"> %</li>
 </ol>
 <p><a class="ws-back" href="#a4">↑ กลับไปที่ใบงาน</a></p>
 <p><img alt="" class="activity-divider" decoding="async" height="64" loading="lazy" src="../images/activity-dividers/farmhouse.webp" width="1200" /></p>
@@ -1589,7 +1598,7 @@ body {
 <li>ก่อนทำกิจกรรมถัดไป ให้ <code>Pump Auto Mode</code> <strong>เปิดอยู่</strong> กฎรดน้ำสองกฎ <strong>เปิดอยู่</strong> และกฎไฟสวนกับกฎตั้งเวลา <strong>ปิดไว้</strong></li>
 </ol>
 <p><a class="ws-back" href="#a4">↑ กลับไปที่ใบงาน</a></p>
-<p id="a4-q"><strong>คำถามท้ายกิจกรรม</strong> เรานำหลักการ Hysteresis ไปใช้กับระบบรดน้ำนี้ได้อย่างไรบ้าง</p>
+<p id="a4-q"><strong>คำถามท้ายกิจกรรม</strong> เกณฑ์เปิดและเกณฑ์ปิดของระบบไฟสวนคือเท่าไร ทำไมสองค่านี้ต้องต่างกัน และเราเอาบทเรียนนี้ไปใช้กับระบบรดน้ำอย่างไร</p>
 <textarea class="fld fld-ta" data-k="s2.q4" rows="2"></textarea><nav class="ws-pager" aria-label="หน้าก่อนหน้าและถัดไป"><a class="ws-prev" href="activity-3.html"><span class="ws-pager__k">← ก่อนหน้า</span><span class="ws-pager__t">กิจกรรม 3 · สร้างกฎควบคุมระบบ (Logic)</span></a><a class="ws-next" href="activity-5.html"><span class="ws-pager__k">ถัดไป →</span><span class="ws-pager__t">กิจกรรม 5 · จำลองปัญหาและป้องกัน (Failure lab)</span></a></nav>
 <footer class="ws-disclosure">เอกสารนี้เรียบเรียงขึ้นด้วย AI (Fable 5.1 และ GPT-6 Astra) ภายใต้การกำกับอย่างใกล้ชิดของผู้จัดทำ และรับรองว่าเนื้อหาเป็นไปตามเจตนาของผู้จัดทำทุกประการ</footer>
 </main>
@@ -2093,6 +2102,16 @@ body {
   /* ---- messages to the instructor: "ขอความช่วยเหลือ", "เสร็จแล้ว", or a short line of text ---- */
   var MSG_MAX = 120, MSG_GAP = 5000, lastMsgAt = 0;
   var MSG_EMOJIS = ["👍", "🎉", "🤔", "😅", "🙏", "🔥", "🌱", "💧"];   // useful and fun, in that order
+  var HELP_LABEL = "🙋 ขอความช่วยเหลือ", HELP_CANCEL = "✖ ยกเลิกคำขอ";
+
+  /* A call for help can be withdrawn -- teams sort it out themselves as often as not. While this
+     team's own call is open the 🙋 button becomes "ยกเลิกคำขอ", and pressing it writes
+     `cancelled: <timestamp>` onto that message: the dashboard stops counting it and shows it
+     struck through, so a TA already on the way sees what happened instead of the row vanishing.
+     The id of the open message lives in the store, so the button still offers cancel after
+     moving to the next worksheet page. It goes back to 🙋 once a TA marks the call handled
+     (polled), on a new day, or after HELP_TTL -- a team is never left unable to call again. */
+  var HELP_TTL = 20 * 60 * 1000, HELP_POLL = 20000, helpTimer;
 
   function sendMessage(kind, text) {
     text = String(text || "").replace(/\s+/g, " ").trim().slice(0, MSG_MAX);
@@ -2106,15 +2125,67 @@ body {
       zone: ZONE_SLUG[store.fields["team.zone"]] || "", ts: Date.now(), srv: { ".sv": "timestamp" }
     };
     composerNote("กำลังส่ง…");
-    fetch(PROGRESS_DB + "/messages/" + today() + ".json?print=silent",          // POST: the database picks a time-ordered id
-          { method: "POST", body: JSON.stringify(doc), keepalive: true })
+    fetch(PROGRESS_DB + "/messages/" + today() + ".json",                       // POST: the database picks a time-ordered id and
+          { method: "POST", body: JSON.stringify(doc), keepalive: true })       // hands it back -- one tiny reply, and cancel needs it
       .then(function (r) {
-        if (r.ok) {
-          var f = document.querySelector("#ws-bar .ws-msg input[type=text]");
-          if (f) f.value = "";
-          composerNote(kind === "help" ? "ส่งคำขอความช่วยเหลือแล้ว กรุณารอผู้สอน 🙋" : "ส่งแล้ว ✓");
-        } else composerNote("ส่งไม่สำเร็จ ลองอีกครั้ง", true);
+        if (!r.ok) throw new Error(r.status);
+        return r.json().then(null, function () { return null; });               // an id we cannot read costs only the cancel button
+      })
+      .then(function (d) {
+        var f = document.querySelector("#ws-bar .ws-msg input[type=text]");
+        if (f) f.value = "";
+        if (kind === "help" && d && d.name) { store.help = { id: d.name, day: today(), ts: Date.now() }; saveSoon(); helpSync(); }
+        composerNote(kind === "help" ? "ส่งคำขอความช่วยเหลือแล้ว กรุณารอผู้สอน 🙋" : "ส่งแล้ว ✓");
       }, function () { composerNote("ส่งไม่สำเร็จ ลองอีกครั้ง", true); });
+  }
+
+  /* this team's open call for help, or null; an expired one, or one from another day, is forgotten here */
+  function helpOpen() {
+    var h = store.help;
+    if (!h || !h.id) return null;
+    if (h.day !== today() || Date.now() - (h.ts || 0) > HELP_TTL) { delete store.help; saveSoon(); return null; }
+    return h;
+  }
+
+  function helpForget() { if (store.help) { delete store.help; saveSoon(); } helpSync(); }
+
+  /* the button says what pressing it does next */
+  function helpSync() {
+    var b = document.querySelector("#ws-bar .ws-help");
+    if (!b) return;
+    var open = !!helpOpen();
+    b.textContent = open ? HELP_CANCEL : HELP_LABEL;
+    b.classList.toggle("is-open", open);
+    b.title = open ? "ยกเลิกคำขอความช่วยเหลือที่ส่งไปแล้ว" : "";
+    helpWatch();
+  }
+
+  /* while a call is open, ask now and then whether a TA has marked it handled: once one has,
+     there is nothing left to withdraw, so the button offers 🙋 again. One small read per poll. */
+  function helpWatch() {
+    clearTimeout(helpTimer);
+    if (!helpOpen() || !PROGRESS_DB) return;
+    helpTimer = setTimeout(function () {
+      var h = helpOpen();
+      if (!h) { helpSync(); return; }
+      fetch(PROGRESS_DB + "/messages/" + h.day + "/" + h.id + "/handled.json")
+        .then(function (r) { return r.ok ? r.json() : null; }, function () { return null; })
+        .then(function (v) { if (v) helpForget(); else helpWatch(); });         // offline: keep watching, the call is still ours
+    }, HELP_POLL);
+  }
+
+  /* withdraw the open call: `cancelled` is the one other field of a message that may change
+     after it is written (webapp/database.rules.json), and the dashboard reads it. */
+  function cancelHelp() {
+    var h = helpOpen();
+    if (!h) { helpSync(); return; }
+    composerNote("กำลังยกเลิก…");
+    fetch(PROGRESS_DB + "/messages/" + h.day + "/" + h.id + "/cancelled.json?print=silent",
+          { method: "PUT", body: String(Date.now()), keepalive: true })
+      .then(function (r) {
+        if (r.ok) { helpForget(); composerNote("ยกเลิกคำขอแล้ว ✓"); }
+        else composerNote("ยกเลิกไม่สำเร็จ ลองอีกครั้ง", true);
+      }, function () { composerNote("ยกเลิกไม่สำเร็จ ลองอีกครั้ง", true); });
   }
 
   function fillFields(root) {
@@ -2172,7 +2243,7 @@ body {
       '<input type="file" accept=".json,application/json" hidden>' +
       (PROGRESS_DB ?
         '<form class="ws-msg" autocomplete="off">' +
-          '<button type="button" class="ws-help" data-msg="help">🙋 ขอความช่วยเหลือ</button>' +
+          '<button type="button" class="ws-help" data-msg="help">' + HELP_LABEL + '</button>' +
           '<div class="ws-composer">' +
             '<button type="button" class="ws-emoji-toggle" aria-expanded="false" aria-label="อีโมจิ">😊</button>' +
             '<input type="text" maxlength="' + MSG_MAX + '" placeholder="พิมพ์ข้อความถึงผู้สอน…" aria-label="ข้อความถึงผู้สอน">' +
@@ -2214,10 +2285,11 @@ body {
           return;
         }
         var help = e.target.closest && e.target.closest(".ws-help");
-        if (help) sendMessage("help", "ขอความช่วยเหลือ");
+        if (help) { if (helpOpen()) cancelHelp(); else sendMessage("help", "ขอความช่วยเหลือ"); }
       });
     }
     setStatus();
+    helpSync();
   }
 
   /* a short note inside the composer ("ส่งแล้ว ✓"), where the eye already is */
@@ -2323,6 +2395,7 @@ body {
     store = emptyStore();
     saveNow();
     fillFields(document);
+    helpSync();
   }
 
   /* one set of listeners for the whole document: survives instant navigation */

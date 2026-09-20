@@ -1,5 +1,7 @@
 # Activity banners
 
+The current banner set and crop details are documented in [PROMPTS-SMART-FARMING.md](PROMPTS-SMART-FARMING.md). The prompts below are retained as the earlier design history.
+
 Generated with the built-in image generation tool. These decorative scenes represent farm applications, not experimental setups or installation instructions. Source PNGs are preserved; CSS displays a shallow central crop.
 
 ## activity-01-sensors.png
@@ -38,6 +40,8 @@ Session 4 (20 Sep 2026) has no banners. Same style and constraints as above; sce
 - **10 Receive** — the farmhouse porch or window with the field stretching away behind it; a person on the porch looking out toward the far plot.
 - **11 Bridge** — a farmer at the kitchen table in the evening, the far field visible through the window, the day's work laid out on the table (no screens, charts, text or numbers).
 
-## activity-06-history.png — not yet generated
+## activity-06-history.webp — generated 20 Sep 2026
 
-The history reading became กิจกรรมที่ 6 on 20 Sep 2026 and is the only activity page without a banner. A scene in the same style: a farmer at the end of the day looking back over a field and greenhouse, light and water traces of the day's work visible in the landscape (no charts, screens, text or numbers).
+Built-in image generation; optimized with `scripts/build-banners.py` to 1600 × 267 WebP (about 99 KB). Added to Activity 6 and its rendered worksheet. Source PNG retained in the local generated-image archive and `.tmp/activity-06-history-source.png`; the published site uses only WebP.
+
+Use case: illustration-story. Create one polished decorative banner for Activity 6, reading historical observations, in an adult Thai smart-farming workbook. Detailed editorial landscape illustration with clean dark charcoal outlines, muted sage and olive greens, warm cream #fff6e3 sky, amber sunset highlights, subtle painterly texture and restrained shadows. Scene: a Thai farmer in a straw hat at the edge of a vegetable farm at the end of the day, pausing and looking back over rows of crops and a greenhouse. Visible damp dark irrigation furrows and long evening shadows suggest traces of the day's work. Distant northern Thai hills, modest farm buildings and a water reservoir complete the broad landscape. Reflective, calm mood. This should look like a companion to illustrated panoramic farming workbook banners. Represent an actual farm application, no workshop experiments, circuit boards, wiring diagrams, screens, charts, text, numbers, letters, arrows, logos or watermark. Very wide shallow panoramic composition intended to display at 6:1, 1600x267. Generate 3:1 landscape if necessary, but keep the entire meaningful scene, farmer and greenhouse roofs within the central half of the image height, with plain cream upper and lower quarters; central band is a coherent edge-to-edge farm panorama. Small complete farmer figure, not a close-up portrait. No border.

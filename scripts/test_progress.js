@@ -119,6 +119,9 @@ const msgs = P.messageList({ "-Aa": { team: "3", kind: "help", text: "ปั๊�
 eq("messages newest first, empty text dropped, unknown kind is a note", msgs.map(m => m.team + ":" + m.kind), ["17:note", "3:help"]);
 eq("handled flag and day pass through", P.messageList({ "-Ad": { team: "3", kind: "help", text: "x", ts: 1, handled: 99, _day: "2026-09-20" } })[0].handled + "|" +
    P.messageList({ "-Ad": { team: "3", kind: "help", text: "x", ts: 1, handled: 99, _day: "2026-09-20" } })[0].day, "99|2026-09-20");
+// a team that withdrew its own call: `cancelled` reaches the dashboard, which hides it and stops counting it
+eq("cancelled flag passes through", P.messageList({ "-Ae": { team: "3", kind: "help", text: "x", ts: 1, cancelled: 77 } })[0].cancelled + "|" +
+   P.messageList({ "-Ae": { team: "3", kind: "help", text: "x", ts: 1 } })[0].cancelled, "77|0");
 
 // 5. labels and the day key
 eq("activity label", [P.actLabel("a5"), P.actLabel("page"), P.actLabel("ก่อนเริ่ม")], ["กิจกรรม 5", "รายการอื่น", "ก่อนเริ่ม"]);

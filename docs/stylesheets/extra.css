@@ -753,6 +753,11 @@
 
 .ws-help:hover, .ws-help:focus-visible { background: var(--ag-tomato); color: #fff; outline: none; }
 
+/* while this team's own call is open the same button withdraws it: muted, so it never reads
+   as a second way to ask (extra.js swaps the label) */
+.ws-help.is-open { border-color: var(--ag-marigold-deep); color: var(--ag-marigold-deep); }
+.ws-help.is-open:hover, .ws-help.is-open:focus-visible { background: var(--ag-marigold-deep); color: #fff; }
+
 #ws-bar .ws-composer {
   position: relative;
   flex: 1 1 14rem;

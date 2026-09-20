@@ -164,10 +164,69 @@ async function testDoneBoxes() {
   dom.window.close();
   console.log('PASS done boxes: one per task-list row at the foot of its section, one state with the row, 8.3 acknowledgements saved but not counted');
 }
+// The 🙋 button sends one message and then offers to withdraw it: pressing it again writes
+// `cancelled` onto that same message, and the label goes back to asking. The id of the open
+// call is kept in the store, so the offer survives moving to the next worksheet page.
+async function testHelpCancel() {
+  const d = new Date();
+  const today = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+  const saved = JSON.stringify({ fields: { 'team.no': '17' }, checks: {}, sentAs: '17', dev: 'devtest' });
+  const calls = [];
+  let dom = await open('activity-2', saved, calls);
+  let w = dom.window;
+  w.fetch = async (url, opts) => {               // the database answers a POST with the id it picked
+    calls.push({ url, opts });
+    return { ok: true, json: async () => (/\/messages\/[\d-]+\.json$/.test(url) ? { name: '-Nhelp1' } : {}) };
+  };
+  const btn = w.document.querySelector('#ws-bar .ws-help');
+  assert.ok(btn, 'help button');
+  assert.match(btn.textContent, /ขอความช่วยเหลือ/);
+  btn.dispatchEvent(new w.Event('click', { bubbles: true }));
+  await wait(50);
+  const post = calls.filter(c => c.opts && c.opts.method === 'POST').pop();
+  assert.ok(post, 'help message sent');
+  assert.equal(post.url, `https://iot-farm-workshop-default-rtdb.asia-southeast1.firebasedatabase.app/messages/${today}.json`);
+  assert.equal(JSON.parse(post.opts.body).kind, 'help');
+  assert.match(btn.textContent, /ยกเลิกคำขอ/, 'button offers to withdraw');
+  assert.ok(btn.classList.contains('is-open'));
+  await wait(350);
+  let help = JSON.parse(w.localStorage.getItem(storeKey)).help;
+  assert.equal(help && help.id, '-Nhelp1', 'the open call is remembered');
+  assert.equal(help.day, today);
+  const kept = w.localStorage.getItem(storeKey);
+  dom.window.close();
+
+  // the next worksheet page still offers to withdraw it
+  calls.length = 0;
+  dom = await open('activity-3', kept, calls);
+  w = dom.window;
+  w.fetch = async (url, opts) => { calls.push({ url, opts }); return { ok: true, json: async () => ({}) }; };
+  const btn2 = w.document.querySelector('#ws-bar .ws-help');
+  assert.match(btn2.textContent, /ยกเลิกคำขอ/, 'offer survives the page change');
+  btn2.dispatchEvent(new w.Event('click', { bubbles: true }));
+  await wait(50);
+  const put = calls.filter(c => c.opts && c.opts.method === 'PUT').pop();
+  assert.ok(put, 'cancel written');
+  assert.match(put.url, new RegExp(`/messages/${today}/-Nhelp1/cancelled\\.json`));
+  assert.ok(Number(put.opts.body) > 0, 'cancelled is a timestamp');
+  assert.equal(calls.filter(c => c.opts && c.opts.method === 'POST').length, 0, 'cancel sends no new message');
+  assert.match(btn2.textContent, /ขอความช่วยเหลือ/, 'button asks again once the call is withdrawn');
+  await wait(350);
+  assert.equal(JSON.parse(w.localStorage.getItem(storeKey)).help, undefined, 'the withdrawn call is forgotten');
+  dom.window.close();
+
+  // a call from another day is never offered for cancelling
+  dom = await open('activity-2', JSON.stringify({ fields: { 'team.no': '17' }, checks: {}, sentAs: '17', dev: 'devtest',
+                                                  help: { id: '-Nold', day: '2020-01-01', ts: Date.now() } }), calls);
+  assert.match(dom.window.document.querySelector('#ws-bar .ws-help').textContent, /ขอความช่วยเหลือ/, 'yesterday\'s call is not cancellable');
+  dom.window.close();
+  console.log('PASS help: one message sent, withdrawn from a later page, stale calls dropped');
+}
 (async () => {
   for (const slug of ['session-1-start', 'activity-1', 'activity-2', 'activity-3', 'activity-4', 'activity-5',
                       'activity-6', 'activity-7', 'activity-8', 'activity-9', 'activity-10', 'activity-11',
                       'record-sheet']) await testPage(slug);
   await testDoneBoxes();
   await testProgressMerge();
+  await testHelpCancel();
 })().catch(err => { console.error(err); process.exit(1); });

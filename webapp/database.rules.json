@@ -22,6 +22,10 @@
           "handled": {
             ".write": "data.parent().exists()",
             ".validate": "newData.isNumber()"
+          },
+          "cancelled": {
+            ".write": "data.parent().exists()",
+            ".validate": "newData.isNumber()"
           }
         }
       }

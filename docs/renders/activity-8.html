@@ -938,6 +938,11 @@ body {
 
 .ws-help:hover, .ws-help:focus-visible { background: var(--ag-tomato); color: #fff; outline: none; }
 
+/* while this team's own call is open the same button withdraws it: muted, so it never reads
+   as a second way to ask (extra.js swaps the label) */
+.ws-help.is-open { border-color: var(--ag-marigold-deep); color: var(--ag-marigold-deep); }
+.ws-help.is-open:hover, .ws-help.is-open:focus-visible { background: var(--ag-marigold-deep); color: #fff; }
+
 #ws-bar .ws-composer {
   position: relative;
   flex: 1 1 14rem;
@@ -1368,7 +1373,7 @@ body {
 <nav class="ws-side" aria-label="หน้าในชุดใบงาน"><ul class="ws-pages"><li class="ws-group" data-group="ก่อนการอบรม"><a href="install.html">ก่อนการอบรม</a></li><li data-page="install" data-group="ก่อนการอบรม"><a href="install.html"><span class="ws-g">ก่อนการอบรม</span><span class="ws-t">เตรียมแล็ปท็อป</span></a></li><li class="ws-group" data-group="ช่วงที่ 1"><a href="session-1-start.html">ช่วงที่ 1</a></li><li data-page="session-1-start" data-group="ช่วงที่ 1"><a href="session-1-start.html"><span class="ws-g">ช่วง 1</span><span class="ws-t">เตรียมพร้อมก่อนเริ่ม</span></a></li><li data-page="activity-1" data-group="ช่วงที่ 1"><a href="activity-1.html" data-n="1"><span class="ws-g">ช่วง 1</span><span class="ws-n">กิจกรรม 1</span><span class="ws-t">อ่านค่าเซนเซอร์ (Sense)</span></a></li><li data-page="activity-2" data-group="ช่วงที่ 1"><a href="activity-2.html" data-n="2"><span class="ws-g">ช่วง 1</span><span class="ws-n">กิจกรรม 2</span><span class="ws-t">ต่อวงจรและสั่งงานหลอดไฟ (Act)</span></a></li><li data-page="activity-3" data-group="ช่วงที่ 1"><a href="activity-3.html" data-n="3"><span class="ws-g">ช่วง 1</span><span class="ws-n">กิจกรรม 3</span><span class="ws-t">สร้างกฎควบคุมระบบ (Logic)</span></a></li><li class="ws-group" data-group="ช่วงที่ 2"><a href="activity-4.html">ช่วงที่ 2</a></li><li data-page="activity-4" data-group="ช่วงที่ 2"><a href="activity-4.html" data-n="4"><span class="ws-g">ช่วง 2</span><span class="ws-n">กิจกรรม 4</span><span class="ws-t">ตั้งกฎอัตโนมัติ (Think)</span></a></li><li data-page="activity-5" data-group="ช่วงที่ 2"><a href="activity-5.html" data-n="5"><span class="ws-g">ช่วง 2</span><span class="ws-n">กิจกรรม 5</span><span class="ws-t">จำลองปัญหาและป้องกัน (Failure lab)</span></a></li><li class="ws-group in-group" data-group="ช่วงที่ 3"><a href="activity-6.html">ช่วงที่ 3</a></li><li data-page="activity-6" data-group="ช่วงที่ 3" class="in-group"><a href="activity-6.html" data-n="6"><span class="ws-g">ช่วง 3</span><span class="ws-n">กิจกรรม 6</span><span class="ws-t">อ่านข้อมูลย้อนหลัง (History)</span></a></li><li data-page="activity-7" data-group="ช่วงที่ 3" class="in-group"><a href="activity-7.html" data-n="7"><span class="ws-g">ช่วง 3</span><span class="ws-n">กิจกรรม 7</span><span class="ws-t">สร้างแดชบอร์ด (Dashboard)</span></a></li><li data-page="activity-8" data-group="ช่วงที่ 3" class="is-current in-group"><a href="activity-8.html" aria-current="page" data-n="8"><span class="ws-g">ช่วง 3</span><span class="ws-n">กิจกรรม 8</span><span class="ws-t">ออกแบบระบบฟาร์ม (Design)</span></a><ul class="ws-toc"><li><a href="#a8">ใบงาน</a></li><li><a href="#a8-1">8.1 เลือกโจทย์</a></li><li><a href="#a8-2b">8.2 เลือกเครือข่ายในฟาร์ม</a></li><li><a href="#a8-2c">8.3 การเข้าถึงจากนอกฟาร์มและคลาวด์</a></li><li><a href="#a8-3">8.4 เลือกแบตเตอรี่สำหรับระบบโซลาร์</a></li><li><a href="#a8-3b">8.5 คำนวณพลังงานแล้วเลือกแหล่งจ่ายไฟ</a></li><li><a href="#a8-4">8.6 ออกแบบระบบสำหรับทดลองหนึ่งจุด</a></li><li><a href="#กอนจบชวงท-3">ก่อนจบช่วงที่ 3</a></li></ul></li><li class="ws-group" data-group="ช่วงที่ 4"><a href="activity-9.html">ช่วงที่ 4</a></li><li data-page="activity-9" data-group="ช่วงที่ 4"><a href="activity-9.html" data-n="9"><span class="ws-g">ช่วง 4</span><span class="ws-n">กิจกรรม 9</span><span class="ws-t">ส่งข้อมูลด้วย ESP-NOW (Send)</span></a></li><li data-page="activity-10" data-group="ช่วงที่ 4"><a href="activity-10.html" data-n="10"><span class="ws-g">ช่วง 4</span><span class="ws-n">กิจกรรม 10</span><span class="ws-t">เพิ่มบอร์ดตัวรับ (Receive)</span></a></li><li data-page="activity-11" data-group="ช่วงที่ 4"><a href="activity-11.html" data-n="11"><span class="ws-g">ช่วง 4</span><span class="ws-n">กิจกรรม 11</span><span class="ws-t">แดชบอร์ดแปลงไกล (Bridge)</span></a></li></ul></nav>
 <main class="md-content__inner md-typeset" id="ws-main">
 <h1 id="กจกรรมท-8--ออกแบบระบบสำหรบฟารม-design">กิจกรรมที่ 8 — ออกแบบระบบสำหรับฟาร์ม (Design)</h1>
-<p><img alt="" class="activity-banner" decoding="async" height="267" loading="lazy" src="../images/activity-banners/activity-08-design.webp" width="1600" /></p>
+<p><img alt="เกษตรกรร่วมกันวางแผนระบบบนแผนผังฟาร์ม" class="activity-banner" decoding="async" height="267" loading="lazy" src="../images/activity-banners/activity-08-design.webp" width="1600" /></p>
 <p><strong>85 นาที</strong> เลือกโจทย์ 5 · การสื่อสาร 20 · พลังงาน 15 · ออกแบบระบบ 30 · นำเสนอและแลกเปลี่ยนกับกลุ่มคู่ 15</p>
 <p><img alt="" class="activity-divider" decoding="async" height="105" loading="lazy" src="../images/activity-dividers/orchard.webp" width="1200" /></p>
 <h3 id="a8">ใบงาน</h3>
@@ -1420,9 +1425,9 @@ body {
 </table></div>
 <p class="ws-phase"><strong>บันทึกผล</strong></p>
 <ol start="2" style="counter-reset: step 1">
-<li>โจทย์ที่เลือก <input class="fld" type="text" data-k="d.scenario" data-size="14" size="14" autocomplete="off" spellcheck="false"></li>
+<li>โจทย์ที่เลือก (กรอก A, B, C, D หรือ E ตามตาราง) <input class="fld" type="text" data-k="d.scenario" data-size="14" size="14" autocomplete="off" spellcheck="false"></li>
 </ol>
-<p>ปัญหาที่ต้องการแก้ (หนึ่งประโยค)</p>
+<p>ปัญหาที่ต้องการแก้ (หนึ่งประโยค: ระบุสิ่งที่เกิดขึ้นและผลกระทบ โดยยังไม่ต้องเสนออุปกรณ์)</p>
 <textarea class="fld fld-ta" data-k="d.problem" rows="2"></textarea>
 
 <p><a class="ws-back" href="#a8">↑ กลับไปที่ใบงาน</a></p>
@@ -1496,14 +1501,14 @@ body {
 </table></div>
 <p class="ws-phase"><strong>เลือกและจดข้อสรุป</strong></p>
 <ol start="2" style="counter-reset: step 1">
-<li>เลือกวิธีที่เหมาะกับแต่ละจุด </li>
+<li>เลือกวิธีสื่อสารสำหรับแต่ละจุดในโจทย์ฟาร์มของกลุ่ม ระบุชื่อวิธีและเหตุผลที่สัมพันธ์กับระยะทาง แหล่งจ่ายไฟ หรือข้อจำกัดของพื้นที่ ไม่ใช่ชื่อ WiFi ของห้องอบรม</li>
 </ol>
 <div class="table-wrap"><table>
 <thead>
 <tr>
 <th>จุดเชื่อมต่อ</th>
-<th>วิธีที่เลือก</th>
-<th>ทำไมจึงเลือกวิธีนี้</th>
+<th>วิธีสื่อสารที่เลือก (ระบุชื่อ เช่น WiFi หรือ RS-485)</th>
+<th>เหตุผลที่เหมาะกับโจทย์ (ระยะทาง ไฟเลี้ยง หรือข้อจำกัดหน้างาน)</th>
 </tr>
 </thead>
 <tbody>
@@ -1607,7 +1612,7 @@ body {
 <p><img alt="แผนภาพ: แบตเตอรี่ต่อกับ charge controller และจ่ายไฟให้อินเวอร์เตอร์ผ่านฟิวส์ อินเวอร์เตอร์แปลง 12 V DC เป็น 220 V AC แล้วจ่ายให้ปั๊ม" src="../images/power-inverter.png" width="85%" /></p>
 <p class="ws-phase"><strong>จดข้อสรุป</strong></p>
 <ol start="4" style="counter-reset: step 3">
-<li>ชนิดแบตเตอรี่ที่เหมาะกับโจทย์ของกลุ่มและเหตุผล (ถ้าไม่ต้องใช้แบตเตอรี่ ให้ระบุว่าไม่ใช้) <input class="fld" type="text" data-k="d.battery" data-size="50" size="50" autocomplete="off" spellcheck="false"></li>
+<li>ชนิดแบตเตอรี่ที่เลือก (เช่น ตะกั่ว-กรด หรือ LFP) และเหตุผลที่เหมาะกับการใช้งานของกลุ่ม เช่น การใช้ไฟกลางคืนหรือผู้ดูแล (ถ้าไม่ต้องใช้ ให้ระบุว่าไม่ใช้พร้อมเหตุผล) <input class="fld" type="text" data-k="d.battery" data-size="50" size="50" autocomplete="off" spellcheck="false"></li>
 </ol>
 <p><a class="ws-back" href="#a8">↑ กลับไปที่ใบงาน</a></p>
 <p><img alt="" class="activity-divider" decoding="async" height="96" loading="lazy" src="../images/activity-dividers/sprinklers.webp" width="1200" /></p>
@@ -1675,8 +1680,8 @@ body {
 <ol start="5" style="counter-reset: step 4">
 <li>เลือกแหล่งจ่ายไฟให้เซนเซอร์ ระบบควบคุม และอุปกรณ์ปลายทาง เช่น ไฟบ้าน โซลาร์เฉพาะกลางวัน หรือโซลาร์พร้อมแบตเตอรี่ หากยังไม่รู้กำลังไฟหรือเวลาใช้งานจริง ให้จดข้อมูลที่ต้องหาเพิ่มก่อนเลือกขนาดอุปกรณ์</li>
 </ol>
-<p>แหล่งจ่ายไฟของแต่ละส่วน <input class="fld" type="text" data-k="d.power" data-size="50" size="50" autocomplete="off" spellcheck="false"></p>
-<p>อุปกรณ์ที่ต้องมีไฟสำรองและระยะเวลาที่ต้องการ (ถ้าไม่มี ให้ระบุว่าไม่มี) <input class="fld" type="text" data-k="d.power.backup" data-size="40" size="40" autocomplete="off" spellcheck="false"></p>
+<p>แหล่งจ่ายไฟของแต่ละส่วน (ระบุให้ครบ: เซนเซอร์ / เครื่องควบคุม / อุปกรณ์ที่สั่งงาน และแหล่งไฟที่เลือกให้แต่ละส่วน) <input class="fld" type="text" data-k="d.power" data-size="50" size="50" autocomplete="off" spellcheck="false"></p>
+<p>อุปกรณ์ที่ต้องมีไฟสำรอง และต้องทำงานต่อได้กี่ชั่วโมงเมื่อไฟหลักขาด (ถ้าไม่ต้องสำรอง ให้ระบุว่าไม่มี) <input class="fld" type="text" data-k="d.power.backup" data-size="40" size="40" autocomplete="off" spellcheck="false"></p>
 <blockquote class="ws-caution">
 <p><strong>ระวัง</strong> แผงที่โดนแสงมีแรงดันที่ขั้ว ห้ามให้ขั้วบวก–ลบแตะกัน การต่อระบบจริงต้องใช้แบตเตอรี่และอุปกรณ์ที่เข้ากัน และทำตามลำดับในคู่มือของรุ่นนั้น</p>
 </blockquote>
@@ -1689,19 +1694,19 @@ body {
 <ol>
 <li>ระบุเซนเซอร์หลักและอุปกรณ์ที่จะสั่งงาน อุปกรณ์เพิ่มเติมที่โจทย์ต้องใช้ให้จดรวมได้</li>
 </ol>
-<p>เซนเซอร์ <input class="fld" type="text" data-k="d.in.1.sensor" data-size="30" size="30" autocomplete="off" spellcheck="false"> อุปกรณ์ที่สั่งงาน <input class="fld" type="text" data-k="d.out.1.device" data-size="30" size="30" autocomplete="off" spellcheck="false"></p>
+<p>เซนเซอร์หลัก (ระบุชนิดและสิ่งที่จะวัด ไม่จำเป็นต้องระบุยี่ห้อ) <input class="fld" type="text" data-k="d.in.1.sensor" data-size="30" size="30" autocomplete="off" spellcheck="false"> อุปกรณ์ที่จะสั่งงาน (เช่น ปั๊ม วาล์ว หรือพัดลม) <input class="fld" type="text" data-k="d.out.1.device" data-size="30" size="30" autocomplete="off" spellcheck="false"></p>
 <p>เมื่อเกิดอะไร ระบบจะสั่งให้อุปกรณ์ทำอะไร (เขียนเป็นประโยค “ถ้า… แล้วให้…”) <textarea class="fld fld-ta" data-k="d.control.rule" rows="2"></textarea></p>
 <p>หากเซนเซอร์หรือการสื่อสารขัดข้อง ระบบควรทำอย่างไร และส่วนใดจะทำหน้าที่ป้องกัน <textarea class="fld fld-ta" data-k="d.control.failure" rows="2"></textarea></p>
 <p class="ws-phase"><strong>วิธีสื่อสาร</strong></p>
 <ol start="2" style="counter-reset: step 1">
-<li>สองแถวแรกมาจาก 8.2 แถวที่สามให้เลือกจากที่ฟังใน 8.3 ว่าเจ้าของต้องดูหรือสั่งงานจากนอกฟาร์มหรือไม่ ถ้าไม่ต้อง ให้ระบุว่า “ไม่ใช้”</li>
+<li>สองแถวแรกมาจาก 8.2 แถวที่สามให้เลือกจากที่ฟังใน 8.3 ว่าเจ้าของต้องดูหรือสั่งงานจากนอกฟาร์มหรือไม่ ถ้าไม่ต้อง ให้ระบุว่า “ไม่ใช้” พร้อมเหตุผลในช่องข้างกัน หากต้องการเข้าถึงจากภายนอก ให้ระบุวิธี เช่น Home Assistant Cloud หรือ VPN และเหตุผลที่เลือก</li>
 </ol>
 <div class="table-wrap"><table>
 <thead>
 <tr>
 <th>จุดเชื่อมต่อ</th>
-<th>วิธีที่เลือก</th>
-<th>ทำไมจึงเลือกวิธีนี้</th>
+<th>วิธีสื่อสารที่เลือก (ระบุชื่อ เช่น WiFi หรือ RS-485)</th>
+<th>เหตุผลที่เหมาะกับโจทย์ (ระยะทาง ไฟเลี้ยง หรือข้อจำกัดหน้างาน)</th>
 </tr>
 </thead>
 <tbody>
@@ -1726,15 +1731,15 @@ body {
 <ol start="3" style="counter-reset: step 2">
 <li>ตรวจแผนพลังงานจาก 8.4 และ 8.5 อีกครั้งให้ตรงกับอุปกรณ์ที่เลือกในข้อ 1</li>
 </ol>
-<p>แหล่งจ่ายไฟของแต่ละส่วน <input class="fld" type="text" data-k="d.power" data-size="50" size="50" autocomplete="off" spellcheck="false"></p>
-<p>ชนิดแบตเตอรี่ที่เลือกและเหตุผล <input class="fld" type="text" data-k="d.battery" data-size="50" size="50" autocomplete="off" spellcheck="false"></p>
-<p>อุปกรณ์ที่ต้องมีไฟสำรองและระยะเวลาที่ต้องการ (ถ้าไม่มี ให้ระบุว่าไม่มี) <input class="fld" type="text" data-k="d.power.backup" data-size="40" size="40" autocomplete="off" spellcheck="false"></p>
+<p>แหล่งจ่ายไฟของแต่ละส่วน (ระบุให้ครบ: เซนเซอร์ / เครื่องควบคุม / อุปกรณ์ที่สั่งงาน และแหล่งไฟที่เลือกให้แต่ละส่วน) <input class="fld" type="text" data-k="d.power" data-size="50" size="50" autocomplete="off" spellcheck="false"></p>
+<p>ชนิดแบตเตอรี่ที่เลือกและเหตุผลที่เหมาะกับโจทย์ (ถ้าไม่ใช้ ให้ระบุว่าไม่ใช้พร้อมเหตุผล) <input class="fld" type="text" data-k="d.battery" data-size="50" size="50" autocomplete="off" spellcheck="false"></p>
+<p>อุปกรณ์ที่ต้องมีไฟสำรอง และต้องทำงานต่อได้กี่ชั่วโมงเมื่อไฟหลักขาด (ถ้าไม่ต้องสำรอง ให้ระบุว่าไม่มี) <input class="fld" type="text" data-k="d.power.backup" data-size="40" size="40" autocomplete="off" spellcheck="false"></p>
 <p class="ws-phase"><strong>แผนทดสอบ</strong></p>
 <ol start="4" style="counter-reset: step 3">
 <li>เขียนว่าจะรู้ได้อย่างไรว่าระบบทำงานตามที่ตั้งใจ ทั้งเมื่อทำงานตามปกติและเมื่อเกิดปัญหาที่ระบุในข้อ 1: จะดูหรือวัดอะไร และผลแบบใดจึงถือว่าใช้ได้</li>
 </ol>
-<p>จะดูหรือวัดอะไร <input class="fld" type="text" data-k="d.test.how" data-size="50" size="50" autocomplete="off" spellcheck="false"></p>
-<p>ผลแบบใดจึงถือว่าระบบทำงานตามที่ตั้งใจ <input class="fld" type="text" data-k="d.test.pass" data-size="50" size="50" autocomplete="off" spellcheck="false"></p>
+<p>จะทดลองอย่างไรและดูหรือวัดอะไร (ระบุการทดสอบปกติและการจำลองปัญหา) <input class="fld" type="text" data-k="d.test.how" data-size="50" size="50" autocomplete="off" spellcheck="false"></p>
+<p>เกณฑ์ผ่านของแต่ละการทดสอบ (ระบุผลที่สังเกตได้หรือค่าที่วัดได้ เช่น อุปกรณ์หยุดภายในเวลาที่กำหนด) <input class="fld" type="text" data-k="d.test.pass" data-size="50" size="50" autocomplete="off" spellcheck="false"></p>
 <p><a class="ws-back" href="#a8">↑ กลับไปที่ใบงาน</a></p>
 <h2 id="กอนจบชวงท-3">ก่อนจบช่วงที่ 3</h2>
 <p>ชุดอุปกรณ์ใช้ต่อในช่วงที่ 4 ทำตามลำดับต่อไปนี้ เพื่อป้องกันระบบสั่งเปิดปั๊มระหว่างที่ไม่มีคนดูแล</p>
@@ -2247,6 +2252,16 @@ body {
   /* ---- messages to the instructor: "ขอความช่วยเหลือ", "เสร็จแล้ว", or a short line of text ---- */
   var MSG_MAX = 120, MSG_GAP = 5000, lastMsgAt = 0;
   var MSG_EMOJIS = ["👍", "🎉", "🤔", "😅", "🙏", "🔥", "🌱", "💧"];   // useful and fun, in that order
+  var HELP_LABEL = "🙋 ขอความช่วยเหลือ", HELP_CANCEL = "✖ ยกเลิกคำขอ";
+
+  /* A call for help can be withdrawn -- teams sort it out themselves as often as not. While this
+     team's own call is open the 🙋 button becomes "ยกเลิกคำขอ", and pressing it writes
+     `cancelled: <timestamp>` onto that message: the dashboard stops counting it and shows it
+     struck through, so a TA already on the way sees what happened instead of the row vanishing.
+     The id of the open message lives in the store, so the button still offers cancel after
+     moving to the next worksheet page. It goes back to 🙋 once a TA marks the call handled
+     (polled), on a new day, or after HELP_TTL -- a team is never left unable to call again. */
+  var HELP_TTL = 20 * 60 * 1000, HELP_POLL = 20000, helpTimer;
 
   function sendMessage(kind, text) {
     text = String(text || "").replace(/\s+/g, " ").trim().slice(0, MSG_MAX);
@@ -2260,15 +2275,67 @@ body {
       zone: ZONE_SLUG[store.fields["team.zone"]] || "", ts: Date.now(), srv: { ".sv": "timestamp" }
     };
     composerNote("กำลังส่ง…");
-    fetch(PROGRESS_DB + "/messages/" + today() + ".json?print=silent",          // POST: the database picks a time-ordered id
-          { method: "POST", body: JSON.stringify(doc), keepalive: true })
+    fetch(PROGRESS_DB + "/messages/" + today() + ".json",                       // POST: the database picks a time-ordered id and
+          { method: "POST", body: JSON.stringify(doc), keepalive: true })       // hands it back -- one tiny reply, and cancel needs it
       .then(function (r) {
-        if (r.ok) {
-          var f = document.querySelector("#ws-bar .ws-msg input[type=text]");
-          if (f) f.value = "";
-          composerNote(kind === "help" ? "ส่งคำขอความช่วยเหลือแล้ว กรุณารอผู้สอน 🙋" : "ส่งแล้ว ✓");
-        } else composerNote("ส่งไม่สำเร็จ ลองอีกครั้ง", true);
+        if (!r.ok) throw new Error(r.status);
+        return r.json().then(null, function () { return null; });               // an id we cannot read costs only the cancel button
+      })
+      .then(function (d) {
+        var f = document.querySelector("#ws-bar .ws-msg input[type=text]");
+        if (f) f.value = "";
+        if (kind === "help" && d && d.name) { store.help = { id: d.name, day: today(), ts: Date.now() }; saveSoon(); helpSync(); }
+        composerNote(kind === "help" ? "ส่งคำขอความช่วยเหลือแล้ว กรุณารอผู้สอน 🙋" : "ส่งแล้ว ✓");
       }, function () { composerNote("ส่งไม่สำเร็จ ลองอีกครั้ง", true); });
+  }
+
+  /* this team's open call for help, or null; an expired one, or one from another day, is forgotten here */
+  function helpOpen() {
+    var h = store.help;
+    if (!h || !h.id) return null;
+    if (h.day !== today() || Date.now() - (h.ts || 0) > HELP_TTL) { delete store.help; saveSoon(); return null; }
+    return h;
+  }
+
+  function helpForget() { if (store.help) { delete store.help; saveSoon(); } helpSync(); }
+
+  /* the button says what pressing it does next */
+  function helpSync() {
+    var b = document.querySelector("#ws-bar .ws-help");
+    if (!b) return;
+    var open = !!helpOpen();
+    b.textContent = open ? HELP_CANCEL : HELP_LABEL;
+    b.classList.toggle("is-open", open);
+    b.title = open ? "ยกเลิกคำขอความช่วยเหลือที่ส่งไปแล้ว" : "";
+    helpWatch();
+  }
+
+  /* while a call is open, ask now and then whether a TA has marked it handled: once one has,
+     there is nothing left to withdraw, so the button offers 🙋 again. One small read per poll. */
+  function helpWatch() {
+    clearTimeout(helpTimer);
+    if (!helpOpen() || !PROGRESS_DB) return;
+    helpTimer = setTimeout(function () {
+      var h = helpOpen();
+      if (!h) { helpSync(); return; }
+      fetch(PROGRESS_DB + "/messages/" + h.day + "/" + h.id + "/handled.json")
+        .then(function (r) { return r.ok ? r.json() : null; }, function () { return null; })
+        .then(function (v) { if (v) helpForget(); else helpWatch(); });         // offline: keep watching, the call is still ours
+    }, HELP_POLL);
+  }
+
+  /* withdraw the open call: `cancelled` is the one other field of a message that may change
+     after it is written (webapp/database.rules.json), and the dashboard reads it. */
+  function cancelHelp() {
+    var h = helpOpen();
+    if (!h) { helpSync(); return; }
+    composerNote("กำลังยกเลิก…");
+    fetch(PROGRESS_DB + "/messages/" + h.day + "/" + h.id + "/cancelled.json?print=silent",
+          { method: "PUT", body: String(Date.now()), keepalive: true })
+      .then(function (r) {
+        if (r.ok) { helpForget(); composerNote("ยกเลิกคำขอแล้ว ✓"); }
+        else composerNote("ยกเลิกไม่สำเร็จ ลองอีกครั้ง", true);
+      }, function () { composerNote("ยกเลิกไม่สำเร็จ ลองอีกครั้ง", true); });
   }
 
   function fillFields(root) {
@@ -2326,7 +2393,7 @@ body {
       '<input type="file" accept=".json,application/json" hidden>' +
       (PROGRESS_DB ?
         '<form class="ws-msg" autocomplete="off">' +
-          '<button type="button" class="ws-help" data-msg="help">🙋 ขอความช่วยเหลือ</button>' +
+          '<button type="button" class="ws-help" data-msg="help">' + HELP_LABEL + '</button>' +
           '<div class="ws-composer">' +
             '<button type="button" class="ws-emoji-toggle" aria-expanded="false" aria-label="อีโมจิ">😊</button>' +
             '<input type="text" maxlength="' + MSG_MAX + '" placeholder="พิมพ์ข้อความถึงผู้สอน…" aria-label="ข้อความถึงผู้สอน">' +
@@ -2368,10 +2435,11 @@ body {
           return;
         }
         var help = e.target.closest && e.target.closest(".ws-help");
-        if (help) sendMessage("help", "ขอความช่วยเหลือ");
+        if (help) { if (helpOpen()) cancelHelp(); else sendMessage("help", "ขอความช่วยเหลือ"); }
       });
     }
     setStatus();
+    helpSync();
   }
 
   /* a short note inside the composer ("ส่งแล้ว ✓"), where the eye already is */
@@ -2477,6 +2545,7 @@ body {
     store = emptyStore();
     saveNow();
     fillFields(document);
+    helpSync();
   }
 
   /* one set of listeners for the whole document: survives instant navigation */

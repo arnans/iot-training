@@ -117,11 +117,26 @@ stays valid in the rules for compatibility.)
 
 `kind` is `help`, `done` or `note`; the dashboard paints help red and rings the team's cell
 until a TA marks it done: **click the cell → ✓ ช่วยเหลือแล้ว** (clears every open call from that
-team), or × on one message in the feed. That writes `handled: <timestamp>` onto the message —
-the only field of a message that may change after creation — so **every dashboard screen
-agrees**, TAs on phones included; ↺ on a hidden message clears it again. "แสดงที่ซ่อนไว้" lists
-the handled ones. One message per five seconds per browser; the team number must be valid,
-otherwise the usual prompt appears first.
+team), or × on one message in the feed. That writes `handled: <timestamp>` onto the message, so
+**every dashboard screen agrees**, TAs on phones included; ↺ on a hidden message clears it
+again. "แสดงที่ซ่อนไว้" lists the handled ones. One message per five seconds per browser; the team
+number must be valid, otherwise the usual prompt appears first.
+
+**Withdrawing a call (20 Sep 2026).** Teams often sort the problem out while they wait, so the
+🙋 button turns into **✖ ยกเลิกคำขอ** (amber, so it never reads as a second way to ask) as soon as
+their own call is sent. Pressing it writes `cancelled: <timestamp>` onto that message. The
+worksheet learns the message's id from the `POST` reply, which is why message POSTs no longer
+use `?print=silent`, and keeps it in the store (`store.help = {id, day, ts}`), so the offer
+survives moving to the next page. It goes back to 🙋 once a TA marks the call handled (the
+worksheet polls that one field every 20 s while a call is open), on a new day, or after 20
+minutes — a team is never left unable to call again.
+
+`handled` and `cancelled` are the only fields of a message that may change after it is written.
+A withdrawn call stops counting in **กลุ่มที่ขอความช่วยเหลือ** and its cell loses the ring at once, but the
+message **stays in the feed for three minutes**, struck through and tagged กลุ่มยกเลิกแล้ว, so a TA
+already walking over sees what happened instead of finding the row gone; × dismisses it sooner.
+After that it joins the hidden pile. ↺ on a hidden one clears `handled` and `cancelled` both,
+which brings the call back for everyone.
 
 ### Dashboard reading
 
@@ -162,7 +177,7 @@ new ones sliding in; the tick ticker is an admin view behind the **ติ๊ก�
    else there, so the explanation of what the rules do lives here, not in the file:
    `progress/` reads public per day, writes only at the per-device leaf for team 1–400 with a
    document that names its own team and device; `messages/` create-only, read public per day,
-   with only the `handled` timestamp settable or clearable afterwards.
+   with only the `handled` and `cancelled` timestamps settable or clearable afterwards.
    (Or `npm i -g firebase-tools`, `firebase login`, `firebase init database` pointing at that file,
    `firebase deploy --only database`.)
 3. Smoke test. In PowerShell (`curl` there is an alias of `Invoke-WebRequest`, so use the cmdlet):
@@ -232,7 +247,9 @@ clears on every screen within a second or two; ↺ on any screen brings it back 
 TAs pressing at the same moment is harmless (both write a timestamp; the last one stays).
 Each screen shows its own press immediately and waits for the database to agree; if the write
 fails, that screen reverts and says so. Verified 14 Sep 2026 with two screens: clear on A,
-undo on B, simultaneous clear on both — the screens stayed in step each time.
+undo on B, simultaneous clear on both — the screens stayed in step each time. A team
+withdrawing its own call (✖ ยกเลิกคำขอ on the worksheet) clears the ring on every screen the same
+way, and leaves the struck-through message behind for three minutes.
 - Storage: kilobytes.
 
 ## Testing checklist (browser)

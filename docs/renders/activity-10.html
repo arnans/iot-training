@@ -938,6 +938,11 @@ body {
 
 .ws-help:hover, .ws-help:focus-visible { background: var(--ag-tomato); color: #fff; outline: none; }
 
+/* while this team's own call is open the same button withdraws it: muted, so it never reads
+   as a second way to ask (extra.js swaps the label) */
+.ws-help.is-open { border-color: var(--ag-marigold-deep); color: var(--ag-marigold-deep); }
+.ws-help.is-open:hover, .ws-help.is-open:focus-visible { background: var(--ag-marigold-deep); color: #fff; }
+
 #ws-bar .ws-composer {
   position: relative;
   flex: 1 1 14rem;
@@ -2005,6 +2010,16 @@ body {
   /* ---- messages to the instructor: "ขอความช่วยเหลือ", "เสร็จแล้ว", or a short line of text ---- */
   var MSG_MAX = 120, MSG_GAP = 5000, lastMsgAt = 0;
   var MSG_EMOJIS = ["👍", "🎉", "🤔", "😅", "🙏", "🔥", "🌱", "💧"];   // useful and fun, in that order
+  var HELP_LABEL = "🙋 ขอความช่วยเหลือ", HELP_CANCEL = "✖ ยกเลิกคำขอ";
+
+  /* A call for help can be withdrawn -- teams sort it out themselves as often as not. While this
+     team's own call is open the 🙋 button becomes "ยกเลิกคำขอ", and pressing it writes
+     `cancelled: <timestamp>` onto that message: the dashboard stops counting it and shows it
+     struck through, so a TA already on the way sees what happened instead of the row vanishing.
+     The id of the open message lives in the store, so the button still offers cancel after
+     moving to the next worksheet page. It goes back to 🙋 once a TA marks the call handled
+     (polled), on a new day, or after HELP_TTL -- a team is never left unable to call again. */
+  var HELP_TTL = 20 * 60 * 1000, HELP_POLL = 20000, helpTimer;
 
   function sendMessage(kind, text) {
     text = String(text || "").replace(/\s+/g, " ").trim().slice(0, MSG_MAX);
@@ -2018,15 +2033,67 @@ body {
       zone: ZONE_SLUG[store.fields["team.zone"]] || "", ts: Date.now(), srv: { ".sv": "timestamp" }
     };
     composerNote("กำลังส่ง…");
-    fetch(PROGRESS_DB + "/messages/" + today() + ".json?print=silent",          // POST: the database picks a time-ordered id
-          { method: "POST", body: JSON.stringify(doc), keepalive: true })
+    fetch(PROGRESS_DB + "/messages/" + today() + ".json",                       // POST: the database picks a time-ordered id and
+          { method: "POST", body: JSON.stringify(doc), keepalive: true })       // hands it back -- one tiny reply, and cancel needs it
       .then(function (r) {
-        if (r.ok) {
-          var f = document.querySelector("#ws-bar .ws-msg input[type=text]");
-          if (f) f.value = "";
-          composerNote(kind === "help" ? "ส่งคำขอความช่วยเหลือแล้ว กรุณารอผู้สอน 🙋" : "ส่งแล้ว ✓");
-        } else composerNote("ส่งไม่สำเร็จ ลองอีกครั้ง", true);
+        if (!r.ok) throw new Error(r.status);
+        return r.json().then(null, function () { return null; });               // an id we cannot read costs only the cancel button
+      })
+      .then(function (d) {
+        var f = document.querySelector("#ws-bar .ws-msg input[type=text]");
+        if (f) f.value = "";
+        if (kind === "help" && d && d.name) { store.help = { id: d.name, day: today(), ts: Date.now() }; saveSoon(); helpSync(); }
+        composerNote(kind === "help" ? "ส่งคำขอความช่วยเหลือแล้ว กรุณารอผู้สอน 🙋" : "ส่งแล้ว ✓");
       }, function () { composerNote("ส่งไม่สำเร็จ ลองอีกครั้ง", true); });
+  }
+
+  /* this team's open call for help, or null; an expired one, or one from another day, is forgotten here */
+  function helpOpen() {
+    var h = store.help;
+    if (!h || !h.id) return null;
+    if (h.day !== today() || Date.now() - (h.ts || 0) > HELP_TTL) { delete store.help; saveSoon(); return null; }
+    return h;
+  }
+
+  function helpForget() { if (store.help) { delete store.help; saveSoon(); } helpSync(); }
+
+  /* the button says what pressing it does next */
+  function helpSync() {
+    var b = document.querySelector("#ws-bar .ws-help");
+    if (!b) return;
+    var open = !!helpOpen();
+    b.textContent = open ? HELP_CANCEL : HELP_LABEL;
+    b.classList.toggle("is-open", open);
+    b.title = open ? "ยกเลิกคำขอความช่วยเหลือที่ส่งไปแล้ว" : "";
+    helpWatch();
+  }
+
+  /* while a call is open, ask now and then whether a TA has marked it handled: once one has,
+     there is nothing left to withdraw, so the button offers 🙋 again. One small read per poll. */
+  function helpWatch() {
+    clearTimeout(helpTimer);
+    if (!helpOpen() || !PROGRESS_DB) return;
+    helpTimer = setTimeout(function () {
+      var h = helpOpen();
+      if (!h) { helpSync(); return; }
+      fetch(PROGRESS_DB + "/messages/" + h.day + "/" + h.id + "/handled.json")
+        .then(function (r) { return r.ok ? r.json() : null; }, function () { return null; })
+        .then(function (v) { if (v) helpForget(); else helpWatch(); });         // offline: keep watching, the call is still ours
+    }, HELP_POLL);
+  }
+
+  /* withdraw the open call: `cancelled` is the one other field of a message that may change
+     after it is written (webapp/database.rules.json), and the dashboard reads it. */
+  function cancelHelp() {
+    var h = helpOpen();
+    if (!h) { helpSync(); return; }
+    composerNote("กำลังยกเลิก…");
+    fetch(PROGRESS_DB + "/messages/" + h.day + "/" + h.id + "/cancelled.json?print=silent",
+          { method: "PUT", body: String(Date.now()), keepalive: true })
+      .then(function (r) {
+        if (r.ok) { helpForget(); composerNote("ยกเลิกคำขอแล้ว ✓"); }
+        else composerNote("ยกเลิกไม่สำเร็จ ลองอีกครั้ง", true);
+      }, function () { composerNote("ยกเลิกไม่สำเร็จ ลองอีกครั้ง", true); });
   }
 
   function fillFields(root) {
@@ -2084,7 +2151,7 @@ body {
       '<input type="file" accept=".json,application/json" hidden>' +
       (PROGRESS_DB ?
         '<form class="ws-msg" autocomplete="off">' +
-          '<button type="button" class="ws-help" data-msg="help">🙋 ขอความช่วยเหลือ</button>' +
+          '<button type="button" class="ws-help" data-msg="help">' + HELP_LABEL + '</button>' +
           '<div class="ws-composer">' +
             '<button type="button" class="ws-emoji-toggle" aria-expanded="false" aria-label="อีโมจิ">😊</button>' +
             '<input type="text" maxlength="' + MSG_MAX + '" placeholder="พิมพ์ข้อความถึงผู้สอน…" aria-label="ข้อความถึงผู้สอน">' +
@@ -2126,10 +2193,11 @@ body {
           return;
         }
         var help = e.target.closest && e.target.closest(".ws-help");
-        if (help) sendMessage("help", "ขอความช่วยเหลือ");
+        if (help) { if (helpOpen()) cancelHelp(); else sendMessage("help", "ขอความช่วยเหลือ"); }
       });
     }
     setStatus();
+    helpSync();
   }
 
   /* a short note inside the composer ("ส่งแล้ว ✓"), where the eye already is */
@@ -2235,6 +2303,7 @@ body {
     store = emptyStore();
     saveNow();
     fillFields(document);
+    helpSync();
   }
 
   /* one set of listeners for the whole document: survives instant navigation */

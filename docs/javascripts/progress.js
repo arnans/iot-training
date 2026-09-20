@@ -209,7 +209,8 @@
       if (!m || typeof m !== "object" || !m.text) return;
       out.push({ id: id, team: String(m.team || "?"), kind: m.kind === "help" || m.kind === "done" ? m.kind : "note",
                  text: String(m.text).slice(0, 120), zone: m.zone || "", page: m.page || "",
-                 ts: num(m.srv) || num(m.ts), handled: num(m.handled), day: m._day || "" });   // handled: set by a TA, seen by every screen
+                 ts: num(m.srv) || num(m.ts), handled: num(m.handled), cancelled: num(m.cancelled),   // handled: set by a TA, seen by every
+                 day: m._day || "" });                                                              // screen; cancelled: the team withdrew it
     });
     out.sort(function (a, b) { return b.ts - a.ts || (a.id < b.id ? 1 : -1); });
     return out;

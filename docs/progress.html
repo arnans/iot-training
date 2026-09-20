@@ -233,6 +233,9 @@
   .msgs li.k-help { border-left-color: var(--ag-tomato); background: var(--help-bg); }
   .msgs li.k-done { border-left-color: var(--ag-green); }
   .msgs li.is-hidden { opacity: 0.45; }
+  .msgs li.is-cancelled { border-left-color: var(--lighter); background: none; }   /* no longer an open call */
+  .msgs li.is-cancelled.is-hidden { opacity: 0.75; }   /* a team withdrawing its call is still news for a few minutes */
+  .msgs .cx { font-size: 0.75rem; color: var(--lighter); white-space: nowrap; }
   .msgs .t { color: var(--lighter); font-variant-numeric: tabular-nums; }
   .msgs .team { font-weight: 600; }
   .msgs .txt { overflow-wrap: anywhere; }
@@ -446,8 +449,10 @@
   function demoMsgs() {
     var now = Date.now(), out = {};
     [["17", "help", "ขอความช่วยเหลือ", 90], ["42", "note", "ปั๊มทำงานแล้ว 🎉", 200], ["5", "note", "ปั๊มไม่หมุน ลองเปลี่ยนสายแล้วก็ยังไม่ได้ 🤔", 400],
+     ["9", "help", "ขอความช่วยเหลือ", 500, 120],
      ["88", "note", "So cool! 🔥", 700], ["23", "help", "ขอความช่วยเหลือ", 1200], ["61", "note", "ลูกลอยติด 😅", 1500]].forEach(function (m, i) {
-      out["-demo" + i] = { team: m[0], kind: m[1], text: m[2], ts: now - m[3] * 1000, srv: now - m[3] * 1000, zone: "red", page: "session-1" };
+      var o = out["-demo" + i] = { team: m[0], kind: m[1], text: m[2], ts: now - m[3] * 1000, srv: now - m[3] * 1000, zone: "red", page: "session-1" };
+      if (m[4]) o.cancelled = now - m[4] * 1000;                  // one call the team withdrew, to show how it reads
     });
     return out;
   }
@@ -542,9 +547,12 @@
     pending[m.id] = { on: on, at: Date.now() };
     render();
     if (DEMO || !m.day) return;                                   // demo: nothing to write, the local state is all there is
-    fetch(DB + "/messages/" + m.day + "/" + m.id + "/handled.json?print=silent",
-          { method: on ? "PUT" : "DELETE", body: on ? String(Date.now()) : undefined })
-      .then(function (r) { if (!r.ok) throw new Error(r.status); })
+    var base = DB + "/messages/" + m.day + "/" + m.id + "/";
+    var writes = on ? [fetch(base + "handled.json?print=silent", { method: "PUT", body: String(Date.now()) })]
+                    : [fetch(base + "handled.json?print=silent", { method: "DELETE" }),
+                       fetch(base + "cancelled.json?print=silent", { method: "DELETE" })];   // else a withdrawn call would stay hidden
+    Promise.all(writes)
+      .then(function (rs) { rs.forEach(function (r) { if (!r.ok) throw new Error(r.status); }); })
       .catch(function () {
         delete pending[m.id];
         render();
@@ -555,11 +563,18 @@
     lastMsgs.forEach(function (m) { if (m.team === team && m.kind === "help" && !isHidden(m)) setHandled(m, true); });
   }
   function isHidden(m) {
+    var off = !!m.handled || !!m.cancelled;                       // a TA marked it done, or the team withdrew it itself
     var p = pending[m.id];
-    if (p && (DEMO || Date.now() - p.at < PENDING_MS) && p.on !== !!m.handled) return p.on;   // not echoed yet
-    if (p && p.on === !!m.handled) delete pending[m.id];          // echoed: the database agrees, stop overriding it
-    return !!m.handled;
+    if (p && (DEMO || Date.now() - p.at < PENDING_MS) && p.on !== off) return p.on;   // not echoed yet
+    if (p && p.on === off) delete pending[m.id];                  // echoed: the database agrees, stop overriding it
+    return off;
   }
+
+  /* A withdrawal stays in the feed for a few minutes, struck through, though it no longer counts
+     as an open call: a TA already walking over should see that the team has sorted it out, not
+     find the row quietly gone. After that it joins the hidden pile with the handled ones. */
+  var CANCEL_SHOW_MS = 3 * 60 * 1000;
+  function justCancelled(m) { return !!m.cancelled && !m.handled && Date.now() - m.cancelled < CANCEL_SHOW_MS; }
 
   /* ---- render ---- */
   var STEPS = 8, CHEV = '<svg viewBox="0 0 10 10" aria-hidden="true"><path d="M3 1l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>';
@@ -582,15 +597,18 @@
       if (!lastMsgByTeam[m.team]) lastMsgByTeam[m.team] = m;
       if (m.kind === "help" && !isHidden(m)) { if (!helpTeams[m.team]) openHelp++; helpTeams[m.team] = true; }
     });
-    var shown = msgs.filter(function (m) { return showHidden || !isHidden(m); }).slice(0, 80);
+    var shown = msgs.filter(function (m) { return showHidden || !isHidden(m) || justCancelled(m); }).slice(0, 80);
     var firstPaint = seenMsg === null, nowSeen = {};
     $("msgs").innerHTML = shown.map(function (m) {
       var hid = isHidden(m), fresh = !firstPaint && !seenMsg[m.id];
+      var withdrawn = !!m.cancelled && !m.handled;
+      var restore = hid && !justCancelled(m);                     // a fresh withdrawal is dismissed, not restored
       nowSeen[m.id] = true;
-      return '<li class="k-' + m.kind + (hid ? " is-hidden" : "") + (fresh ? " is-new" : "") + '" data-id="' + esc(m.id) + '">' +
+      return '<li class="k-' + m.kind + (hid ? " is-hidden" : "") + (withdrawn ? " is-cancelled" : "") + (fresh ? " is-new" : "") + '" data-id="' + esc(m.id) + '">' +
         '<span class="team">กลุ่ม ' + esc(m.team) + '</span><span class="t">' + hhmm(m.ts) + '</span>' +
-        '<span class="txt"><span class="k">' + KIND[m.kind] + '</span>' + esc(m.text) + '</span>' +
-        '<button type="button" class="x" title="' + (hid ? "นำกลับมา" : "ซ่อน (จัดการแล้ว)") + '" aria-label="' + (hid ? "นำกลับมา" : "ซ่อน") + '">' + (hid ? "↺" : "×") + '</button></li>';
+        '<span class="txt"><span class="k">' + KIND[m.kind] + '</span>' +
+          (withdrawn ? '<s>' + esc(m.text) + '</s> <span class="cx">กลุ่มยกเลิกแล้ว</span>' : esc(m.text)) + '</span>' +
+        '<button type="button" class="x" data-do="' + (restore ? "show" : "hide") + '" title="' + (restore ? "นำกลับมา" : "ซ่อน (จัดการแล้ว)") + '" aria-label="' + (restore ? "นำกลับมา" : "ซ่อน") + '">' + (restore ? "↺" : "×") + '</button></li>';
     }).join("");
     msgs.forEach(function (m) { nowSeen[m.id] = true; });
     seenMsg = nowSeen;
@@ -706,7 +724,7 @@
     var x = e.target.closest(".x"), li = e.target.closest("li[data-id]");
     if (!x || !li) return;
     var m = lastMsgs.filter(function (mm) { return mm.id === li.dataset.id; })[0];
-    if (m) setHandled(m, !isHidden(m));
+    if (m) setHandled(m, x.dataset.do !== "show");
   });
 
   /* ---- one team's devices, and removing them ----
@@ -791,7 +809,8 @@
       } else lines += '<div class="dim">ยังไม่เปิดหน้านี้</div>';
       if (v.last) lines += '<div class="dim">ติ๊กล่าสุด ' + hhmm(v.last.ts) + " " + esc(v.last.label || "") + "</div>";
     }
-    if (m) lines += '<div class="' + (m.kind === "help" && !isHidden(m) ? "msg" : "dim") + '">' + KIND[m.kind] + " " + hhmm(m.ts) + " " + esc(m.text) + "</div>";
+    if (m) lines += '<div class="' + (m.kind === "help" && !isHidden(m) ? "msg" : "dim") + '">' + KIND[m.kind] + " " + hhmm(m.ts) + " " + esc(m.text) +
+      (m.cancelled && !m.handled ? " · กลุ่มยกเลิกแล้ว" : "") + "</div>";
     if (pin) {
       if (helpTeams[team]) lines += '<button type="button" class="tip-btn" data-resolve="' + esc(team) + '">✓ ช่วยเหลือแล้ว</button>';
       if (c) lines += devicesHtml(team);

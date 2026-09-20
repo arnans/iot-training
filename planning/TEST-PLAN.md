@@ -687,14 +687,17 @@ every 30 s — so noise in the last decimal does not become a history row every 
 
 ## M. ESP-NOW link, sender to receiver *(30 min)* — gates Session 4
 
-Added 20 Sep 2026 with Session 4. `gogo-iot-workshop.yaml` now broadcasts a CSV frame over
-ESP-NOW every 3 s and `farm-receiver-workshop.yaml` (a plain ESP32-C3) mirrors what it hears. The
+Added 20 Sep 2026 with Session 4. `gogo-iot-espnow-workshop.yaml` (the base sensor image plus an
+ESP-NOW block, same hostname) broadcasts a CSV frame every 3 s and `farm-receiver-workshop.yaml`
+(a plain ESP32-C3) mirrors what it hears. The
 worksheet (Activities 9–11) has participants flash both images themselves at web.esphome.io, so
 this test also rehearses that flow. Needs: one GoGo-IoT, one receiver devkit of the kind bought
 for the kit, both on the same zone SSID, a laptop with Home Assistant.
 
-1. Flash the zone's `gogo-iot-*.factory.bin` onto a GoGo-IoT that Home Assistant already knows,
-   **through web.esphome.io → Install**, not the build script. Reset, read the log.
+1. Flash the zone's `gogo-iot-espnow-*.factory.bin` onto a GoGo-IoT running the base image that
+   Home Assistant already knows, **through web.esphome.io → Install**, not the build script. Reset,
+   read the log. (Check first that the base image shows no `GOGO,` lines — Activity 9.1 has teams
+   look.)
 2. Flash `farm-receiver-*.factory.bin` onto the devkit the same way. Reset, read the log.
 3. Open `http://<receiver-ip>/`, type the GoGo board's six-character suffix into
    `ชื่อบอร์ดที่แปลง (sender name)`.
@@ -727,7 +730,9 @@ for the kit, both on the same zone SSID, a laptop with Home Assistant.
       This is the failure the venue can produce; the worksheet's 10.3 troubleshooting depends on
       the channel diagnostics being right
 - [ ] Sender image size: the espnow component added to a `web_server: local: true` image — check
-      the build still fits (`esphome compile` prints the flash usage)
+      the build still fits (`esphome compile` prints the flash usage; 51.4 % on 20 Sep 2026)
+- [ ] Flash the base `gogo-iot-*.factory.bin` back over the ESP-NOW image: `>>>` lines stop, Home
+      Assistant keeps the board (this is the path back for a board that misbehaves in Session 4)
 
 ---
 

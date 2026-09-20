@@ -11,17 +11,19 @@ Rows marked *(repo)* need access to the private `iot-training` repository.
 
 ---
 
-## 1. Board firmware — nine images
+## 1. Board firmware — twelve images
 
-One image per board type, per zone colour. The zone colour is baked in: a red-zone image only
-joins the red SSID. Sensor and relay images built and verified 12 Sep 2026; the sensor image
-gained the Session 4 ESP-NOW broadcast on 20 Sep 2026 and the receiver image is new the same day —
-**both need a rebuild and a bench pass (TEST-PLAN test M) before publishing.**
+One image per board type, per zone colour, plus a second sensor image for Session 4. The zone
+colour is baked in: a red-zone image only joins the red SSID. Sensor and relay images built and
+verified 12 Sep 2026; the ESP-NOW sensor image and the receiver image are new on 20 Sep 2026 and
+**need a build and a bench pass (TEST-PLAN test M) before publishing.** The base sensor image is
+unchanged in behaviour (it only gained internal ids) and need not be re-flashed.
 
 | Board | Red zone | Green zone | Blue zone |
 |---|---|---|---|
-| **GoGo-IoT sensor board** (ESP32-C3) — pre-flashed; teams re-flash the same file in Activity 9 | [gogo-iot-red.factory.bin](https://arnans.github.io/iot-training/firmware/gogo-iot-red.factory.bin) | [gogo-iot-green.factory.bin](https://arnans.github.io/iot-training/firmware/gogo-iot-green.factory.bin) | [gogo-iot-blue.factory.bin](https://arnans.github.io/iot-training/firmware/gogo-iot-blue.factory.bin) |
+| **GoGo-IoT sensor board** (ESP32-C3) — pre-flashed, sessions 1–3 | [gogo-iot-red.factory.bin](https://arnans.github.io/iot-training/firmware/gogo-iot-red.factory.bin) | [gogo-iot-green.factory.bin](https://arnans.github.io/iot-training/firmware/gogo-iot-green.factory.bin) | [gogo-iot-blue.factory.bin](https://arnans.github.io/iot-training/firmware/gogo-iot-blue.factory.bin) |
 | **Relay board** (ESP32-C6-Relay_X1) | [gogo-relay-red.factory.bin](https://arnans.github.io/iot-training/firmware/gogo-relay-red.factory.bin) | [gogo-relay-green.factory.bin](https://arnans.github.io/iot-training/firmware/gogo-relay-green.factory.bin) | [gogo-relay-blue.factory.bin](https://arnans.github.io/iot-training/firmware/gogo-relay-blue.factory.bin) |
+| **GoGo-IoT sensor board with ESP-NOW** — same board, same hostname; flashed by the teams over the base image in Activity 9 | [gogo-iot-espnow-red.factory.bin](https://arnans.github.io/iot-training/firmware/gogo-iot-espnow-red.factory.bin) | [gogo-iot-espnow-green.factory.bin](https://arnans.github.io/iot-training/firmware/gogo-iot-espnow-green.factory.bin) | [gogo-iot-espnow-blue.factory.bin](https://arnans.github.io/iot-training/firmware/gogo-iot-espnow-blue.factory.bin) |
 | **Receiver** (plain ESP32-C3 devkit, Session 4) — flashed by the teams in Activity 10 | [farm-receiver-red.factory.bin](https://arnans.github.io/iot-training/firmware/farm-receiver-red.factory.bin) | [farm-receiver-green.factory.bin](https://arnans.github.io/iot-training/firmware/farm-receiver-green.factory.bin) | [farm-receiver-blue.factory.bin](https://arnans.github.io/iot-training/firmware/farm-receiver-blue.factory.bin) |
 
 > **Receiver devkits: buy one model.** The log banner only appears on the USB port the image's
@@ -778,9 +780,10 @@ it in. If Session 3 ended on another day, the kit is re-cabled first (Activity 8
 
 #### 9.1 Download and install
 
-**Done when** web.esphome.io reports the install complete on the GoGo board and the board reboots.
-The file is the zone's `gogo-iot-<colour>.factory.bin` from the resources page — the same name as
-the pre-flashed image; the new build adds the ESP-NOW broadcast.
+**Done when** the team has first seen the old image's log (name, IP, no `GOGO,` lines), then
+web.esphome.io reports the install complete and the board reboots. The file is the zone's
+`gogo-iot-espnow-<colour>.factory.bin` from the resources page; the pre-flashed sessions 1–3 image is
+`gogo-iot-<colour>` and stays available for a board that must go back.
 
 **If stuck** Chrome or Edge only. Close the old Logs window before Connect. The GoGo board must be
 on the laptop's USB, not the charge controller's. **Wrong colour = board vanishes from Home
@@ -793,7 +796,7 @@ for nothing.
 `IP ADDRESS` line, and one `[espnow] >>> GOGO,…` line copied into the worksheet, and has watched
 the light field (6th value) fall under a cupped hand. Walk the ten fields on the projector once.
 
-**If stuck** No `>>>` lines: the board did not take the new image — check the file, reinstall. `nan`
+**If stuck** No `>>>` lines: the board did not take the new image — check that the file name says `espnow`, reinstall. `nan`
 in the first packets is normal. The name changing is not normal: it is derived from the MAC, so a
 changed name means a different board was flashed.
 

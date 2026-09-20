@@ -58,7 +58,7 @@
 
 | บอร์ด | แดง | เขียว | น้ำเงิน |
 |---|---|---|---|
-| GoGo-IoT (บอร์ดที่แปลง รุ่นที่ส่ง ESP-NOW) | [gogo-iot-red.factory.bin](https://arnans.github.io/iot-training/firmware/gogo-iot-red.factory.bin) | [gogo-iot-green.factory.bin](https://arnans.github.io/iot-training/firmware/gogo-iot-green.factory.bin) | [gogo-iot-blue.factory.bin](https://arnans.github.io/iot-training/firmware/gogo-iot-blue.factory.bin) |
+| GoGo-IoT รุ่น ESP-NOW (ติดตั้งทับรุ่นเดิมในกิจกรรมที่ 9) | [gogo-iot-espnow-red.factory.bin](https://arnans.github.io/iot-training/firmware/gogo-iot-espnow-red.factory.bin) | [gogo-iot-espnow-green.factory.bin](https://arnans.github.io/iot-training/firmware/gogo-iot-espnow-green.factory.bin) | [gogo-iot-espnow-blue.factory.bin](https://arnans.github.io/iot-training/firmware/gogo-iot-espnow-blue.factory.bin) |
 | บอร์ดตัวรับ (ESP32-C3) | [farm-receiver-red.factory.bin](https://arnans.github.io/iot-training/firmware/farm-receiver-red.factory.bin) | [farm-receiver-green.factory.bin](https://arnans.github.io/iot-training/firmware/farm-receiver-green.factory.bin) | [farm-receiver-blue.factory.bin](https://arnans.github.io/iot-training/firmware/farm-receiver-blue.factory.bin) |
 
 ---

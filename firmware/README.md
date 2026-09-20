@@ -1,14 +1,15 @@
 # Workshop firmware
 
-Three ESPHome source files, one per board type, each **built three times** — once per network
-zone (red, green, blue) with that zone's SSID and password injected as substitutions. Nine
-binaries, three YAMLs to maintain. Within a zone, board identity comes from `name_add_mac_suffix`;
-the zone colour is part of the hostname (`gogo-iot-red-a1b2c3`) so a board announces where it
-belongs.
+Four ESPHome source files — three board types plus a Session 4 variant of the sensor node — each
+**built three times**, once per network zone (red, green, blue) with that zone's SSID and password
+injected as substitutions. Twelve binaries. Within a zone, board identity comes from
+`name_add_mac_suffix`; the zone colour is part of the hostname (`gogo-iot-red-a1b2c3`) so a board
+announces where it belongs.
 
 | File | Board | Notes |
 |---|---|---|
-| `gogo-iot-workshop.yaml` | GoGo-IoT sensor node (ESP32-C3) | Derived from `gogo-iot-node` repo bring-up config. Since Session 4 exists it also **broadcasts its readings over ESP-NOW** every 3 s — see below |
+| `gogo-iot-workshop.yaml` | GoGo-IoT sensor node (ESP32-C3) | Derived from `gogo-iot-node` repo bring-up config. **Pre-flashed on every board; the sessions 1–3 image** |
+| `gogo-iot-espnow-workshop.yaml` | the same GoGo-IoT | The base file as a `packages:` include, plus an **ESP-NOW broadcast** of the readings every 3 s. Same hostname, so Home Assistant needs no re-adoption. Published as `gogo-iot-espnow-<zone>`; **teams flash it over the base image in Activity 9** — see below |
 | `relay-workshop.yaml` | ESP32-C6-Relay_X1 v1.1 | Pins confirmed — see `ESP32-C6-RELAY-X1.md` |
 | `farm-receiver-workshop.yaml` | Any plain ESP32-C3 devkit, no sensors | **Session 4's receiver**: hears the sensor node over ESP-NOW, mirrors its readings as entities, adopted in Home Assistant like the others. Teams flash it themselves in Activity 10 |
 | `ESP32-C6-RELAY-X1.md` | — | Hardware reference extracted from the vendor PDF |
@@ -27,18 +28,20 @@ pip install esphome esptool pyyaml
 cp secrets.example.yaml secrets.yaml     # OTA + fallback AP passwords
 cp zones.example.yaml zones.yaml         # three SSIDs + passwords
 python build-zones.py                    # -> dist/gogo-iot-{red,green,blue}.factory.bin
+                                         #    dist/gogo-iot-espnow-{red,green,blue}.factory.bin
                                          #    dist/gogo-relay-{red,green,blue}.factory.bin
                                          #    dist/farm-receiver-{red,green,blue}.factory.bin
-                                         #    and the same nine into ../docs/firmware/
+                                         #    and the same twelve into ../docs/firmware/
 python build-zones.py --board receiver --receiver-console uart0   # receiver boards with a USB-UART chip
 python build-zones.py --flash red sensor COM7
 ```
 
 The build also writes into `docs/firmware/`, which is what GitHub Pages serves and what every
-worksheet links to. **Commit and push those nine files to publish** — building alone does not
+worksheet links to. **Commit and push those twelve files to publish** — building alone does not
 update the site. Session 4 depends on it twice over: Activities 9 and 10 have participants
-download `gogo-iot-<zone>` and `farm-receiver-<zone>` from there and flash them at web.esphome.io,
-so a stale `docs/firmware/gogo-iot-*.bin` means a room full of boards that never say `>>> GOGO,`. Check `git status` after a build; if the binaries are unchanged there, the site
+download `gogo-iot-espnow-<zone>` and `farm-receiver-<zone>` from there and flash them at
+web.esphome.io. The pre-flashed `gogo-iot-<zone>` image is unchanged in behaviour (it only gained
+`id:`s) and is also the way back for a board that misbehaves after Activity 9. Check `git status` after a build; if the binaries are unchanged there, the site
 is already current.
 
 **On Windows, build from PowerShell or cmd — not Git Bash.** ESP-IDF's installer refuses to run
@@ -155,6 +158,9 @@ Do not change these without reading the reasoning:
   `status_led:` would have blinked all night. See planning/TEST-PLAN.md test H.
 - **`power_save_mode: none`** on the sensor node and the receiver — first for mDNS, now also for
   ESP-NOW: a radio dozing between beacons misses broadcast frames on both ends.
+- **`gogo-iot-espnow-workshop.yaml` includes the base file; it never copies it.** Anything the
+  sensor node needs goes in `gogo-iot-workshop.yaml` and reaches both images; only the ESP-NOW
+  block lives in the variant. Its `device_base_name` must stay `gogo-iot` (same hostname).
 - **The receiver listens in `on_unknown_peer`, never with `auto_add_peer`** — the 20-entry peer
   table versus ~100 boards on the air. See "ESP-NOW link" above.
 - **Top-level keys go at the end of the file, never mid-list.** Inserting `select:` after
@@ -223,13 +229,14 @@ readings over ESP-NOW and a plain ESP32-C3 in the farmhouse (`farm-receiver-work
 hears them and is the device Home Assistant talks to. Both YAMLs carry the full reasoning in
 their ESP-NOW blocks; the shape:
 
-- **Sender** (`gogo-iot-workshop.yaml`): every 3 s (`espnow_interval`), one plain-text CSV
-  frame to `FF:FF:FF:FF:FF:FF`:
+- **Sender** (`gogo-iot-espnow-workshop.yaml` = the base image + this block): every 3 s
+  (`espnow_interval`), one plain-text CSV frame to `FF:FF:FF:FF:FF:FF`:
   `GOGO,<name>,<seq>,<temp>,<hum>,<light>,<pressure>,<vibration>,<float>,<pump>` — ~70 bytes,
   readable in the USB log as `[espnow] >>> GOGO,...`. Two diagnostics were added for it:
-  `ช่องสัญญาณ WiFi (channel)` and `แพ็กเก็ต ESP-NOW ที่ส่ง (espnow sent)`. Nothing else about the
-  sensor image changed, and re-flashing keeps the hostname, so Home Assistant picks the board up
-  again without re-adoption (Activity 9 relies on this).
+  `ช่องสัญญาณ WiFi (channel)` and `แพ็กเก็ต ESP-NOW ที่ส่ง (espnow sent)`. It is a separate image so
+  the boards carry the plain one through sessions 1–3 and Activity 9's flash is a visible upgrade
+  (no `>>>` lines before, one every 3 s after); the hostname is the same, so Home Assistant picks
+  the board up again without re-adoption. The base file only gained `id:`s for the packet lambda.
 - **Receiver**: listens in `on_unknown_peer` — deliberately, because ESP-NOW's peer table holds
   20 entries and a ballroom has ~100 GoGo boards on the air, so `auto_add_peer` would fill it
   with the wrong boards. It filters frames by the **name in the payload** against the
@@ -262,12 +269,12 @@ carry the sender across the room on its 18650 cell and watch RSSI and the lost c
 
 Entities visible in Home Assistant and on the board's own page (everything else is `internal`):
 
-| GoGo-IoT sensor node (13) | Relay board (5) | Farm receiver (17) |
+| GoGo-IoT sensor node (11; 13 with the ESP-NOW image) | Relay board (5) | Farm receiver (17) |
 |---|---|---|
 | ความสว่าง (light) · อุณหภูมิ (temperature) · ความชื้นอากาศ (humidity) · ความกดอากาศ (pressure) | รีเลย์ (relay) — switch | อุณหภูมิ · ความชื้นอากาศ · ความสว่าง · ความกดอากาศ · ความสั่นสะเทือน, each `(…, ESP-NOW)` |
 | สวิตช์ลูกลอย (float switch) — binary | ปุ่มบนบอร์ด (button) — binary | สวิตช์ลูกลอย (float switch, ESP-NOW) · ปั๊มกำลังทำงาน (pump running, ESP-NOW) · รับข้อมูลจากแปลง (link) — binary |
 | ความสั่นสะเทือน (vibration) · ปั๊มกำลังทำงาน (pump running) — binary · ความไวตรวจจับปั๊ม (pump sensitivity) — select | | ชื่อบอร์ดที่แปลง (sender name) — text, config · บอร์ดที่รับข้อมูลอยู่ (receiving from) — text sensor |
-| เวลาทำงาน (uptime) · ความแรงสัญญาณ WiFi · หมายเลข IP · ช่องสัญญาณ WiFi (channel) · แพ็กเก็ต ESP-NOW ที่ส่ง (espnow sent) — diagnostics | เวลาทำงาน (uptime) · ความแรงสัญญาณ WiFi · หมายเลข IP — diagnostics | ความแรงสัญญาณ ESP-NOW (rssi) · แพ็กเก็ตที่รับ · แพ็กเก็ตที่หาย · ข้อมูลล่าสุดที่รับ (last packet) · บอร์ดอื่นที่ได้ยิน (other boards heard) · ช่องสัญญาณ WiFi (channel) · เวลาทำงาน · ความแรงสัญญาณ WiFi · หมายเลข IP — diagnostics |
+| เวลาทำงาน (uptime) · ความแรงสัญญาณ WiFi · หมายเลข IP — diagnostics · ESP-NOW image adds ช่องสัญญาณ WiFi (channel) · แพ็กเก็ต ESP-NOW ที่ส่ง (espnow sent) | เวลาทำงาน (uptime) · ความแรงสัญญาณ WiFi · หมายเลข IP — diagnostics | ความแรงสัญญาณ ESP-NOW (rssi) · แพ็กเก็ตที่รับ · แพ็กเก็ตที่หาย · ข้อมูลล่าสุดที่รับ (last packet) · บอร์ดอื่นที่ได้ยิน (other boards heard) · ช่องสัญญาณ WiFi (channel) · เวลาทำงาน · ความแรงสัญญาณ WiFi · หมายเลข IP — diagnostics |
 
 The raw accelerometer axes are never published — the worksheet's "tap the table" step reads
 `ความสั่นสะเทือน`, not an axis. The receiver's `ข้อมูลล่าสุดที่รับ` changes every 3 s (the `seq`

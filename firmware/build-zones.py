@@ -5,9 +5,9 @@ One YAML per board type, compiled once per zone with the zone name and WiFi
 credentials injected as ESPHome substitutions. Binaries land in dist/ and are
 published to docs/firmware/ in the same step; commit and push to make them live.
 
-    python build-zones.py                     # all zones, all three boards
+    python build-zones.py                     # all zones, all four images
     python build-zones.py --zone red          # one zone
-    python build-zones.py --board relay       # one board type
+    python build-zones.py --board relay       # one image type
     python build-zones.py --board receiver --receiver-console uart0
                                               # session-4 receiver for a C3 devkit
                                               # with a USB-UART chip (default: native USB)
@@ -27,11 +27,16 @@ HERE = Path(__file__).parent
 # Served by GitHub Pages; every worksheet and the instructor sheet link here.
 PUBLISHED = HERE.parent / "docs" / "firmware"
 BOARDS = {
-    # key: (yaml file, device base name, esptool chip)
-    "sensor": ("gogo-iot-workshop.yaml", "gogo-iot", "esp32c3"),
-    "relay": ("relay-workshop.yaml", "gogo-relay", "esp32c6"),
+    # key: (yaml file, device base name, esptool chip, published file base)
+    # The published base is normally the device base. The session-4 sensor image is
+    # the exception: same board, same hostname (so Home Assistant needs no re-adoption
+    # after the team flashes it in Activity 9), different file so the pre-flashed
+    # sessions 1-3 image keeps its name and links.
+    "sensor": ("gogo-iot-workshop.yaml", "gogo-iot", "esp32c3", "gogo-iot"),
+    "sensor-espnow": ("gogo-iot-espnow-workshop.yaml", "gogo-iot", "esp32c3", "gogo-iot-espnow"),
+    "relay": ("relay-workshop.yaml", "gogo-relay", "esp32c6", "gogo-relay"),
     # session 4: the plain ESP32-C3 in the farmhouse that hears the sensor node over ESP-NOW
-    "receiver": ("farm-receiver-workshop.yaml", "farm-receiver", "esp32c3"),
+    "receiver": ("farm-receiver-workshop.yaml", "farm-receiver", "esp32c3", "farm-receiver"),
 }
 ZONES = ("red", "green", "blue")
 # Where the receiver's log goes; the kit decides once, at purchase (see the YAML header).
@@ -50,7 +55,7 @@ def load_zones():
 
 
 def build(board, zone, cfg, extra_subs=()):
-    yaml_file, base, _ = BOARDS[board]
+    yaml_file, base, _, published = BOARDS[board]
     cmd = [
         "esphome",
         "-s", "zone", zone,
@@ -63,6 +68,8 @@ def build(board, zone, cfg, extra_subs=()):
     print(f"\n=== {board} / {zone}  ({cfg['ssid']}) ===")
     subprocess.run(cmd, cwd=HERE, check=True)
 
+    # ESPHome's build dir is named after the device, so `sensor` and `sensor-espnow`
+    # share one; harmless because each binary is copied out right after its compile.
     name = f"{base}-{zone}"
     # ESPHome 2026.x drives ESP-IDF/CMake directly and writes to build/;
     # older PlatformIO-based versions wrote to .pioenvs/<name>/. Accept both.
@@ -77,7 +84,8 @@ def build(board, zone, cfg, extra_subs=()):
                  + "\n  ".join(str(p) for p in candidates))
     dist = HERE / "dist"
     dist.mkdir(exist_ok=True)
-    dst = dist / f"{name}.factory.bin"
+    out = f"{published}-{zone}"
+    dst = dist / f"{out}.factory.bin"
     shutil.copy2(src, dst)
     print(f"-> {dst}  ({dst.stat().st_size // 1024} KB)")
 
@@ -85,14 +93,14 @@ def build(board, zone, cfg, extra_subs=()):
     # what every worksheet links to; when this copy was manual it silently went
     # three days stale, so teams flashed firmware that did not match the YAML.
     PUBLISHED.mkdir(parents=True, exist_ok=True)
-    shutil.copy2(src, PUBLISHED / f"{name}.factory.bin")
-    print(f"-> {PUBLISHED / f'{name}.factory.bin'}  (published)")
+    shutil.copy2(src, PUBLISHED / f"{out}.factory.bin")
+    print(f"-> {PUBLISHED / f'{out}.factory.bin'}  (published)")
     return dst
 
 
 def flash(board, zone, port):
-    _, base, chip = BOARDS[board]
-    binary = HERE / "dist" / f"{base}-{zone}.factory.bin"
+    _, _, chip, published = BOARDS[board]
+    binary = HERE / "dist" / f"{published}-{zone}.factory.bin"
     if not binary.exists():
         sys.exit(f"{binary} not built yet - run without --flash first")
     cmd = ["esptool", "--chip", chip, "--port", port, "--baud", "460800",

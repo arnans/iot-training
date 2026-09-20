@@ -15,7 +15,7 @@ specific to that first delivery.
 | [planning/](planning/) | Course design and running. [COURSE-DESIGN.md](planning/COURSE-DESIGN.md) full design: session plans, goals, kit list, risks, production tasks. [SESSION-OVERVIEW.md](planning/SESSION-OVERVIEW.md) one-page summary per session. [INSTRUCTOR-RESOURCES.md](planning/INSTRUCTOR-RESOURCES.md) links page and run sheet for instructors and TAs, rendered to `docs/instructor-resources.html`. [TEST-PLAN.md](planning/TEST-PLAN.md) bench tests for firmware and kit. [WORKSHEET-TODO.md](planning/WORKSHEET-TODO.md) open items, assumptions and the dated decision log. [PART1-RECORDING-PREP.md](planning/PART1-RECORDING-PREP.md) readiness notes for the optional narrated decks |
 | [network/](network/) | [NETWORK-REQUIREMENTS.md](network/NETWORK-REQUIREMENTS.md) wireless spec for the venue's network provider; Thai edition [NETWORK-REQUIREMENTS-th.md](network/NETWORK-REQUIREMENTS-th.md). Both render to standalone HTML in `docs/`, see below |
 | [webapp/](webapp/) | The web app layered on the worksheet site. [FILLABLE-WORKSHEET.md](webapp/FILLABLE-WORKSHEET.md) design of the fillable fields, localStorage and JSON export. [PROGRESS-DASHBOARD.md](webapp/PROGRESS-DASHBOARD.md) the instructor's live progress board on Firebase. `database.rules.json` the Firebase rules to paste |
-| [firmware/](firmware/) | The three workshop ESPHome sources (sensor node, relay board, Session 4's ESP-NOW receiver), built per zone colour |
+| [firmware/](firmware/) | The workshop ESPHome sources (sensor node, its Session 4 ESP-NOW variant, relay board, Session 4's ESP-NOW receiver), built per zone colour |
 | [hass/](hass/) | Home Assistant configuration for the team VM image (plus a now-unused instructor-server config) and the OVA recipe |
 | [hooks/](hooks/) | `fields.py`, the MkDocs hook that expands `{{f:key}}` markers into form fields |
 | [scripts/](scripts/) | [render-worksheets.py](scripts/render-worksheets.py) renders the participant pages into self-contained HTML in `docs/renders/`. [render-network-doc.py](scripts/render-network-doc.py) renders the network specs and the instructor page into `docs/`. `power_figures.py` draws the two Activity 7.4 figures into `docs/images/`; `collect_answers.py` merges team JSON files to CSV; `video_steps.py` cuts screen recordings into step stills; `test_worksheet_fields.cjs` and `test_progress.js` are the checks |
@@ -48,7 +48,7 @@ docs/
 ├── network-requirements.html      generated — Thai network spec
 ├── network-requirements-en.html   generated — English network spec
 ├── instructor-resources.html      generated — planning/INSTRUCTOR-RESOURCES.md as a standalone page
-├── firmware/                      the nine built ESP32 images, served for flashing (Session 4 teams flash two of them themselves)
+├── firmware/                      the twelve built ESP32 images, served for flashing (Session 4 teams flash two of them themselves)
 ├── renders/                       generated — every participant page as standalone HTML
 └── images/
     ├── network-*.svg              generated — the two spec diagrams, per language

@@ -1388,7 +1388,7 @@ body {
 <div class="ws-tasks">
 <p>คลิกหัวข้อเพื่อดูวิธีทำ ทำเสร็จแล้วทำเครื่องหมายและบันทึกผล กรอกที่นี่หรือในขั้นตอนด้านล่างก็ได้</p>
 <ul class="task-list">
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> <strong><a href="#a9-1">9.1 ดาวน์โหลดและติดตั้งเฟิร์มแวร์รุ่นใหม่</a></strong> เลือกไฟล์ของโซนเรา แล้วติดตั้งลงบอร์ด GoGo-IoT ผ่าน web.esphome.io</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> <strong><a href="#a9-1">9.1 ดาวน์โหลดและติดตั้งเฟิร์มแวร์รุ่นใหม่</a></strong> ดูบันทึกของรุ่นเดิมก่อน แล้วติดตั้งไฟล์ <code>gogo-iot-espnow</code> ของโซนเราผ่าน web.esphome.io</li>
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> <strong><a href="#a9-2">9.2 ตรวจว่าบอร์ดกลับมาทำงานและอ่านแพ็กเก็ตที่ส่งออกอากาศ</a></strong> ชื่อบอร์ดหลังติดตั้ง <span class="fld-radio" data-k="s4.tx.same"><label><input class="fld" type="radio" name="s4.tx.same" data-k="s4.tx.same" value="เหมือนเดิม"> เหมือนเดิม</label><label><input class="fld" type="radio" name="s4.tx.same" data-k="s4.tx.same" value="เปลี่ยนไป"> เปลี่ยนไป</label></span> · คัดลอกบรรทัด <code>&gt;&gt;&gt; GOGO,…</code> มาหนึ่งบรรทัด <input class="fld" type="text" data-k="s4.tx.packet" data-size="60" size="60" autocomplete="off" spellcheck="false"></li>
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> <strong><a href="#a9-3">9.3 ดูค่าใหม่บนหน้าเว็บของบอร์ดและใน Home Assistant</a></strong> ช่องสัญญาณ WiFi ที่บอร์ดใช้ <input class="fld" type="text" data-k="s4.tx.channel" data-size="2" size="2" inputmode="decimal" autocomplete="off" spellcheck="false"></li>
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> <strong><a href="#a9-q">คำถามท้ายกิจกรรม</a></strong> ที่ฟาร์มจริง บอร์ดที่แปลงจะทำงานด้วย ESP-NOW อย่างเดียวโดยไม่มี WiFi ความสามารถอะไรบ้างที่เราเคยใช้ในช่วงที่ 1–3 จะหายไป และเราจะตั้งค่าหรืออัปเดตบอร์ดที่แปลงได้อย่างไร <textarea class="fld fld-ta" data-k="s4.q9" rows="2"></textarea></li>
@@ -1396,7 +1396,7 @@ body {
 </div>
 <p><img alt="" class="activity-divider" decoding="async" height="96" loading="lazy" src="../images/activity-dividers/sprinklers.webp" width="1200" /></p>
 <h3 id="a9-1"><span class="sub-num">9.1</span>ดาวน์โหลดและติดตั้งเฟิร์มแวร์รุ่นใหม่</h3>
-<p>เฟิร์มแวร์คือโปรแกรมที่อยู่ในบอร์ด รุ่นใหม่นี้ทำทุกอย่างเหมือนเดิม และเพิ่มการ <strong>ส่งค่าเซนเซอร์ออกอากาศด้วย ESP-NOW ทุก 3 วินาที</strong> เราติดตั้งผ่านสาย USB ในเบราว์เซอร์ด้วยเครื่องมือเดียวกับที่ใช้อ่านชื่อบอร์ดในกิจกรรมที่ 1</p>
+<p>เฟิร์มแวร์คือโปรแกรมที่อยู่ในบอร์ด รุ่นที่บอร์ดใช้มาตั้งแต่ช่วงที่ 1 ยังไม่มี ESP-NOW รุ่นใหม่ (ชื่อไฟล์มีคำว่า <code>espnow</code>) ทำทุกอย่างเหมือนเดิม และเพิ่มการ <strong>ส่งค่าเซนเซอร์ออกอากาศด้วย ESP-NOW ทุก 3 วินาที</strong> เราติดตั้งผ่านสาย USB ในเบราว์เซอร์ด้วยเครื่องมือเดียวกับที่ใช้อ่านชื่อบอร์ดในกิจกรรมที่ 1</p>
 <p class="ws-phase"><strong>ดาวน์โหลดไฟล์ของโซนเรา</strong></p>
 <ol>
 <li>ดาวน์โหลดไฟล์ตามสีโซนของกลุ่ม (สีเดียวกับชื่อบอร์ดที่จดไว้ <input class="fld" type="text" data-k="board.iot.name" data-size="22" size="22" autocomplete="off" spellcheck="false">) เก็บไว้ในแล็ปท็อป</li>
@@ -1405,32 +1405,35 @@ body {
 <thead>
 <tr>
 <th>โซน</th>
-<th>ไฟล์เฟิร์มแวร์บอร์ด GoGo-IoT</th>
+<th>ไฟล์เฟิร์มแวร์บอร์ด GoGo-IoT รุ่น ESP-NOW</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>แดง</td>
-<td><a href="https://arnans.github.io/iot-training/firmware/gogo-iot-red.factory.bin">gogo-iot-red.factory.bin</a></td>
+<td><a href="https://arnans.github.io/iot-training/firmware/gogo-iot-espnow-red.factory.bin">gogo-iot-espnow-red.factory.bin</a></td>
 </tr>
 <tr>
 <td>เขียว</td>
-<td><a href="https://arnans.github.io/iot-training/firmware/gogo-iot-green.factory.bin">gogo-iot-green.factory.bin</a></td>
+<td><a href="https://arnans.github.io/iot-training/firmware/gogo-iot-espnow-green.factory.bin">gogo-iot-espnow-green.factory.bin</a></td>
 </tr>
 <tr>
 <td>น้ำเงิน</td>
-<td><a href="https://arnans.github.io/iot-training/firmware/gogo-iot-blue.factory.bin">gogo-iot-blue.factory.bin</a></td>
+<td><a href="https://arnans.github.io/iot-training/firmware/gogo-iot-espnow-blue.factory.bin">gogo-iot-espnow-blue.factory.bin</a></td>
 </tr>
 </tbody>
 </table></div>
-<p class="ws-phase"><strong>ติดตั้งลงบอร์ด</strong></p>
+<p class="ws-phase"><strong>ดูของเดิมก่อนเปลี่ยน</strong></p>
 <ol start="2" style="counter-reset: step 1">
-<li>เสียบสาย USB-C จากบอร์ด GoGo-IoT เข้าแล็ปท็อป (ถ้าบอร์ดเสียบไฟจากกล่องจ่ายไฟอยู่ ให้ย้ายสายมาที่แล็ปท็อป) เปิด <strong>Chrome</strong> หรือ <strong>Edge</strong> ไปที่ <strong><a href="https://web.esphome.io">web.esphome.io</a></strong> กด <strong>Connect</strong> แล้วเลือกพอร์ตของบอร์ด</li>
+<li>เสียบสาย USB-C จากบอร์ด GoGo-IoT เข้าแล็ปท็อป (ถ้าบอร์ดเสียบไฟจากกล่องจ่ายไฟอยู่ ให้ย้ายสายมาที่แล็ปท็อป) เปิด <strong>Chrome</strong> หรือ <strong>Edge</strong> ไปที่ <strong><a href="https://web.esphome.io">web.esphome.io</a></strong> กด <strong>Connect</strong> เลือกพอร์ตของบอร์ด แล้วกด <strong>Logs &amp; Console</strong> → <strong>Reset device</strong> ดูบันทึกสักครู่: มีชื่อบอร์ดและ IP ตามปกติ แต่ <strong>ไม่มี</strong>บรรทัด <code>GOGO,</code> ใด ๆ นี่คือรุ่นเดิม ปิดหน้าต่างบันทึก</li>
+</ol>
+<p class="ws-phase"><strong>ติดตั้งรุ่นใหม่ลงบอร์ด</strong></p>
+<ol start="3" style="counter-reset: step 2">
 <li>กด <strong>Install</strong> เลือกไฟล์ <code>.bin</code> ที่ดาวน์โหลดไว้ แล้วกดยืนยันการติดตั้ง <strong>ไม่ต้องเลือกลบข้อมูลในบอร์ด (Erase)</strong> รอจนขึ้นว่าติดตั้งสำเร็จ ประมาณ 1–2 นาที <strong>ระหว่างนี้อย่าถอดสาย</strong></li>
 </ol>
 <blockquote class="ws-caution">
 <p><strong>ระวัง</strong> สีในชื่อไฟล์ต้องตรงกับสีโซนของกลุ่ม ไฟล์ของโซนอื่นจะทำให้บอร์ดต่อ WiFi ของโซนเราไม่ได้ และ Home Assistant จะไม่เห็นบอร์ดอีก ถ้าติดตั้งผิดสี ให้ติดตั้งซ้ำด้วยไฟล์ที่ถูกต้อง</p>
-<p>WiFi ของโซนถูกตั้งไว้ในไฟล์แล้ว บอร์ดจะกลับมาต่อเครือข่ายเดิมและใช้ <strong>ชื่อเดิม</strong> เพราะชื่อสร้างจากหมายเลขประจำเครื่อง จึง <strong>ไม่ต้องลบและเพิ่มบอร์ดใหม่ใน Home Assistant</strong> ค่าต่าง ๆ จะกลับมาเองเมื่อบอร์ดออนไลน์</p>
+<p>WiFi ของโซนถูกตั้งไว้ในไฟล์แล้ว บอร์ดจะกลับมาต่อเครือข่ายเดิมและใช้ <strong>ชื่อเดิม</strong> เพราะชื่อสร้างจากหมายเลขประจำเครื่อง ไม่ได้อยู่ในชื่อไฟล์ จึง <strong>ไม่ต้องลบและเพิ่มบอร์ดใหม่ใน Home Assistant</strong> ค่าต่าง ๆ จะกลับมาเองเมื่อบอร์ดออนไลน์</p>
 </blockquote>
 <p><a class="ws-back" href="#a9">↑ กลับไปที่ใบงาน</a></p>
 <p><img alt="" class="activity-divider" decoding="async" height="64" loading="lazy" src="../images/activity-dividers/farmhouse.webp" width="1200" /></p>
@@ -1442,7 +1445,7 @@ body {
 </ol>
 <p class="ws-phase"><strong>อ่านแพ็กเก็ต ESP-NOW</strong></p>
 <ol start="3" style="counter-reset: step 2">
-<li>จากนั้นทุก 3 วินาทีจะมีบรรทัดที่มีคำว่า <code>[espnow</code> และ <code>&gt;&gt;&gt; GOGO,</code> นี่คือ <strong>แพ็กเก็ต</strong> หรือชุดข้อมูลหนึ่งชุดที่บอร์ดเพิ่งส่งออกอากาศ คัดลอกส่วนที่เริ่มจาก <code>GOGO,</code> มาหนึ่งบรรทัด <input class="fld" type="text" data-k="s4.tx.packet" data-size="60" size="60" autocomplete="off" spellcheck="false"></li>
+<li>จากนั้นทุก 3 วินาทีจะมีบรรทัดที่มีคำว่า <code>[espnow</code> และ <code>&gt;&gt;&gt; GOGO,</code> ซึ่งไม่เคยมีในรุ่นเดิม นี่คือ <strong>แพ็กเก็ต</strong> หรือชุดข้อมูลหนึ่งชุดที่บอร์ดเพิ่งส่งออกอากาศ คัดลอกส่วนที่เริ่มจาก <code>GOGO,</code> มาหนึ่งบรรทัด <input class="fld" type="text" data-k="s4.tx.packet" data-size="60" size="60" autocomplete="off" spellcheck="false"></li>
 <li>อ่านความหมายของแต่ละค่าที่คั่นด้วยจุลภาค เรียงตามลำดับนี้</li>
 </ol>
 <div class="table-wrap"><table>

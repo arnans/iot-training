@@ -2,6 +2,9 @@
 
 These assets support the native Google Slides deck and `planning/slides/activity-2-8.json`.
 
+- `a3-05-trigger-action-symbolic-v5.png` is the user-approved conceptual illustration exemplar. Earlier `a3-05-trigger-action*` variants document the design review, and are not the current slide image.
+- `a4_03-concept.png`, `a4_05-concept.png`, `a4_07-concept.png`, `a4_08-concept.png`, `a4_10-concept.png`, `a4_11-concept.png`, `a4_12-concept.png`, `a5_02-concept.png`, `a5_05-concept.png`, `a5_06-concept.png`, and `a5_07-concept.png` were generated with built-in image_gen using the approved exemplar as a style reference. Exact prompts and slide mappings are in `planning/slides/automation-visuals.json`. They illustrate concepts, not actual equipment, wiring or app interfaces.
+
 - `activity-02-led.jpg`, `activity-03-rules.jpg`, `activity-04-irrigation.jpg`, `activity-05-protection.jpg`, `activity-07-dashboard.jpg`, `activity-08-design.jpg`: JPEG copies of the existing full original illustrations used to create the corresponding worksheet banners. They are illustrations, not photographs of actual farms. The cover uses a native center crop without stretching.
 - `activity-06-history.jpg`: JPEG conversion of the current `docs/images/activity-banners/activity-06-history.webp`, showing farmers reading a historical graph. It replaces the older landscape-only artwork.
 - The `a4-*.png`, `a5-*.png`, `a6-3-build-dashboard.png` and `hist-1-history-graph.png` assets are actual frames from the repository's Home Assistant demonstration recordings under `docs/images/walkthroughs/`. Their original recording IDs predate the renumbering of History and Dashboard. Names, dates, values and entity identifiers in screenshots are examples, not values learners should copy.

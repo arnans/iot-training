@@ -50,3 +50,11 @@ Air humidity is explicitly labeled as a classroom stand-in for soil moisture. Ma
 The completed native deck was read back with 84 slides in order. The structural issue checker reported zero issues. Google rendered all 84 slides for visual review; the corrected image/caption slides were rendered again. Covers, Thai text fit, worksheet circles, image proportions and actual small-corner masks were checked. No manual page counters or discarded footer/action bars were added.
 
 Activity 1's pre-existing, intentionally labeled image placeholder remains on native slide `a1_slide_8` (currently ninth). Activities 2–8 have no new image placeholders. The live Slides document is stored in Drive; Git stores the guide, content manifest, request builder, reference assets and catalog, not the native Slides file itself.
+
+## Approved automation illustration layout
+
+Slide 24 (native ID a3_05) is the approved exemplar: modern conceptual line art with blue/yellow accents, followed by editable Thai headings and instructions. The layout also covers slides 31, 33, 35, 36, 38–40, 44 and 47–49. Images show events, conditions and observed results with generic symbols, without invented electrical connectors. Wiring, History and Dashboard screenshots remain useful references and retain their layouts.
+
+`automation-visuals.json` records the 11 additional illustrations, exact prompts and Thai copy. `slide-24-review-example.json` records the approved exemplar. The manifest now supplies `concept` fields to the shared `scripts/concept_slide_layout.mjs` layout, used by the standard builder. Rebuilds preserve all 12 conceptual slides.
+
+Rollout verified on 21 September 2026: all 44 new/revised text fields matched native readback, deck order and count stayed at 84 slides, and all 12 concept slides were rendered and visually inspected. The issue checker reported no errors; the two existing warnings concern intentional wiring arrows on slide 15. Review sheets are saved as `planning/slide-reference/automation-concepts-1.jpg` through `automation-concepts-3.jpg`. The 74-slide Activity 2–8 builder completed successfully with all 12 concept layouts.

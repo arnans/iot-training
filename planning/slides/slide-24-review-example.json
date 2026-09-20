@@ -1,0 +1,27 @@
+{
+  "slideId": "a3_05",
+  "position": 24,
+  "status": "Approved exemplar; applied to matching automation slides.",
+  "layout": "Clearly symbolic sensor tile and glowing lightbulb; no connectors or pin headers. Contemporary gray outlines, blue and yellow accents.",
+  "image": "planning/slide-reference/assets/a3-05-trigger-action-symbolic-v5.png",
+  "preview": "planning/slide-reference/activity-03-trigger-action-symbolic-preview.png",
+  "imageFrame": {
+    "x": 60,
+    "y": 103,
+    "width": 600,
+    "height": 200
+  },
+  "left": {
+    "heading": "Trigger: เมื่อแสงลดต่ำกว่าเกณฑ์",
+    "instructions": "ใน When ให้เลือกค่าความสว่าง\nเลือก Illuminance crossed threshold\nแล้วตั้ง Below ตามค่าเกณฑ์ของกลุ่ม"
+  },
+  "right": {
+    "heading": "Action: เปิดไฟ → เห็นไฟติดสว่าง",
+    "instructions": "ใน Then do ให้เลือกรีเลย์ของกลุ่ม\nตั้งคำสั่งเป็น Turn on switch\nตั้งชื่อ “มืด-เปิดไฟ” แล้วกด Save"
+  },
+  "notes": "สร้างกฎ “มืด-เปิดไฟ” — ใบงานกิจกรรมที่ 3 ข้อ 3.5\nเมื่อใช้มือบังเซนเซอร์ ค่าแสงลดลงจนข้ามเกณฑ์ เป็น Trigger จากนั้นระบบสั่งรีเลย์เปิดไฟ (Action) และผู้เรียนสังเกตเห็นไฟติดสว่าง\nภาพใช้สัญลักษณ์แทนเซนเซอร์และหลอดไฟโดยตั้งใจ ไม่มีขั้วต่อหรือรายละเอียดวงจร ไม่ใช่ภาพอุปกรณ์จริง ชุดอบรมใช้เซนเซอร์บนบอร์ด GoGo-IoT และแถบ LED\nเปิด Settings → Automations & scenes → Create automation → Create new automation แล้วตั้ง When และ Then do ตามคำแนะนำใต้ภาพ ใช้ค่า Below ของกลุ่ม\n[Sources]\nเนื้อหา: docs/activity-3.md\nภาพ: planning/slide-reference/assets/a3-05-trigger-action-symbolic-v5.png — built-in image_gen\n[/Sources]",
+  "generation": {
+    "method": "Built-in image_gen edit",
+    "prompt": "Revise this slide illustration into unmistakably GENERIC CONCEPTUAL representatives, not approximate real workshop hardware. Preserve modern clean isometric illustration style: fine gray outlines, white/light-gray surfaces, selective blue and golden yellow, plain warm cream #F6F2E8 background. Preserve wide 3:1 composition with two equal scenes and blank central gap. LEFT: hand blocking incoming golden light rays above a simple blue rounded square sensor symbol, with a small golden sun/light-sensitive window on its top. This is an abstract light-sensor tile, NOT a circuit board: remove all pin headers, connectors, wires, mounting holes, chips, traces and realistic electronic components. Show the shadow beneath the hand to communicate reduced light. RIGHT: replace the faux LED strip with ONE obvious generic glowing lightbulb icon in matching isometric technical line style, white/light-gray base, golden-yellow glass and short radiating golden rays. No socket wiring, connector, pins or terminal detail. It must clearly represent 'light turns on' rather than imitate a kit component. Generous margins, two subjects same visual weight. No text, labels, numbers, arrows between scenes, farm, scenery, photorealism, paper texture, hatching or antique style."
+  }
+}

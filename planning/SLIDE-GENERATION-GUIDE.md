@@ -90,6 +90,8 @@ The banner occupies nearly half the cover and meets the slide edges. Do not repe
 
 ### Images and screenshots
 
+- For automation concept illustrations, use clearly symbolic representatives without connectors, pin headers or invented circuit details. Use contemporary technical line art with gray outlines and selective blue/yellow accents. If depicting the actual kit instead, match the reference equipment faithfully, including the LED strip. Keep the trigger and observed result visually clear. Slide 24 is the approved exemplar; see `planning/slides/slide-24-review-example.json` and `planning/slides/automation-visuals.json`. Apply this two-scene layout to automation screenshots: a 600 × 200 pt illustration at (60,103), followed by editable headings and Thai instructions in two columns. Preserve useful wiring, History and Dashboard references. The shared `scripts/concept_slide_layout.mjs` implements the layout for all 12 matching slides.
+
 - Prefer existing project images. Keep equipment photographs, annotated diagrams and interface screenshots proportional and fully legible. Do not crop off meaning-bearing labels or controls.
 - Use actual **native rounded-rectangle image masks** for inset equipment images and screenshots. Reduce the corner radius to a subtle curve, approximately 7 pt in this deck.
 - In Google Slides, select the image, choose **Mask image → Shapes → Rounded Rectangle**, and drag the yellow adjustment handle close to the left edge. The default radius is too large. Judge the result at slide scale; the exact visual radius depends on the image dimensions.

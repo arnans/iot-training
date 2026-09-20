@@ -4,6 +4,7 @@
  */
 import fs from 'node:fs';
 import path from 'node:path';
+import {conceptLayout} from './concept_slide_layout.mjs';
 const [sourceFile, outputDir] = process.argv.slice(2);
 if (!sourceFile || !outputDir) throw new Error('Usage: node scripts/build_workshop_slides.mjs SOURCE_JSON OUTPUT_DIR');
 const source = JSON.parse(fs.readFileSync(sourceFile, 'utf8').replace(/^\uFEFF/, ''));
@@ -76,6 +77,11 @@ for(const slide of manifest.slides){
   image('cover_warm_a1_farm_panorama',slide.image,0,0,720,190);
  }else if(slide.type==='visual'){
   header(5);
+  if(slide.concept){
+   imagePath=path.resolve(slide.image).replaceAll('\\','/');
+   const mapped=old=>({...ref.pageElements.find(e=>e.objectId===old),objectId:id(old)});
+   req.push(...conceptLayout(slide.id,slide.concept,mapped('a1_5_board'),mapped('a1_5_task'),imagePath));
+  }else{
   const dims=imageDimensions(slide.image);
   const ratio=dims.width/dims.height;
   const wide=ratio>2.3;
@@ -84,6 +90,7 @@ for(const slide of manifest.slides){
   image('a1_5_board',slide.image,box.x+(box.w-w)/2,box.y+(box.h-h)/2,w,h);
   geo('a1_5_task',35,wide?107:126,wide?650:232,wide?55:246);
   txt('a1_5_task',slide.caption,wide?18:19,color.ink);para('a1_5_task');
+  }
  }else if(slide.type==='dark'){
   header(4);
   for(const [old,line,y] of [['a1_4_route',slide.lines[0],122],['a1_4_name',slide.lines[1],208],['a1_4_ip',slide.lines[2],294]]){geo(old,88,y,597,79);txt(old,line,21,color.cream);para(old);}

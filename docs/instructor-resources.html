@@ -215,7 +215,7 @@ figcaption {
   <header class="doc-head">
     <p class="kicker">Instructor & TA handbook</p>
     <h1>Instructor & TA resources</h1>
-    <p class="meta">IoT in Smart Farming workshop · Last updated 2026-09-19</p>
+    <p class="meta">IoT in Smart Farming workshop · Last updated 2026-09-20</p>
     <p class="disclosure">This document was compiled with Claude AI. Its content was designed and reviewed by those responsible, who certify that it reflects the intent of the preparing team in every respect.</p>
   </header>
   <p>Every file and link needed to prepare for and run the workshop, in one place.
@@ -322,7 +322,7 @@ figcaption {
   </tr>
   <tr>
   <td>Session 3 — แดชบอร์ดและออกแบบระบบ</td>
-  <td><a href="https://arnans.github.io/iot-training/renders/session-3-history.html">session-3-history.html</a></td>
+  <td><a href="https://arnans.github.io/iot-training/renders/activity-6.html">activity-6.html</a></td>
   </tr>
   <tr>
   <td>Participant file &amp; link list</td>
@@ -426,7 +426,7 @@ figcaption {
   Keep the <a href="https://arnans.github.io/iot-training/progress.html">progress board</a> open on a TA phone:
   every tick a team makes lands there within seconds, so it shows who is behind before they raise a
   hand. A team ticks either the item in the checklist or the <strong>ทำข้อนี้เสร็จแล้ว</strong> box at the foot
-  of the sub-section; both are the same tick. The three "we understood this" boxes in 7.3 are not
+  of the sub-section; both are the same tick. The three "we understood this" boxes in 8.3 are not
   counted.</p>
   <p>The two questions from the Activity 4 pilot, <code>s2.time.trace</code> and <code>s2.time.why</code>, and the Session 1 lighting keys (<code>s1.light.on</code>,
   <code>s1.rule.dark.*</code>, <code>s1.rule.bright.*</code>, <code>s1.auto.pass</code>, <code>s1.timer.at</code>, <code>s1.timer.ok</code>) are on the
@@ -777,7 +777,23 @@ figcaption {
   toggles the relay (bench-verified), an override that lives in the board rather than the wiring. It
   is the answer to the end-of-activity question and links back to the Session 1 seed; it needs no
   worksheet item.</p>
-  <h3>Session 3 · Reading the recorded data (20 min)</h3>
+  <h3>Session 3 · Activity 6 — Reading the recorded data (20 min)</h3>
+  <h4>Before start (ก่อนเริ่ม) · ~3 min</h4>
+  <p><strong>Done when</strong> the four worksheet checks at the top of Activity 6 are ticked (added 20 Sep 2026; they
+  report to the dashboard as one activity, like Session 2's): Home Assistant is reachable, both boards
+  are online and the relay still switches, <code>รดน้ำ - เปิดปั๊ม</code> is back <strong>on</strong> after the lunch shutdown
+  with every fail-safe on, and <code>Pump Auto Mode</code> is left <strong>off</strong> for the afternoon. Session 2's wrap-up
+  disabled the watering rule so a dry pump could not run unattended over lunch; nothing turned it back
+  on before this was added, so Activity 7's <code>โหมดรดน้ำอัตโนมัติ</code> tile had no live rule behind it and
+  Activity 8's pack-up asked teams to switch off rules that were never switched on.</p>
+  <p><strong>Why <code>Pump Auto Mode</code> stays off.</strong> With the rule enabled and the toggle on, the pump-on threshold
+  sits just above room humidity (4.7), so every table would run the dry pump in 30-second bursts (the
+  cutoff from 5.4) for the rest of the afternoon. Off, the rule is complete and inspectable, the
+  dashboard tile reads Manual, and a team can still drive the pump by hand from its own tile. If you
+  want the pump live — for a demo, or to let a table watch Auto work — turn the toggle on at that
+  table and back off afterwards.</p>
+  <p><strong>If stuck</strong> Home Assistant will not open: the VM's IP may have changed over lunch, so read it off
+  the VM screen again. The rule list is <strong>Settings → Automations &amp; scenes</strong>.</p>
   <h4>Open the history</h4>
   <p><strong>Done when</strong> History shows humidity, light and the relay switch from the start of Session 2 until now.</p>
   <p><strong>If stuck</strong> Check the selected time range first. A VM shutdown or restart keeps the history (the
@@ -794,18 +810,18 @@ figcaption {
   <h4>The question the graph cannot answer</h4>
   <p><strong>A good answer</strong> says there is no data from the break after Session 1 because the laptop running Home Assistant (the
   recorder) was closed or taken away; the board kept measuring, but nobody recorded it. A farm needs
-  a machine that stays on, with power through the night. This feeds the power step in Activity 7.</p>
-  <h3>Session 3 · Activity 6 — Dashboard (35 min)</h3>
+  a machine that stays on, with power through the night. This feeds the power step in Activity 8.</p>
+  <h3>Session 3 · Activity 7 — Dashboard (35 min)</h3>
   <p>Plan 5 · build 25 · test with someone else 5.</p>
-  <h4>6.1 Who will use it · 6.2 What to show and control</h4>
+  <h4>7.1 Who will use it · 7.2 What to show and control</h4>
   <p><strong>Done when</strong> the group has named who will use the dashboard (one or several: owner on a phone, worker on a tablet, manager on a big screen).
   There are three values to <em>show</em> and two things to <em>control</em>, written in plain words the user understands
   ("air humidity", "is the water up to the float?", "start the pump").</p>
-  <h4>6.3 Build</h4>
+  <h4>7.3 Build</h4>
   <p><strong>Done when</strong> the four minimum cards are on a new blank dashboard (the Activity 4 Farm Dashboard is auto-generated and not editable): humidity <strong>Gauge</strong>, float <strong>Tile</strong> named for the
   user (the worksheet suggests <code>ระดับน้ำที่ลูกลอย</code>), pump <strong>Tile</strong> (<code>สั่งปั๊ม</code>), and a <strong>Tile</strong> for <code>Pump Auto Mode</code> named so that On reads as Auto
   (the worksheet suggests <code>โหมดรดน้ำอัตโนมัติ</code>). History graph, severity colours and extra cards are optional and come only after that.</p>
-  <h4>6.4 Someone else tries it</h4>
+  <h4>7.4 Someone else tries it</h4>
   <p><strong>Done when</strong> someone who did not build the dashboard (a member of the paired team, or a teammate who took no part) answers all
   four questions within 30 seconds on a phone: what is the humidity, is the water up to the float,
   where is the pump control, is it in Auto or Manual now.</p>
@@ -814,17 +830,17 @@ figcaption {
   <h4>End-of-activity question</h4>
   <p><strong>A good answer</strong> names the question the tester struggled with and the specific change made:
   moving a card up, renaming a tile, adding a colour.</p>
-  <h3>Session 3 · Activity 7 — Design challenge (85 min)</h3>
+  <h3>Session 3 · Activity 8 — Design challenge (85 min)</h3>
   <p>Pick 5 · network 20 · power 15 · design 30 · presentation and exchange 15 (instructor-led). Since 18 Sep 2026
-  there is no separate design canvas: the design is the four blocks of worksheet step 7.6 (sensor and actuator,
+  there is no separate design canvas: the design is the four blocks of worksheet step 8.6 (sensor and actuator,
   connectivity, power, test plan), filled in the worksheet and mirrored in the record sheet.</p>
-  <h4>7.1 Pick the scenario</h4>
-  <p><strong>Done when</strong> a scenario is written down (A–E; the worksheet calls them โจทย์, not cards, since 18 Sep 2026) and the farm and its problem are written in 7.1. Recommend <strong>E</strong> (a member's own farm) when one exists. C and D are advanced; teams
+  <h4>8.1 Pick the scenario</h4>
+  <p><strong>Done when</strong> a scenario is written down (A–E; the worksheet calls them โจทย์, not cards, since 18 Sep 2026) and the farm and its problem are written in 8.1. Recommend <strong>E</strong> (a member's own farm) when one exists. C and D are advanced; teams
   choosing them may put the specialist parts under "not sure yet".</p>
-  <h4>7.2 Choose the farm network</h4>
+  <h4>8.2 Choose the farm network</h4>
   <p><strong>Done when</strong> both links have a distance, whether the far end has power, what was eliminated and why, and what
   remains. The instructor models scenario B on screen (400 m, no mains: WiFi and Zigbee out on distance,
-  cellular out on power; ESP-NOW, LoRa and RS-485 remain). The two rows in 7.2 are filled from the
+  cellular out on power; ESP-NOW, LoRa and RS-485 remain). The two rows in 8.2 are filled from the
   survivors, with a reason.</p>
   <p><strong>If stuck</strong> The weak answer is "WiFi, because the workshop used WiFi". Ask for the distance and the power
   at the far end first.</p>
@@ -832,7 +848,7 @@ figcaption {
   limitations), with power draw, benefits, limits and cost per option: WiFi about 30–50 m from the router in
   the open, ESP-NOW 100–200 m board to board, Zigbee 10–30 m per hop, LoRa 1–10 km, RS-485 up to about
   1 km of cable, cellular wherever there is signal. General estimates; กำพล to confirm against what they teach.</p>
-  <h4>7.3 Remote access and the cloud · instructor talk, listen only</h4>
+  <h4>8.3 Remote access and the cloud · instructor talk, listen only</h4>
   <p>Rewritten 18 Sep 2026 (Roger): no task in the worksheet; the team listens and ticks three boxes to say
   it has understood. Make the three points in this order, in the words on the worksheet:</p>
   <ol>
@@ -862,8 +878,8 @@ figcaption {
   internet down, automations, the dashboard on the farm WiFi and logging carry on, while remote viewing and
   notifications stop; with Home Assistant down, automations, logging and the dashboard all stop, and only
   protection in the board or the wiring, and the manual switch, remain. The team writes its remote-access
-  choice in 7.6, third communication row; "not needed" is a valid answer.</p>
-  <h4>7.4 Choose a battery for solar</h4>
+  choice in 8.6, third communication row; "not needed" is a valid answer.</p>
+  <h4>8.4 Choose a battery for solar</h4>
   <p>Rewritten 18 Sep 2026 (Roger: focus on the battery types used with solar and how to choose). The box
   tour is one step; the controller-settings and LCD-icon steps were cut later the same day as a distraction,
   replaced by two sentences and two diagrams: what the controller does and that it must support the battery
@@ -882,7 +898,7 @@ figcaption {
   adapter because a full lead-acid sits at 12.7–13.0 V; the controller judges only from voltage.</p>
   <p><strong>If stuck</strong> Ask two questions first: does anything have to run at night, and will anyone come to top
   up water? The answers usually settle the type before price does.</p>
-  <h4>7.5 Work out the power, then choose the source</h4>
+  <h4>8.5 Work out the power, then choose the source</h4>
   <p>Rewritten 18 Sep 2026 (Roger): the worksheet now opens with the four calculation steps and two worked
   examples; the kit-load table and the folded answer table are gone.</p>
   <p><strong>Done when</strong> the team can run the four steps on its own main load and say which source it leads to:
@@ -905,10 +921,10 @@ figcaption {
   (sensors, network, controller). For three cloudy days it names the numbers needed: each load's
   Wh per day, the usable battery capacity (about half the rated capacity for lead-acid), and what the
   panels still produce under cloud.</p>
-  <h4>7.6 Design for one pilot point</h4>
+  <h4>8.6 Design for one pilot point</h4>
   <p><strong>Done when</strong> the four blocks read as one plan: a sensor and an actuator named, with a control rule and
-  a response to sensor/communication failure; the two local communication rows carried over from 7.2,
-  a remote-access choice informed by 7.3, and the battery/power answers from 7.4–7.5 consistent with the
+  a response to sensor/communication failure; the two local communication rows carried over from 8.2,
+  a remote-access choice informed by 8.3, and the battery/power answers from 8.4–8.5 consistent with the
   parts chosen; and a test plan covering normal operation and the chosen failure case, with observable
   pass criteria.
   Unknowns are written into the block they belong to, not guessed.</p>
@@ -916,7 +932,7 @@ figcaption {
   <p>Not in the worksheet since 18 Sep 2026 (Roger: the instructor directs it). Pair the teams. Each team tells
   its plan in one minute from the four blocks: the problem, what senses and what acts, how it connects and is
   powered, and how they will know it works. The other team has three minutes for two questions: which
-  decision is best reasoned, and what happens if one part fails. Swap. Teams change their answers in 7.6
+  decision is best reasoned, and what happens if one part fails. Swap. Teams change their answers in 8.6
   directly; there is no separate revision box, no rubric walk and no plenary.</p>
   <hr>
   <h2>Still missing</h2>

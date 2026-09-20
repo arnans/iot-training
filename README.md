@@ -40,9 +40,8 @@ docs/
 ├── .nojekyll         serve docs/ as static files; without it Jekyll collides index.html with index.md
 ├── index.md          เริ่มต้นที่นี่ — kit, roles, safety, vocabulary (MkDocs preview only)
 ├── session-1-start.md   team number, zone, Home Assistant address
-├── activity-1..7.md  one worksheet page per activity, grouped by session in the nav
-├── session-3-history.md reading the recorded history before activity 6
-├── session-1/2/3.md  stubs that forward the old session URLs to the pages above
+├── activity-1..8.md  one worksheet page per activity, grouped by session in the nav
+├── session-1/2/3.md, session-3-history.md  stubs that forward the old URLs to the pages above
 ├── record-sheet.md   Printed team record sheet
 ├── reference.md      Home Assistant menu paths and troubleshooting
 ├── resources.md      every download and link participants need, in one place

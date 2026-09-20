@@ -3,7 +3,7 @@
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const { JSDOM } = require(process.argv[2] || 'jsdom');
-const PAGES = ['activity-1', 'activity-2', 'activity-3', 'activity-4', 'activity-5', 'session-3-history', 'activity-6', 'activity-7'];
+const PAGES = ['activity-1', 'activity-2', 'activity-3', 'activity-4', 'activity-5', 'activity-6', 'activity-7', 'activity-8'];
 for (const slug of PAGES) {
   const source = fs.readFileSync(`docs/${slug}.md`, 'utf8');
   const dom = new JSDOM(fs.readFileSync(`docs/renders/${slug}.html`, 'utf8'));
@@ -17,7 +17,7 @@ for (const slug of PAGES) {
     const [, id, body] = match;
     const numbers = [...body.matchAll(/^(\d+)\. /gm)].map(m => Number(m[1]));
     if (!numbers.length) {
-      // a listen-only section (7.3 since 18 Sep 2026): acknowledgement checkboxes and no procedure at all
+      // a listen-only section (8.3 since 18 Sep 2026): acknowledgement checkboxes and no procedure at all
       assert.ok(/^- \[ \] /m.test(body), `${id}: missing numbered procedure`);
       const heading = dom.window.document.getElementById(id);
       assert.ok(heading, `${id}: missing rendered heading`);

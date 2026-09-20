@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<title>กิจกรรมที่ 7 — ออกแบบระบบสำหรับฟาร์ม (Design)</title>
+<title>กิจกรรมที่ 7 — สร้างหน้าจอติดตามและควบคุมฟาร์ม (Dashboard)</title>
 <meta name="description" content="ใบงานผู้เข้าร่วม IoT ในฟาร์มอัจฉริยะ">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -1365,390 +1365,167 @@ body {
   </div>
 </header>
 <div class="ws-shell">
-<nav class="ws-side" aria-label="หน้าในชุดใบงาน"><ul class="ws-pages"><li class="ws-group" data-group="ก่อนการอบรม"><a href="install.html">ก่อนการอบรม</a></li><li data-page="install" data-group="ก่อนการอบรม"><a href="install.html"><span class="ws-g">ก่อนการอบรม</span><span class="ws-t">เตรียมแล็ปท็อป</span></a></li><li class="ws-group" data-group="ช่วงที่ 1"><a href="session-1-start.html">ช่วงที่ 1</a></li><li data-page="session-1-start" data-group="ช่วงที่ 1"><a href="session-1-start.html"><span class="ws-g">ช่วง 1</span><span class="ws-t">เตรียมพร้อมก่อนเริ่ม</span></a></li><li data-page="activity-1" data-group="ช่วงที่ 1"><a href="activity-1.html" data-n="1"><span class="ws-g">ช่วง 1</span><span class="ws-n">กิจกรรม 1</span><span class="ws-t">อ่านค่าเซนเซอร์ (Sense)</span></a></li><li data-page="activity-2" data-group="ช่วงที่ 1"><a href="activity-2.html" data-n="2"><span class="ws-g">ช่วง 1</span><span class="ws-n">กิจกรรม 2</span><span class="ws-t">ต่อวงจรและสั่งงานหลอดไฟ (Act)</span></a></li><li data-page="activity-3" data-group="ช่วงที่ 1"><a href="activity-3.html" data-n="3"><span class="ws-g">ช่วง 1</span><span class="ws-n">กิจกรรม 3</span><span class="ws-t">สร้างกฎควบคุมระบบ (Logic)</span></a></li><li class="ws-group" data-group="ช่วงที่ 2"><a href="activity-4.html">ช่วงที่ 2</a></li><li data-page="activity-4" data-group="ช่วงที่ 2"><a href="activity-4.html" data-n="4"><span class="ws-g">ช่วง 2</span><span class="ws-n">กิจกรรม 4</span><span class="ws-t">ตั้งกฎอัตโนมัติ (Think)</span></a></li><li data-page="activity-5" data-group="ช่วงที่ 2"><a href="activity-5.html" data-n="5"><span class="ws-g">ช่วง 2</span><span class="ws-n">กิจกรรม 5</span><span class="ws-t">จำลองปัญหาและป้องกัน (Failure lab)</span></a></li><li class="ws-group in-group" data-group="ช่วงที่ 3"><a href="session-3-history.html">ช่วงที่ 3</a></li><li data-page="session-3-history" data-group="ช่วงที่ 3" class="in-group"><a href="session-3-history.html"><span class="ws-g">ช่วง 3</span><span class="ws-t">อ่านข้อมูลย้อนหลัง</span></a></li><li data-page="activity-6" data-group="ช่วงที่ 3" class="in-group"><a href="activity-6.html" data-n="6"><span class="ws-g">ช่วง 3</span><span class="ws-n">กิจกรรม 6</span><span class="ws-t">สร้างแดชบอร์ด (Dashboard)</span></a></li><li data-page="activity-7" data-group="ช่วงที่ 3" class="is-current in-group"><a href="activity-7.html" aria-current="page" data-n="7"><span class="ws-g">ช่วง 3</span><span class="ws-n">กิจกรรม 7</span><span class="ws-t">ออกแบบระบบฟาร์ม (Design)</span></a><ul class="ws-toc"><li><a href="#a7">ใบงาน</a></li><li><a href="#a7-1">7.1 เลือกโจทย์</a></li><li><a href="#a7-2b">7.2 เลือกเครือข่ายในฟาร์ม</a></li><li><a href="#a7-2c">7.3 การเข้าถึงจากนอกฟาร์มและคลาวด์</a></li><li><a href="#a7-3">7.4 เลือกแบตเตอรี่สำหรับระบบโซลาร์</a></li><li><a href="#a7-3b">7.5 คำนวณพลังงานแล้วเลือกแหล่งจ่ายไฟ</a></li><li><a href="#a7-4">7.6 ออกแบบระบบสำหรับทดลองหนึ่งจุด</a></li><li><a href="#คนอปกรณ">คืนอุปกรณ์</a></li></ul></li></ul></nav>
+<nav class="ws-side" aria-label="หน้าในชุดใบงาน"><ul class="ws-pages"><li class="ws-group" data-group="ก่อนการอบรม"><a href="install.html">ก่อนการอบรม</a></li><li data-page="install" data-group="ก่อนการอบรม"><a href="install.html"><span class="ws-g">ก่อนการอบรม</span><span class="ws-t">เตรียมแล็ปท็อป</span></a></li><li class="ws-group" data-group="ช่วงที่ 1"><a href="session-1-start.html">ช่วงที่ 1</a></li><li data-page="session-1-start" data-group="ช่วงที่ 1"><a href="session-1-start.html"><span class="ws-g">ช่วง 1</span><span class="ws-t">เตรียมพร้อมก่อนเริ่ม</span></a></li><li data-page="activity-1" data-group="ช่วงที่ 1"><a href="activity-1.html" data-n="1"><span class="ws-g">ช่วง 1</span><span class="ws-n">กิจกรรม 1</span><span class="ws-t">อ่านค่าเซนเซอร์ (Sense)</span></a></li><li data-page="activity-2" data-group="ช่วงที่ 1"><a href="activity-2.html" data-n="2"><span class="ws-g">ช่วง 1</span><span class="ws-n">กิจกรรม 2</span><span class="ws-t">ต่อวงจรและสั่งงานหลอดไฟ (Act)</span></a></li><li data-page="activity-3" data-group="ช่วงที่ 1"><a href="activity-3.html" data-n="3"><span class="ws-g">ช่วง 1</span><span class="ws-n">กิจกรรม 3</span><span class="ws-t">สร้างกฎควบคุมระบบ (Logic)</span></a></li><li class="ws-group" data-group="ช่วงที่ 2"><a href="activity-4.html">ช่วงที่ 2</a></li><li data-page="activity-4" data-group="ช่วงที่ 2"><a href="activity-4.html" data-n="4"><span class="ws-g">ช่วง 2</span><span class="ws-n">กิจกรรม 4</span><span class="ws-t">ตั้งกฎอัตโนมัติ (Think)</span></a></li><li data-page="activity-5" data-group="ช่วงที่ 2"><a href="activity-5.html" data-n="5"><span class="ws-g">ช่วง 2</span><span class="ws-n">กิจกรรม 5</span><span class="ws-t">จำลองปัญหาและป้องกัน (Failure lab)</span></a></li><li class="ws-group in-group" data-group="ช่วงที่ 3"><a href="activity-6.html">ช่วงที่ 3</a></li><li data-page="activity-6" data-group="ช่วงที่ 3" class="in-group"><a href="activity-6.html" data-n="6"><span class="ws-g">ช่วง 3</span><span class="ws-n">กิจกรรม 6</span><span class="ws-t">อ่านข้อมูลย้อนหลัง (History)</span></a></li><li data-page="activity-7" data-group="ช่วงที่ 3" class="is-current in-group"><a href="activity-7.html" aria-current="page" data-n="7"><span class="ws-g">ช่วง 3</span><span class="ws-n">กิจกรรม 7</span><span class="ws-t">สร้างแดชบอร์ด (Dashboard)</span></a><ul class="ws-toc"><li><a href="#a7">ใบงาน</a></li><li><a href="#a7-1">7.1 ใครจะใช้งานแดชบอร์ด</a></li><li><a href="#a7-plan">7.2 เลือกข้อมูลที่จะแสดงและควบคุม</a></li><li><a href="#a7-2">7.3 สร้างแดชบอร์ด</a></li><li><a href="#a7-3">7.4 ให้ผู้อื่นทดลองใช้แดชบอร์ด</a></li></ul></li><li data-page="activity-8" data-group="ช่วงที่ 3" class="in-group"><a href="activity-8.html" data-n="8"><span class="ws-g">ช่วง 3</span><span class="ws-n">กิจกรรม 8</span><span class="ws-t">ออกแบบระบบฟาร์ม (Design)</span></a></li></ul></nav>
 <main class="md-content__inner md-typeset" id="ws-main">
-<h1 id="กจกรรมท-7--ออกแบบระบบสำหรบฟารม-design">กิจกรรมที่ 7 — ออกแบบระบบสำหรับฟาร์ม (Design)</h1>
-<p><img alt="" class="activity-banner" decoding="async" height="267" loading="lazy" src="../images/activity-banners/activity-07-design.webp" width="1600" /></p>
-<p><strong>85 นาที</strong> เลือกโจทย์ 5 · การสื่อสาร 20 · พลังงาน 15 · ออกแบบระบบ 30 · นำเสนอและแลกเปลี่ยนกับกลุ่มคู่ 15</p>
-<p><img alt="" class="activity-divider" decoding="async" height="105" loading="lazy" src="../images/activity-dividers/orchard.webp" width="1200" /></p>
+<h1 id="กจกรรมท-7--สรางหนาจอตดตามและควบคมฟารม-dashboard">กิจกรรมที่ 7 — สร้างหน้าจอติดตามและควบคุมฟาร์ม (Dashboard)</h1>
+<p><img alt="" class="activity-banner" decoding="async" height="267" loading="lazy" src="../images/activity-banners/activity-07-dashboard.webp" width="1600" /></p>
+<p><strong>35 นาที</strong> วางแผน 5 นาที · สร้าง 25 นาที · ทดสอบ 5 นาที</p>
+<p><strong>อุปกรณ์ที่ใช้</strong> ระบบทั้งหมด และโทรศัพท์ 1 เครื่อง</p>
+<p>เราจะสร้างแดชบอร์ดเพื่อให้ผู้ใช้ดูข้อมูลและสั่งงานอุปกรณ์ในฟาร์มได้สะดวกขึ้น แดชบอร์ดที่ดีควรช่วยให้ผู้ใช้เข้าใจสถานะของระบบและหาปุ่มที่ต้องการได้ง่าย</p>
+<p><img alt="" class="activity-divider" decoding="async" height="79" loading="lazy" src="../images/activity-dividers/flower-led.webp" width="1200" /></p>
 <h3 id="a7">ใบงาน</h3>
 <div class="ws-tasks">
+<p>คลิกหัวข้อเพื่อดูวิธีทำ ทำเสร็จแล้วทำเครื่องหมายและตอบคำถาม</p>
 <ul class="task-list">
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> <strong><a href="#a7-1">7.1 เลือกโจทย์</a></strong> เลือกหนึ่งปัญหาและหนึ่งจุดที่จะเริ่มทดลอง</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> <strong><a href="#a7-2b">7.2 เลือกเครือข่ายในฟาร์ม</a></strong> จดวิธีสื่อสารที่เลือกและเหตุผลสำหรับสองจุดเชื่อมต่อ</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> <strong><a href="#a7-2c">7.3 การเข้าถึงจากนอกฟาร์มและคลาวด์</a></strong> ฟังผู้สอนอธิบาย แล้วยืนยันว่าเข้าใจประเด็นสำคัญสามข้อ</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> <strong><a href="#a7-3">7.4 เลือกแบตเตอรี่</a></strong> เทียบชนิดแบตเตอรี่สำหรับโซลาร์ แล้วเลือกชนิดที่เหมาะกับโจทย์</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> <strong><a href="#a7-3b">7.5 เลือกแหล่งพลังงาน</a></strong> ลองคำนวณร่วมกัน แล้วจดแหล่งจ่ายไฟและสิ่งที่ต้องมีไฟสำรอง</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> <strong><a href="#a7-4">7.6 ออกแบบระบบ</a></strong> สรุปเซนเซอร์และอุปกรณ์ วิธีสื่อสาร แหล่งพลังงาน และแผนทดสอบ</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> <strong><a href="#a7-1">7.1 ใครจะใช้งานแดชบอร์ด</a></strong> มีใครบ้างที่จะใช้ <input class="fld" type="text" data-k="s3.dash.user" data-size="30" size="30" autocomplete="off" spellcheck="false"></li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> <strong><a href="#a7-plan">7.2 เลือกข้อมูลที่จะแสดงและควบคุม</a></strong> ใช้คำที่ผู้ใช้เข้าใจง่าย<ul>
+<li>ค่าที่จะแสดง <input class="fld" type="text" data-k="s3.dash.show.1" data-size="30" size="30" autocomplete="off" spellcheck="false"></li>
+<li>ค่าที่จะแสดง <input class="fld" type="text" data-k="s3.dash.show.2" data-size="30" size="30" autocomplete="off" spellcheck="false"></li>
+<li>ค่าที่จะแสดง <input class="fld" type="text" data-k="s3.dash.show.3" data-size="30" size="30" autocomplete="off" spellcheck="false"></li>
+<li>สิ่งที่จะควบคุม <input class="fld" type="text" data-k="s3.dash.control.1" data-size="30" size="30" autocomplete="off" spellcheck="false"></li>
+<li>สิ่งที่จะควบคุม <input class="fld" type="text" data-k="s3.dash.control.2" data-size="30" size="30" autocomplete="off" spellcheck="false"></li>
+</ul>
+</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> <strong><a href="#a7-2">7.3 สร้างแดชบอร์ด</a></strong> เพิ่ม Gauge ความชื้นอากาศ · Tile ลูกลอย · Tile สั่งปั๊ม · Tile โหมดรดน้ำอัตโนมัติ (Auto / Manual)</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> <strong><a href="#a7-3">7.4 ให้ผู้อื่นทดลองใช้แดชบอร์ด</a></strong> สังเกตว่าเขาเข้าใจข้อมูลและปุ่มบนแดชบอร์ดหรือไม่</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> <strong><a href="#a7-q">คำถามท้ายกิจกรรม</a></strong> หากจะนำแดชบอร์ดนี้ไปใช้งานจริง และมีเวลาปรับปรุงเพิ่มเติม เราควรปรับส่วนใดบ้างให้เหมาะกับผู้ใช้ <textarea class="fld fld-ta" data-k="s3.q7" rows="2"></textarea></li>
 </ul>
 </div>
-<p><img alt="" class="activity-divider" decoding="async" height="96" loading="lazy" src="../images/activity-dividers/sprinklers.webp" width="1200" /></p>
-<h3 id="a7-1"><span class="sub-num">7.1</span>เลือกโจทย์</h3>
-<p class="ws-phase"><strong>กำหนดโจทย์ของกลุ่ม</strong></p>
+<p><img alt="" class="activity-divider" decoding="async" height="105" loading="lazy" src="../images/activity-dividers/orchard.webp" width="1200" /></p>
+<h3 id="a7-1"><span class="sub-num">7.1</span>ใครจะใช้งานแดชบอร์ด</h3>
+<p class="ws-phase"><strong>ระบุผู้ใช้</strong></p>
 <ol>
-<li>เลือกหนึ่งสถานการณ์จากตารางด้านล่าง หรือใช้ปัญหาจริงของสมาชิกในกลุ่มก็ได้ จากนั้นจดสถานการณ์และปัญหาที่ต้องการแก้ไว้ในข้อ 2</li>
+<li>ระบุว่ามีใครบ้างที่จะใช้แดชบอร์ด เช่น เจ้าของฟาร์ม คนงานหน้าแปลง หรือผู้จัดการหลายแปลง</li>
 </ol>
-<div class="table-wrap"><table>
-<thead>
-<tr>
-<th>โจทย์</th>
-<th>สถานการณ์</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><strong>A โรงเรือนผัก</strong></td>
-<td>โรงเรือน 6 × 20 เมตร ใกล้บ้าน มีไฟบ้านและ WiFi ถึง ปลูกผักสลัด ปัญหาคือร้อนจัดช่วงบ่ายและรดน้ำไม่สม่ำเสมอเมื่อเจ้าของไม่อยู่</td>
-</tr>
-<tr>
-<td><strong>B สวนผลไม้ 10 ไร่</strong></td>
-<td>ลำไยหรือมะม่วง อยู่ติดบ้าน แปลงยาว 400 เมตร ต้องการรู้ความชื้นดิน 3–4 จุดกระจายทั่วสวน และสั่งวาล์วน้ำหยดเป็นโซน ต้องการใช้โซลาร์เป็นแหล่งพลังงาน</td>
-</tr>
-<tr>
-<td><strong>C ไฮโดรโปนิกส์</strong> (ขั้นสูง)</td>
-<td>โต๊ะปลูก 8 โต๊ะในโรงเรือน ต้องเฝ้าระดับน้ำ อุณหภูมิน้ำ และค่า EC/pH ปั๊มหมุนเวียนจะหยุดนานเกิน 30 นาทีไม่ได้</td>
-</tr>
-<tr>
-<td><strong>D แปลงห่างไกล ไม่มีไฟ</strong> (ขั้นสูง)</td>
-<td>ข้าวโพดหรือมันสำปะหลัง 20 ไร่ ห่างบ้านไป 3 กิโลเมตร ไม่มีไฟบ้าน สัญญาณมือถืออ่อน ต้องการรู้ความชื้นดินและระดับน้ำในบ่อ และสั่งปั๊มน้ำโซลาร์</td>
-</tr>
-<tr>
-<td><strong>E ฟาร์มของเราเอง</strong></td>
-<td>หากมีสมาชิกทำฟาร์มและมีข้อมูลพื้นที่ชัดเจน ให้ใช้ฟาร์มนั้นเป็นโจทย์ได้ เริ่มจากปัญหาที่เขียนไว้ตอนเริ่มช่วงที่ 1 ระบุขนาดพื้นที่ ระยะจากบ้าน แหล่งจ่ายไฟ สัญญาณมือถือ และวิธีที่ใช้แก้ปัญหาอยู่ในปัจจุบัน</td>
-</tr>
-</tbody>
-</table></div>
-<p class="ws-phase"><strong>บันทึกผล</strong></p>
-<ol start="2" style="counter-reset: step 1">
-<li>โจทย์ที่เลือก <input class="fld" type="text" data-k="d.scenario" data-size="14" size="14" autocomplete="off" spellcheck="false"></li>
-</ol>
-<p>ปัญหาที่ต้องการแก้ (หนึ่งประโยค)</p>
-<textarea class="fld fld-ta" data-k="d.problem" rows="2"></textarea>
-
-<p><a class="ws-back" href="#a7">↑ กลับไปที่ใบงาน</a></p>
-<p><img alt="" class="activity-divider" decoding="async" height="64" loading="lazy" src="../images/activity-dividers/farmhouse.webp" width="1200" /></p>
-<h3 id="a7-2b"><span class="sub-num">7.2</span>เลือกเครือข่ายในฟาร์ม</h3>
-<p class="ws-phase"><strong>เปรียบเทียบวิธีสื่อสาร</strong></p>
-<ol>
-<li>คุยกันเรื่อง <strong>ระยะทาง แหล่งจ่ายไฟ ปริมาณข้อมูล และค่าใช้จ่าย</strong> ใช้ตารางนี้เลือกวิธีที่ควรนำไปทดสอบ ไม่ต้องจำทุกเทคโนโลยี ระยะในตารางเป็นค่าโดยประมาณในที่โล่ง ของจริงต้องสำรวจหน้างาน</li>
-</ol>
-<div class="table-wrap"><table>
-<thead>
-<tr>
-<th>วิธี</th>
-<th>ระยะโดยประมาณ (ที่โล่ง)</th>
-<th>พลังงานที่ใช้</th>
-<th>ข้อดี</th>
-<th>ข้อจำกัด</th>
-<th>ค่าใช้จ่ายและอุปกรณ์</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><strong>WiFi</strong></td>
-<td>30–50 ม. จากเราเตอร์ ขยายได้ด้วยตัวกระจายสัญญาณ</td>
-<td>สูง ต้องมีไฟเลี้ยงตลอด</td>
-<td>ใช้ของที่มีอยู่ บอร์ดในชุดใช้อยู่แล้ว ส่งข้อมูลได้มาก ต่อ Home Assistant ได้โดยตรง</td>
-<td>ระยะสั้น สัญญาณตกเมื่อมีกำแพงหรือต้นไม้ ใช้ถ่านอยู่ได้ไม่นาน</td>
-<td>เราเตอร์ ตัวกระจายสัญญาณ</td>
-</tr>
-<tr>
-<td><strong>ESP-NOW</strong></td>
-<td>100–200 ม. บอร์ดถึงบอร์ด</td>
-<td>ต่ำ เมื่อส่งเป็นช่วงแล้วหลับ</td>
-<td>ไม่ต้องมีเราเตอร์ บอร์ด ESP32 ราคาถูก ไกลกว่า WiFi</td>
-<td>ส่งได้ทีละชุดเล็ก ต้องมีบอร์ดตัวรับที่ต่อ Home Assistant และต้องเขียนโปรแกรมเอง</td>
-<td>บอร์ดเพิ่มหนึ่งตัวเป็นตัวรับ</td>
-</tr>
-<tr>
-<td><strong>Zigbee</strong></td>
-<td>10–30 ม. ต่อช่วง ส่งต่อกันเป็นทอด ๆ</td>
-<td>ต่ำมาก เซนเซอร์ใช้ถ่านได้เป็นปี</td>
-<td>อุปกรณ์สำเร็จรูปมีให้เลือกมาก ต่อ Home Assistant ผ่านตัวรับ USB</td>
-<td>ระยะสั้นต่อช่วง ตัวส่งต่อต้องมีไฟเลี้ยงตลอด ส่งข้อมูลได้น้อย</td>
-<td>ตัวรับ USB และอุปกรณ์แต่ละตัว</td>
-</tr>
-<tr>
-<td><strong>LoRa / LoRaWAN</strong></td>
-<td>1–10 กม. สั้นลงมากเมื่อมีต้นไม้หรืออาคาร</td>
-<td>ต่ำมาก เมื่อส่งเป็นช่วง</td>
-<td>ไกลที่สุด ไม่ต้องพึ่งผู้ให้บริการ</td>
-<td>ส่งได้ค่าจำนวนน้อยนาน ๆ ครั้ง สั่งงานกลับได้ช้า ต้องมีเกตเวย์ที่ต่อ Home Assistant</td>
-<td>โมดูลต่อจุด และเกตเวย์หนึ่งตัว</td>
-</tr>
-<tr>
-<td><strong>เครือข่ายมือถือ / NB-IoT</strong></td>
-<td>ทุกที่ที่มีสัญญาณ</td>
-<td>ปานกลางถึงสูง NB-IoT ต่ำกว่า</td>
-<td>ไม่ต้องสร้างเครือข่ายเอง ไกลแค่ไหนก็ได้ถ้ามีสัญญาณ</td>
-<td>ค่าบริการรายเดือน ขึ้นกับสัญญาณในพื้นที่ ข้อมูลมักต้องผ่านเซิร์ฟเวอร์ภายนอกก่อนเข้า Home Assistant</td>
-<td>โมดูล ซิม และค่าบริการ</td>
-</tr>
-<tr>
-<td><strong>RS-485</strong></td>
-<td>ประมาณ 1 กม. ผ่านสาย</td>
-<td>ต่ำ แต่ต้องมีไฟเลี้ยงตามสาย</td>
-<td>ทนสัญญาณรบกวน เสถียร เซนเซอร์อุตสาหกรรม (Modbus) ใช้กันมาก</td>
-<td>ต้องเดินสาย เสี่ยงฟ้าผ่าและสัตว์กัดสาย</td>
-<td>สาย อุปกรณ์ และค่าติดตั้ง</td>
-</tr>
-</tbody>
-</table></div>
-<p class="ws-phase"><strong>เลือกและจดข้อสรุป</strong></p>
-<ol start="2" style="counter-reset: step 1">
-<li>เลือกวิธีที่เหมาะกับแต่ละจุด </li>
-</ol>
-<div class="table-wrap"><table>
-<thead>
-<tr>
-<th>จุดเชื่อมต่อ</th>
-<th>วิธีที่เลือก</th>
-<th>ทำไมจึงเลือกวิธีนี้</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>จากเซนเซอร์ถึงระบบควบคุม</td>
-<td><input class="fld" type="text" data-k="d.comm.1.tech" data-size="12" size="12" autocomplete="off" spellcheck="false"></td>
-<td><input class="fld" type="text" data-k="d.comm.1.why" data-size="30" size="30" autocomplete="off" spellcheck="false"></td>
-</tr>
-<tr>
-<td>จากระบบควบคุมถึงอุปกรณ์ปลายทาง</td>
-<td><input class="fld" type="text" data-k="d.comm.2.tech" data-size="12" size="12" autocomplete="off" spellcheck="false"></td>
-<td><input class="fld" type="text" data-k="d.comm.2.why" data-size="30" size="30" autocomplete="off" spellcheck="false"></td>
-</tr>
-</tbody>
-</table></div>
-<p><a class="ws-back" href="#a7">↑ กลับไปที่ใบงาน</a></p>
-<p><img alt="" class="activity-divider" decoding="async" height="79" loading="lazy" src="../images/activity-dividers/flower-led.webp" width="1200" /></p>
-<h3 id="a7-2c"><span class="sub-num">7.3</span>การเข้าถึงจากนอกฟาร์มและคลาวด์</h3>
-<p>ทำเครื่องหมายเมื่อสมาชิกในทีมเข้าใจประเด็นต่อไปนี้</p>
-<div class="ws-untracked">
-<ul class="task-list">
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> <strong>ระบบที่เราสร้างในกิจกรรมนี้เข้าถึงได้เฉพาะในเครือข่ายภายใน</strong> โทรศัพท์หรือคอมพิวเตอร์ที่จะดูแดชบอร์ดต้องต่อ WiFi เดียวกับ Home Assistant</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> <strong>ถ้าต้องดูหรือสั่งงานจากนอกฟาร์ม ต้องตั้งค่าวิธีเข้าถึงจากภายนอกเพิ่มเติม</strong> วิธีหนึ่งสำหรับ Home Assistant คือบริการ Home Assistant Cloud ของ Nabu Casa (<a href="https://www.nabucasa.com">nabucasa.com</a>) ซึ่งมีค่าใช้จ่าย อีกทางหนึ่งคือเชื่อมต่อผ่าน VPN เพื่อเข้าถึงเครือข่ายในฟาร์ม ส่วนอุปกรณ์สำเร็จรูปบางยี่ห้อ เช่น Tuya หรือ Xiaomi มีบริการคลาวด์ของผู้ผลิต โดยค่าใช้จ่ายและความสามารถขึ้นอยู่กับบริการที่เลือก</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> <strong>ระบบของเรายังทำงานตามกฎได้แม้อินเทอร์เน็ตดับ</strong> ต่างจากระบบที่ทำงานผ่านคลาวด์อย่างเดียว ถ้าเลือกใช้ระบบแบบคลาวด์อย่างเดียว ส่วนที่สำคัญต้องมีกลไกป้องกัน (fail-safe) ในตัว</li>
-</ul>
-</div>
-<p><a class="ws-back" href="#a7">↑ กลับไปที่ใบงาน</a></p>
-<p><img alt="" class="activity-divider" decoding="async" height="58" loading="lazy" src="../images/activity-dividers/greenhouse.webp" width="1200" /></p>
-<h3 id="a7-3"><span class="sub-num">7.4</span>เลือกแบตเตอรี่สำหรับระบบโซลาร์</h3>
-<p><strong>Charge controller</strong> ในกล่องจ่ายไฟของกลุ่มควบคุมการชาร์จแบตเตอรี่จากแผงโซลาร์เซลล์ และจ่ายไฟให้โหลด ชุดอบรมใช้อะแดปเตอร์ 12V ที่ขั้วแบตเตอรี่แทนแบตเตอรี่จริง จึง<strong>ไม่ต่อแผงโซลาร์เซลล์ในชุดนี้</strong> เพราะไม่มีแบตเตอรี่รับพลังงานจากการชาร์จ</p>
-<p class="ws-phase"><strong>ดูขั้วต่อของกล่องจ่ายไฟ</strong></p>
-<ol>
-<li>ดูขั้วต่อด้านล่างจากซ้ายไปขวา: <strong>แผงโซลาร์เซลล์</strong> (ยังไม่ต่อสาย) <strong>แบตเตอรี่</strong> (ต่ออะแดปเตอร์ของชุดทดลอง) และ <strong>โหลด DC</strong> (ผ่านรีเลย์ไปยังปั๊ม) ส่วน USB สองช่องจ่ายไฟให้บอร์ดทั้งสอง ในระบบจริง แบตเตอรี่คือส่วนที่ต้องเลือกให้ถูกชนิดและถูกขนาด</li>
-</ol>
-<p class="ws-phase"><strong>เทียบชนิดแบตเตอรี่ที่ใช้กับโซลาร์</strong></p>
-<ol start="2" style="counter-reset: step 1">
-<li>อ่านตารางแล้วคุยกันว่าแต่ละชนิดต่างกันตรงไหน ค่าในตารางเป็นค่าโดยประมาณของแบตเตอรี่ 12 V ที่ขายทั่วไป ตัวเลขจริงดูจากสเปกของรุ่นที่จะซื้อ</li>
-</ol>
-<div class="table-wrap"><table>
-<thead>
-<tr>
-<th>ชนิด</th>
-<th>ราคาต่อความจุ</th>
-<th>ส่วนที่ใช้ได้จริงต่อรอบ</th>
-<th>อายุ (รอบชาร์จ)</th>
-<th>น้ำหนักและการดูแล</th>
-<th>ข้อควรระวัง</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><strong>ตะกั่ว-กรดแบบน้ำ</strong> (Flooded)</td>
-<td>ถูกที่สุด</td>
-<td>ประมาณครึ่งหนึ่งของความจุ</td>
-<td>300–500 รอบ</td>
-<td>หนัก ต้องเติมน้ำกลั่นและมีที่ระบายอากาศ</td>
-<td>ปล่อยจนหมดบ่อยจะเสียเร็ว</td>
-</tr>
-<tr>
-<td><strong>ตะกั่ว-กรดแบบแห้ง</strong> (AGM / Gel มักขายในชื่อ deep cycle)</td>
-<td>ถูก</td>
-<td>ประมาณครึ่งหนึ่ง</td>
-<td>400–800 รอบ</td>
-<td>หนัก ไม่ต้องเติมน้ำ</td>
-<td>Gel ต้องใช้แรงดันชาร์จต่ำกว่าแบบอื่น</td>
-</tr>
-<tr>
-<td><strong>ลิเธียมเหล็กฟอสเฟต</strong> (LiFePO4 หรือ LFP)</td>
-<td>แพงกว่าตะกั่ว-กรด 2–3 เท่าต่อ Ah แต่ถูกกว่าเมื่อคิดต่อรอบ</td>
-<td>80–90% ของความจุ</td>
-<td>2,000–5,000 รอบ</td>
-<td>เบากว่าประมาณ 1 ใน 3 ไม่ต้องดูแล มีวงจร BMS ในตัว</td>
-<td>ห้ามชาร์จเมื่ออุณหภูมิต่ำกว่า 0 °C ต้องใช้ controller ที่มีโหมดลิเธียม</td>
-</tr>
-<tr>
-<td><strong>ลิเธียมไอออน NMC</strong> (ก้อน 18650 เพาเวอร์แบงก์ แบตรถ EV)</td>
-<td>ใกล้เคียง LFP</td>
-<td>80–90%</td>
-<td>500–1,500 รอบ</td>
-<td>เบาที่สุด</td>
-<td>เสี่ยงไฟไหม้มากกว่าถ้าชาร์จผิดหรือชำรุด เหมาะกับอุปกรณ์เล็กและพกพา มากกว่าระบบติดตั้งถาวร</td>
-</tr>
-</tbody>
-</table></div>
-<p>ชนิดอื่นที่พบได้: <strong>NiMH</strong> ในโคมไฟโซลาร์ขนาดเล็ก และ <strong>โซเดียมไอออน</strong> ที่เริ่มมีขายแต่ยังไม่แพร่หลาย งานติดตั้งถาวรในฟาร์มส่วนใหญ่เลือกระหว่างตะกั่ว-กรดกับ LFP</p>
-<p class="ws-phase"><strong>เลือกให้เหมาะกับโจทย์</strong></p>
-<ol start="3" style="counter-reset: step 2">
-<li>คุยกันตามลำดับนี้ แล้วเลือกชนิดที่เหมาะกับโจทย์ของกลุ่ม<ul>
-<li><strong>ต้องใช้ไฟกลางคืนหรือไม่</strong> ถ้าอุปกรณ์ทำงานเฉพาะตอนแดดพอ เช่น ปั๊ม อาจไม่ต้องมีแบตเตอรี่เลย</li>
-<li><strong>ต้องใช้พลังงานคืนละเท่าไร</strong> (คำนวณใน 7.5) แล้วเผื่อส่วนที่ใช้ได้จริง เช่น ต้องการ 120 Wh ต่อคืน ตะกั่ว-กรดต้องมีประมาณ 240 Wh (12 V 20 Ah) ส่วน LFP ประมาณ 150 Wh (12 V 12–13 Ah)</li>
-<li><strong>ใครดูแล</strong> ถ้าไม่มีใครมาเติมน้ำหรือตรวจเป็นประจำ ให้เลือกแบบแห้งหรือ LFP</li>
-<li><strong>งบครั้งแรกกับอายุการใช้งาน</strong> ตะกั่ว-กรดถูกวันนี้แต่มักต้องเปลี่ยนทุก 2–3 ปี LFP แพงกว่าแต่ใช้ได้ 8–10 ปี</li>
-<li><strong>ที่ตั้ง น้ำหนัก และความร้อน</strong> จุดที่ต้องยกไปไกลหรือติดบนเสาต้องการของเบา อากาศร้อนจัดลดอายุแบตเตอรี่ทุกชนิด จึงควรวางในที่ร่ม</li>
-</ul>
-</li>
-</ol>
-<p class="ws-phase"><strong>Charge controller และอินเวอร์เตอร์</strong></p>
-<p>Charge controller รับไฟจากแผงโซลาร์เซลล์มาชาร์จแบตเตอรี่ให้พอดี ไม่ชาร์จเกิน และจ่ายไฟจากแบตเตอรี่ไปยังโหลด ต้องเลือกรุ่นที่รองรับชนิดแบตเตอรี่ที่ใช้ เพราะแต่ละชนิดต้องการแรงดันชาร์จต่างกัน</p>
-<p><img alt="แผนภาพ: แผงโซลาร์เซลล์และแบตเตอรี่ต่อเข้า charge controller ส่วนหลอด LED ต่อที่ช่องโหลดของ controller" src="../images/power-controller-wiring.png" width="85%" /></p>
-<p>ถ้าอุปกรณ์ต้องการไฟต่างจากแบตเตอรี่ ต้องมีตัวแปลงไฟ เช่น ปั๊มหรืออุปกรณ์ที่ใช้ไฟบ้าน 220 V AC ต้องใช้ <strong>อินเวอร์เตอร์</strong> แปลง 12 V DC เป็น 220 V AC อินเวอร์เตอร์ต่อกับขั้วแบตเตอรี่โดยตรงผ่านฟิวส์ ไม่ต่อผ่านช่องโหลดของ controller เพราะช่องโหลดจ่ายกระแสได้จำกัด</p>
-<p><img alt="แผนภาพ: แบตเตอรี่ต่อกับ charge controller และจ่ายไฟให้อินเวอร์เตอร์ผ่านฟิวส์ อินเวอร์เตอร์แปลง 12 V DC เป็น 220 V AC แล้วจ่ายให้ปั๊ม" src="../images/power-inverter.png" width="85%" /></p>
-<p class="ws-phase"><strong>จดข้อสรุป</strong></p>
-<ol start="4" style="counter-reset: step 3">
-<li>ชนิดแบตเตอรี่ที่เหมาะกับโจทย์ของกลุ่มและเหตุผล (ถ้าไม่ต้องใช้แบตเตอรี่ ให้ระบุว่าไม่ใช้) <input class="fld" type="text" data-k="d.battery" data-size="50" size="50" autocomplete="off" spellcheck="false"></li>
-</ol>
+<p>ผู้ที่จะใช้แดชบอร์ด <input class="fld" type="text" data-k="s3.dash.user" data-size="44" size="44" autocomplete="off" spellcheck="false"></p>
 <p><a class="ws-back" href="#a7">↑ กลับไปที่ใบงาน</a></p>
 <p><img alt="" class="activity-divider" decoding="async" height="96" loading="lazy" src="../images/activity-dividers/sprinklers.webp" width="1200" /></p>
-<h3 id="a7-3b"><span class="sub-num">7.5</span>คำนวณพลังงานแล้วเลือกแหล่งจ่ายไฟ</h3>
-<p class="ws-phase"><strong>วิธีคำนวณ</strong></p>
+<h3 id="a7-plan"><span class="sub-num">7.2</span>เลือกข้อมูลที่จะแสดงและควบคุม</h3>
+<p class="ws-phase"><strong>เลือกค่าที่จะแสดงและสิ่งที่จะควบคุม</strong></p>
 <ol>
-<li>
-<p class="ws-phase"><strong>หากำลังไฟรวมที่ต้องใช้</strong></p>
-<p>สูตร: <strong>กำลังไฟ (W) = แรงดัน (V) × กระแส (A)</strong></p>
-<p>อ่านแรงดันและกระแสจากป้ายของอุปกรณ์ ถ้ามีหลายอุปกรณ์ทำงานพร้อมกัน ให้บวกกำลังไฟรวมกัน</p>
-</li>
-<li>
-<p class="ws-phase"><strong>หาพลังงานที่ต้องใช้จากแบตเตอรี่ในหนึ่งวัน</strong></p>
-<p>สูตร: <strong>พลังงาน (Wh) = กำลังไฟ (W) × ชั่วโมงที่ใช้งาน</strong></p>
-<p>นับเฉพาะชั่วโมงที่อุปกรณ์ทำงานจริงในหนึ่งวัน</p>
-</li>
-<li>
-<p class="ws-phase"><strong>เลือกขนาดแบตเตอรี่</strong></p>
-<p>สูตร: <strong>ความจุ (Ah) = พลังงาน (Wh) ÷ 12 V ÷ ส่วนที่ใช้ได้จริง</strong> (ตะกั่ว-กรด 0.5 · LFP 0.8–0.9 ตาม 7.4)</p>
-<p>แบตเตอรี่ต้องเก็บพลังงานได้อย่างน้อยเท่ากับข้อ 2 ตัวเลขที่ได้คือความจุที่ต้องซื้อ</p>
-</li>
-<li>
-<p class="ws-phase"><strong>เลือกจำนวนแผง</strong></p>
-<p>สูตร: <strong>กำลังแผงที่ต้องมี (W) = พลังงาน (Wh) ÷ ชั่วโมงแดดเต็ม</strong> แล้วปัดขึ้นเป็นจำนวนแผง</p>
-<p>ใช้วันที่แดดน้อยที่สุดเป็นเกณฑ์ เช่น วันฟ้าครึ้มได้แดดเทียบเท่าเต็มกำลังเพียง 3 ชั่วโมง วันแดดดีได้ 4–5 ชั่วโมง ถ้าออกแบบจากวันแดดดี แผงจะไม่พอในวันฟ้าครึ้ม</p>
-</li>
+<li>กรอกค่าที่จะแสดง 3 อย่างและสิ่งที่จะควบคุม 2 อย่างในตาราง ใช้คำที่ผู้ใช้เข้าใจง่าย เช่น “ความชื้นอากาศ” “น้ำถึงระดับลูกลอยหรือไม่” “เปิดปั๊ม” “สลับโหมด Auto / Manual”</li>
 </ol>
-<p><strong>ตัวอย่าง</strong> ลองคำนวณตามสี่ข้อด้านบนไปพร้อมกัน</p>
 <div class="table-wrap"><table>
 <thead>
 <tr>
 <th></th>
-<th>ตัวอย่างที่ 1: หลอด LED 50 W เปิดกลางคืน 8 ชั่วโมง</th>
-<th>ตัวอย่างที่ 2: ปั๊ม 1,100 W วันละ 2 ชั่วโมง</th>
+<th>ค่าที่จะแสดง</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>1. กำลังไฟ</td>
-<td>12 V × 4.2 A ≈ 50 W</td>
-<td>220 V × 5 A = 1,100 W</td>
+<td>1</td>
+<td><input class="fld" type="text" data-k="s3.dash.show.1" data-size="44" size="44" autocomplete="off" spellcheck="false"></td>
 </tr>
 <tr>
-<td>2. พลังงานต่อวัน</td>
-<td>50 W × 8 ชม. = 400 Wh</td>
-<td>1,100 W × 2 ชม. = 2,200 Wh</td>
+<td>2</td>
+<td><input class="fld" type="text" data-k="s3.dash.show.2" data-size="44" size="44" autocomplete="off" spellcheck="false"></td>
 </tr>
 <tr>
-<td>3. แบตเตอรี่อย่างน้อย</td>
-<td>400 Wh ÷ 12 V ≈ 33 Ah ที่ใช้ได้จริง → ตะกั่ว-กรดประมาณ 70 Ah หรือ LFP ประมาณ 40 Ah</td>
-<td>2,200 Wh ÷ 12 V ≈ 183 Ah ที่ใช้ได้จริง → ตะกั่ว-กรดประมาณ 370 Ah หรือ LFP ประมาณ 220 Ah</td>
-</tr>
-<tr>
-<td>4. แผงเมื่อได้แดดเต็มเพียง 3 ชั่วโมง</td>
-<td>400 Wh ÷ 3 ชม. ≈ 133 W → แผง 150 W หนึ่งแผง</td>
-<td>2,200 Wh ÷ 3 ชม. ≈ 733 W → แผง 150 W ห้าแผง</td>
+<td>3</td>
+<td><input class="fld" type="text" data-k="s3.dash.show.3" data-size="44" size="44" autocomplete="off" spellcheck="false"></td>
 </tr>
 </tbody>
 </table></div>
-<blockquote>
-<p>นอกจากการคำนวณข้างต้นแล้ว ต้องตรวจว่าอุปกรณ์รองรับกระแสสูงสุดที่ต้องใช้ได้หรือไม่ เช่น ปั๊ม 1,100 W ใช้กับ charge controller ในชุดอบรมนี้ไม่ได้ เพราะจ่ายไฟได้สูงสุด 390 W เท่านั้น</p>
-<p>อุปกรณ์บางชนิด เช่น ปั๊มน้ำ ต้องการกระแสขณะเริ่มทำงานสูงกว่าขณะเดินตามปกติ จึงต้องเลือกอุปกรณ์ที่รองรับกระแสช่วงนี้ได้ด้วย ตัวอย่างเช่น ปั๊มที่ใช้กำลังไฟ 1,100 W ขณะเดิน อาจต้องการกำลังไฟสูงถึง 3,000 W ขณะเริ่มทำงาน ทั้งนี้ต้องตรวจจากสเปกของปั๊มและอุปกรณ์ที่ใช้ร่วมกัน</p>
-</blockquote>
-<p class="ws-phase"><strong>จดเฉพาะแผนพลังงานของกลุ่ม</strong></p>
-<ol start="5" style="counter-reset: step 4">
-<li>เลือกแหล่งจ่ายไฟให้เซนเซอร์ ระบบควบคุม และอุปกรณ์ปลายทาง เช่น ไฟบ้าน โซลาร์เฉพาะกลางวัน หรือโซลาร์พร้อมแบตเตอรี่ หากยังไม่รู้กำลังไฟหรือเวลาใช้งานจริง ให้จดข้อมูลที่ต้องหาเพิ่มก่อนเลือกขนาดอุปกรณ์</li>
-</ol>
-<p>แหล่งจ่ายไฟของแต่ละส่วน <input class="fld" type="text" data-k="d.power" data-size="50" size="50" autocomplete="off" spellcheck="false"></p>
-<p>อุปกรณ์ที่ต้องมีไฟสำรองและระยะเวลาที่ต้องการ (ถ้าไม่มี ให้ระบุว่าไม่มี) <input class="fld" type="text" data-k="d.power.backup" data-size="40" size="40" autocomplete="off" spellcheck="false"></p>
-<blockquote class="ws-caution">
-<p><strong>ระวัง</strong> แผงที่โดนแสงมีแรงดันที่ขั้ว ห้ามให้ขั้วบวก–ลบแตะกัน การต่อระบบจริงต้องใช้แบตเตอรี่และอุปกรณ์ที่เข้ากัน และทำตามลำดับในคู่มือของรุ่นนั้น</p>
-</blockquote>
-<p><a class="ws-back" href="#a7">↑ กลับไปที่ใบงาน</a></p>
-<p id="a7-3q"><strong>คุยท้ายเรื่อง</strong> ถ้าฟ้าครึ้มต่อเนื่องสามวัน แล้วระบบต้องทำงานต่อ เราต้องรู้ข้อมูลอะไรเพิ่มก่อนเลือกขนาดไฟสำรอง จดเฉพาะสิ่งที่เกี่ยวกับโจทย์ของกลุ่มไว้ต่อท้ายคำตอบเรื่องไฟสำรองในข้อ 5</p>
-<p><img alt="" class="activity-divider" decoding="async" height="79" loading="lazy" src="../images/activity-dividers/flower-led.webp" width="1200" /></p>
-<h3 id="a7-4"><span class="sub-num">7.6</span>ออกแบบระบบสำหรับทดลองหนึ่งจุด</h3>
-<p>สรุปแบบที่กลุ่มเลือกเป็นสี่ส่วน คำตอบที่กรอกไว้ในข้อ 7.2, 7.4 และ 7.5 จะปรากฏในส่วนนี้โดยอัตโนมัติ หากยังไม่รู้ข้อมูลบางอย่าง ให้จดว่าต้องตรวจอะไรเพิ่มไว้ในช่องนั้น</p>
-<p class="ws-phase"><strong>เซนเซอร์และอุปกรณ์ที่สั่งงาน</strong></p>
-<ol>
-<li>ระบุเซนเซอร์หลักและอุปกรณ์ที่จะสั่งงาน อุปกรณ์เพิ่มเติมที่โจทย์ต้องใช้ให้จดรวมได้</li>
-</ol>
-<p>เซนเซอร์ <input class="fld" type="text" data-k="d.in.1.sensor" data-size="30" size="30" autocomplete="off" spellcheck="false"> อุปกรณ์ที่สั่งงาน <input class="fld" type="text" data-k="d.out.1.device" data-size="30" size="30" autocomplete="off" spellcheck="false"></p>
-<p>เมื่อเกิดอะไร ระบบจะสั่งให้อุปกรณ์ทำอะไร (เขียนเป็นประโยค “ถ้า… แล้วให้…”) <textarea class="fld fld-ta" data-k="d.control.rule" rows="2"></textarea></p>
-<p>หากเซนเซอร์หรือการสื่อสารขัดข้อง ระบบควรทำอย่างไร และส่วนใดจะทำหน้าที่ป้องกัน <textarea class="fld fld-ta" data-k="d.control.failure" rows="2"></textarea></p>
-<p class="ws-phase"><strong>วิธีสื่อสาร</strong></p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th></th>
+<th>สิ่งที่จะควบคุม</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td><input class="fld" type="text" data-k="s3.dash.control.1" data-size="44" size="44" autocomplete="off" spellcheck="false"></td>
+</tr>
+<tr>
+<td>2</td>
+<td><input class="fld" type="text" data-k="s3.dash.control.2" data-size="44" size="44" autocomplete="off" spellcheck="false"></td>
+</tr>
+</tbody>
+</table></div>
+<p class="ws-phase"><strong>จัดลำดับความสำคัญ</strong></p>
 <ol start="2" style="counter-reset: step 1">
-<li>สองแถวแรกมาจาก 7.2 แถวที่สามให้เลือกจากที่ฟังใน 7.3 ว่าเจ้าของต้องดูหรือสั่งงานจากนอกฟาร์มหรือไม่ ถ้าไม่ต้อง ให้ระบุว่า “ไม่ใช้”</li>
+<li>วางข้อมูลสำคัญและปุ่มที่ใช้บ่อยไว้ด้านบน ใช้ชื่อที่ผู้ใช้เข้าใจตรงกัน</li>
+</ol>
+<p><a class="ws-back" href="#a7">↑ กลับไปที่ใบงาน</a></p>
+<p><img alt="" class="activity-divider" decoding="async" height="64" loading="lazy" src="../images/activity-dividers/farmhouse.webp" width="1200" /></p>
+<h3 id="a7-2"><span class="sub-num">7.3</span>สร้างแดชบอร์ด</h3>
+<p class="ws-phase"><strong>สร้างแดชบอร์ด</strong></p>
+<ol>
+<li>เปิด <strong>Settings → Dashboards → + Add dashboard → New dashboard from scratch</strong> ตั้งชื่อ เช่น <code>แปลง 1</code> และเปิด <strong>Add to sidebar</strong> ไว้</li>
+</ol>
+<blockquote>
+<p>ในช่วงที่ 2 เราใช้ Farm Dashboard ที่ Home Assistant จัดการ์ดให้อัตโนมัติ กิจกรรมนี้เราจะสร้างแดชบอร์ดเปล่าขึ้นใหม่ เพื่อฝึกเลือกข้อมูล ตั้งชื่อ และจัดวางการ์ดให้เหมาะกับผู้ใช้</p>
+</blockquote>
+<p class="ws-phase"><strong>เพิ่มการ์ด</strong></p>
+<ol start="2" style="counter-reset: step 1">
+<li>เปิดแดชบอร์ดใหม่ กดไอคอนดินสอ แล้วเพิ่มการ์ดตามตาราง</li>
 </ol>
 <div class="table-wrap"><table>
 <thead>
 <tr>
-<th>จุดเชื่อมต่อ</th>
-<th>วิธีที่เลือก</th>
-<th>ทำไมจึงเลือกวิธีนี้</th>
+<th>การ์ดที่ต้องมี</th>
+<th>เลือกข้อมูล</th>
+<th>ชื่อที่ใช้บนจอ</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>จากเซนเซอร์ถึงระบบควบคุม</td>
-<td><input class="fld" type="text" data-k="d.comm.1.tech" data-size="12" size="12" autocomplete="off" spellcheck="false"></td>
-<td><input class="fld" type="text" data-k="d.comm.1.why" data-size="30" size="30" autocomplete="off" spellcheck="false"></td>
+<td><strong>Gauge</strong></td>
+<td>ความชื้นอากาศ (humidity)</td>
+<td>ความชื้นอากาศ (%)</td>
 </tr>
 <tr>
-<td>จากระบบควบคุมถึงอุปกรณ์ปลายทาง</td>
-<td><input class="fld" type="text" data-k="d.comm.2.tech" data-size="12" size="12" autocomplete="off" spellcheck="false"></td>
-<td><input class="fld" type="text" data-k="d.comm.2.why" data-size="30" size="30" autocomplete="off" spellcheck="false"></td>
+<td><strong>Tile</strong></td>
+<td>สวิตช์ลูกลอย (float switch)</td>
+<td>ระดับน้ำที่ลูกลอย</td>
 </tr>
 <tr>
-<td>จากฟาร์มถึงเจ้าของนอกฟาร์ม</td>
-<td><input class="fld" type="text" data-k="d.comm.3.tech" data-size="16" size="16" autocomplete="off" spellcheck="false"></td>
-<td><input class="fld" type="text" data-k="d.comm.3.why" data-size="30" size="30" autocomplete="off" spellcheck="false"></td>
+<td><strong>Tile</strong></td>
+<td>รีเลย์ (relay)</td>
+<td>สั่งปั๊ม</td>
+</tr>
+<tr>
+<td><strong>Tile</strong></td>
+<td><code>Pump Auto Mode</code> (จากช่วงที่ 2)</td>
+<td>โหมดรดน้ำอัตโนมัติ</td>
 </tr>
 </tbody>
 </table></div>
-<p class="ws-phase"><strong>แหล่งพลังงาน</strong></p>
-<ol start="3" style="counter-reset: step 2">
-<li>ตรวจแผนพลังงานจาก 7.4 และ 7.5 อีกครั้งให้ตรงกับอุปกรณ์ที่เลือกในข้อ 1</li>
-</ol>
-<p>แหล่งจ่ายไฟของแต่ละส่วน <input class="fld" type="text" data-k="d.power" data-size="50" size="50" autocomplete="off" spellcheck="false"></p>
-<p>ชนิดแบตเตอรี่ที่เลือกและเหตุผล <input class="fld" type="text" data-k="d.battery" data-size="50" size="50" autocomplete="off" spellcheck="false"></p>
-<p>อุปกรณ์ที่ต้องมีไฟสำรองและระยะเวลาที่ต้องการ (ถ้าไม่มี ให้ระบุว่าไม่มี) <input class="fld" type="text" data-k="d.power.backup" data-size="40" size="40" autocomplete="off" spellcheck="false"></p>
-<p class="ws-phase"><strong>แผนทดสอบ</strong></p>
-<ol start="4" style="counter-reset: step 3">
-<li>เขียนว่าจะรู้ได้อย่างไรว่าระบบทำงานตามที่ตั้งใจ ทั้งเมื่อทำงานตามปกติและเมื่อเกิดปัญหาที่ระบุในข้อ 1: จะดูหรือวัดอะไร และผลแบบใดจึงถือว่าใช้ได้</li>
-</ol>
-<p>จะดูหรือวัดอะไร <input class="fld" type="text" data-k="d.test.how" data-size="50" size="50" autocomplete="off" spellcheck="false"></p>
-<p>ผลแบบใดจึงถือว่าระบบทำงานตามที่ตั้งใจ <input class="fld" type="text" data-k="d.test.pass" data-size="50" size="50" autocomplete="off" spellcheck="false"></p>
-<p><a class="ws-back" href="#a7">↑ กลับไปที่ใบงาน</a></p>
-<h2 id="คนอปกรณ">คืนอุปกรณ์</h2>
-<p>ทำตามลำดับต่อไปนี้ เพื่อป้องกันระบบสั่งเปิดปั๊มระหว่างเก็บอุปกรณ์</p>
-<ul class="task-list">
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> <strong>Settings → Automations &amp; scenes</strong> ปิดสวิตช์ automation ทุกข้อที่สั่งรีเลย์ได้ (กฎรดน้ำสองข้อ fail-safe ทุกข้อ และตรวจซ้ำว่ากฎไฟสวนกับกฎตั้งเวลาปิดไว้)</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> สั่งสวิตช์รีเลย์เป็น <strong>Off</strong> จากหน้าอุปกรณ์ แล้วดูว่าปั๊มหยุด</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> ถอดอะแดปเตอร์ออกจากปลั๊ก ปิดสวิตช์บอร์ด GoGo-IoT แล้วถอด USB ของบอร์ดทั้งสอง ก่อนถอดสายโหลดและสายอะแดปเตอร์จากกล่องจ่ายไฟ</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> เมื่อไม่มีไฟแล้ว ยกสวิตช์ลูกลอยออกจากแก้ว เช็ดให้แห้ง เทน้ำในแก้วทิ้ง</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> ตรวจรายการอุปกรณ์ตาม หน้าแรก แล้วคืนทั้งชุดพร้อมบัตรประจำกลุ่ม</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> <strong>ส่งและเก็บคำตอบของกลุ่ม</strong> ให้ผู้บันทึกเปิดเมนู <strong>เครื่องมือ → ดาวน์โหลดคำตอบ (ไฟล์ JSON)</strong> แล้วส่งไฟล์ผ่านช่องทางที่ผู้สอนแจ้ง ตรวจหมายเลขกลุ่มในชื่อไฟล์ และให้ผู้สอนยืนยันว่าได้รับไฟล์ของกลุ่มแล้ว จากนั้นเปิด<a href="record-sheet.html">ใบบันทึกของกลุ่ม</a> แล้วเลือก <strong>เครื่องมือ → พิมพ์ / บันทึก PDF</strong> เก็บไว้ใช้วางแผนทดลองในฟาร์มต่อ</li>
-</ul>
 <blockquote>
-<p>แดชบอร์ดของผู้สอนแสดงความคืบหน้าในการทำกิจกรรม แต่ไม่ได้รับคำตอบที่เรากรอก การเห็นสถานะ “เชื่อมต่อผู้สอนแล้ว” จึงไม่ได้หมายความว่าส่งไฟล์คำตอบแล้ว ให้เก็บไฟล์ JSON ไว้ในเครื่องด้วย</p>
-</blockquote><nav class="ws-pager" aria-label="หน้าก่อนหน้าและถัดไป"><a class="ws-prev" href="activity-6.html"><span class="ws-pager__k">← ก่อนหน้า</span><span class="ws-pager__t">กิจกรรม 6 · สร้างแดชบอร์ด (Dashboard)</span></a></nav>
+<p>การ์ดโหมดแสดงได้เพียง On / Off ตั้งชื่อให้อ่านแล้วรู้ทันทีว่า On คือ Auto และ Off คือ Manual</p>
+<p>เมื่อตั้งเป็น Manual ผู้ใช้สั่งเริ่มปั๊มเองได้ แต่กฎปิดปั๊มตามความชื้นและกฎป้องกันยังทำงานอยู่ เหมือนที่ทดลองในข้อ 4.8</p>
+</blockquote>
+<p class="ws-phase"><strong>จัดหน้าจอ</strong></p>
+<ol start="3" style="counter-reset: step 2">
+<li>จัดการ์ดสำคัญไว้ด้านบน แล้วกด <strong>Done</strong></li>
+</ol>
+<p><video class="walkthrough" src="../images/walkthroughs/a6-3-build-dashboard.mp4" poster="../images/walkthroughs/a6-3-build-dashboard.png" aria-label="ขั้นตอนสร้างแดชบอร์ด แปลง 1 แล้วเพิ่มการ์ด Gauge ความชื้นอากาศ และ Tile ลูกลอย รีเลย์ และ Pump Auto Mode พร้อมตั้งชื่อบนจอ แล้วกด Done" style="width:85%" controls muted loop playsinline preload="none">ขั้นตอนสร้างแดชบอร์ด แปลง 1 แล้วเพิ่มการ์ด Gauge ความชื้นอากาศ และ Tile ลูกลอย รีเลย์ และ Pump Auto Mode พร้อมตั้งชื่อบนจอ แล้วกด Done</video></p>
+<p class="ws-phase"><strong>(ไม่บังคับทำ) เพิ่มการ์ดอื่น</strong></p>
+<ol start="4" style="counter-reset: step 3">
+<li>ลองเพิ่มการ์ดอื่น ๆ ที่น่าสนใจ เช่น เพิ่ม <strong>History graph</strong> ตั้ง <strong>Hours to show: 24</strong> หรือปรับสี Gauge เป็นต้น</li>
+</ol>
+<p><a class="ws-back" href="#a7">↑ กลับไปที่ใบงาน</a></p>
+<p><img alt="" class="activity-divider" decoding="async" height="58" loading="lazy" src="../images/activity-dividers/greenhouse.webp" width="1200" /></p>
+<h3 id="a7-3"><span class="sub-num">7.4</span>ให้ผู้อื่นทดลองใช้แดชบอร์ด</h3>
+<p class="ws-phase"><strong>ให้ผู้อื่นลองใช้</strong></p>
+<ol>
+<li>เปิดแดชบอร์ดบนโทรศัพท์ที่ต่อ WiFi ของโซนเราและใช้ที่อยู่เดียวกับกิจกรรมที่ 3 (ถ้าโทรศัพท์เปิดไม่ได้ ให้ทดลองบนแล็ปท็อปแทน) ให้คนจากกลุ่มข้าง ๆ หรือคนที่ไม่ได้ช่วยสร้างทดลองดู โดยยังไม่อธิบาย</li>
+<li>ให้เขาอธิบายทีละการ์ดว่าแสดงอะไรหรือสั่งอะไร แล้วลองถามเพื่อทดสอบความเข้าใจ: <strong>ความชื้นเท่าไร · น้ำถึงระดับลูกลอยหรือไม่ · ปุ่มสั่งปั๊มอยู่ไหน · ตอนนี้เป็นโหมด Auto หรือ Manual</strong></li>
+</ol>
+<p class="ws-phase"><strong>ปรับปรุงและทดสอบซ้ำ</strong></p>
+<ol start="3" style="counter-reset: step 2">
+<li>หากให้ผู้ใช้ลองแล้วตอบไม่ได้หรือเข้าใจผิด ให้ปรับการออกแบบ แล้วให้ลองใหม่</li>
+</ol>
+<p><a class="ws-back" href="#a7">↑ กลับไปที่ใบงาน</a></p>
+<p id="a7-q"><strong>คำถามท้ายกิจกรรม</strong> หากจะนำแดชบอร์ดนี้ไปใช้งานจริง และมีเวลาปรับปรุงเพิ่มเติม เราควรปรับส่วนใดบ้างให้เหมาะกับผู้ใช้</p>
+<textarea class="fld fld-ta" data-k="s3.q7" rows="2"></textarea>
+
+<blockquote>
+<p>ตอนนี้เราดูแดชบอร์ดได้เมื่อเชื่อมต่อ WiFi ของโซนเราเท่านั้น ในกิจกรรมที่ 8 กลุ่มจะได้พิจารณาว่าจำเป็นต้องดูข้อมูลจากนอกฟาร์มหรือไม่ และจะใช้วิธีใด</p>
+</blockquote><nav class="ws-pager" aria-label="หน้าก่อนหน้าและถัดไป"><a class="ws-prev" href="activity-6.html"><span class="ws-pager__k">← ก่อนหน้า</span><span class="ws-pager__t">กิจกรรม 6 · อ่านข้อมูลย้อนหลัง (History)</span></a><a class="ws-next" href="activity-8.html"><span class="ws-pager__k">ถัดไป →</span><span class="ws-pager__t">กิจกรรม 8 · ออกแบบระบบฟาร์ม (Design)</span></a></nav>
 <footer class="ws-disclosure">เอกสารนี้เรียบเรียงขึ้นด้วย AI (Fable 5.1 และ GPT-6 Astra) ภายใต้การกำกับอย่างใกล้ชิดของผู้จัดทำ และรับรองว่าเนื้อหาเป็นไปตามเจตนาของผู้จัดทำทุกประการ</footer>
 </main>
 </div>
@@ -2076,7 +1853,7 @@ body {
   var PAGE_SESSION = {
     "session-1-start": "session-1", "activity-1": "session-1", "activity-2": "session-1", "activity-3": "session-1",
     "activity-4": "session-2", "activity-5": "session-2",
-    "session-3-history": "session-3", "activity-6": "session-3", "activity-7": "session-3"
+    "activity-6": "session-3", "activity-7": "session-3", "activity-8": "session-3"
   };
   var PAGE_ORDER = Object.keys(PAGE_SESSION);
   function sessionKey() { return PAGE_SESSION[pageKey()] || pageKey(); }

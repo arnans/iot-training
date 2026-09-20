@@ -60,19 +60,19 @@ PAGES = [
     ("activity-3.md", "activity-3", "ช่วงที่ 1", "กิจกรรม 3", "สร้างกฎควบคุมระบบ (Logic)"),
     ("activity-4.md", "activity-4", "ช่วงที่ 2", "กิจกรรม 4", "ตั้งกฎอัตโนมัติ (Think)"),
     ("activity-5.md", "activity-5", "ช่วงที่ 2", "กิจกรรม 5", "จำลองปัญหาและป้องกัน (Failure lab)"),
-    ("session-3-history.md", "session-3-history", "ช่วงที่ 3", "", "อ่านข้อมูลย้อนหลัง"),
-    ("activity-6.md", "activity-6", "ช่วงที่ 3", "กิจกรรม 6", "สร้างแดชบอร์ด (Dashboard)"),
-    ("activity-7.md", "activity-7", "ช่วงที่ 3", "กิจกรรม 7", "ออกแบบระบบฟาร์ม (Design)"),
+    ("activity-6.md", "activity-6", "ช่วงที่ 3", "กิจกรรม 6", "อ่านข้อมูลย้อนหลัง (History)"),
+    ("activity-7.md", "activity-7", "ช่วงที่ 3", "กิจกรรม 7", "สร้างแดชบอร์ด (Dashboard)"),
+    ("activity-8.md", "activity-8", "ช่วงที่ 3", "กิจกรรม 8", "ออกแบบระบบฟาร์ม (Design)"),
     ("resources.md", "resources", "อ้างอิง", "", "รวมไฟล์และลิงก์"),
     ("reference.md", "reference", "อ้างอิง", "", "เมนูและวิธีแก้ปัญหา"),
     ("record-sheet.md", "record-sheet", "อ้างอิง", "", "ใบบันทึกของกลุ่ม"),
 ]
 SLUGS = {p[1] for p in PAGES}
-# the switcher ends at activity 7: the reference pages are reached from docs/index.html, so the
+# the switcher ends at activity 8: the reference pages are reached from docs/index.html, so the
 # course structure stays readable. They are still rendered (and linked from the front door).
 NAV_PAGES = [p for p in PAGES if p[2] != "อ้างอิง"]
 # the session pages became one page per activity; the old render names forward to the session's first page
-REDIRECTS = {"session-1": "session-1-start", "session-2": "activity-4", "session-3": "session-3-history"}
+REDIRECTS = {"session-1": "session-1-start", "session-2": "activity-4", "session-3": "activity-6", "session-3-history": "activity-6"}
 
 SITE_NAME = "IoT ในฟาร์มอัจฉริยะ"
 # shown at the foot of every page, on screen and in print; the site footer carries the same line (mkdocs.yml)

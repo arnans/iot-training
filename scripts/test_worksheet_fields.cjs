@@ -111,7 +111,7 @@ async function testProgressMerge() {
 async function testDoneBoxes() {
   const saved = JSON.stringify({ fields: { 'team.no': '17' }, checks: {}, sentAs: '17', dev: 'devtest' });
   const calls = [];
-  let dom = await open('activity-7', saved, calls);
+  let dom = await open('activity-8', saved, calls);
   let w = dom.window, d = w.document;
   const rows = [...d.querySelectorAll('.ws-tasks .task-list-item')];
   const mirrors = [...d.querySelectorAll('label.ws-done input.ws-mirror')];
@@ -126,7 +126,7 @@ async function testDoneBoxes() {
     assert.ok(foot && foot.querySelector('label.ws-done') && foot.querySelector('a.ws-back'), `${id}: done box and back link on one footer line`);
   }
   const untracked = [...d.querySelectorAll('.ws-untracked .task-list-item input[type=checkbox]')];
-  assert.equal(untracked.length, 3, '7.3 acknowledgement boxes');
+  assert.equal(untracked.length, 3, '8.3 acknowledgement boxes');
   // tick the second mirror: its row box follows, is saved under the row's index, and is reported
   const listBoxes = [...d.querySelectorAll('.task-list-item input[type=checkbox]')];
   calls.length = 0;
@@ -136,12 +136,12 @@ async function testDoneBoxes() {
   const rowBox = rows[1].querySelector('input[type=checkbox]');
   assert.ok(rowBox.checked, 'row box follows the done box');
   const checks = JSON.parse(w.localStorage.getItem(storeKey)).checks;
-  assert.deepEqual(Object.keys(checks), [`/activity-7/#${listBoxes.indexOf(rowBox)}`], 'only the row box is saved');
+  assert.deepEqual(Object.keys(checks), [`/activity-8/#${listBoxes.indexOf(rowBox)}`], 'only the row box is saved');
   let put = calls.filter(c => c.opts && c.opts.method === 'PUT').pop();
   assert.ok(put, 'done box reported');
-  let a7 = JSON.parse(put.opts.body).pages['session-3'].acts.a7;
-  assert.deepEqual([a7.done, a7.total], [1, 6], 'activity 7 counts the six list boxes only');
-  assert.equal(JSON.parse(put.opts.body).last.label.slice(0, 3), '7.2');
+  let a8 = JSON.parse(put.opts.body).pages['session-3'].acts.a8;
+  assert.deepEqual([a8.done, a8.total], [1, 6], 'activity 8 counts the six list boxes only');
+  assert.equal(JSON.parse(put.opts.body).last.label.slice(0, 3), '8.2');
   // untick from the list: the mirror follows
   rowBox.checked = false;
   rowBox.dispatchEvent(new w.Event('change', { bubbles: true }));
@@ -157,16 +157,16 @@ async function testDoneBoxes() {
   dom.window.close();
   // reload: the saved state reaches both views
   rowBox.checked = true; rowBox.dispatchEvent(new w.Event('change', { bubbles: true }));
-  dom = await open('activity-7', kept.replace('"checks":{', `"checks":{"/activity-7/#${listBoxes.indexOf(rowBox)}":true,`), calls);
+  dom = await open('activity-8', kept.replace('"checks":{', `"checks":{"/activity-8/#${listBoxes.indexOf(rowBox)}":true,`), calls);
   w = dom.window; d = w.document;
   assert.ok([...d.querySelectorAll('label.ws-done input.ws-mirror')][1].checked, 'done box restored with its row');
   assert.ok(d.querySelectorAll('.ws-untracked input[type=checkbox]')[0].checked, 'acknowledgement restored');
   dom.window.close();
-  console.log('PASS done boxes: one per task-list row at the foot of its section, one state with the row, 7.3 acknowledgements saved but not counted');
+  console.log('PASS done boxes: one per task-list row at the foot of its section, one state with the row, 8.3 acknowledgements saved but not counted');
 }
 (async () => {
   for (const slug of ['session-1-start', 'activity-1', 'activity-2', 'activity-3', 'activity-4', 'activity-5',
-                      'session-3-history', 'activity-6', 'activity-7', 'record-sheet']) await testPage(slug);
+                      'activity-6', 'activity-7', 'activity-8', 'record-sheet']) await testPage(slug);
   await testDoneBoxes();
   await testProgressMerge();
 })().catch(err => { console.error(err); process.exit(1); });

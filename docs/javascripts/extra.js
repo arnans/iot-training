@@ -298,7 +298,7 @@
   var PAGE_SESSION = {
     "session-1-start": "session-1", "activity-1": "session-1", "activity-2": "session-1", "activity-3": "session-1",
     "activity-4": "session-2", "activity-5": "session-2",
-    "session-3-history": "session-3", "activity-6": "session-3", "activity-7": "session-3"
+    "activity-6": "session-3", "activity-7": "session-3", "activity-8": "session-3"
   };
   var PAGE_ORDER = Object.keys(PAGE_SESSION);
   function sessionKey() { return PAGE_SESSION[pageKey()] || pageKey(); }

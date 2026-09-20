@@ -25,13 +25,13 @@ Slide IDs in order: p, a1_slide_2, a1_slide_3, a1_slide_4, a1_slide_5,
 a1_slide_6, a1_slide_7, a1_slide_8, a1_slide_9.
 Slide 8 deliberately contains a labeled image placeholder. Suggested photo:
 hand covering sensor board, live light reading, and stopwatch.
-Activities 2–7 have not been created.
+Activities 2–8 have not been created.
 
 USER PREFERENCES
 - Audience: Thai-speaking students; use the worksheet's Thai and technical terms.
-- Scope: the seven activities, not a separate course introduction or wrap-up.
+- Scope: the numbered activities, not a separate course introduction or wrap-up. The History reading became Activity 6 on 20 Sep 2026; decide whether the deck gains a section for it before the remaining activities are built.
 - Purpose: show where the room is in the worksheet and supply useful explanations
-  beyond worksheet instructions, especially communication and power in Activity 7.
+  beyond worksheet instructions, especially communication and power in Activity 8.
 - Minimal prose: short keywords, instructions, comparisons, questions, diagrams.
 - Instructor notes contain demo cues, explanations, timing if useful, sources.
 - Prefer images already in docs/images/. If an appropriate image is missing,
@@ -97,23 +97,23 @@ failure discussion. Follow current worksheet order. Power off before wiring.
 ON command does not prove pump operation; vibration does not prove water flow.
 Use Traces to identify the actual stopping rule when protections overlap.
 
-Activity 6: 6.1–6.2 user and information/control choices; 6.3 four required cards;
-6.4 peer usability test and improvements. Current minimum: humidity Gauge,
+Activity 7: 7.1–7.2 user and information/control choices; 7.3 four required cards;
+7.4 peer usability test and improvements. Current minimum: humidity Gauge,
 float Tile, pump-command Tile, Pump Auto Mode Tile. An automation list is an
-outdated requirement. History graph is optional; separate session History work
-is outside the requested seven-activity scope unless the user adds it.
+outdated requirement. History graph is optional; the session's History reading
+is its own activity (6) since 20 Sep 2026 and has no deck section yet.
 
-Activity 7: allow multiple explanation slides per section.
-7.1 one problem and one trial point, based on worksheet scenarios.
-7.2 distance/power/data/cost; WiFi, ESP-NOW, Zigbee; LoRa, cellular, RS-485;
+Activity 8: allow multiple explanation slides per section.
+8.1 one problem and one trial point, based on worksheet scenarios.
+8.2 distance/power/data/cost; WiFi, ESP-NOW, Zigbee; LoRa, cellular, RS-485;
 separate sensor-to-controller and controller-to-actuator choices with reasons.
-7.3 local versus remote access; workshop cloud example; internet loss versus
+8.3 local versus remote access; workshop cloud example; internet loss versus
 LAN/controller/power loss. Do not claim cloud is the only remote-access method.
-7.4 whether batteries are needed; battery-type tradeoffs; compatibility of
+8.4 whether batteries are needed; battery-type tradeoffs; compatibility of
 battery, voltage and charge-controller settings. Do not change classroom settings.
-7.5 W x hours = Wh; worked worksheet assumptions; instantaneous/startup power
+8.5 W x hours = Wh; worked worksheet assumptions; instantaneous/startup power
 versus daily energy; backup duration per subsystem. Read revised worksheet first.
-7.6 four blocks: devices, communication, power, test plan; measurable success;
+8.6 four blocks: devices, communication, power, test plan; measurable success;
 paired discussion. Do not restore the removed separate design canvas or rubric.
 Use primary-source verification for added technical claims; avoid presenting
 generic radio ranges, battery life, pricing or charger settings as guarantees.

@@ -62,7 +62,7 @@ loads (install guide step 3, and the pre-start check in Session 1).
 | Before the workshop — เตรียมแล็ปท็อป | [install.html](https://arnans.github.io/iot-training/renders/install.html) |
 | Session 1 — รับรู้ ตัดสินใจ สั่งการ | [session-1-start.html](https://arnans.github.io/iot-training/renders/session-1-start.html) |
 | Session 2 — ควบคุมอัตโนมัติและ Fail-safe | [activity-4.html](https://arnans.github.io/iot-training/renders/activity-4.html) |
-| Session 3 — แดชบอร์ดและออกแบบระบบ | [session-3-history.html](https://arnans.github.io/iot-training/renders/session-3-history.html) |
+| Session 3 — แดชบอร์ดและออกแบบระบบ | [activity-6.html](https://arnans.github.io/iot-training/renders/activity-6.html) |
 | Participant file & link list | [resources.html](https://arnans.github.io/iot-training/renders/resources.html) |
 | Team record sheet — **the one thing that gets printed** | [record-sheet.md](https://github.com/arnans/iot-training/blob/main/docs/record-sheet.md) *(repo)* |
 | Home Assistant menu paths + troubleshooting — **keep this open while roving** | [reference.md](https://github.com/arnans/iot-training/blob/main/docs/reference.md) *(repo)* |
@@ -118,7 +118,7 @@ it while you talk. The prose under each item is for the team that falls behind o
 Keep the [progress board](https://arnans.github.io/iot-training/progress.html) open on a TA phone:
 every tick a team makes lands there within seconds, so it shows who is behind before they raise a
 hand. A team ticks either the item in the checklist or the **ทำข้อนี้เสร็จแล้ว** box at the foot
-of the sub-section; both are the same tick. The three "we understood this" boxes in 7.3 are not
+of the sub-section; both are the same tick. The three "we understood this" boxes in 8.3 are not
 counted.
 
 The two questions from the Activity 4 pilot, `s2.time.trace` and `s2.time.why`, and the Session 1 lighting keys (`s1.light.on`,
@@ -540,7 +540,27 @@ toggles the relay (bench-verified), an override that lives in the board rather t
 is the answer to the end-of-activity question and links back to the Session 1 seed; it needs no
 worksheet item.
 
-### Session 3 · Reading the recorded data (20 min)
+### Session 3 · Activity 6 — Reading the recorded data (20 min)
+
+#### Before start (ก่อนเริ่ม) · ~3 min
+
+**Done when** the four worksheet checks at the top of Activity 6 are ticked (added 20 Sep 2026; they
+report to the dashboard as one activity, like Session 2's): Home Assistant is reachable, both boards
+are online and the relay still switches, `รดน้ำ - เปิดปั๊ม` is back **on** after the lunch shutdown
+with every fail-safe on, and `Pump Auto Mode` is left **off** for the afternoon. Session 2's wrap-up
+disabled the watering rule so a dry pump could not run unattended over lunch; nothing turned it back
+on before this was added, so Activity 7's `โหมดรดน้ำอัตโนมัติ` tile had no live rule behind it and
+Activity 8's pack-up asked teams to switch off rules that were never switched on.
+
+**Why `Pump Auto Mode` stays off.** With the rule enabled and the toggle on, the pump-on threshold
+sits just above room humidity (4.7), so every table would run the dry pump in 30-second bursts (the
+cutoff from 5.4) for the rest of the afternoon. Off, the rule is complete and inspectable, the
+dashboard tile reads Manual, and a team can still drive the pump by hand from its own tile. If you
+want the pump live — for a demo, or to let a table watch Auto work — turn the toggle on at that
+table and back off afterwards.
+
+**If stuck** Home Assistant will not open: the VM's IP may have changed over lunch, so read it off
+the VM screen again. The rule list is **Settings → Automations & scenes**.
 
 #### Open the history
 
@@ -567,25 +587,25 @@ Any three the team can explain are fine; graphs differ between teams.
 
 **A good answer** says there is no data from the break after Session 1 because the laptop running Home Assistant (the
 recorder) was closed or taken away; the board kept measuring, but nobody recorded it. A farm needs
-a machine that stays on, with power through the night. This feeds the power step in Activity 7.
+a machine that stays on, with power through the night. This feeds the power step in Activity 8.
 
-### Session 3 · Activity 6 — Dashboard (35 min)
+### Session 3 · Activity 7 — Dashboard (35 min)
 
 Plan 5 · build 25 · test with someone else 5.
 
-#### 6.1 Who will use it · 6.2 What to show and control
+#### 7.1 Who will use it · 7.2 What to show and control
 
 **Done when** the group has named who will use the dashboard (one or several: owner on a phone, worker on a tablet, manager on a big screen).
 There are three values to *show* and two things to *control*, written in plain words the user understands
 ("air humidity", "is the water up to the float?", "start the pump").
 
-#### 6.3 Build
+#### 7.3 Build
 
 **Done when** the four minimum cards are on a new blank dashboard (the Activity 4 Farm Dashboard is auto-generated and not editable): humidity **Gauge**, float **Tile** named for the
 user (the worksheet suggests `ระดับน้ำที่ลูกลอย`), pump **Tile** (`สั่งปั๊ม`), and a **Tile** for `Pump Auto Mode` named so that On reads as Auto
 (the worksheet suggests `โหมดรดน้ำอัตโนมัติ`). History graph, severity colours and extra cards are optional and come only after that.
 
-#### 6.4 Someone else tries it
+#### 7.4 Someone else tries it
 
 **Done when** someone who did not build the dashboard (a member of the paired team, or a teammate who took no part) answers all
 four questions within 30 seconds on a phone: what is the humidity, is the water up to the float,
@@ -599,22 +619,22 @@ under the name the team gave it, not under *Overview*.
 **A good answer** names the question the tester struggled with and the specific change made:
 moving a card up, renaming a tile, adding a colour.
 
-### Session 3 · Activity 7 — Design challenge (85 min)
+### Session 3 · Activity 8 — Design challenge (85 min)
 
 Pick 5 · network 20 · power 15 · design 30 · presentation and exchange 15 (instructor-led). Since 18 Sep 2026
-there is no separate design canvas: the design is the four blocks of worksheet step 7.6 (sensor and actuator,
+there is no separate design canvas: the design is the four blocks of worksheet step 8.6 (sensor and actuator,
 connectivity, power, test plan), filled in the worksheet and mirrored in the record sheet.
 
-#### 7.1 Pick the scenario
+#### 8.1 Pick the scenario
 
-**Done when** a scenario is written down (A–E; the worksheet calls them โจทย์, not cards, since 18 Sep 2026) and the farm and its problem are written in 7.1. Recommend **E** (a member's own farm) when one exists. C and D are advanced; teams
+**Done when** a scenario is written down (A–E; the worksheet calls them โจทย์, not cards, since 18 Sep 2026) and the farm and its problem are written in 8.1. Recommend **E** (a member's own farm) when one exists. C and D are advanced; teams
 choosing them may put the specialist parts under "not sure yet".
 
-#### 7.2 Choose the farm network
+#### 8.2 Choose the farm network
 
 **Done when** both links have a distance, whether the far end has power, what was eliminated and why, and what
 remains. The instructor models scenario B on screen (400 m, no mains: WiFi and Zigbee out on distance,
-cellular out on power; ESP-NOW, LoRa and RS-485 remain). The two rows in 7.2 are filled from the
+cellular out on power; ESP-NOW, LoRa and RS-485 remain). The two rows in 8.2 are filled from the
 survivors, with a reason.
 
 **If stuck** The weak answer is "WiFi, because the workshop used WiFi". Ask for the distance and the power
@@ -625,7 +645,7 @@ limitations), with power draw, benefits, limits and cost per option: WiFi about 
 the open, ESP-NOW 100–200 m board to board, Zigbee 10–30 m per hop, LoRa 1–10 km, RS-485 up to about
 1 km of cable, cellular wherever there is signal. General estimates; กำพล to confirm against what they teach.
 
-#### 7.3 Remote access and the cloud · instructor talk, listen only
+#### 8.3 Remote access and the cloud · instructor talk, listen only
 
 Rewritten 18 Sep 2026 (Roger): no task in the worksheet; the team listens and ticks three boxes to say
 it has understood. Make the three points in this order, in the words on the worksheet:
@@ -657,9 +677,9 @@ farm's Home Assistant still decided and recorded; the cloud only carried the con
 internet down, automations, the dashboard on the farm WiFi and logging carry on, while remote viewing and
 notifications stop; with Home Assistant down, automations, logging and the dashboard all stop, and only
 protection in the board or the wiring, and the manual switch, remain. The team writes its remote-access
-choice in 7.6, third communication row; "not needed" is a valid answer.
+choice in 8.6, third communication row; "not needed" is a valid answer.
 
-#### 7.4 Choose a battery for solar
+#### 8.4 Choose a battery for solar
 
 Rewritten 18 Sep 2026 (Roger: focus on the battery types used with solar and how to choose). The box
 tour is one step; the controller-settings and LCD-icon steps were cut later the same day as a distraction,
@@ -683,7 +703,7 @@ adapter because a full lead-acid sits at 12.7–13.0 V; the controller judges on
 **If stuck** Ask two questions first: does anything have to run at night, and will anyone come to top
 up water? The answers usually settle the type before price does.
 
-#### 7.5 Work out the power, then choose the source
+#### 8.5 Work out the power, then choose the source
 
 Rewritten 18 Sep 2026 (Roger): the worksheet now opens with the four calculation steps and two worked
 examples; the kit-load table and the folded answer table are gone.
@@ -714,11 +734,11 @@ Panels are rounded **up** to a whole panel.
 Wh per day, the usable battery capacity (about half the rated capacity for lead-acid), and what the
 panels still produce under cloud.
 
-#### 7.6 Design for one pilot point
+#### 8.6 Design for one pilot point
 
 **Done when** the four blocks read as one plan: a sensor and an actuator named, with a control rule and
-a response to sensor/communication failure; the two local communication rows carried over from 7.2,
-a remote-access choice informed by 7.3, and the battery/power answers from 7.4–7.5 consistent with the
+a response to sensor/communication failure; the two local communication rows carried over from 8.2,
+a remote-access choice informed by 8.3, and the battery/power answers from 8.4–8.5 consistent with the
 parts chosen; and a test plan covering normal operation and the chosen failure case, with observable
 pass criteria.
 Unknowns are written into the block they belong to, not guessed.
@@ -728,7 +748,7 @@ Unknowns are written into the block they belong to, not guessed.
 Not in the worksheet since 18 Sep 2026 (Roger: the instructor directs it). Pair the teams. Each team tells
 its plan in one minute from the four blocks: the problem, what senses and what acts, how it connects and is
 powered, and how they will know it works. The other team has three minutes for two questions: which
-decision is best reasoned, and what happens if one part fails. Swap. Teams change their answers in 7.6
+decision is best reasoned, and what happens if one part fails. Swap. Teams change their answers in 8.6
 directly; there is no separate revision box, no rubric walk and no plenary.
 
 ---

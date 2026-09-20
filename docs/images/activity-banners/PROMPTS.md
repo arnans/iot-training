@@ -22,10 +22,14 @@ Use case: illustration-story. Decorative adult Thai smart farming workbook banne
 
 Use case: illustration-story. Decorative adult Thai smart farming workbook banner. Editorial illustration with clean charcoal outlines, muted sage greens, warm cream #fff6e3 and amber highlights. Represent actual farm APPLICATION, no workshop devices or wiring diagrams. No text, numbers, logos or floating icons. Wide shallow panoramic scene. Requested 6:1 canvas. If output 3:1 compose all meaningful artwork in central half height with plain cream upper and lower quarters, so display center cropped to 6:1. Distant panoramic viewpoint, complete small figures. Scene: A farmer inspecting a nearly empty open irrigation tank beside a cornfield. Water level visibly low and outlet dry, suggesting watering has stopped until supply is restored.
 
-## activity-06-dashboard.png
+## activity-07-dashboard.png
 
 Use case: illustration-story. Decorative adult Thai smart farming workbook banner. Editorial illustration with clean charcoal outlines, muted sage greens, warm cream #fff6e3 and amber highlights. Represent actual farm APPLICATION, no workshop devices or wiring diagrams. No text, numbers, logos or floating icons. Wide shallow panoramic scene. Requested 6:1 canvas. If output 3:1 compose all meaningful artwork in central half height with plain cream upper and lower quarters, so display center cropped to 6:1. Distant panoramic viewpoint, complete small figures. Scene: A farmer in the shade checking a phone while looking across a greenhouse and irrigated field. Simple colored shapes on phone screen suggest farm status.
 
-## activity-07-design.png
+## activity-08-design.png
 
 Use case: illustration-story. Decorative adult Thai smart farming workbook banner. Editorial illustration with clean charcoal outlines, muted sage greens, warm cream #fff6e3 and amber highlights. Represent actual farm APPLICATION, no workshop devices or wiring diagrams. No text, numbers, logos or floating icons. Wide shallow panoramic scene. Requested 6:1 canvas. If output 3:1 compose all meaningful artwork in central half height with plain cream upper and lower quarters, so display center cropped to 6:1. Distant panoramic viewpoint, complete small figures. Scene: Two farmers planning together over a paper farm map on a low table, vegetable beds, greenhouse and water tank behind them. Practical farm planning.
+
+## activity-06-history.png — not yet generated
+
+The history reading became กิจกรรมที่ 6 on 20 Sep 2026 and is the only activity page without a banner. A scene in the same style: a farmer at the end of the day looking back over a field and greenhouse, light and water traces of the day's work visible in the landscape (no charts, screens, text or numbers).

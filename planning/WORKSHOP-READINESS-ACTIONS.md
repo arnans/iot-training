@@ -22,7 +22,7 @@ the published guide; the confirmation form accepts their response.
 
 The final answer-submission destination is a separate decision. On 19 September the organizer
 said it will be decided later, most likely a form. Current wording correctly defers to the
-instructor's announced channel. Once decided, add the link to the front page, Activity 7 and
+instructor's announced channel. Once decided, add the link to the front page, Activity 8 and
 record sheet; test JSON uploads and the receipt/TA verification process.
 
 ## 2. Progress tracking — implement one explicit course schema

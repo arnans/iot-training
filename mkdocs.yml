@@ -52,9 +52,9 @@ nav:
       - "กิจกรรม 4 · ตั้งกฎอัตโนมัติ (Think)": activity-4.md
       - "กิจกรรม 5 · จำลองปัญหาและป้องกัน (Failure lab)": activity-5.md
   - "ช่วงที่ 3 — แดชบอร์ดและออกแบบระบบ":
-      - อ่านข้อมูลย้อนหลัง: session-3-history.md
-      - "กิจกรรม 6 · สร้างแดชบอร์ด (Dashboard)": activity-6.md
-      - "กิจกรรม 7 · ออกแบบระบบฟาร์ม (Design)": activity-7.md
+      - "กิจกรรม 6 · อ่านข้อมูลย้อนหลัง (History)": activity-6.md
+      - "กิจกรรม 7 · สร้างแดชบอร์ด (Dashboard)": activity-7.md
+      - "กิจกรรม 8 · ออกแบบระบบฟาร์ม (Design)": activity-8.md
 
 hooks:
   - hooks/fields.py   # {{f:key}} markers -> form fields, see webapp/FILLABLE-WORKSHEET.md

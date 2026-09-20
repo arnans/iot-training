@@ -1373,9 +1373,9 @@ body {
 คำตอบเก็บอยู่ในเบราว์เซอร์ของเครื่องที่กรอกเท่านั้น ก่อนจบการอบรม ให้เปิดเมนู <strong>เครื่องมือ → ดาวน์โหลดคำตอบ (ไฟล์ JSON)</strong> แล้วส่งไฟล์ผ่านช่องทางที่ผู้สอนแจ้ง ตรวจว่าผู้สอนได้รับไฟล์ของกลุ่มแล้ว และเก็บไฟล์ไว้ในเครื่องด้วย จากนั้นเลือก <strong>พิมพ์ / บันทึก PDF</strong> หน้านี้ไว้อ้างอิง แดชบอร์ดของผู้สอนรับเฉพาะความคืบหน้า ไม่ได้รับคำตอบที่กรอก
 กลุ่มที่สะดวกเขียนกระดาษ พิมพ์หน้านี้ตอนยังว่างแล้วเขียนด้วยมือได้</p>
 </blockquote>
-<p><strong>กลุ่มที่</strong> <input class="fld" type="text" data-k="team.no" data-size="4" size="4" autocomplete="off" spellcheck="false"> · <strong>โซนของกลุ่ม</strong> <span class="fld-radio" data-k="team.zone"><label><input class="fld" type="radio" name="team.zone" data-k="team.zone" value="แดง"> แดง</label><label><input class="fld" type="radio" name="team.zone" data-k="team.zone" value="เขียว"> เขียว</label><label><input class="fld" type="radio" name="team.zone" data-k="team.zone" value="น้ำเงิน"> น้ำเงิน</label></span> · WiFi แล็ปท็อป <code>farm-laptop-</code><input class="fld" type="text" data-k="team.wifi" data-size="6" size="6" autocomplete="off" spellcheck="false"></p>
-<p><strong>ที่อยู่ Home Assistant ของกลุ่ม</strong> (อ่านจากหน้าจอเครื่อง VM) ช่วงที่ 1 <code>http://</code><input class="fld" type="text" data-k="ha.ip1" data-size="15" size="15" autocomplete="off" spellcheck="false"> · ช่วงที่ 2 <code>http://</code><input class="fld" type="text" data-k="ha.ip2" data-size="15" size="15" autocomplete="off" spellcheck="false"></p>
-<p><strong>ชื่อบอร์ด</strong> (อ่านจาก <a href="https://web.esphome.io">web.esphome.io</a> สีในชื่อต้องตรงกับโซน) GoGo-IoT <input class="fld" type="text" data-k="board.iot.name" data-size="22" size="22" autocomplete="off" spellcheck="false"> IP <input class="fld" type="text" data-k="board.iot.ip" data-size="15" size="15" autocomplete="off" spellcheck="false"> · บอร์ดรีเลย์ <input class="fld" type="text" data-k="board.relay.name" data-size="22" size="22" autocomplete="off" spellcheck="false"> IP <input class="fld" type="text" data-k="board.relay.ip" data-size="15" size="15" autocomplete="off" spellcheck="false"></p>
+<p><strong>กลุ่มที่</strong> <input class="fld" type="text" data-k="team.no" data-size="4" size="4" autocomplete="off" spellcheck="false"> · <strong>โซนของกลุ่ม</strong> <span class="fld-radio" data-k="team.zone"><label><input class="fld" type="radio" name="team.zone" data-k="team.zone" value="แดง"> แดง</label><label><input class="fld" type="radio" name="team.zone" data-k="team.zone" value="เขียว"> เขียว</label><label><input class="fld" type="radio" name="team.zone" data-k="team.zone" value="น้ำเงิน"> น้ำเงิน</label></span> · ชื่อ WiFi ของโซน: <code>farm-laptop-</code><input class="fld" type="text" data-k="team.wifi" data-size="6" size="6" autocomplete="off" spellcheck="false"> (เติมเฉพาะ red, green หรือ blue)</p>
+<p><strong>ที่อยู่ Home Assistant ของกลุ่ม</strong> (อ่าน IP จากหน้าจอ VM กรอกเฉพาะตัวเลขและจุด เช่น 192.168.1.50; ช่องช่วงที่ 2 ใช้บันทึกเมื่อกลับมาเปิด VM ในช่วงนั้น) ช่วงที่ 1 <code>http://</code><input class="fld" type="text" data-k="ha.ip1" data-size="15" size="15" autocomplete="off" spellcheck="false"> · ช่วงที่ 2 <code>http://</code><input class="fld" type="text" data-k="ha.ip2" data-size="15" size="15" autocomplete="off" spellcheck="false"></p>
+<p><strong>ชื่อบอร์ดและ IP</strong> (อ่านจาก <a href="https://web.esphome.io">web.esphome.io</a>: คัดลอกชื่อ DEVICE NAME เต็มทั้งสีและรหัสท้าย ส่วน IP กรอกเฉพาะตัวเลขและจุด ไม่ต้องใส่ http://) GoGo-IoT <input class="fld" type="text" data-k="board.iot.name" data-size="22" size="22" autocomplete="off" spellcheck="false"> IP <input class="fld" type="text" data-k="board.iot.ip" data-size="15" size="15" autocomplete="off" spellcheck="false"> · บอร์ดรีเลย์ <input class="fld" type="text" data-k="board.relay.name" data-size="22" size="22" autocomplete="off" spellcheck="false"> IP <input class="fld" type="text" data-k="board.relay.ip" data-size="15" size="15" autocomplete="off" spellcheck="false"></p>
 <p><strong>ปัญหาในฟาร์มที่เราอยากแก้</strong> (เขียนตอนเริ่มช่วงที่ 1 หนึ่งประโยค ยังไม่ต้องคิดวิธีแก้ จะได้ใช้ในช่วงที่ 3)</p>
 <textarea class="fld fld-ta" data-k="farm.problem" rows="2"></textarea>
 
@@ -1406,8 +1406,8 @@ body {
 </tr>
 <tr>
 <td>แสง</td>
-<td><input class="fld" type="text" data-k="s1.light.room" data-size="6" size="6" inputmode="decimal" autocomplete="off" spellcheck="false"></td>
-<td><input class="fld" type="text" data-k="s1.light.test" data-size="6" size="6" inputmode="decimal" autocomplete="off" spellcheck="false"></td>
+<td><input class="fld" type="text" data-k="s1.light.room" data-size="6" size="6" inputmode="decimal" autocomplete="off" spellcheck="false"> lux</td>
+<td><input class="fld" type="text" data-k="s1.light.test" data-size="6" size="6" inputmode="decimal" autocomplete="off" spellcheck="false"> lux</td>
 <td>ใช้มือครอบบอร์ด</td>
 </tr>
 <tr>
@@ -1417,7 +1417,7 @@ body {
 <td>เคาะโต๊ะ / เขย่า</td>
 </tr>
 <tr>
-<td>สวิตช์ลูกลอย</td>
+<td>สวิตช์ลูกลอย (กรอก ON หรือ OFF ตามหน้าเว็บของบอร์ด)</td>
 <td>วางในน้ำ: <input class="fld" type="text" data-k="s1.float.rest" data-size="4" size="4" autocomplete="off" spellcheck="false"></td>
 <td>ยกพ้นน้ำ: <input class="fld" type="text" data-k="s1.float.lift" data-size="4" size="4" autocomplete="off" spellcheck="false"></td>
 <td>ยกขึ้นจากน้ำ</td>
@@ -1431,38 +1431,46 @@ body {
 <p><strong>คำถามท้ายกิจกรรมที่ 2</strong> ถ้าเราจะนำแนวคิดนี้ไปควบคุมปั๊มน้ำ 220V ในฟาร์มจริง แล้วต้องเลือกอุปกรณ์และติดตั้งระบบ ควรพิจารณาความปลอดภัยเรื่องใดบ้าง และให้ใครเป็นผู้ติดตั้ง</p>
 <textarea class="fld fld-ta" data-k="s1.q2" rows="2"></textarea>
 
-<p><strong>ค่าเกณฑ์ความสว่าง</strong> (กิจกรรมที่ 3) ค่าเกณฑ์ที่กลุ่มเลือก <input class="fld" type="text" data-k="s1.light.on" data-size="4" size="4" inputmode="decimal" autocomplete="off" spellcheck="false"></p>
+<p><strong>ค่าเกณฑ์ความสว่างที่ใช้ตั้งกฎในกิจกรรมที่ 3</strong> (กรอกตัวเลข) <input class="fld" type="text" data-k="s1.light.on" data-size="4" size="4" inputmode="decimal" autocomplete="off" spellcheck="false"> lux</p>
 <p class="ws-phase"><strong>กฎที่เราใช้ตัดสินใจ</strong></p>
 <blockquote>
-<p>มืด: ถ้าเซนเซอร์แสง <input class="fld" type="text" data-k="s1.rule.dark.if" data-size="24" size="24" autocomplete="off" spellcheck="false"> แล้วให้ <input class="fld" type="text" data-k="s1.rule.dark.then" data-size="24" size="24" autocomplete="off" spellcheck="false"></p>
-<p>สว่าง: ถ้าเซนเซอร์แสง <input class="fld" type="text" data-k="s1.rule.bright.if" data-size="24" size="24" autocomplete="off" spellcheck="false"> แล้วให้ <input class="fld" type="text" data-k="s1.rule.bright.then" data-size="24" size="24" autocomplete="off" spellcheck="false"></p>
+<p>มืด: เงื่อนไขค่าแสง (ระบุว่าต่ำกว่าค่าใด พร้อมหน่วย) <input class="fld" type="text" data-k="s1.rule.dark.if" data-size="24" size="24" autocomplete="off" spellcheck="false"> แล้วให้ระบบสั่งอะไร <input class="fld" type="text" data-k="s1.rule.dark.then" data-size="24" size="24" autocomplete="off" spellcheck="false"></p>
+<p>สว่าง: เงื่อนไขค่าแสง (ระบุว่าสูงกว่าค่าใด พร้อมหน่วย) <input class="fld" type="text" data-k="s1.rule.bright.if" data-size="24" size="24" autocomplete="off" spellcheck="false"> แล้วให้ระบบสั่งอะไร <input class="fld" type="text" data-k="s1.rule.bright.then" data-size="24" size="24" autocomplete="off" spellcheck="false"></p>
 </blockquote>
-<p><strong>กฎอัตโนมัติสองกฎแรก</strong> ครอบและเอามือออกสามรอบ ไฟติดและดับเองครบ <input class="fld" type="text" data-k="s1.auto.pass" data-size="2" size="2" inputmode="decimal" autocomplete="off" spellcheck="false"> จาก 3 รอบ · <strong>โจทย์เสริม ปิดไฟตามเวลา</strong> เวลาที่ตั้ง <input class="fld" type="text" data-k="s1.timer.at" data-size="5" size="5" autocomplete="off" spellcheck="false"> น. ผล <span class="fld-radio" data-k="s1.timer.ok"><label><input class="fld" type="radio" name="s1.timer.ok" data-k="s1.timer.ok" value="ดับตรงเวลา"> ดับตรงเวลา</label><label><input class="fld" type="radio" name="s1.timer.ok" data-k="s1.timer.ok" value="ไม่ดับ"> ไม่ดับ</label><label><input class="fld" type="radio" name="s1.timer.ok" data-k="s1.timer.ok" value="ไม่ได้ทำ"> ไม่ได้ทำ</label></span></p>
+<p><strong>กฎอัตโนมัติสองกฎแรก</strong> ครอบและเอามือออกสามรอบ ไฟติดและดับเองครบ <input class="fld" type="text" data-k="s1.auto.pass" data-size="2" size="2" inputmode="decimal" autocomplete="off" spellcheck="false"> จาก 3 รอบ · <strong>โจทย์เสริม ปิดไฟตามเวลา</strong> เวลาที่ตั้งให้ไฟดับ (เช่น 14:05; ถ้าไม่ได้ทำให้เว้นว่าง) <input class="fld" type="text" data-k="s1.timer.at" data-size="5" size="5" autocomplete="off" spellcheck="false"> น. ผลที่สังเกตได้ <span class="fld-radio" data-k="s1.timer.ok"><label><input class="fld" type="radio" name="s1.timer.ok" data-k="s1.timer.ok" value="ดับตรงเวลา"> ดับตรงเวลา</label><label><input class="fld" type="radio" name="s1.timer.ok" data-k="s1.timer.ok" value="ไม่ดับ"> ไม่ดับ</label><label><input class="fld" type="radio" name="s1.timer.ok" data-k="s1.timer.ok" value="ไม่ได้ทำ"> ไม่ได้ทำ</label></span></p>
 <p><strong>คำถามท้ายกิจกรรมที่ 3</strong> ถ้าค่าแสงอยู่ใกล้เกณฑ์พอดี แล้วมีเมฆลอยผ่านตอนพลบค่ำจนค่าแสงแกว่งไปมา ระบบจะเปิด–ปิดไฟอย่างไร</p>
 <textarea class="fld fld-ta" data-k="s1.q3" rows="2"></textarea>
 
 <hr />
 <h2 id="ชวงท-2">ช่วงที่ 2</h2>
 <h3 id="ระบบไฟสวน">ระบบไฟสวน</h3>
-<p><strong>เกณฑ์ความสว่าง</strong> เปิดไฟเมื่อต่ำกว่า <input class="fld" type="text" data-k="s1.light.on" data-size="4" size="4" inputmode="decimal" autocomplete="off" spellcheck="false"> (จากช่วงที่ 1) ปิดไฟเมื่อสูงกว่า <input class="fld" type="text" data-k="s2.light.off" data-size="4" size="4" inputmode="decimal" autocomplete="off" spellcheck="false"></p>
-<p><strong>อาการกะพริบ</strong> ไฟติดดับกี่ครั้งใน 1 นาที ก่อนแก้ <input class="fld" type="text" data-k="s2.chatter.before" data-size="3" size="3" inputmode="decimal" autocomplete="off" spellcheck="false"> หลังแก้ <input class="fld" type="text" data-k="s2.chatter.after" data-size="3" size="3" inputmode="decimal" autocomplete="off" spellcheck="false"></p>
-<p><strong>เงื่อนไขเวลา</strong> รอบล่าสุดใน Traces หยุดที่ส่วนใด <input class="fld" type="text" data-k="s2.time.trace" data-size="16" size="16" autocomplete="off" spellcheck="false"> · ทำนาย ถ้าถึงเวลา 18.30 น. แล้วแสงเพิ่งมืดหลังจากนั้น ไฟจะ <span class="fld-radio" data-k="s2.time.dark_after"><label><input class="fld" type="radio" name="s2.time.dark_after" data-k="s2.time.dark_after" value="ติด"> ติด</label><label><input class="fld" type="radio" name="s2.time.dark_after" data-k="s2.time.dark_after" value="ไม่ติด"> ไม่ติด</label></span> เพราะ <input class="fld" type="text" data-k="s2.time.dark_after_why" data-size="16" size="16" autocomplete="off" spellcheck="false"> · ถ้าแสงมืดก่อน 18.30 น. แล้วพอถึงเวลา ไฟจะ <span class="fld-radio" data-k="s2.time.dark_before"><label><input class="fld" type="radio" name="s2.time.dark_before" data-k="s2.time.dark_before" value="ติด"> ติด</label><label><input class="fld" type="radio" name="s2.time.dark_before" data-k="s2.time.dark_before" value="ไม่ติด"> ไม่ติด</label></span> เพราะ <input class="fld" type="text" data-k="s2.time.dark_before_why" data-size="16" size="16" autocomplete="off" spellcheck="false"></p>
-<p><strong>Trigger เวลา</strong> ถ้าเพิ่ม trigger เวลาแล้วแสงมืดก่อนเวลาที่กำหนด พอถึงเวลาไฟติดหรือไม่ <span class="fld-radio" data-k="s2.time.fixed"><label><input class="fld" type="radio" name="s2.time.fixed" data-k="s2.time.fixed" value="ติด"> ติด</label><label><input class="fld" type="radio" name="s2.time.fixed" data-k="s2.time.fixed" value="ไม่ติด"> ไม่ติด</label></span> · ถ้าเพิ่ม trigger เวลาแล้ว ทำไมเรายังต้องตรวจค่าความสว่างในส่วน And if อีก <input class="fld" type="text" data-k="s2.time.why" data-size="30" size="30" autocomplete="off" spellcheck="false"></p>
+<p><strong>เกณฑ์ความสว่าง</strong> เปิดไฟเมื่อต่ำกว่า <input class="fld" type="text" data-k="s1.light.on" data-size="4" size="4" inputmode="decimal" autocomplete="off" spellcheck="false"> lux (จากช่วงที่ 1) ปิดไฟเมื่อสูงกว่า <input class="fld" type="text" data-k="s2.light.off" data-size="4" size="4" inputmode="decimal" autocomplete="off" spellcheck="false"> lux</p>
+<p><strong>จำนวนครั้งที่ไฟเปลี่ยนสถานะใน 1 นาที</strong> (ติด→ดับนับ 1 ครั้ง ดับ→ติดนับอีก 1 ครั้ง) ก่อนแยกเกณฑ์ <input class="fld" type="text" data-k="s2.chatter.before" data-size="3" size="3" inputmode="decimal" autocomplete="off" spellcheck="false"> ครั้ง หลังแยกเกณฑ์ <input class="fld" type="text" data-k="s2.chatter.after" data-size="3" size="3" inputmode="decimal" autocomplete="off" spellcheck="false"> ครั้ง</p>
+<p><strong>เงื่อนไขเวลา</strong> ในการทดสอบนอกช่วงเวลา ส่วนใดใน Traces ที่ทำให้กฎไม่สั่งเปิดไฟ (ระบุชื่อส่วนหรือเงื่อนไขที่เห็น หากกฎไม่เริ่ม ให้เขียนว่า “ไม่พบรอบการทำงาน”) <input class="fld" type="text" data-k="s2.time.trace" data-size="30" size="30" autocomplete="off" spellcheck="false"> · ทำนาย ถ้าถึงเวลา 18.30 น. แล้วแสงเพิ่งมืดหลังจากนั้น ไฟจะ <span class="fld-radio" data-k="s2.time.dark_after"><label><input class="fld" type="radio" name="s2.time.dark_after" data-k="s2.time.dark_after" value="ติด"> ติด</label><label><input class="fld" type="radio" name="s2.time.dark_after" data-k="s2.time.dark_after" value="ไม่ติด"> ไม่ติด</label></span> อธิบายเหตุผลจาก trigger และเงื่อนไขเวลา <input class="fld" type="text" data-k="s2.time.dark_after_why" data-size="16" size="16" autocomplete="off" spellcheck="false"> · ถ้าแสงมืดก่อน 18.30 น. แล้วพอถึงเวลา ไฟจะ <span class="fld-radio" data-k="s2.time.dark_before"><label><input class="fld" type="radio" name="s2.time.dark_before" data-k="s2.time.dark_before" value="ติด"> ติด</label><label><input class="fld" type="radio" name="s2.time.dark_before" data-k="s2.time.dark_before" value="ไม่ติด"> ไม่ติด</label></span> อธิบายเหตุผลจาก trigger และเงื่อนไขเวลา <input class="fld" type="text" data-k="s2.time.dark_before_why" data-size="16" size="16" autocomplete="off" spellcheck="false"></p>
+<p><strong>Trigger เวลา</strong> ผลที่สังเกตหลังเพิ่ม trigger เวลา: เมื่อครอบเซนเซอร์ให้มืดค้างไว้ก่อนถึงเวลาเปิด พอถึงเวลาแล้วไฟติดหรือไม่ <span class="fld-radio" data-k="s2.time.fixed"><label><input class="fld" type="radio" name="s2.time.fixed" data-k="s2.time.fixed" value="ติด"> ติด</label><label><input class="fld" type="radio" name="s2.time.fixed" data-k="s2.time.fixed" value="ไม่ติด"> ไม่ติด</label></span> · ถ้าเพิ่ม trigger เวลาแล้ว ทำไมเรายังต้องตรวจค่าความสว่างในส่วน And if อีก <input class="fld" type="text" data-k="s2.time.why" data-size="30" size="30" autocomplete="off" spellcheck="false"></p>
 <h3 id="ระบบรดนำ">ระบบรดน้ำ</h3>
-<p><strong>เกณฑ์ความชื้นอากาศ</strong> เปิดปั๊มเมื่อต่ำกว่า <input class="fld" type="text" data-k="s2.hum.on" data-size="4" size="4" inputmode="decimal" autocomplete="off" spellcheck="false"> % ปิดปั๊มเมื่อสูงกว่า <input class="fld" type="text" data-k="s2.hum.off" data-size="4" size="4" inputmode="decimal" autocomplete="off" spellcheck="false"> % · ต่อปั๊มเข้ารีเลย์แทนหลอดไฟเมื่อ <input class="fld" type="text" data-k="s2.pump_back_t" data-size="5" size="5" autocomplete="off" spellcheck="false"> น.</p>
-<p><strong>โหมด Auto / Manual</strong> ปิด <code>Pump Auto Mode</code> แล้วปั๊มเริ่มเอง <span class="fld-radio" data-k="s2.mode.off"><label><input class="fld" type="radio" name="s2.mode.off" data-k="s2.mode.off" value="ไม่เริ่ม"> ไม่เริ่ม</label><label><input class="fld" type="radio" name="s2.mode.off" data-k="s2.mode.off" value="เริ่ม"> เริ่ม</label></span> · เปิดแล้วปั๊มเริ่มเอง <span class="fld-radio" data-k="s2.mode.on"><label><input class="fld" type="radio" name="s2.mode.on" data-k="s2.mode.on" value="เริ่ม"> เริ่ม</label><label><input class="fld" type="radio" name="s2.mode.on" data-k="s2.mode.on" value="ไม่เริ่ม"> ไม่เริ่ม</label></span></p>
+<p><strong>เกณฑ์ความชื้นอากาศ</strong> เปิดปั๊มเมื่อต่ำกว่า <input class="fld" type="text" data-k="s2.hum.on" data-size="4" size="4" inputmode="decimal" autocomplete="off" spellcheck="false"> % ปิดปั๊มเมื่อสูงกว่า <input class="fld" type="text" data-k="s2.hum.off" data-size="4" size="4" inputmode="decimal" autocomplete="off" spellcheck="false"> % · เวลาที่เริ่มใช้ปั๊มแทนหลอดไฟ (เช่น 10:30) <input class="fld" type="text" data-k="s2.pump_back_t" data-size="5" size="5" autocomplete="off" spellcheck="false"> น.</p>
+<p><strong>ผลที่สังเกตจากการทดสอบโหมด Auto / Manual</strong> สั่งรีเลย์ Off ก่อนแต่ละรอบ แล้วเป่าลมให้ความชื้นสูงกว่าเกณฑ์เปิดและรอให้ลดข้ามเกณฑ์: เมื่อปิด <code>Pump Auto Mode</code> ปั๊มเริ่มเองหรือไม่ <span class="fld-radio" data-k="s2.mode.off"><label><input class="fld" type="radio" name="s2.mode.off" data-k="s2.mode.off" value="ไม่เริ่ม"> ไม่เริ่ม</label><label><input class="fld" type="radio" name="s2.mode.off" data-k="s2.mode.off" value="เริ่ม"> เริ่ม</label></span> · เมื่อเปิด <code>Pump Auto Mode</code> แล้วทดสอบซ้ำ ปั๊มเริ่มเองหรือไม่ <span class="fld-radio" data-k="s2.mode.on"><label><input class="fld" type="radio" name="s2.mode.on" data-k="s2.mode.on" value="เริ่ม"> เริ่ม</label><label><input class="fld" type="radio" name="s2.mode.on" data-k="s2.mode.on" value="ไม่เริ่ม"> ไม่เริ่ม</label></span></p>
 <p><strong>คำถามท้ายกิจกรรมที่ 4</strong> เกณฑ์เปิด–ปิดของไฟสวนคือเท่าไร ทำไมต้องต่างกัน และใช้กับระบบรดน้ำอย่างไร</p>
 <textarea class="fld fld-ta" data-k="s2.q4" rows="2"></textarea>
 
 <h3 id="จำลองปญหาและ-fail-safe">จำลองปัญหาและ Fail-safe</h3>
+<p class="ws-phase"><strong>เกณฑ์ผ่านหลังแก้</strong></p>
+<ul>
+<li>ข้อ 5.1 ปั๊มหยุดเมื่อเป็น Dry ทั้งกรณีที่สั่ง On ขณะ Dry อยู่แล้ว และกรณียกลูกลอยหลังปั๊มเริ่มเดิน โดยมีข้อความแจ้งเตือน</li>
+<li>ข้อ 5.2 กฎตัดรีเลย์หลังประมาณ 15 วินาทีเมื่อถอดสาย และปั๊มเดินผ่าน 15 วินาทีได้เมื่อต่อสายกลับ</li>
+<li>ข้อ 5.3 Traces แสดงว่ากฎเซนเซอร์หายสั่ง Off พร้อมแจ้งเตือน แม้กฎอื่นจะหยุดปั๊มไปก่อน</li>
+<li>ข้อ 5.4 ปั๊มหยุดหลังประมาณ 30 วินาทีพร้อมแจ้งเตือน</li>
+</ul>
+<p>ก่อนเพิ่มกฎ ให้เลือก “สำเร็จ” เมื่อพบอาการตามแถว แล้วบันทึกสิ่งที่เห็นทั้งบนจอและที่ปั๊ม หลังเพิ่มกฎ ให้เลือก “แก้ได้” เมื่อทดสอบผ่านเกณฑ์ในกิจกรรมที่ 5 และบันทึกหลักฐาน เช่น เวลาที่หยุดหรือชื่อกฎใน Traces หากยังไม่ผ่านให้ระบุอาการที่เหลืออยู่</p>
 <div class="table-wrap"><table>
 <thead>
 <tr>
-<th>ปัญหา</th>
-<th>จำลองสำเร็จ</th>
-<th>เกิดอะไรขึ้น</th>
-<th>แก้ได้แล้ว</th>
-<th>หมายเหตุ</th>
+<th>อาการก่อนเพิ่มกฎ</th>
+<th>พบอาการตามโจทย์</th>
+<th>สถานะบนจอและอาการจริง</th>
+<th>ผลทดสอบกฎหลังแก้</th>
+<th>หลักฐานหลังแก้ / อาการที่ยังไม่ผ่าน</th>
 </tr>
 </thead>
 <tbody>
@@ -1481,14 +1489,14 @@ body {
 <td><input class="fld" type="text" data-k="s2.sab.2.note" data-size="12" size="12" autocomplete="off" spellcheck="false"></td>
 </tr>
 <tr>
-<td>3 บอร์ดเซนเซอร์ดับ</td>
+<td>3 ปิดบอร์ดแล้วความชื้นเป็น unavailable</td>
 <td><span class="fld-radio" data-k="s2.sab.3.ok"><label><input class="fld" type="radio" name="s2.sab.3.ok" data-k="s2.sab.3.ok" value="สำเร็จ"> สำเร็จ</label><label><input class="fld" type="radio" name="s2.sab.3.ok" data-k="s2.sab.3.ok" value="ไม่สำเร็จ"> ไม่สำเร็จ</label></span></td>
 <td><input class="fld" type="text" data-k="s2.sab.3.what" data-size="14" size="14" autocomplete="off" spellcheck="false"></td>
 <td><span class="fld-radio" data-k="s2.sab.3.fixed"><label><input class="fld" type="radio" name="s2.sab.3.fixed" data-k="s2.sab.3.fixed" value="แก้ได้"> แก้ได้</label><label><input class="fld" type="radio" name="s2.sab.3.fixed" data-k="s2.sab.3.fixed" value="ยังไม่ได้"> ยังไม่ได้</label></span></td>
 <td><input class="fld" type="text" data-k="s2.sab.3.note" data-size="12" size="12" autocomplete="off" spellcheck="false"></td>
 </tr>
 <tr>
-<td>4 ปั๊มเดินไม่หยุด</td>
+<td>4 ปั๊มยังเดินเมื่อครบเวลาสังเกต</td>
 <td><span class="fld-radio" data-k="s2.sab.4.ok"><label><input class="fld" type="radio" name="s2.sab.4.ok" data-k="s2.sab.4.ok" value="สำเร็จ"> สำเร็จ</label><label><input class="fld" type="radio" name="s2.sab.4.ok" data-k="s2.sab.4.ok" value="ไม่สำเร็จ"> ไม่สำเร็จ</label></span></td>
 <td><input class="fld" type="text" data-k="s2.sab.4.what" data-size="14" size="14" autocomplete="off" spellcheck="false"></td>
 <td><span class="fld-radio" data-k="s2.sab.4.fixed"><label><input class="fld" type="radio" name="s2.sab.4.fixed" data-k="s2.sab.4.fixed" value="แก้ได้"> แก้ได้</label><label><input class="fld" type="radio" name="s2.sab.4.fixed" data-k="s2.sab.4.fixed" value="ยังไม่ได้"> ยังไม่ได้</label></span></td>
@@ -1501,6 +1509,7 @@ body {
 <textarea class="fld fld-ta" data-k="s2.q5" rows="2"></textarea>
 
 <h3 id="ตารางบำรงรกษา">ตารางบำรุงรักษา</h3>
+<p>วางแผนสำหรับการใช้งานในฟาร์มจริง: ระบุผู้รับผิดชอบเป็นบทบาท เช่น เจ้าของฟาร์มหรือช่าง ระบุความถี่ เช่น ทุกวันหรือทุกเดือน และบอกว่าจะตรวจอะไรพร้อมวิธีตรวจ ไม่ต้องใส่ชื่อสมาชิกในกลุ่ม</p>
 <div class="table-wrap"><table>
 <thead>
 <tr>
@@ -1546,14 +1555,15 @@ body {
 <hr />
 <h2 id="ชวงท-3">ช่วงที่ 3</h2>
 <h3 id="กจกรรมท-6--อานขอมลทบนทกไวตงแตชวงท-2">กิจกรรมที่ 6 — อ่านข้อมูลที่บันทึกไว้ตั้งแต่ช่วงที่ 2</h3>
+<p>ช่องเวลาให้กรอกเวลาที่อ่านจากกราฟแบบ 24 ชั่วโมง เช่น 10:35 โดยใช้ช่วงตั้งแต่เริ่มช่วงที่ 2 ถึงปัจจุบัน หากใช้กราฟตัวอย่าง ให้บันทึกค่าจากกราฟนั้น</p>
 <p class="ws-phase"><strong>สามจุดบนกราฟที่เชื่อมโยงกับสิ่งที่กลุ่มทำ</strong></p>
 <div class="table-wrap"><table>
 <thead>
 <tr>
-<th>เห็นอะไรบนกราฟ</th>
-<th>เวลาโดยประมาณ</th>
-<th>ตอนนั้นเราทำอะไร</th>
-<th>ถ้าพบเหตุการณ์นี้ในฟาร์มจริง แล้วควรตรวจหรือปรับอะไร</th>
+<th>ค่าหรือสถานะใดเปลี่ยน และเปลี่ยนอย่างไร</th>
+<th>เวลาในกราฟ (เช่น 10:35)</th>
+<th>การทดลองที่น่าจะทำให้เกิดการเปลี่ยนแปลงนี้</th>
+<th>ถ้าเกิดในฟาร์มจริง จะตรวจสาเหตุหรือปรับระบบอย่างไร</th>
 </tr>
 </thead>
 <tbody>
@@ -1580,12 +1590,13 @@ body {
 <p><strong>ความชื้นอากาศตั้งแต่ช่วงที่ 2</strong> ต่ำสุด <input class="fld" type="text" data-k="s3.hist.hum_min" data-size="4" size="4" inputmode="decimal" autocomplete="off" spellcheck="false"> % ตอน <input class="fld" type="text" data-k="s3.hist.hum_min_t" data-size="5" size="5" autocomplete="off" spellcheck="false"> น. สูงสุด <input class="fld" type="text" data-k="s3.hist.hum_max" data-size="4" size="4" inputmode="decimal" autocomplete="off" spellcheck="false"> % ตอน <input class="fld" type="text" data-k="s3.hist.hum_max_t" data-size="5" size="5" autocomplete="off" spellcheck="false"> น.</p>
 <p><strong>คำถามสมมติ: หากบอร์ดยังมีไฟ แต่ Home Assistant ถูกปิดในช่วงพักหลังช่วงที่ 1 เหตุใดจึงไม่มีข้อมูลช่วงนั้น</strong> <input class="fld" type="text" data-k="s3.hist.why_gap" data-size="30" size="30" autocomplete="off" spellcheck="false"> <strong>หากต้องการเก็บข้อมูลในฟาร์มให้ต่อเนื่อง ควรเปลี่ยนอะไรบ้าง</strong> <input class="fld" type="text" data-k="s3.hist.farm_change" data-size="30" size="30" autocomplete="off" spellcheck="false"></p>
 <h3 id="กจกรรมท-7--วางแผนหนาจอแดชบอรด">กิจกรรมที่ 7 — วางแผนหน้าจอแดชบอร์ด</h3>
-<p>ผู้ที่จะใช้แดชบอร์ด <input class="fld" type="text" data-k="s3.dash.user" data-size="44" size="44" autocomplete="off" spellcheck="false"></p>
+<p>ใช้ชื่อที่ผู้ใช้เข้าใจ เช่น “ความชื้นอากาศ” หรือ “ระดับน้ำที่ลูกลอย” สำหรับข้อมูลที่แสดง และ “เปิด–ปิดปั๊ม” สำหรับคำสั่ง</p>
+<p>ผู้ที่จะใช้แดชบอร์ด (ระบุบทบาท เช่น เจ้าของฟาร์ม หรือคนดูแลแปลง) <input class="fld" type="text" data-k="s3.dash.user" data-size="44" size="44" autocomplete="off" spellcheck="false"></p>
 <div class="table-wrap"><table>
 <thead>
 <tr>
-<th></th>
-<th>ค่าที่จะแสดง</th>
+<th>ลำดับ</th>
+<th>ชื่อข้อมูลหรือสถานะที่จะให้ผู้ใช้เห็น (ไม่ใช่ค่าที่วัดได้)</th>
 </tr>
 </thead>
 <tbody>
@@ -1606,8 +1617,8 @@ body {
 <div class="table-wrap"><table>
 <thead>
 <tr>
-<th></th>
-<th>สิ่งที่จะควบคุม</th>
+<th>ลำดับ</th>
+<th>คำสั่งที่ผู้ใช้ต้องกดได้ เช่น เปิด–ปิดปั๊ม</th>
 </tr>
 </thead>
 <tbody>
@@ -1625,11 +1636,11 @@ body {
 <textarea class="fld fld-ta" data-k="s3.q7" rows="2"></textarea>
 
 <h3 id="กจกรรมท-8--ออกแบบระบบสำหรบทดลองหนงจด">กิจกรรมที่ 8 — ออกแบบระบบสำหรับทดลองหนึ่งจุด</h3>
-<p><strong>สถานการณ์</strong> <input class="fld" type="text" data-k="d.scenario" data-size="14" size="14" autocomplete="off" spellcheck="false"></p>
-<p class="ws-phase"><strong>ปัญหาที่ต้องการแก้ (หนึ่งประโยค)</strong></p>
+<p><strong>โจทย์ที่เลือก</strong> (กรอก A, B, C, D หรือ E ตามตารางกิจกรรมที่ 8) <input class="fld" type="text" data-k="d.scenario" data-size="14" size="14" autocomplete="off" spellcheck="false"></p>
+<p class="ws-phase"><strong>ปัญหาที่ต้องการแก้ (หนึ่งประโยค: ระบุสิ่งที่เกิดขึ้นและผลกระทบ โดยยังไม่ต้องเสนออุปกรณ์)</strong></p>
 <textarea class="fld fld-ta" data-k="d.problem" rows="2"></textarea>
 
-<p><strong>เซนเซอร์และอุปกรณ์ที่สั่งงาน</strong> เซนเซอร์ <input class="fld" type="text" data-k="d.in.1.sensor" data-size="30" size="30" autocomplete="off" spellcheck="false"> อุปกรณ์ที่สั่งงาน <input class="fld" type="text" data-k="d.out.1.device" data-size="30" size="30" autocomplete="off" spellcheck="false"></p>
+<p><strong>เซนเซอร์และอุปกรณ์ที่สั่งงาน</strong> เซนเซอร์หลัก (ระบุชนิดและสิ่งที่จะวัด ไม่จำเป็นต้องระบุยี่ห้อ) <input class="fld" type="text" data-k="d.in.1.sensor" data-size="30" size="30" autocomplete="off" spellcheck="false"> อุปกรณ์ที่จะสั่งงาน (เช่น ปั๊ม วาล์ว หรือพัดลม) <input class="fld" type="text" data-k="d.out.1.device" data-size="30" size="30" autocomplete="off" spellcheck="false"></p>
 <p><strong>เมื่อเกิดอะไร ระบบจะสั่งให้อุปกรณ์ทำอะไร</strong> (เขียนเป็นประโยค “ถ้า… แล้วให้…”) <textarea class="fld fld-ta" data-k="d.control.rule" rows="2"></textarea></p>
 <p><strong>หากเซนเซอร์หรือการสื่อสารขัดข้อง ระบบควรทำอย่างไร และส่วนใดจะทำหน้าที่ป้องกัน</strong> <textarea class="fld fld-ta" data-k="d.control.failure" rows="2"></textarea></p>
 <p class="ws-phase"><strong>วิธีสื่อสาร</strong></p>
@@ -1637,8 +1648,8 @@ body {
 <thead>
 <tr>
 <th>จุดเชื่อมต่อ</th>
-<th>วิธีที่เลือก</th>
-<th>ทำไมจึงเลือกวิธีนี้</th>
+<th>วิธีสื่อสารที่เลือก (ระบุชื่อ เช่น WiFi หรือ RS-485)</th>
+<th>เหตุผลที่เหมาะกับโจทย์ (ระยะทาง ไฟเลี้ยง หรือข้อจำกัดหน้างาน)</th>
 </tr>
 </thead>
 <tbody>
@@ -1653,14 +1664,14 @@ body {
 <td><input class="fld" type="text" data-k="d.comm.2.why" data-size="30" size="30" autocomplete="off" spellcheck="false"></td>
 </tr>
 <tr>
-<td>จากฟาร์มถึงเจ้าของนอกฟาร์ม (ถ้าไม่ใช้ ให้ระบุว่าไม่ใช้)</td>
+<td>จากฟาร์มถึงเจ้าของนอกฟาร์ม (ระบุวิธี เช่น Home Assistant Cloud หรือ VPN; ถ้าไม่ต้องเข้าถึงจากภายนอก ให้ระบุว่าไม่ใช้)</td>
 <td><input class="fld" type="text" data-k="d.comm.3.tech" data-size="16" size="16" autocomplete="off" spellcheck="false"></td>
 <td><input class="fld" type="text" data-k="d.comm.3.why" data-size="30" size="30" autocomplete="off" spellcheck="false"></td>
 </tr>
 </tbody>
 </table></div>
-<p><strong>แหล่งพลังงาน</strong> ของเซนเซอร์ ระบบควบคุม และอุปกรณ์ปลายทาง <input class="fld" type="text" data-k="d.power" data-size="50" size="50" autocomplete="off" spellcheck="false"> · ชนิดแบตเตอรี่ที่เลือกและเหตุผล <input class="fld" type="text" data-k="d.battery" data-size="50" size="50" autocomplete="off" spellcheck="false"> · อุปกรณ์ที่ต้องมีไฟสำรองและระยะเวลาที่ต้องการ (ถ้าไม่มี ให้ระบุว่าไม่มี) <input class="fld" type="text" data-k="d.power.backup" data-size="40" size="40" autocomplete="off" spellcheck="false"></p>
-<p><strong>แผนทดสอบ</strong> จะดูหรือวัดอะไร <input class="fld" type="text" data-k="d.test.how" data-size="50" size="50" autocomplete="off" spellcheck="false"> · ผลแบบใดจึงถือว่าระบบทำงานตามที่ตั้งใจ <input class="fld" type="text" data-k="d.test.pass" data-size="50" size="50" autocomplete="off" spellcheck="false"></p>
+<p><strong>แหล่งพลังงาน</strong> ระบุแหล่งไฟแยกให้ครบทั้งเซนเซอร์ เครื่องควบคุม และอุปกรณ์ที่สั่งงาน <input class="fld" type="text" data-k="d.power" data-size="50" size="50" autocomplete="off" spellcheck="false"> · ชนิดแบตเตอรี่ที่เลือกและเหตุผลที่เหมาะกับโจทย์ (ถ้าไม่ใช้ ให้ระบุว่าไม่ใช้พร้อมเหตุผล) <input class="fld" type="text" data-k="d.battery" data-size="50" size="50" autocomplete="off" spellcheck="false"> · อุปกรณ์ที่ต้องมีไฟสำรอง และต้องทำงานต่อได้กี่ชั่วโมงเมื่อไฟหลักขาด (ถ้าไม่ต้องสำรอง ให้ระบุว่าไม่มี) <input class="fld" type="text" data-k="d.power.backup" data-size="40" size="40" autocomplete="off" spellcheck="false"></p>
+<p><strong>แผนทดสอบ</strong> จะทดลองอย่างไรและดูหรือวัดอะไร (ระบุการทดสอบปกติและการจำลองปัญหา) <input class="fld" type="text" data-k="d.test.how" data-size="50" size="50" autocomplete="off" spellcheck="false"> · เกณฑ์ผ่านของแต่ละการทดสอบ (ระบุผลที่สังเกตได้หรือค่าที่วัดได้ เช่น อุปกรณ์หยุดภายในเวลาที่กำหนด) <input class="fld" type="text" data-k="d.test.pass" data-size="50" size="50" autocomplete="off" spellcheck="false"></p>
 <footer class="ws-disclosure">เอกสารนี้เรียบเรียงขึ้นด้วย AI (Fable 5.1 และ GPT-6 Astra) ภายใต้การกำกับอย่างใกล้ชิดของผู้จัดทำ และรับรองว่าเนื้อหาเป็นไปตามเจตนาของผู้จัดทำทุกประการ</footer>
 </main>
 </div>

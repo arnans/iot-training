@@ -52,6 +52,10 @@ and team to verify a real write, both dashboard screens, offline recovery and he
 
 ## 3. Activity 4.7 — preserve the measurement field
 
+**Resolved 20 September 2026:** the full form-clarity pass changed both the summary and detailed
+instruction to review the original room measurement. Thresholds remain in `s2.hum.on/off`.
+Existing answer keys were preserved, and field synchronization/record-sheet transfer checks passed.
+
 Recommended minimal change: keep `s1.hum.room` and change the instruction to review the room
 measurement, rather than enter a threshold. Continue storing thresholds in the existing
 `s2.hum.on` and `s2.hum.off` fields. No new field or migration is needed.

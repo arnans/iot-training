@@ -13,7 +13,7 @@ for (const slug of PAGES) {
     const id = decodeURIComponent(a.getAttribute('href').slice(1));
     assert.ok(dom.window.document.getElementById(id), `${slug}: link to missing anchor #${id}`);
   }
-  for (const match of source.matchAll(/^### [^\n]*\{ #(a[1-7]-[\w-]+|hist-[1-4]) \}\r?\n([\s\S]*?)(?=^### |^## |$(?![\s\S]))/gm)) {
+  for (const match of source.matchAll(/^### [^\n]*\{ #(a[1-8]-[\w-]+|hist-[1-4]) \}\r?\n([\s\S]*?)(?=^### |^## |$(?![\s\S]))/gm)) {
     const [, id, body] = match;
     const numbers = [...body.matchAll(/^(\d+)\. /gm)].map(m => Number(m[1]));
     if (!numbers.length) {

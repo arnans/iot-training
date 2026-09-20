@@ -37,6 +37,7 @@
 | [ช่วงที่ 1 — รับรู้ ตัดสินใจ สั่งการ](session-1-start.md) | อ่านค่าเซนเซอร์ ต่อวงจร 12V และสั่งปั๊มจากแดชบอร์ด |
 | [ช่วงที่ 2 — ควบคุมอัตโนมัติและ Fail-safe](activity-4.md) | เขียนกฎอัตโนมัติ hysteresis และกฎกันพลาด |
 | [ช่วงที่ 3 — แดชบอร์ดและออกแบบระบบ](activity-6.md) | อ่านกราฟ สร้างแดชบอร์ด และออกแบบระบบของกลุ่ม |
+| [ช่วงที่ 4 — ขยายระบบไปแปลงที่ WiFi ไม่ถึง](activity-9.md) | อัปเดตเฟิร์มแวร์ให้ส่ง ESP-NOW เพิ่มบอร์ดตัวรับ และแดชบอร์ดแปลงไกล |
 | [ใบบันทึกของกลุ่ม](record-sheet.md) | รวมคำตอบทุกช่อง รวมทั้งแบบระบบจากกิจกรรมที่ 8 กด **ดาวน์โหลดคำตอบ** ก่อนจบการอบรม และ **พิมพ์ / บันทึก PDF** ไว้อ้างอิง |
 | [เมนูและวิธีแก้ปัญหา](reference.md) | ค้นเมนู Home Assistant และแก้อาการที่เจอบ่อย |
 
@@ -48,10 +49,17 @@
 
 | ต้องการ | เปิดที่ |
 |---------|--------|
-| อ่านชื่อบอร์ดจากสาย USB | <https://web.esphome.io> (ใช้ Chrome หรือ Edge เท่านั้น) |
+| อ่านชื่อบอร์ดจากสาย USB และติดตั้งเฟิร์มแวร์ (ช่วงที่ 4) | <https://web.esphome.io> (ใช้ Chrome หรือ Edge เท่านั้น) |
 | เปิด Home Assistant ของกลุ่ม | `http://` ตามด้วยเลข IP ที่อ่านจากหน้าต่างเครื่อง Farm Workshop — **ไม่ใช้ `homeassistant.local`** และไม่ต้องใส่ `:8123` |
 | ดูค่าจากบอร์ดโดยตรง ไม่ผ่าน Home Assistant | `http://` ตามด้วย IP ของบอร์ด หรือ `http://<ชื่อบอร์ด>/` (ต้องมี `/` ปิดท้าย) |
 | ใบงานหน้านี้ทั้งชุด | <https://arnans.github.io/iot-training/> |
+
+**ไฟล์เฟิร์มแวร์สำหรับช่วงที่ 4** เลือกไฟล์ตามสีโซนของกลุ่ม ติดตั้งผ่าน web.esphome.io ตามขั้นตอนในกิจกรรมที่ 9 และ 10
+
+| บอร์ด | แดง | เขียว | น้ำเงิน |
+|---|---|---|---|
+| GoGo-IoT (บอร์ดที่แปลง รุ่นที่ส่ง ESP-NOW) | [gogo-iot-red.factory.bin](https://arnans.github.io/iot-training/firmware/gogo-iot-red.factory.bin) | [gogo-iot-green.factory.bin](https://arnans.github.io/iot-training/firmware/gogo-iot-green.factory.bin) | [gogo-iot-blue.factory.bin](https://arnans.github.io/iot-training/firmware/gogo-iot-blue.factory.bin) |
+| บอร์ดตัวรับ (ESP32-C3) | [farm-receiver-red.factory.bin](https://arnans.github.io/iot-training/firmware/farm-receiver-red.factory.bin) | [farm-receiver-green.factory.bin](https://arnans.github.io/iot-training/firmware/farm-receiver-green.factory.bin) | [farm-receiver-blue.factory.bin](https://arnans.github.io/iot-training/firmware/farm-receiver-blue.factory.bin) |
 
 ---
 
@@ -75,7 +83,8 @@
 |------------|---------|
 | [Home Assistant](https://www.home-assistant.io/) | คู่มือและวิธีติดตั้งอย่างเป็นทางการของซอฟต์แวร์ที่เราใช้ |
 | [ESPHome](https://esphome.io/) | ซอฟต์แวร์ที่อยู่ในบอร์ดของเรา ใช้เขียนค่าเซนเซอร์และรีเลย์เป็นไฟล์ YAML |
-| [ไฟล์ตั้งค่าบอร์ดของการอบรมนี้](https://github.com/arnans/iot-training/tree/main/firmware) | ไฟล์ ESPHome ของบอร์ด GoGo-IoT และบอร์ดรีเลย์ที่เราใช้ |
+| [ไฟล์ตั้งค่าบอร์ดของการอบรมนี้](https://github.com/arnans/iot-training/tree/main/firmware) | ไฟล์ ESPHome ของบอร์ด GoGo-IoT บอร์ดรีเลย์ และบอร์ดตัวรับ ESP-NOW ที่เราใช้ |
+| [ESP-NOW ใน ESPHome](https://esphome.io/components/espnow.html) | เอกสารของส่วนที่บอร์ดใช้คุยกันในช่วงที่ 4 สำหรับคนที่อยากปรับตัวส่งและตัวรับเอง |
 | [ไฟล์ตั้งค่า Home Assistant ของการอบรมนี้](https://github.com/arnans/iot-training/tree/main/hass) | `configuration.yaml` ที่อยู่ในเครื่อง Farm Workshop |
 | [บอร์ด GoGo-IoT](https://github.com/arnans/gogo-iot-node) | ข้อมูลฮาร์ดแวร์ของบอร์ดเซนเซอร์ที่ใช้ในห้องอบรม |
 | [Nabu Casa — Home Assistant Cloud](https://www.nabucasa.com) | บริการเข้าถึง Home Assistant จากนอกฟาร์มที่พูดถึงในกิจกรรมที่ 8 มีค่าบริการรายเดือน |

@@ -166,7 +166,8 @@ async function testDoneBoxes() {
 }
 (async () => {
   for (const slug of ['session-1-start', 'activity-1', 'activity-2', 'activity-3', 'activity-4', 'activity-5',
-                      'activity-6', 'activity-7', 'activity-8', 'record-sheet']) await testPage(slug);
+                      'activity-6', 'activity-7', 'activity-8', 'activity-9', 'activity-10', 'activity-11',
+                      'record-sheet']) await testPage(slug);
   await testDoneBoxes();
   await testProgressMerge();
 })().catch(err => { console.error(err); process.exit(1); });

@@ -685,6 +685,50 @@ every 30 s — so noise in the last decimal does not become a history row every 
 - [ ] Temperature reads the same as before (±0.2 °C against a 5 s build or a second board) — no
       self-heating from the faster polling
 
+## M. ESP-NOW link, sender to receiver *(30 min)* — gates Session 4
+
+Added 20 Sep 2026 with Session 4. `gogo-iot-workshop.yaml` now broadcasts a CSV frame over
+ESP-NOW every 3 s and `farm-receiver-workshop.yaml` (a plain ESP32-C3) mirrors what it hears. The
+worksheet (Activities 9–11) has participants flash both images themselves at web.esphome.io, so
+this test also rehearses that flow. Needs: one GoGo-IoT, one receiver devkit of the kind bought
+for the kit, both on the same zone SSID, a laptop with Home Assistant.
+
+1. Flash the zone's `gogo-iot-*.factory.bin` onto a GoGo-IoT that Home Assistant already knows,
+   **through web.esphome.io → Install**, not the build script. Reset, read the log.
+2. Flash `farm-receiver-*.factory.bin` onto the devkit the same way. Reset, read the log.
+3. Open `http://<receiver-ip>/`, type the GoGo board's six-character suffix into
+   `ชื่อบอร์ดที่แปลง (sender name)`.
+4. Adopt the receiver in Home Assistant from its discovered card. Build the Activity 11.4
+   automation (link → Disconnected for 30 s → persistent notification).
+
+- [ ] Step 1: the reflash keeps the hostname; Home Assistant shows the board back online with its
+      old entities plus `ช่องสัญญาณ WiFi (channel)` and `แพ็กเก็ต ESP-NOW ที่ส่ง` — **no re-adoption**
+- [ ] Step 1: the log shows `[espnow] >>> GOGO,<name>,<seq>,…` every 3 s, `seq` counting by one,
+      light value falling under a cupped hand. Note the exact wording of web.esphome.io's Install
+      dialog (file picker, erase option) and fix Activity 9.1 / 10.1 if it differs
+- [ ] Step 2: `DEVICE NAME: farm-receiver-<zone>-…` and `IP ADDRESS` appear **on the USB port the
+      kit's boards actually have** — if the log is blank, rebuild with the other
+      `--receiver-console` (see firmware/README.md) before buying the rest
+- [ ] Step 3: values appear within 5 s; `รับข้อมูลจากแปลง (link)` ON; RSSI on the same table
+      about −30 to −50 dBm; `บอร์ดอื่นที่ได้ยิน` shows a second GoGo board when one is powered
+      nearby; a wrong suffix shows nothing. Both boards report the same `ช่องสัญญาณ WiFi`
+- [ ] Cupped hand on the GoGo: receiver's light value falls within about 4 s (3 s cadence + 1 s
+      sensor); float lifted → `สวิตช์ลูกลอย (…, ESP-NOW)` OFF
+- [ ] Switch the GoGo off: link OFF and sensors NaN at **~15 s**; on again: values back within
+      ~20 s of the board rejoining WiFi. In Home Assistant the mirrored sensors read *unknown*
+      while down, and the 11.4 notification fires about 45 s after the switch
+- [ ] Carry the GoGo on its 18650 cell to the far end of the room: RSSI falls, values keep
+      arriving, `แพ็กเก็ตที่หาย` climbs by a few. Note the RSSI at the far end for the run sheet.
+      If the cell is flat the board dies when unplugged — decide whether kits get charged cells
+      or a power bank for 10.5
+- [ ] **Two access points on different channels, if the bench has them:** put the GoGo on one and
+      the receiver on the other; confirm the receiver hears nothing and the two channel
+      diagnostics differ; power-cycle the receiver until they match and confirm the link returns.
+      This is the failure the venue can produce; the worksheet's 10.3 troubleshooting depends on
+      the channel diagnostics being right
+- [ ] Sender image size: the espnow component added to a `web_server: local: true` image — check
+      the build still fits (`esphome compile` prints the flash usage)
+
 ---
 
 ## Open risk found on the bench: `homeassistant.local` is not safe as a worksheet instruction
@@ -743,6 +787,7 @@ No port is needed — the OVA deliberately serves on **port 80, not 8123**
 | I vibration calibration | ✅ | **signal is separable — verdict follows the real pump** · floor **3-8 mg**, running **~20-25 mg**, but measured on a deliberately soft mount · 25 / 12 kept as the **MEDIUM default** of a new three-level **sensitivity select** (high 15/10 · medium 25/12 · low 40/20), chosen in HA or on the board's web page · **re-flashed, selector works, choice survives a power cycle** |
 | J board web page | ✅ | live values ✅, relay control ✅, name-as-URL ✅ (trailing slash or `.local` required — bare name becomes a web search). `local: true` verified: 2 requests, both to the board, 13.2 kB page + SSE stream, no CDN — **works with no internet** |
 | K temp/humidity at 1 s | | seconds to first rise: · updates in a still room every: · pump restart time: |
+| M ESP-NOW sender → receiver | | receiver devkit model and console setting: · RSSI same table / far end: · seconds to link down: · lost packets across the room: · Install-dialog wording at web.esphome.io: |
 
 ## After the test
 

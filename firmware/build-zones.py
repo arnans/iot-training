@@ -5,9 +5,12 @@ One YAML per board type, compiled once per zone with the zone name and WiFi
 credentials injected as ESPHome substitutions. Binaries land in dist/ and are
 published to docs/firmware/ in the same step; commit and push to make them live.
 
-    python build-zones.py                     # all zones, both boards
+    python build-zones.py                     # all zones, all three boards
     python build-zones.py --zone red          # one zone
     python build-zones.py --board relay       # one board type
+    python build-zones.py --board receiver --receiver-console uart0
+                                              # session-4 receiver for a C3 devkit
+                                              # with a USB-UART chip (default: native USB)
     python build-zones.py --flash red sensor COM7   # flash one built binary
 
 Requires zones.yaml (copy zones.example.yaml) and secrets.yaml.
@@ -27,8 +30,12 @@ BOARDS = {
     # key: (yaml file, device base name, esptool chip)
     "sensor": ("gogo-iot-workshop.yaml", "gogo-iot", "esp32c3"),
     "relay": ("relay-workshop.yaml", "gogo-relay", "esp32c6"),
+    # session 4: the plain ESP32-C3 in the farmhouse that hears the sensor node over ESP-NOW
+    "receiver": ("farm-receiver-workshop.yaml", "farm-receiver", "esp32c3"),
 }
 ZONES = ("red", "green", "blue")
+# Where the receiver's log goes; the kit decides once, at purchase (see the YAML header).
+RECEIVER_CONSOLES = {"usb": "USB_SERIAL_JTAG", "uart0": "UART0"}
 
 
 def load_zones():
@@ -42,15 +49,17 @@ def load_zones():
     return zones
 
 
-def build(board, zone, cfg):
+def build(board, zone, cfg, extra_subs=()):
     yaml_file, base, _ = BOARDS[board]
     cmd = [
         "esphome",
         "-s", "zone", zone,
         "-s", "wifi_ssid", cfg["ssid"],
         "-s", "wifi_password", cfg["password"],
-        "compile", yaml_file,
     ]
+    for key, value in extra_subs:
+        cmd += ["-s", key, value]
+    cmd += ["compile", yaml_file]
     print(f"\n=== {board} / {zone}  ({cfg['ssid']}) ===")
     subprocess.run(cmd, cwd=HERE, check=True)
 
@@ -98,6 +107,8 @@ if __name__ == "__main__":
     ap.add_argument("--zone", choices=ZONES)
     ap.add_argument("--board", choices=list(BOARDS))
     ap.add_argument("--flash", nargs=3, metavar=("ZONE", "BOARD", "PORT"))
+    ap.add_argument("--receiver-console", choices=list(RECEIVER_CONSOLES), default="usb",
+                    help="receiver board's USB: native (usb, default) or a USB-UART chip (uart0)")
     args = ap.parse_args()
 
     if args.flash:
@@ -110,5 +121,6 @@ if __name__ == "__main__":
         for zone, cfg in zones.items():
             if args.zone and zone != args.zone:
                 continue
-            build(board, zone, cfg)
+            subs = [("console", RECEIVER_CONSOLES[args.receiver_console])] if board == "receiver" else []
+            build(board, zone, cfg, subs)
     print("\nAll builds in", HERE / "dist")

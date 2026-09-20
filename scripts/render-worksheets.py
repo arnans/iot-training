@@ -63,12 +63,15 @@ PAGES = [
     ("activity-6.md", "activity-6", "ช่วงที่ 3", "กิจกรรม 6", "อ่านข้อมูลย้อนหลัง (History)"),
     ("activity-7.md", "activity-7", "ช่วงที่ 3", "กิจกรรม 7", "สร้างแดชบอร์ด (Dashboard)"),
     ("activity-8.md", "activity-8", "ช่วงที่ 3", "กิจกรรม 8", "ออกแบบระบบฟาร์ม (Design)"),
+    ("activity-9.md", "activity-9", "ช่วงที่ 4", "กิจกรรม 9", "ส่งข้อมูลด้วย ESP-NOW (Send)"),
+    ("activity-10.md", "activity-10", "ช่วงที่ 4", "กิจกรรม 10", "เพิ่มบอร์ดตัวรับ (Receive)"),
+    ("activity-11.md", "activity-11", "ช่วงที่ 4", "กิจกรรม 11", "แดชบอร์ดแปลงไกล (Bridge)"),
     ("resources.md", "resources", "อ้างอิง", "", "รวมไฟล์และลิงก์"),
     ("reference.md", "reference", "อ้างอิง", "", "เมนูและวิธีแก้ปัญหา"),
     ("record-sheet.md", "record-sheet", "อ้างอิง", "", "ใบบันทึกของกลุ่ม"),
 ]
 SLUGS = {p[1] for p in PAGES}
-# the switcher ends at activity 8: the reference pages are reached from docs/index.html, so the
+# the switcher ends at activity 11: the reference pages are reached from docs/index.html, so the
 # course structure stays readable. They are still rendered (and linked from the front door).
 NAV_PAGES = [p for p in PAGES if p[2] != "อ้างอิง"]
 # the session pages became one page per activity; the old render names forward to the session's first page

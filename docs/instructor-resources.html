@@ -226,9 +226,11 @@ figcaption {
   <a href="https://arnans.github.io/iot-training/instructor-resources.html">arnans.github.io/iot-training/instructor-resources.html</a>.
   Rows marked <em>(repo)</em> need access to the private <code>iot-training</code> repository.</p>
   <hr>
-  <h2>1. Board firmware — six images</h2>
+  <h2>1. Board firmware — nine images</h2>
   <p>One image per board type, per zone colour. The zone colour is baked in: a red-zone image only
-  joins the red SSID. Built and verified 12 Sep 2026.</p>
+  joins the red SSID. Sensor and relay images built and verified 12 Sep 2026; the sensor image
+  gained the Session 4 ESP-NOW broadcast on 20 Sep 2026 and the receiver image is new the same day —
+  <strong>both need a rebuild and a bench pass (TEST-PLAN test M) before publishing.</strong></p>
   <div class="table-scroll"><table>
   <thead>
   <tr>
@@ -240,7 +242,7 @@ figcaption {
   </thead>
   <tbody>
   <tr>
-  <td><strong>GoGo-IoT sensor board</strong> (ESP32-C3)</td>
+  <td><strong>GoGo-IoT sensor board</strong> (ESP32-C3) — pre-flashed; teams re-flash the same file in Activity 9</td>
   <td><a href="https://arnans.github.io/iot-training/firmware/gogo-iot-red.factory.bin">gogo-iot-red.factory.bin</a></td>
   <td><a href="https://arnans.github.io/iot-training/firmware/gogo-iot-green.factory.bin">gogo-iot-green.factory.bin</a></td>
   <td><a href="https://arnans.github.io/iot-training/firmware/gogo-iot-blue.factory.bin">gogo-iot-blue.factory.bin</a></td>
@@ -251,8 +253,21 @@ figcaption {
   <td><a href="https://arnans.github.io/iot-training/firmware/gogo-relay-green.factory.bin">gogo-relay-green.factory.bin</a></td>
   <td><a href="https://arnans.github.io/iot-training/firmware/gogo-relay-blue.factory.bin">gogo-relay-blue.factory.bin</a></td>
   </tr>
+  <tr>
+  <td><strong>Receiver</strong> (plain ESP32-C3 devkit, Session 4) — flashed by the teams in Activity 10</td>
+  <td><a href="https://arnans.github.io/iot-training/firmware/farm-receiver-red.factory.bin">farm-receiver-red.factory.bin</a></td>
+  <td><a href="https://arnans.github.io/iot-training/firmware/farm-receiver-green.factory.bin">farm-receiver-green.factory.bin</a></td>
+  <td><a href="https://arnans.github.io/iot-training/firmware/farm-receiver-blue.factory.bin">farm-receiver-blue.factory.bin</a></td>
+  </tr>
   </tbody>
   </table></div>
+  <blockquote>
+  <p><strong>Receiver devkits: buy one model.</strong> The log banner only appears on the USB port the image's
+  logger writes to; the receiver image is built for native-USB boards (Super Mini, XIAO C3) by
+  default and needs <code>--receiver-console uart0</code> for boards with a CP2102/CH340 chip (DevKitM-1).
+  Sort the receivers by zone and colour-code them like the other boards; they are handed out at
+  the start of Session 4, one per team, and returned with the kit.</p>
+  </blockquote>
   <p><strong>To flash a board:</strong> plug it into a laptop over USB-C, open <a href="https://web.esphome.io">https://web.esphome.io</a> in Chrome or
   Edge → <strong>Connect</strong> → pick the serial port → <strong>Install</strong> → choose the <code>.bin</code> for that board and
   zone. Needs internet.</p>
@@ -935,6 +950,103 @@ figcaption {
   decision is best reasoned, and what happens if one part fails. Swap. Teams change their answers in 8.6
   directly; there is no separate revision box, no rubric walk and no plenary.</p>
   <hr>
+  <h3>Session 4 · Activity 9 — Reflash the plot board for ESP-NOW (30 min)</h3>
+  <p>The Session 4 story, said once at the start: the plot is beyond WiFi range, so the GoGo board out
+  there will talk <strong>ESP-NOW</strong> — board to board, no router, further than WiFi — to a cheap board in
+  the farmhouse, which is the only thing Home Assistant sees. In the room the GoGo board keeps its
+  WiFi so both paths can be compared; say explicitly that at a real plot it would not have one.</p>
+  <h4>Before start (ก่อนเริ่ม) · ~5 min</h4>
+  <p><strong>Done when</strong> the five checks at the top of Activity 9 are ticked: kit powered, float in its glass,
+  Home Assistant reachable, both boards online, <strong>every relay-driving rule off</strong> and <code>Pump Auto Mode</code>
+  off (the pump is not used this session), and the team has its receiver devkit but has not plugged
+  it in. If Session 3 ended on another day, the kit is re-cabled first (Activity 8's closing list).</p>
+  <h4>9.1 Download and install</h4>
+  <p><strong>Done when</strong> web.esphome.io reports the install complete on the GoGo board and the board reboots.
+  The file is the zone's <code>gogo-iot-&lt;colour&gt;.factory.bin</code> from the resources page — the same name as
+  the pre-flashed image; the new build adds the ESP-NOW broadcast.</p>
+  <p><strong>If stuck</strong> Chrome or Edge only. Close the old Logs window before Connect. The GoGo board must be
+  on the laptop's USB, not the charge controller's. <strong>Wrong colour = board vanishes from Home
+  Assistant</strong>; reflash with the right file. Do not tick "erase": it wipes the pump-sensitivity choice
+  for nothing.</p>
+  <h4>9.2 Read the log</h4>
+  <p><strong>Done when</strong> the team has <code>DEVICE NAME</code> unchanged from Activity 1 (<code>s4.tx.same</code> = เหมือนเดิม), an
+  <code>IP ADDRESS</code> line, and one <code>[espnow] &gt;&gt;&gt; GOGO,…</code> line copied into the worksheet, and has watched
+  the light field (6th value) fall under a cupped hand. Walk the ten fields on the projector once.</p>
+  <p><strong>If stuck</strong> No <code>&gt;&gt;&gt;</code> lines: the board did not take the new image — check the file, reinstall. <code>nan</code>
+  in the first packets is normal. The name changing is not normal: it is derived from the MAC, so a
+  changed name means a different board was flashed.</p>
+  <h4>9.3 The two new diagnostics</h4>
+  <p><strong>Done when</strong> <code>ช่องสัญญาณ WiFi (channel)</code> is written down (<code>s4.tx.channel</code>) from the board's own page,
+  <code>แพ็กเก็ต ESP-NOW ที่ส่ง</code> is seen to climb, and Home Assistant shows the board back with the two
+  new diagnostic entities <strong>without re-adoption</strong>. Then the USB cable goes back to the charge
+  controller so the laptop is free for the receiver.</p>
+  <p><strong>A good answer</strong> (end question) lists what the plot board loses without WiFi: its own web page, the
+  direct Home Assistant entities, OTA updates and the log over the network — and says the fix is to
+  configure it over USB (or via its fallback hotspot) at the house before carrying it out, or to add a
+  serial/USB visit to the maintenance table.</p>
+  <h3>Session 4 · Activity 10 — The receiver in the farmhouse (50 min)</h3>
+  <h4>10.1 · 10.2 Flash the receiver, read its name and IP</h4>
+  <p><strong>Done when</strong> the devkit runs <code>farm-receiver-&lt;colour&gt;-xxxxxx</code>, the colour matches the zone, and name
+  and IP are in <code>board.rx.name</code> / <code>board.rx.ip</code>. The GoGo board must be powered from the charge
+  controller so only one serial port shows.</p>
+  <p><strong>If stuck</strong> No port at Connect: another USB cable (charge-only cables are common), or hold BOOT while
+  plugging in. Installed but no log: the board's USB port is the other kind — this is the
+  <code>--receiver-console</code> choice from section 1 and a TA should know which was built. Some DevKitC boards
+  have two ports; try the other.</p>
+  <h4>10.3 Open the receiver's page and name the sender</h4>
+  <p><strong>Done when</strong> the team has typed the GoGo board's six-character suffix into <code>ชื่อบอร์ดที่แปลง</code>, sees
+  its full name under <code>บอร์ดที่รับข้อมูลอยู่</code>, <code>รับข้อมูลจากแปลง (link)</code> ON, values filled, and has
+  written the receiver's channel, an RSSI (about −30 to −50 dBm on the table) and one <strong>other</strong>
+  board's name from <code>บอร์ดอื่นที่ได้ยิน</code> — the evidence for the end question that the channel is public.</p>
+  <p><strong>If stuck, in this order</strong> (1) the suffix — every character, from the GoGo board's real name;
+  (2) is the GoGo board sending — its own page's <code>แพ็กเก็ต ESP-NOW ที่ส่ง</code> climbs; (3) <strong>do the two
+  boards show the same <code>ช่องสัญญาณ WiFi</code>?</strong> If not they are on different access points; power-cycle
+  the receiver (or move it next to the GoGo board) until the channels agree. This is the one failure
+  the venue's network can cause and the TA should look for it first when a whole table is stuck.
+  <code>บอร์ดอื่นที่ได้ยิน</code> changing proves the receiver itself works.</p>
+  <h4>10.4 Prove it is our board</h4>
+  <p><strong>Done when</strong> a cupped hand on the GoGo board moves the receiver's light value within a few seconds
+  (<code>s4.rx.delay</code>, typically 3–5 s: one send interval on top of the Activity 1 figure) and lifting the
+  float flips the mirrored float switch. Two tabs, GoGo page and receiver page, should agree.</p>
+  <h4>10.5 Distance</h4>
+  <p><strong>Done when</strong> the GoGo board has been carried to the far end of the room on its 18650 cell (or a
+  power bank), the far RSSI and whether packets kept arriving are recorded, and <code>แพ็กเก็ตที่หาย</code> has
+  been read back at the table. Tell teams to stay inside the room: leave the WiFi and the board may
+  change channel while reconnecting. Flat cells are the likely snag — decide before the day whether
+  kits get charged cells or a power bank (TEST-PLAN test M).</p>
+  <p><strong>Point to make</strong> ESP-NOW broadcasts are not acknowledged: what is lost is lost, which is why the
+  board resends every 3 s. Real range is 100–200 m in the open; the room shows the trend, not the limit.</p>
+  <h4>10.6 The plot goes quiet</h4>
+  <p><strong>Done when</strong> the team has switched the GoGo board off, watched the link go OFF and the values turn
+  <code>NaN</code> at about <strong>15 s</strong> (<code>s4.rx.off.sec</code>), and seen them return after the board rejoined WiFi.
+  Say the fail-safe sentence: the receiver would rather show <em>nothing</em> than a stale number.</p>
+  <p><strong>A good answer</strong> (end question) names both halves — a neighbour's board could be mistaken for ours
+  (so filter by name or MAC), and a neighbour can read our values (so encrypt in a real deployment) —
+  and might add that a shared channel also carries the neighbour's traffic load.</p>
+  <h3>Session 4 · Activity 11 — The far plot in Home Assistant (45 min)</h3>
+  <h4>11.1 Adopt the receiver</h4>
+  <p><strong>Done when</strong> the receiver is added from its discovered card by suffix (same as Activity 3) and the
+  team has found its three entity groups: the ESP-NOW sensors plus the link (Connected /
+  Disconnected), the <code>sender name</code> text under Configuration, the link diagnostics.</p>
+  <h4>11.2 Two paths, one sensor</h4>
+  <p><strong>Done when</strong> humidity and light are written from both the GoGo device page and the receiver's
+  (<code>s4.ha.*.direct</code> / <code>.espnow</code>) and agree within one update, and a breath on the board moves both.</p>
+  <h4>11.3 Dashboard <code>แปลงไกล</code></h4>
+  <p><strong>Done when</strong> a new blank dashboard holds the four cards from the receiver's entities — link
+  <strong>Tile</strong> on top (<code>การเชื่อมต่อกับแปลง</code>), humidity <strong>Gauge</strong>, float <strong>Tile</strong>, RSSI <strong>Tile</strong> — as in
+  Activity 7. The history graph comparing both humidity entities is optional and pleasing.</p>
+  <h4>11.4 Alert when the plot goes quiet</h4>
+  <p><strong>Done when</strong> <code>แปลงเงียบ - เตือน</code> exists — trigger: State of <code>รับข้อมูลจากแปลง (link)</code> To
+  <em>Disconnected</em> For 30 s; action: persistent notification — and switching the GoGo board off produces
+  the notification about 45 s later (<code>s4.ha.alert.ok</code>). This rule drives no relay and may stay on;
+  the pack-up list has it switched off only so a powered-down kit does not leave a stale alert.</p>
+  <p><strong>A good answer</strong> (end question) has the plot board with no WiFi (a fixed ESP-NOW channel matching
+  the house router, set over USB before it goes out), on solar with a small battery, mounted high and
+  in line of sight; the receiver near the router and always powered; and names the link tile / the
+  notification as how the user knows a reading is current, not stale.</p>
+  <h4>Wrap-up and kit return</h4>
+  <p>Read the four summary points. The kit-return list moved here from Activity 8 on 20 Sep 2026 and now
+  includes the receiver and its cable; answers are downloaded and submitted at this point.</p>
   <h2>Still missing</h2>
   <p><strong>Answer hand-in:</strong> the destination is still to be decided (likely an upload form; confirmed with the
   organizer on 19 Sep). Announce the actual destination before the final activity. Ask each recorder to

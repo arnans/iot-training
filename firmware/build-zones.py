@@ -13,7 +13,9 @@ published to docs/firmware/ in the same step; commit and push to make them live.
                                               # with a USB-UART chip (default: native USB)
     python build-zones.py --flash red sensor COM7   # flash one built binary
 
-Requires zones.yaml (copy zones.example.yaml) and secrets.yaml.
+Requires zones.yaml (copy zones.example.yaml) and secrets.yaml. Run it with the
+python that has esphome installed, e.g. ~/esphome-venv/bin/python build-zones.py;
+the venv need not be activated.
 """
 import argparse
 import shutil
@@ -56,8 +58,10 @@ def load_zones():
 
 def build(board, zone, cfg, extra_subs=()):
     yaml_file, base, _, published = BOARDS[board]
+    # Run ESPHome through the interpreter running this script, so a venv works without
+    # being activated (a bare `esphome` is only found when the venv is on PATH).
     cmd = [
-        "esphome",
+        sys.executable, "-m", "esphome",
         "-s", "zone", zone,
         "-s", "wifi_ssid", cfg["ssid"],
         "-s", "wifi_password", cfg["password"],
@@ -103,7 +107,7 @@ def flash(board, zone, port):
     binary = HERE / "dist" / f"{published}-{zone}.factory.bin"
     if not binary.exists():
         sys.exit(f"{binary} not built yet - run without --flash first")
-    cmd = ["esptool", "--chip", chip, "--port", port, "--baud", "460800",
+    cmd = [sys.executable, "-m", "esptool", "--chip", chip, "--port", port, "--baud", "460800",
            "write_flash", "0x0", str(binary)]
     print(" ".join(cmd))
     subprocess.run(cmd, check=True)

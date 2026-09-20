@@ -27,7 +27,7 @@ only the workshop variant; changes to pin assignments or sensor drivers belong u
 pip install esphome esptool pyyaml
 cp secrets.example.yaml secrets.yaml     # OTA + fallback AP passwords
 cp zones.example.yaml zones.yaml         # three SSIDs + passwords
-python build-zones.py                    # -> dist/gogo-iot-{red,green,blue}.factory.bin
+~/esphome-venv/bin/python build-zones.py  # -> dist/gogo-iot-{red,green,blue}.factory.bin
                                          #    dist/gogo-iot-espnow-{red,green,blue}.factory.bin
                                          #    dist/gogo-relay-{red,green,blue}.factory.bin
                                          #    dist/farm-receiver-{red,green,blue}.factory.bin

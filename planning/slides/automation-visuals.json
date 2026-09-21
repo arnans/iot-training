@@ -4,14 +4,14 @@
   "slides": [
     {
       "id": "a4_03",
-      "leftTitle": "Trigger: แสงเพิ่มข้ามเกณฑ์ปิด",
-      "rightTitle": "Action: ปิดไฟเมื่อสว่างพอ",
-      "left": "เปิดกฎ “สว่าง-ปิดไฟ” แล้วปรับ Above\nให้สูงกว่าเกณฑ์ที่ใช้เปิดไฟ",
+      "leftTitle": "ตั้งเกณฑ์ปิดให้สูงกว่าเกณฑ์เปิด",
+      "rightTitle": "ช่วยลดการติด ๆ ดับ ๆ ของไฟ",
+      "left": "แสงลดต่ำกว่าเกณฑ์เปิด → ให้เปิดไฟ\nแสงเพิ่มสูงกว่าเกณฑ์ปิด → ให้ปิดไฟ\nระหว่างสองเกณฑ์ → ให้คงสถานะเดิม",
       "right": "ทดลองให้แสงแกว่งใกล้เกณฑ์ 1 นาที\nแล้วครอบบอร์ดและเอามือออกอีกครั้ง\nสังเกตว่าไฟติด ๆ ดับ ๆ ลดลงหรือไม่",
-      "scene": "LEFT: simplified blue light-sensor tile receiving golden sunlight rays, with an upward golden indicator representing increasing light. RIGHT: one generic unlit white lightbulb icon with gray glass, NO glow and NO rays. Clear light increases → bulb switches OFF.",
-      "showArrow": true,
-      "image": "planning/slide-reference/assets/a4_03-concept.png",
-      "prompt": "Use reference ONLY for approved visual style: contemporary clean isometric technical line art, thin graphite gray outlines, white/light gray objects, selective blue and golden yellow, flat warm cream #F6F2E8 background. Wide 3:1 canvas, TWO equal conceptual scenes with spacious blank central gap for editable arrow later. No text, letters, numbers, caption, frame, connectors, pins, circuit traces, UI screenshots or realistic kit details. Subjects are obvious generic symbols, not invented hardware; no farm or location. Full objects inside comfortable margins. LEFT: simplified blue light-sensor tile receiving golden sunlight rays, with an upward golden indicator representing increasing light. RIGHT: one generic unlit white lightbulb icon with gray glass, NO glow and NO rays. Clear light increases → bulb switches OFF."
+      "showArrow": false,
+      "image": "planning/slide-reference/assets/a4_03-hysteresis-v2.png",
+      "scene": "Light-level axis with distinct lower ON and higher OFF thresholds; light-blue keep-state band and small fluctuations inside it. Falling light crosses lower threshold to switch on; rising light crosses upper threshold to switch off.",
+      "prompt": "Create a scientifically accurate hysteresis teaching diagram replacing the reference illustration; use reference ONLY for modern thin gray technical outlines, cream #F6F2E8, blue and golden yellow colors, clean contemporary style. Wide 3:1 image, legible on slide at 600x200pt. Horizontal LIGHT LEVEL axis points right from dark left to bright right. Exactly TWO distinct vertical dashed threshold markers at 30% and 70% of axis. At left/lower threshold show glowing yellow generic bulb and a small left-pointing arrow crossing that threshold, meaning falling light switches ON. At right/higher threshold show gray unlit bulb and right-pointing arrow crossing that threshold, meaning rising light switches OFF. Shade space BETWEEN thresholds light blue, and show a small blue zigzag entirely WITHIN this band as a symbolic fluctuating reading (not a time graph). Above band clear label 'ให้คงสถานะเดิม'. Left threshold label exactly 'เกณฑ์เปิดไฟ'; right threshold label exactly 'เกณฑ์ปิดไฟ'. Axis endpoints small labels 'มืด' on left, 'สว่าง' on right. These are the only five text labels, Thai modern sans serif dark green #163E33 large and accurate. No numbers, no other text, no center flow arrow, no sensor tile or connectors. Clean spacious layout, fully visible diagram, no overlap. Both threshold markers and the gap between them must be visually unmistakable. Keep bulbs modest size to prioritize diagram. No scenery, antique texture, shading gradients or photo effects."
     },
     {
       "id": "a4_05",

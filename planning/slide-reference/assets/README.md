@@ -2,6 +2,8 @@
 
 These assets support the native Google Slides deck and `planning/slides/activity-2-8.json`.
 
+- `a4_03-hysteresis-v2.png` replaces the initial slide 31 illustration with separate lower ON and higher OFF thresholds and a blue keep-state band. Built-in image_gen; full prompt in `planning/slides/automation-visuals.json`. Its horizontal axis is light level, not time.
+
 - `a3-05-trigger-action-symbolic-v5.png` is the user-approved conceptual illustration exemplar. Earlier `a3-05-trigger-action*` variants document the design review, and are not the current slide image.
 - `a4_03-concept.png`, `a4_05-concept.png`, `a4_07-concept.png`, `a4_08-concept.png`, `a4_10-concept.png`, `a4_11-concept.png`, `a4_12-concept.png`, `a5_02-concept.png`, `a5_05-concept.png`, `a5_06-concept.png`, and `a5_07-concept.png` were generated with built-in image_gen using the approved exemplar as a style reference. Exact prompts and slide mappings are in `planning/slides/automation-visuals.json`. They illustrate concepts, not actual equipment, wiring or app interfaces.
 

@@ -53,6 +53,8 @@ Activity 1's pre-existing, intentionally labeled image placeholder remains on na
 
 ## Approved automation illustration layout
 
+Slide 31 was subsequently revised to explain hysteresis with separate ON/OFF thresholds and a band where the light keeps its current state. Its current preview is `planning/slide-reference/slide-31-hysteresis-preview.png`; this supersedes slide 31 in the earlier contact sheet. The generator omits the central flow arrow for this diagram.
+
 Slide 24 (native ID a3_05) is the approved exemplar: modern conceptual line art with blue/yellow accents, followed by editable Thai headings and instructions. The layout also covers slides 31, 33, 35, 36, 38–40, 44 and 47–49. Images show events, conditions and observed results with generic symbols, without invented electrical connectors. Wiring, History and Dashboard screenshots remain useful references and retain their layouts.
 
 `automation-visuals.json` records the 11 additional illustrations, exact prompts and Thai copy. `slide-24-review-example.json` records the approved exemplar. The manifest now supplies `concept` fields to the shared `scripts/concept_slide_layout.mjs` layout, used by the standard builder. Rebuilds preserve all 12 conceptual slides.

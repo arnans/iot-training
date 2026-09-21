@@ -370,20 +370,25 @@ figcaption {
   <tr>
   <td>Windows / Intel Mac</td>
   <td><a href="https://www.virtualbox.org/wiki/Downloads">Downloads</a></td>
-  <td><a href="https://drive.google.com/file/d/1GWS_Mk74MWxRo_mUM1nFinUM0xifLnG9/view?usp=sharing"><code>farm-workshop-x86-64-1.1.ova</code></a> (Google Drive)</td>
+  <td><a href="https://drive.google.com/file/d/1DrX4O-jywvnCA0b4aqdQ3z9r7F2EkEf8/view?usp=sharing"><code>Farm-Workshop-win-1.2.ova</code></a> (~2.6 GB, Google Drive)</td>
   </tr>
   <tr>
   <td>Apple Silicon Mac (M1+)</td>
-  <td><a href="https://www.virtualbox.org/wiki/Downloads">Downloads</a></td>
-  <td><code>farm-workshop-arm64.ova</code> — <strong>not built yet</strong></td>
+  <td><a href="https://www.virtualbox.org/wiki/Downloads">Downloads</a> — <strong>7.2 or newer</strong></td>
+  <td><code>Farm-Workshop-arm64-1.2.ova</code> (~1.9 GB) — built and tested (laptop + phone reached it), <strong>waiting on a download link</strong></td>
   </tr>
   </tbody>
   </table></div>
+  <p>The two files are not interchangeable and cannot be imported on the wrong host: the ARM64 OVF
+  declares <code>&lt;Platform architecture="ARM"&gt;</code>, so VirtualBox on an Intel host rejects the file instead
+  of importing something that will not boot. Apple Silicon needs VirtualBox <strong>7.2+</strong>; 7.1 and older
+  cannot run the ARM64 guest. Build notes and the exact settings of both images:
+  <a href="../hass/README.md">hass/README.md</a>.</p>
   <p>Import steps, settings and the login are in the participant guide:
   <strong><a href="https://arnans.github.io/iot-training/renders/install.html">เตรียมแล็ปท็อป</a></strong>. The two things
   that go wrong: Adapter 1 must be <strong>Bridged</strong> and set to the laptop's own WiFi card, and the VM is
   reached at <code>http://&lt;its IP&gt;</code> — never <code>homeassistant.local</code>, because every team's VM answers to
-  that name.</p>
+  that name. On ARM64 the console's IP line reads <code>enp0s8</code>, not <code>enp0s3</code>.</p>
   <p>Login: <code>TODO</code> / <code>TODO</code>. <strong>Not on the team card and not in the install guide</strong> — project it at
   Activity 3.1, when teams first log in. Until then participants only check that the Login page
   loads (install guide step 3, and the pre-start check in Session 1).</p>
@@ -1145,8 +1150,12 @@ figcaption {
   <a href="https://github.com/arnans/iot-training/blob/main/planning/WORKSHOP-READINESS-ACTIONS.md">readiness action plan</a>.</p>
   <p>Nobody has produced these yet:</p>
   <ul>
-  <li><strong>The ARM64 Farm Workshop OVA</strong> (<code>farm-workshop-arm64.ova</code>) — blocks sending the install guide
-    to participants with Apple Silicon Macs. The x86-64 image is built and hosted on Google Drive</li>
+  <li><strong>The download link for the ARM64 Farm Workshop OVA</strong> (<code>Farm-Workshop-arm64-1.2.ova</code>, ~1.9 GB) —
+    the only thing still blocking the install guide for Apple Silicon participants. The image is
+    built and tested end to end on an M4 host: imported clean, reached from a laptop browser and
+    from a phone on the same WiFi, login and the farm Areas verified. It goes to Arnan to upload;
+    the link then needs filling into the VM table above, the participant guide and the resources
+    page. The x86-64 image is built and hosted on Google Drive</li>
   <li>The install-guide details participants need: VM login, file size, verification form, help channel</li>
   <li>Slide decks for Sessions 1–3 and the three post-tests</li>
   <li>Expected values that need a bench run: the Activity 4 flicker count (TEST-PLAN test E) and

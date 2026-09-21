@@ -10,13 +10,13 @@
 
 ดูว่าแล็ปท็อปของเราเป็นแบบไหน แล้วดาวน์โหลด **ทั้งสองไฟล์ในแถวนั้น** (Mac: เมนู Apple → About This Mac ดูบรรทัด Chip หรือ Processor)
 
-| แล็ปท็อป | VirtualBox | ไฟล์ Farm Workshop (~2.6 GB) |
+| แล็ปท็อป | VirtualBox | ไฟล์ Farm Workshop |
 |---------|-----------|------------------------------|
-| Windows | [Windows hosts](https://www.virtualbox.org/wiki/Downloads) | [Farm-Workshop-win-1.2.ova](https://drive.google.com/file/d/1DrX4O-jywvnCA0b4aqdQ3z9r7F2EkEf8/view?usp=sharing) |
-| Mac ชิป Intel | [macOS / Intel hosts](https://www.virtualbox.org/wiki/Downloads) | [Farm-Workshop-win-1.2.ova](https://drive.google.com/file/d/1DrX4O-jywvnCA0b4aqdQ3z9r7F2EkEf8/view?usp=sharing) |
-| Mac ชิป Apple (M1 ขึ้นไป) | [macOS / Apple Silicon hosts](https://www.virtualbox.org/wiki/Downloads) | **ยังไม่พร้อมให้ดาวน์โหลด** ทีมผู้สอนจะแจ้งอีกครั้ง |
+| Windows | [Windows hosts](https://www.virtualbox.org/wiki/Downloads) | [Farm-Workshop-win-1.2.ova](https://drive.google.com/file/d/1DrX4O-jywvnCA0b4aqdQ3z9r7F2EkEf8/view?usp=sharing) (~2.6 GB) |
+| Mac ชิป Intel | [macOS / Intel hosts](https://www.virtualbox.org/wiki/Downloads) | [Farm-Workshop-win-1.2.ova](https://drive.google.com/file/d/1DrX4O-jywvnCA0b4aqdQ3z9r7F2EkEf8/view?usp=sharing) (~2.6 GB) |
+| Mac ชิป Apple (M1 ขึ้นไป) | [macOS / Apple Silicon hosts](https://www.virtualbox.org/wiki/Downloads) — ต้อง **รุ่น 7.2 ขึ้นไป** | `Farm-Workshop-arm64-1.2.ova` (~1.9 GB) — ทีมผู้สอนจะแจ้งลิงก์ก่อนวันอบรม |
 
-> ไฟล์ `.ova` มีขนาดใหญ่ **ดาวน์โหลดที่บ้านหรือที่ทำงานล่วงหน้า** ดาวน์โหลดที่สถานที่อบรมไม่ทัน · ต้องมี RAM 8 GB และพื้นที่ว่าง 20 GB ขึ้นไป · Chromebook, iPad และ Windows ชิป ARM ใช้ไม่ได้ · ไฟล์สำหรับ Mac ชิป Apple ยังไม่พร้อม ในกลุ่มจึงขอให้มีอย่างน้อยหนึ่งเครื่องที่เป็น Windows หรือ Mac ชิป Intel
+> ไฟล์ `.ova` มีขนาดใหญ่ **ดาวน์โหลดที่บ้านหรือที่ทำงานล่วงหน้า** ดาวน์โหลดที่สถานที่อบรมไม่ทัน · ต้องมี RAM 8 GB และพื้นที่ว่าง 20 GB ขึ้นไป · Chromebook, iPad และ Windows ชิป ARM ใช้ไม่ได้ · **Mac ชิป Apple ใช้ไฟล์ของ Windows ไม่ได้** ต้องใช้ไฟล์ `arm64` และ VirtualBox รุ่น 7.2 ขึ้นไป
 
 | สิ่งที่ต้องทำ | ลิงก์ |
 |--------------|-------|

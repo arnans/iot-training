@@ -96,10 +96,10 @@
       "rightTitle": "Action: ตัดคำสั่งและแจ้งเตือน",
       "left": "ใน Trigger ให้รอหลังรีเลย์ On 15 วินาที\nแล้วตรวจว่า pump running ยังเป็น Off",
       "right": "ถ้ายังไม่พบการสั่น ให้สั่งรีเลย์ Off\nพร้อมแจ้งเตือนให้ตรวจปั๊ม\nและใช้ Traces ยืนยันว่ากฎทำงาน",
-      "scene": "LEFT: a generic pump icon next to a stopwatch and flat motion line, a small golden command lightning symbol but pump is NOT moving, no flow; represents no detected operation after command. RIGHT: gray stopped pump with terracotta stop sign and golden notification bell. No numbers, texts, wiring or connectors.",
+      "scene": "Left stationary pump with a round blue vibration-sensor puck attached to its motor housing, replacing the timer; right stopped pump, stop symbol and alert bell preserved.",
       "showArrow": true,
-      "image": "planning/slide-reference/assets/a5_05-concept.png",
-      "prompt": "Match reference style ONLY: contemporary clean isometric technical line art, thin gray outlines, white/light gray surfaces, selective blue and golden yellow, plain warm cream #F6F2E8. Wide 3:1, TWO equal scenes separated by broad blank gap for editable arrow. No text, numbers, letters, captions, frames, pin headers, electrical connectors, circuit details, UI, farms or scenery. Clearly generic representative symbols; all objects fully visible. LEFT: a generic pump icon next to a stopwatch and flat motion line, a small golden command lightning symbol but pump is NOT moving, no flow; represents no detected operation after command. RIGHT: gray stopped pump with terracotta stop sign and golden notification bell. No numbers, texts, wiring or connectors."
+      "image": "planning/slide-reference/assets/a5_05-vibration-sensor-v2.png",
+      "prompt": "undefined\n"
     },
     {
       "id": "a5_06",

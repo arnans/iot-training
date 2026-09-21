@@ -53,6 +53,8 @@ Activity 1's pre-existing, intentionally labeled image placeholder remains on na
 
 ## Approved automation illustration layout
 
+Slide 47 shows a round vibration sensor attached to the left pump instead of a timer. The current preview is `planning/slide-reference/slide-47-vibration-sensor-preview.png`; the 15-second trigger setting remains in the editable instructions.
+
 Slide 40 matches slide 39's Auto/Manual selector, with Auto highlighted blue. Its current preview is `planning/slide-reference/slide-40-auto-selector-preview.png`.
 
 Slide 39 distinguishes an Auto/Manual mode selector from a manually operated ON/OFF toggle. The current preview is `planning/slide-reference/slide-39-mode-selector-preview.png`, superseding its earlier contact-sheet image.

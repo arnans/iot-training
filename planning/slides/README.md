@@ -53,6 +53,8 @@ Activity 1's pre-existing, intentionally labeled image placeholder remains on na
 
 ## Approved automation illustration layout
 
+Slide 40 matches slide 39's Auto/Manual selector, with Auto highlighted blue. Its current preview is `planning/slide-reference/slide-40-auto-selector-preview.png`.
+
 Slide 39 distinguishes an Auto/Manual mode selector from a manually operated ON/OFF toggle. The current preview is `planning/slide-reference/slide-39-mode-selector-preview.png`, superseding its earlier contact-sheet image.
 
 Slide 33 uses the same timeline style, with pass/fail markers inside and outside After–Before. Its current preview is `planning/slide-reference/slide-33-timeline-preview.png`. A failed time condition skips the action; it does not command the light to turn off.

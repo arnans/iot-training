@@ -74,10 +74,10 @@
       "rightTitle": "ผลที่เห็น: ปั๊มเริ่มเองในโหมด Auto",
       "left": "เปิดกฎ “รดน้ำ - เปิดปั๊ม” แล้วเพิ่ม And if\nเลือก Pump Auto Mode → Switch is on",
       "right": "กด Save แล้วทดลองเมื่อความชื้นข้ามเกณฑ์\nเปรียบเทียบตอนเปิดและปิดโหมด Auto\nการปิดโหมดนี้ไม่ได้สั่งให้ปั๊มหยุด",
-      "scene": "LEFT: abstract blue ON toggle with circular automation arrow symbol and a checkmark. RIGHT: simple generic blue pump with small golden activation rays and blue water drops. Conditional permission to start pump automatically, no real control panel or wiring.",
+      "scene": "Same Auto/Manual segmented selector as slide 39, with Auto selected blue, paired with the existing blue pump and water flow.",
       "showArrow": true,
-      "image": "planning/slide-reference/assets/a4_12-concept.png",
-      "prompt": "Match reference style ONLY: contemporary clean isometric technical line art, thin gray outlines, white/light gray surfaces, selective blue and golden yellow, plain warm cream #F6F2E8. Wide 3:1, TWO equal scenes separated by broad blank gap for editable arrow. No text, numbers, letters, captions, frames, pin headers, electrical connectors, circuit details, UI, farms or scenery. Clearly generic representative symbols; all objects fully visible. LEFT: abstract blue ON toggle with circular automation arrow symbol and a checkmark. RIGHT: simple generic blue pump with small golden activation rays and blue water drops. Conditional permission to start pump automatically, no real control panel or wiring."
+      "image": "planning/slide-reference/assets/a4_12-auto-selector-v2.png",
+      "prompt": "undefined\n"
     },
     {
       "id": "a5_02",

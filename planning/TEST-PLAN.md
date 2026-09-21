@@ -204,8 +204,9 @@ the fallback is four levels deep:
 
 > **If `.local` does not resolve** the problem is almost always the network or the VM's
 > adapter mode, not the firmware. Try the IP — it is now in the USB log (see test B) and on the
-> board's own web page; if that works, mDNS is being blocked and NETWORK-REQUIREMENTS.md item 1
-> is the fix.
+> board's own web page; if that works, mDNS is being blocked. On the workshop's own Flint routers
+> that means the client is on the guest network or a wrong zone (NETWORK-SETUP.md section 2);
+> on the office WiFi it is the usual enterprise multicast filtering.
 
 **Question this answers:** does hostname adoption work end to end, and does it survive a
 reboot the way DHCP-with-mDNS is supposed to?

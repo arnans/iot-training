@@ -2,6 +2,8 @@
 
 These assets support the native Google Slides deck and `planning/slides/activity-2-8.json`.
 
+- `a4_07-timeline-v2.png` replaces slide 35's separate clock/bulb scenes with a timeline: After starts the permitted interval and Before ends it. Generated with built-in image_gen; full prompt in `planning/slides/automation-visuals.json`.
+
 - `a4_03-hysteresis-v2.png` replaces the initial slide 31 illustration with separate lower ON and higher OFF thresholds and a blue keep-state band. Built-in image_gen; full prompt in `planning/slides/automation-visuals.json`. Its horizontal axis is light level, not time.
 
 - `a3-05-trigger-action-symbolic-v5.png` is the user-approved conceptual illustration exemplar. Earlier `a3-05-trigger-action*` variants document the design review, and are not the current slide image.

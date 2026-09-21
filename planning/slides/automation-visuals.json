@@ -30,10 +30,10 @@
       "rightTitle": "Action: เปิดหรือปิดไฟตามกฎ",
       "left": "เพิ่ม Trigger แบบ Time ในทั้งสองกฎ\nกฎเปิดใช้เวลา After; กฎปิดใช้เวลา Before",
       "right": "ในกฎเปิด ให้เพิ่มเงื่อนไขแสง Below ด้วย\nเมื่อถึงเวลา ระบบจึงตรวจว่ามืดพอหรือยัง\nแล้วบันทึกทั้งกฎเปิดและกฎปิด",
-      "scene": "LEFT: two simple minimal clocks, first accented blue/gold sunrise crescent, second accented gray; no numbers. RIGHT: two obvious generic bulbs vertically paired, upper yellow glowing, lower gray unlit. Concept: scheduled start and scheduled stop; no claims about time, no text or numerals.",
-      "showArrow": true,
-      "image": "planning/slide-reference/assets/a4_07-concept.png",
-      "prompt": "Use reference ONLY for approved visual style: contemporary clean isometric technical line art, thin graphite gray outlines, white/light gray objects, selective blue and golden yellow, flat warm cream #F6F2E8 background. Wide 3:1 canvas, TWO equal conceptual scenes with spacious blank central gap for editable arrow later. No text, letters, numbers, caption, frame, connectors, pins, circuit traces, UI screenshots or realistic kit details. Subjects are obvious generic symbols, not invented hardware; no farm or location. Full objects inside comfortable margins. LEFT: two simple minimal clocks, first accented blue/gold sunrise crescent, second accented gray; no numbers. RIGHT: two obvious generic bulbs vertically paired, upper yellow glowing, lower gray unlit. Concept: scheduled start and scheduled stop; no claims about time, no text or numerals."
+      "scene": "Horizontal timeline with After start and Before end, blue permitted interval between them and gray outside-time regions. No fixed example hours; light condition still applies.",
+      "showArrow": false,
+      "image": "planning/slide-reference/assets/a4_07-timeline-v2.png",
+      "prompt": "undefined\n"
     },
     {
       "id": "a4_08",

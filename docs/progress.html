@@ -226,7 +226,8 @@
     background: var(--card); color: var(--muted); cursor: pointer; font-weight: 500; font-size: 0.85rem;
   }
   .tabs button[aria-selected="true"] { background: var(--ag-green); border-color: var(--ag-green); color: var(--on-green); }
-  .controls label { display: inline-flex; align-items: center; gap: 0.4rem; font-size: 0.85rem; color: var(--muted); }
+  .controls label { display: inline-flex; align-items: center; gap: 0.4rem; font-size: 0.85rem; color: var(--muted); cursor: pointer; }
+  .controls label input { cursor: pointer; }
   .controls input[type=date], .controls input[type=number] { padding: 0.15rem 0.4rem; border: 1px solid var(--rule); border-radius: var(--r-control); background: var(--card); color: var(--ag-ink); }
   .controls input[type=number] { width: 4.6rem; }
   .controls .spacer { flex: 1 1 auto; }
@@ -270,7 +271,12 @@
   .chev {
     width: 1.3rem; height: 1.3rem; flex: none; border: 0; background: none; color: var(--lighter); cursor: pointer;
     padding: 0; display: inline-flex; align-items: center; justify-content: center; border-radius: var(--r-control);
+    position: relative;
   }
+  /* The glyph stays 21px so the bar rows keep their rhythm, but the target
+     does not: this pseudo-element takes the hit area to 44px. Nothing it
+     overlaps is interactive. */
+  .chev::before { content: ""; position: absolute; inset: -11px; }
   .chev svg { width: 0.7rem; height: 0.7rem; transition: transform 0.15s; }
   .chev[aria-expanded="true"] svg { transform: rotate(90deg); }
   .chev:hover, .chev:focus-visible { background: var(--grid); color: var(--ag-ink); outline: none; }
@@ -290,9 +296,12 @@
   @media (max-width: 560px) { .grid { grid-template-columns: repeat(5, minmax(0, 1fr)); } }
   .cell {
     position: relative; aspect-ratio: 1.15; min-height: 3rem; border-radius: var(--r-control); border: 1px solid var(--rule);
-    background: var(--bg); color: var(--lighter); padding: 0.25rem 0.3rem; cursor: default; text-align: left;
+    background: var(--bg); color: var(--lighter); padding: 0.25rem 0.3rem; cursor: pointer; text-align: left;
     display: flex; flex-direction: column; justify-content: space-between; overflow: hidden;
   }
+  /* a team that has never reported has nothing to open; render() gives those
+     cells tabindex="-1", so key off that rather than invent a second class */
+  .cell[tabindex="-1"] { cursor: default; }
   .cell .no { font-family: var(--mono); font-weight: 600; font-size: 1rem; line-height: 1; font-variant-numeric: tabular-nums; }
   .cell .sub { font-size: 0.68rem; line-height: 1.15; opacity: 0.9; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .cell.is-on { border-color: transparent; }
@@ -400,6 +409,17 @@
   .empty { color: var(--lighter); font-size: 0.85rem; padding: 0.6rem 0; }
   .foot { margin-top: 1.6rem; font-size: 0.78rem; color: var(--lighter); overflow-wrap: anywhere; }
   .foot code { font-family: var(--mono); font-size: 0.95em; }
+  /* A TA runs this on a phone, one-handed, while walking the room. The board
+     is deliberately dense on a desktop, but a touch pointer needs real
+     targets, so every control grows where it is actually being tapped. */
+  @media (pointer: coarse) {
+    .tabs button, .btn { min-height: 44px; }
+    .controls label { min-height: 44px; }
+    .controls input[type=date], .controls input[type=number] { min-height: 40px; }
+    .cell { min-height: 3.4rem; }
+    .msgs .x { min-width: 44px; min-height: 44px; }
+  }
+
   [hidden] { display: none !important; }
 </style>
 </head>

@@ -333,6 +333,21 @@ code, kbd, .mono { font-family: var(--font-mono); font-size: .88em; }
   }
   .hero__cta { display: flex; flex-wrap: wrap; gap: var(--gap-sm); }
 
+  /* Belongs to the primary CTA, not to the page. It used to sit in its own
+     full-width band below the hero, where it read as an unrelated strip:
+     nothing tied "20 นาที / 2.6 GB" to เตรียมแล็ปท็อป. Indented under the
+     button row and tied by a rule, it is unmistakably that button's detail. */
+  .hero__meta {
+    margin: var(--gap-md) 0 0;
+    padding-left: .85rem;
+    border-left: 2px solid var(--accent);
+    color: var(--ink-muted);
+    font-size: .92rem;
+    line-height: 1.6;
+  }
+  .hero__meta b { font-weight: 500; color: var(--ink); }
+  .hero__meta .num { font-family: var(--font-mono); font-weight: 600; color: var(--ink); }
+
   .btn {
     display: inline-flex;
     align-items: center;
@@ -374,23 +389,6 @@ code, kbd, .mono { font-family: var(--font-mono); font-size: .88em; }
     font-size: .84rem;
   }
 
-  /* ---------- prep strip (was a banned 5th hero element) --------------- */
-  .prep {
-    border-bottom: 1px solid var(--hairline);
-    background: var(--ground-sunk);
-  }
-  .prep__inner {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: baseline;
-    gap: var(--gap-sm) var(--gap-lg);
-    padding-block: var(--gap-md);
-    font-size: .94rem;
-    color: var(--ink-muted);
-  }
-  .prep b { font-weight: 500; color: var(--ink); }
-  .prep .num { font-family: var(--font-mono); font-weight: 600; color: var(--ink); }
-
   /* ---------- session rail --------------------------------------------- */
   .rail { border-top: 1px solid var(--hairline-firm); }
   .rail__item {
@@ -428,21 +426,44 @@ code, kbd, .mono { font-family: var(--font-mono); font-size: .88em; }
   }
   .rail__item:hover .rail__go { color: var(--accent-deep); }
 
-  /* ---------- hairline list (different family from the rail) ----------- */
+  /* ---------- hairline list (different family from the rail) -----------
+     Same click indicator as .rail__item on purpose: a row that navigates
+     must look like it navigates. Without the chevron and the accent title
+     these read as static definition text. */
   .rows { border-top: 1px solid var(--hairline-firm); }
   .rows a {
-    display: flex;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
     gap: .15rem var(--gap-md);
     align-items: baseline;
-    padding-block: var(--gap-sm);
+    padding: var(--gap-sm) .6rem var(--gap-sm) 0;
+    min-height: 44px;
     border-bottom: 1px solid var(--hairline);
     text-decoration: none;
     color: inherit;
   }
-  .rows a:hover { background: var(--accent-soft); }
-  .rows b { font-weight: 500; font-size: 1rem; }
+  .rows a:hover,
+  .rows a:focus-visible { background: var(--accent-soft); }
+  .rows b {
+    font-weight: 500;
+    font-size: 1rem;
+    color: var(--accent-deep);
+    text-decoration: underline;
+    text-decoration-color: transparent;
+    text-underline-offset: 3px;
+  }
+  .rows a:hover b,
+  .rows a:focus-visible b { text-decoration-color: currentColor; }
   .rows span { color: var(--ink-muted); font-size: .92rem; }
+  .rows .go {
+    grid-column: 2;
+    grid-row: 1 / -1;
+    align-self: center;
+    color: var(--ink-faint);
+    font-size: 1.1rem;
+  }
+  .rows a:hover .go,
+  .rows a:focus-visible .go { color: var(--accent-deep); }
 
   /* ---------- caution callout: the one legitimate use of --warn -------- */
   .callout {
@@ -561,7 +582,7 @@ code, kbd, .mono { font-family: var(--font-mono); font-size: .88em; }
     .hero__sub { max-width: none; }
     .btn { flex: 1 1 auto; justify-content: center; }
     .rail__item { grid-template-columns: 3.6rem minmax(0, 1fr); }
-    .rail__go { display: none; }
+    /* the chevron stays on phones: that is where the affordance matters most */
     .cards { grid-template-columns: 1fr; }
     th, td { padding-right: .6rem; }
   }
@@ -584,6 +605,11 @@ code, kbd, .mono { font-family: var(--font-mono); font-size: .88em; }
         <a class="btn btn--primary press" href="renders/install.html">เตรียมแล็ปท็อป</a>
         <a class="btn btn--ghost press" href="renders/resources.html">รวมไฟล์และลิงก์</a>
       </div>
+      <p class="hero__meta">
+        <b>ทำที่บ้านให้เสร็จก่อนวันอบรม</b><br>
+        ใช้เวลาราว <span class="num">20</span> นาที ไม่รวมเวลาดาวน์โหลด
+        ไฟล์ขนาดประมาณ <span class="num">2.6 GB</span>
+      </p>
     </div>
     <figure class="hero__figure">
       <img src="images/session2-relay-led-wiring.jpg"
@@ -592,14 +618,6 @@ code, kbd, .mono { font-family: var(--font-mono); font-size: .88em; }
     </figure>
   </div>
 </header>
-
-<section class="prep">
-  <div class="wrap prep__inner">
-    <span><b>ทำที่บ้านให้เสร็จก่อนวันอบรม</b></span>
-    <span>ใช้เวลาราว <span class="num">20</span> นาที ไม่รวมเวลาดาวน์โหลด</span>
-    <span>ไฟล์ขนาดประมาณ <span class="num">2.6 GB</span></span>
-  </div>
-</section>
 
 <main class="wrap">
 
@@ -648,10 +666,12 @@ code, kbd, .mono { font-family: var(--font-mono); font-size: .88em; }
       <a href="renders/reference.html">
         <b>เมนูและวิธีแก้ปัญหา</b>
         <span>เมนู Home Assistant ที่ใช้บ่อย และอาการที่เจอบ่อยพร้อมวิธีแก้</span>
+        <span class="go" aria-hidden="true">›</span>
       </a>
       <a href="renders/record-sheet.html">
         <b>ใบบันทึกของกลุ่ม</b>
         <span>รวมคำตอบทุกช่องและแบบร่างระบบ พิมพ์ไว้ล่วงหน้า หรือกรอกบนเว็บแล้วดาวน์โหลด</span>
+        <span class="go" aria-hidden="true">›</span>
       </a>
     </div>
 

@@ -1,5 +1,7 @@
 # Thai language review — 21 September 2026
 
+Follow-up natural-language pass: all 84 slides reviewed again after the user's slide 67 example. Revised 82 visible text boxes across 38 slides, including the requested heading “ปัจจัยสำคัญในการเลือกระบบเครือข่ายให้เหมาะกับงาน”. All final strings matched native readback. All 38 affected slides were rendered and inspected; longer split-column passages were shortened locally and re-rendered to remove wrapping collisions. The builder completed successfully. The structural check reported no errors and the same two intentional wiring-arrow warnings. Exact before/after wording is in `thai-natural-language-review.json`; final contact sheets are in `planning/slide-reference/thai-natural-review/`.
+
 Completed in the native Google Slides deck. All 84 slides were reviewed for visible Thai wording. The first and follow-up passes together revised 137 distinct text boxes; all final strings were verified by native readback. This includes slide 15's explicit Charge Controller terminals and slide 21's “ลองใช้ทั้งจากแล็ปท็อปและโทรศัพท์”.
 
 All 64 affected slides were rendered and visually inspected after the final updates. Text fits the existing layouts. The structural checker reported no errors; its two warnings concern intentional wiring arrows on slide 15, not list bullets.

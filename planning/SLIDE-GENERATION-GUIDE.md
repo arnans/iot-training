@@ -18,6 +18,8 @@ Later explicit user instructions supersede this guide. Keep this guide updated w
 
 ## Content and Thai writing
 
+Thai wording review: write as a Thai instructor addressing learners. Name the subject and intended action; add connecting phrases such as “ให้…”, “แล้ว…”, “จากนั้น…” and “หาก…จึง…” when they clarify the sequence. Avoid compressed phrases translated from English or vague shorthand such as “เล่าแบบของเรา”, “ให้แยกผลกระทบ” and “ก่อนเลือกเครือข่าย ให้รู้สี่เรื่อง”. Prefer “อธิบายแผนของกลุ่มเรา”, “ผลที่จะเกิดกับระบบ” and “ปัจจัยสำคัญในการเลือกระบบเครือข่ายให้เหมาะกับงาน”. Keep English UI labels exact. Do not add filler mechanically; read each heading and instruction as a complete Thai phrase. Check the rendered layout after lengthening text.
+
 Slides support an instructor-led, hands-on workshop. They should help learners locate the current worksheet section, understand the next action, see the relevant equipment or interface, and interpret what happens. They should not reproduce the worksheet as dense paragraphs.
 
 - Read the current worksheet before authoring. Preserve its section order, technical terms, UI labels, required observations and outputs. Old outlines and archived worksheets are not authoritative.
@@ -89,6 +91,7 @@ Purpose: “ทดลองอ่านค่าจากบอร์ด แล�
 The banner occupies nearly half the cover and meets the slide edges. Do not repeat that banner on the first content slide. Read the duration and purpose from the new activity's source; do not carry over Activity 1's 35 minutes.
 
 ### Images and screenshots
+
 
 - For automation concept illustrations, use clearly symbolic representatives without connectors, pin headers or invented circuit details. Use contemporary technical line art with gray outlines and selective blue/yellow accents. If depicting the actual kit instead, match the reference equipment faithfully, including the LED strip. Keep the trigger and observed result visually clear. Slide 24 is the approved exemplar; see `planning/slides/slide-24-review-example.json` and `planning/slides/automation-visuals.json`. Apply this two-scene layout to automation screenshots: a 600 × 200 pt illustration at (60,103), followed by editable headings and Thai instructions in two columns. Preserve useful wiring, History and Dashboard references. The shared `scripts/concept_slide_layout.mjs` implements the layout for all 12 matching slides.
 

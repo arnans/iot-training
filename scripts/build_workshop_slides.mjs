@@ -61,8 +61,11 @@ for(const slide of manifest.slides){
  };
  const header=n=>{
   txt(`a1_${n}_activity`,`กิจกรรมที่ ${slide.activity}  /  ${activity.label}`,10.5,slide.type==='dark'?color.cream:color.sage);
-  txt(`a1_${n}_title`,slide.title,slide.type==='split'?29:28,slide.type==='dark'?color.cream:color.green,true);
-  if(slide.type!=='split')geo(`a1_${n}_title`,30,44,660,52);
+  txt(`a1_${n}_title`,slide.title,slide.titleFontSize??(slide.type==='split'?29:28),slide.type==='dark'?color.cream:color.green,true);
+  if(slide.type!=='split'){
+   const b=slide.titleBox??{x:30,y:44,w:660,h:52};
+   geo(`a1_${n}_title`,b.x,b.y,b.w,b.h);
+  }
   if(slide.section)txt(`a1_${n}_section`,slide.section,18,slide.type==='dark'||slide.type==='split'?color.green:'FFFFFF',true);
   else{
    del(`badge_a1_${n}_section`);geo(`a1_${n}_section`,574,12,111,28);

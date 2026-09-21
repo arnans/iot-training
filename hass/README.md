@@ -97,13 +97,13 @@ Two things the "deliberately absent" list below does not actually achieve on HAO
 - **Sidebar still shows Map, Media and To-do lists.** Those panels come from the frontend, not
   from the integrations the config omits. Nothing behind them is loaded.
 
-**The download link is still open.** The image is handed to Arnan to upload; whoever uploads it
-fills the URL into **three** files and re-renders:
+**Download:** [Google Drive folder](https://drive.google.com/drive/folders/1XiTigV52XVenZ8DhMZ6351dHOZvRHgMD) (added 21 Sep 2026; the `.ova` is inside the folder).
+The link appears in **three** files; if it ever changes, update all three and re-render:
 
 ```sh
-# 1. docs/install.md            - the Apple Silicon row (currently "ทีมผู้สอนจะแจ้งลิงก์ก่อนวันอบรม")
+# 1. docs/install.md            - the Apple Silicon row
 # 2. docs/resources.md          - the same row in the file-and-link table
-# 3. planning/INSTRUCTOR-RESOURCES.md - the VM table row, and the blocker list near the end
+# 3. planning/INSTRUCTOR-RESOURCES.md - the VM table row
 python scripts/render-worksheets.py && python scripts/render-network-doc.py
 ```
 
@@ -213,8 +213,7 @@ facts; change one here and the guide (and session 1's ก่อนเริ่�
 - **File names** as actually distributed: `Farm-Workshop-win-1.2.ova` (Windows + Intel Mac —
   the `win` in the name is historical, Intel Macs use it too) and `Farm-Workshop-arm64-1.2.ova`
   (Apple Silicon). Both guide tables (`docs/install.md`, `docs/resources.md`) and the instructor
-  handbook name them; the ARM64 download link and the workshop user/password are the only
-  placeholders left.
+  handbook name and link them; the workshop user/password is the only placeholder left.
 - **Adapter 1 is Bridged.** The host NIC name inside the OVA is the build machine's, so
   every participant re-picks their WiFi card after import (guide step 2.3). Otherwise Start
   fails with "physical network interfaces were not found".

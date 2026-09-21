@@ -51,7 +51,7 @@ The same image participants install. Put it on the instructor kit and on every r
 | Laptop | VirtualBox | Farm Workshop VM |
 |---|---|---|
 | Windows / Intel Mac | [Downloads](https://www.virtualbox.org/wiki/Downloads) | [`Farm-Workshop-win-1.2.ova`](https://drive.google.com/file/d/1DrX4O-jywvnCA0b4aqdQ3z9r7F2EkEf8/view?usp=sharing) (~2.6 GB, Google Drive) |
-| Apple Silicon Mac (M1+) | [Downloads](https://www.virtualbox.org/wiki/Downloads) — **7.2 or newer** | `Farm-Workshop-arm64-1.2.ova` (~1.9 GB) — built and tested (laptop + phone reached it), **waiting on a download link** |
+| Apple Silicon Mac (M1+) | [Downloads](https://www.virtualbox.org/wiki/Downloads) — **7.2 or newer** | [`Farm-Workshop-arm64-1.2.ova`](https://drive.google.com/drive/folders/1XiTigV52XVenZ8DhMZ6351dHOZvRHgMD) (~1.9 GB, Google Drive folder — the `.ova` is inside) |
 
 The two files are not interchangeable and cannot be imported on the wrong host: the ARM64 OVF
 declares `<Platform architecture="ARM">`, so VirtualBox on an Intel host rejects the file instead
@@ -927,12 +927,6 @@ run times must follow the verified limit of the actual model; see the
 
 Nobody has produced these yet:
 
-- **The download link for the ARM64 Farm Workshop OVA** (`Farm-Workshop-arm64-1.2.ova`, ~1.9 GB) —
-  the only thing still blocking the install guide for Apple Silicon participants. The image is
-  built and tested end to end on an M4 host: imported clean, reached from a laptop browser and
-  from a phone on the same WiFi, login and the farm Areas verified. It goes to Arnan to upload;
-  the link then needs filling into the VM table above, the participant guide and the resources
-  page. The x86-64 image is built and hosted on Google Drive
 - The install-guide details participants need: VM login, file size, verification form, help channel
 - Slide decks for Sessions 1–3 and the three post-tests
 - Expected values that need a bench run: the Activity 4 flicker count (TEST-PLAN test E) and

@@ -19,10 +19,10 @@
       "rightTitle": "ผลที่เห็น: เปิดไฟเมื่อผ่านเงื่อนไข",
       "left": "ใน And if ให้เลือก Time and sun → Time\nตั้งเวลาเริ่มที่ After และเวลาสิ้นสุดที่ Before",
       "right": "ลองให้แสงข้ามเกณฑ์ทั้งในและนอกช่วงเวลา\nแล้วใช้ Traces ตรวจว่ากฎหยุดที่ขั้นตอนไหน",
-      "scene": "LEFT: simple clock with a golden highlighted allowed-time arc and small green checkmark, alongside a smaller clock with gray outside-window arc and cross. RIGHT: two small generic bulbs arranged vertically, upper bulb glowing yellow with check mark, lower bulb off gray with cross. Symbolizes only allowing lights during a time window, no numerals/text.",
-      "showArrow": true,
-      "image": "planning/slide-reference/assets/a4_05-concept.png",
-      "prompt": "Use reference ONLY for approved visual style: contemporary clean isometric technical line art, thin graphite gray outlines, white/light gray objects, selective blue and golden yellow, flat warm cream #F6F2E8 background. Wide 3:1 canvas, TWO equal conceptual scenes with spacious blank central gap for editable arrow later. No text, letters, numbers, caption, frame, connectors, pins, circuit traces, UI screenshots or realistic kit details. Subjects are obvious generic symbols, not invented hardware; no farm or location. Full objects inside comfortable margins. LEFT: simple clock with a golden highlighted allowed-time arc and small green checkmark, alongside a smaller clock with gray outside-window arc and cross. RIGHT: two small generic bulbs arranged vertically, upper bulb glowing yellow with check mark, lower bulb off gray with cross. Symbolizes only allowing lights during a time window, no numerals/text."
+      "scene": "After–Before timeline: condition passes inside the blue interval and fails outside. Failure skips the action; it does not turn a light off.",
+      "showArrow": false,
+      "image": "planning/slide-reference/assets/a4_05-timeline-v2.png",
+      "prompt": "undefined\n"
     },
     {
       "id": "a4_07",

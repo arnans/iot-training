@@ -1399,22 +1399,20 @@ body {
 <td><a href="https://www.virtualbox.org/wiki/Downloads">macOS / Intel hosts</a></td>
 <td><a href="https://drive.google.com/file/d/1DrX4O-jywvnCA0b4aqdQ3z9r7F2EkEf8/view?usp=sharing">Farm-Workshop-win-1.2.ova</a></td>
 </tr>
+<tr>
+<td>Mac ชิป Apple (M1 ขึ้นไป)</td>
+<td><a href="https://www.virtualbox.org/wiki/Downloads">macOS / Apple Silicon hosts</a></td>
+<td><strong>ยังไม่พร้อมให้ดาวน์โหลด</strong> ทีมผู้สอนจะแจ้งอีกครั้ง</td>
+</tr>
 </tbody>
 </table></div>
 <p>ติดตั้ง VirtualBox ตามค่าที่ตั้งไว้ กด Next หรือ Yes จนจบ</p>
 <blockquote>
-<p>ต้องมี RAM 8 GB และพื้นที่ว่างในเครื่อง 20 GB ขึ้นไป · Chromebook, iPad, Windows ชิป ARM และ <strong>Mac ชิป Apple (M1 ขึ้นไป)</strong> ใช้กับเครื่องเสมือนนี้ไม่ได้ ในกลุ่มขอให้มีอย่างน้อยหนึ่งเครื่องที่เป็น Windows หรือ Mac ชิป Intel (Mac: เมนู Apple → About This Mac ดูบรรทัด Chip หรือ Processor)</p>
+<p>ต้องมี RAM 8 GB และพื้นที่ว่างในเครื่อง 20 GB ขึ้นไป · Chromebook, iPad และ Windows ชิป ARM ใช้ไม่ได้ · ไฟล์สำหรับ Mac ชิป Apple ยังไม่พร้อม ในกลุ่มจึงขอให้มีอย่างน้อยหนึ่งเครื่องที่เป็น Windows หรือ Mac ชิป Intel (Mac: เมนู Apple → About This Mac ดูบรรทัด Chip หรือ Processor)</p>
 </blockquote>
 <hr />
 <h2 id="2-นำเขาเครอง-farm-workshop">2. นำเข้าเครื่อง Farm Workshop</h2>
-<ol>
-<li>VirtualBox → <strong>File → Import Appliance...</strong> → เลือกไฟล์ <code>.ova</code> ที่ดาวน์โหลดมา → <strong>Next</strong></li>
-<li>ช่อง <strong>MAC Address Policy</strong> เลือก <strong>Generate new MAC addresses for all network adapters</strong> ช่องอื่นตั้งไว้แล้ว ไม่ต้องแก้ → <strong>Finish</strong></li>
-<li>เลือก <strong>Farm Workshop</strong> → <strong>Settings → Network → Adapter 1</strong> ช่อง <strong>Name</strong> เลือกการ์ด WiFi ของเครื่อง (Windows: ชื่อที่มีคำว่า Wi-Fi หรือ Wireless · Mac: <code>en0: Wi-Fi</code>) → <strong>OK</strong></li>
-</ol>
-<blockquote>
-<p>ช่อง Attached to ต้องเป็น <strong>Bridged Adapter</strong> ห้ามเปลี่ยนเป็น NAT เพราะบอร์ดและโทรศัพท์จะติดต่อ Home Assistant ไม่ได้</p>
-</blockquote>
+<p>เปิด VirtualBox → <strong>File → Import Appliance...</strong> → เลือกไฟล์ <code>.ova</code> ที่ดาวน์โหลดมา → <strong>Next</strong> → <strong>Finish</strong> ค่าต่าง ๆ ตั้งไว้ให้แล้ว ไม่ต้องแก้ รอจนเครื่อง <strong>Farm Workshop</strong> ปรากฏในรายการ</p>
 <hr />
 <h2 id="3-เปดเครองและตรวจวาใชไดจรง">3. เปิดเครื่องและตรวจว่าใช้ได้จริง</h2>
 <ol>
@@ -1460,11 +1458,11 @@ body {
 </tr>
 <tr>
 <td>Start แล้วขึ้นว่า <strong>network interfaces were not found</strong></td>
-<td>ยังไม่ได้เลือกการ์ด WiFi ทำข้อ 3 ของขั้นที่ 2</td>
+<td>เลือก Farm Workshop → <strong>Settings → Network → Adapter 1</strong> ช่อง <strong>Name</strong> เลือกการ์ด WiFi ของเครื่อง (Windows: ชื่อที่มีคำว่า Wi-Fi หรือ Wireless · Mac: <code>en0: Wi-Fi</code>) → <strong>OK</strong> แล้ว Start ใหม่</td>
 </tr>
 <tr>
 <td>ไม่มีบรรทัด IPv4 หรือเลขขึ้นต้นด้วย <code>169.254</code></td>
-<td>ตรวจว่าต่อ WiFi และเลือกการ์ด WiFi แล้ว ปิดเครื่องแล้ว Start ใหม่</td>
+<td>ตรวจว่าแล็ปท็อปต่อ WiFi อยู่ ปิดเครื่องเสมือนแล้ว Start ใหม่ ถ้ายังไม่ขึ้น ทำตามช่องด้านบน (เลือกการ์ด WiFi ใน Settings → Network)</td>
 </tr>
 <tr>
 <td>เบราว์เซอร์เปิดไม่ขึ้น</td>

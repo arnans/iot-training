@@ -15,6 +15,7 @@ a render that must open on its own: attached to a message or opened from a USB s
 Links to pages that are not rendered (index, record sheet, reference) become plain text.
 
     python scripts/render-worksheets.py                    # docs/renders/<page>.html
+                                                           # plus install-standalone.html (no nav, inlined)
     python scripts/render-worksheets.py --offline          # same, images inlined (~30 MB in all)
     python scripts/render-worksheets.py --combined out.html # also one page with all as tabs (always inlined)
 
@@ -628,6 +629,11 @@ def pager(slug: str, combined: bool) -> str:
 
 def page_shell(title: str, nav: str, main: str, scripts: str) -> str:
     css = BASE_CSS + site_css() + LATE_CSS
+    # With no switcher the grid must not keep the sidebar column, or the text renders in it.
+    shell = "ws-shell" if nav else "ws-shell ws-shell--solo"
+    if not nav:
+        css += ("\n@media (min-width: 64rem) {\n"
+                "  .ws-shell--solo { grid-template-columns: minmax(0, 47rem); justify-content: center; }\n}\n")
     return f"""<title>{html.escape(title)}</title>
 <meta name="description" content="ใบงานผู้เข้าร่วม {html.escape(SITE_NAME)}">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -641,7 +647,7 @@ def page_shell(title: str, nav: str, main: str, scripts: str) -> str:
     <span class="ws-brand">{html.escape(SITE_NAME)}</span>
   </div>
 </header>
-<div class="ws-shell">
+<div class="{shell}">
 {nav}
 <main class="md-content__inner md-typeset" id="ws-main">
 {main}
@@ -661,6 +667,17 @@ def full_document(fragment: str) -> str:
             "</head>\n<body>\n" + fragment + "\n</body>\n</html>\n")
 
 
+# Pages that also get a <slug>-standalone.html: no sidebar, no links out to the other
+# worksheets, images inlined. The pre-workshop guide is sent to people who have nothing else
+# from the course yet, so it must not offer them the workshop navigation.
+STANDALONE = ["install"]
+
+
+def standalone_page(src: str, slug: str) -> str:
+    page = render_page(src, slug, combined=False, inline=True)
+    return full_document(page_shell(page["title"], "", page["body"], ""))
+
+
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__.split("\n\n")[0])
     ap.add_argument("--combined", metavar="PATH", help="also write all pages as one tabbed fragment (images inlined)")
@@ -675,6 +692,13 @@ def main() -> None:
         out = OUT_DIR / f"{p['slug']}.html"
         out.write_text(doc, encoding="utf-8")
         print(f"wrote {out.relative_to(ROOT)}  ({out.stat().st_size / 1e6:.1f} MB)")
+    for src, slug, *_ in PAGES:
+        if slug not in STANDALONE:
+            continue
+        out = OUT_DIR / f"{slug}-standalone.html"
+        out.write_text(standalone_page(src, slug), encoding="utf-8")
+        print(f"wrote {out.relative_to(ROOT)}  ({out.stat().st_size / 1e6:.1f} MB)")
+
     for old, new in REDIRECTS.items():
         (OUT_DIR / f"{old}.html").write_text(
             f'<!DOCTYPE html>\n<html lang="th"><head><meta charset="utf-8">\n<meta http-equiv="refresh" content="0; url={new}.html">\n'

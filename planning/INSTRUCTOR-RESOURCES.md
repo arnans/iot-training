@@ -80,8 +80,8 @@ The `renders/` pages are self-contained: open one once and it keeps working with
 | Activities 1–8 — Thai workshop presentation, activity covers and instructor notes | [Google Slides — 84 slides](https://docs.google.com/presentation/d/1yoNUpS3mo2z2zOZJHEQtuMfSuLxuXltwDT22UHVSHzo/edit) · [Inventory and build sources](slides/README.md) *(edit this same deck in place; Activity 1's native slide `a1_slide_8`, currently ninth, retains its intentional image placeholder)* |
 | Reusable slide-generation reference | [Design, Thai writing, image treatment and native Slides workflow](SLIDE-GENERATION-GUIDE.md), with saved cover and equipment-slide previews |
 | Known gaps and assumptions in the worksheets | [WORKSHEET-TODO.md](https://github.com/arnans/iot-training/blob/main/planning/WORKSHEET-TODO.md) *(repo)* |
-| Network spec to hand the venue's provider — Thai | [network-requirements.html](https://arnans.github.io/iot-training/network-requirements.html) |
-| Network spec — English | [network-requirements-en.html](https://arnans.github.io/iot-training/network-requirements-en.html) |
+| **Network setup** — the ask for NT, Flint router checklist, who-joins-which-WiFi rules, acceptance test | [network-setup.html](https://arnans.github.io/iot-training/network-setup.html) |
+| Old VLAN network spec — **deprecated 21 Sep 2026**, reference only (Thai / English) | [network-requirements.html](https://arnans.github.io/iot-training/network-requirements.html) · [network-requirements-en.html](https://arnans.github.io/iot-training/network-requirements-en.html) |
 
 **Instructor kit** — a spare laptop mirroring a team kit, projected. It also rescues a team whose
 laptop dies. Three things teams don't have: the **Auto / Off / Manual pump control box** for the

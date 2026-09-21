@@ -67,6 +67,48 @@ participant even opens VirtualBox. See
 17. **Test-import** on a second machine of the same architecture before trusting it.
 18. **Write the team card**: VM user/password, zone colour, laptop SSID and password.
 
+### The built ARM64 image (21 Sep 2026)
+
+`Farm-Workshop-arm64-1.2.ova` — 1,981,466,112 bytes (~1.9 GB), SHA-256
+`86a23d9e6c7b52928699ad25426c4e753aad8a0e739d5e77f2fe3f4c371450d0`.
+Built from HAOS 18.3 `generic-aarch64`, Core **2026.9.3**, Supervisor 2026.09.2, File editor 6.1.0.
+
+What is inside, each item checked on the exported file after re-importing it:
+
+| Checked | Result |
+|---|---|
+| Login | the workshop user, verified through a real `/auth/login_flow` round trip |
+| Core config | name `Farm Workshop`, `Asia/Bangkok`, country `TH`, °C, UI language English |
+| Config file | this directory's `configuration.yaml`, SHA-256 equal to the repo copy |
+| `ha core check` | passes |
+| Areas | `Flower Farm`, `Corn Farm`, `Grass` — onboarding's default `Living Room`/`Kitchen`/`Bedroom` deleted |
+| File editor | installed, `started`, `boot: auto`, **shown in sidebar** |
+| Updates | Supervisor `auto_update: false`, add-on `auto_update: false`, no update available |
+| Port | 80, confirmed in Settings → System → Network |
+| Disk | 4.8 GB used of 30.8 GB |
+| Health | zero repair issues, zero persistent notifications, state `RUNNING` |
+
+Two things the "deliberately absent" list below does not actually achieve on HAOS, observed here:
+
+- **`backup` loads anyway.** It is pulled in by the Supervisor integration, so leaving it out of
+  YAML does not remove it. Harmless — it makes no outbound connection on its own — but the list
+  should not claim otherwise.
+- **Sidebar still shows Map, Media and To-do lists.** Those panels come from the frontend, not
+  from the integrations the config omits. Nothing behind them is loaded.
+
+**The download link is still open.** The image is handed to Arnan to upload; whoever uploads it
+fills the URL into **three** files and re-renders:
+
+```sh
+# 1. docs/install.md            - the Apple Silicon row (currently "ทีมผู้สอนจะแจ้งลิงก์ก่อนวันอบรม")
+# 2. docs/resources.md          - the same row in the file-and-link table
+# 3. planning/INSTRUCTOR-RESOURCES.md - the VM table row, and the blocker list near the end
+python scripts/render-worksheets.py && python scripts/render-network-doc.py
+```
+
+The workshop user/password is **not written down in this repo**: `planning/INSTRUCTOR-RESOURCES.md`
+renders to a public GitHub Pages page, so the login stays in the image and on the team card only.
+
 ### ARM64 specifics, exactly as built (verified 21 Sep 2026 — M4 host, VirtualBox 7.2.18, HAOS 18.3)
 
 Apple Silicon needs VirtualBox **7.2 or newer** (7.1 added Arm Linux guests; 7.2 is a normal

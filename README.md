@@ -48,6 +48,7 @@ docs/
 ├── network-requirements.html      generated — Thai network spec
 ├── network-requirements-en.html   generated — English network spec
 ├── instructor-resources.html      generated — planning/INSTRUCTOR-RESOURCES.md as a standalone page
+├── fonts/                         self-hosted Prompt, Sarabun and IBM Plex Mono (thai+latin subsets, SIL OFL). No page may load a font from a CDN: the workshop runs on venue WiFi and Thai text set in a fallback face loses its tone-mark positioning. Declared in `stylesheets/extra.css` (site and renders) and in `scripts/render-network-doc.py` (network specs)
 ├── firmware/                      the twelve built ESP32 images, served for flashing (Session 4 teams flash two of them themselves)
 ├── renders/                       generated — every participant page as standalone HTML
 └── images/

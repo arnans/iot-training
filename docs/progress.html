@@ -5,10 +5,118 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>กระดานความคืบหน้าของกลุ่ม</title>
 <meta name="robots" content="noindex">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
 <style>
+  /* Self-hosted Prompt + IBM Plex Mono, thai+latin subsets (SIL OFL).
+     The workshop runs on venue WiFi; a webfont that fails to load takes the
+     Thai text with it. Files in docs/fonts/, no external request. */
+  @font-face {
+    font-family: 'Prompt';
+    font-style: normal;
+    font-weight: 300;
+    font-display: swap;
+    src: url(fonts/prompt-300-thai.woff2) format('woff2');
+    unicode-range: U+02D7, U+0303, U+0331, U+0E01-0E5B, U+200C-200D, U+25CC;
+  }
+
+  @font-face {
+    font-family: 'Prompt';
+    font-style: normal;
+    font-weight: 300;
+    font-display: swap;
+    src: url(fonts/prompt-300-latin.woff2) format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  }
+
+  @font-face {
+    font-family: 'Prompt';
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url(fonts/prompt-400-thai.woff2) format('woff2');
+    unicode-range: U+02D7, U+0303, U+0331, U+0E01-0E5B, U+200C-200D, U+25CC;
+  }
+
+  @font-face {
+    font-family: 'Prompt';
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url(fonts/prompt-400-latin.woff2) format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  }
+
+  @font-face {
+    font-family: 'Prompt';
+    font-style: normal;
+    font-weight: 500;
+    font-display: swap;
+    src: url(fonts/prompt-500-thai.woff2) format('woff2');
+    unicode-range: U+02D7, U+0303, U+0331, U+0E01-0E5B, U+200C-200D, U+25CC;
+  }
+
+  @font-face {
+    font-family: 'Prompt';
+    font-style: normal;
+    font-weight: 500;
+    font-display: swap;
+    src: url(fonts/prompt-500-latin.woff2) format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  }
+
+  @font-face {
+    font-family: 'Prompt';
+    font-style: normal;
+    font-weight: 600;
+    font-display: swap;
+    src: url(fonts/prompt-600-thai.woff2) format('woff2');
+    unicode-range: U+02D7, U+0303, U+0331, U+0E01-0E5B, U+200C-200D, U+25CC;
+  }
+
+  @font-face {
+    font-family: 'Prompt';
+    font-style: normal;
+    font-weight: 600;
+    font-display: swap;
+    src: url(fonts/prompt-600-latin.woff2) format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  }
+
+  @font-face {
+    font-family: 'Prompt';
+    font-style: normal;
+    font-weight: 700;
+    font-display: swap;
+    src: url(fonts/prompt-700-thai.woff2) format('woff2');
+    unicode-range: U+02D7, U+0303, U+0331, U+0E01-0E5B, U+200C-200D, U+25CC;
+  }
+
+  @font-face {
+    font-family: 'Prompt';
+    font-style: normal;
+    font-weight: 700;
+    font-display: swap;
+    src: url(fonts/prompt-700-latin.woff2) format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  }
+
+  @font-face {
+    font-family: 'IBM Plex Mono';
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url(fonts/ibm-plex-mono-400-latin.woff2) format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  }
+
+  @font-face {
+    font-family: 'IBM Plex Mono';
+    font-style: normal;
+    font-weight: 600;
+    font-display: swap;
+    src: url(fonts/ibm-plex-mono-600-latin.woff2) format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  }
+
   /* Palette mirrors docs/index.html; the progress ramp is one green hue, light->dark,
      validated as an ordinal ramp on both surfaces (dataviz skill, 13 Sep 2026). */
   :root {
@@ -22,16 +130,39 @@
     --bg: #fafcf7;
     --card: #ffffff;
     --muted: #4b5a4d;
-    --lighter: #8a968b;
+    --lighter: #637061;   /* was #8a968b: 3.0:1 on --bg. Now 5.06:1 */
     --rule: rgba(30, 42, 31, 0.12);
     --grid: rgba(30, 42, 31, 0.07);
     --help-bg: rgba(216, 74, 42, 0.08);
-    --p1: #71c468; --p2: #5caf54; --p3: #489a40; --p4: #33862c;
+    --p1: #71c468; --p2: #5caf54; --p3: #4ea046; --p4: #33862c;
     --p5: #1b7314; --p6: #085e02; --p7: #034a00; --p8: #003600;
-    --p1-ink: var(--ag-ink); --p2-ink: var(--ag-ink); --p3-ink: #fff; --p4-ink: #fff;
+    /* Ink flips where the ramp crosses mid-luminance. Audited against every
+       step: white on the old --p3 was 3.52:1 and dark ink 4.25:1, so neither
+       passed; --p3 is lifted to #4ea046 (still between p2 and p4, ordinality
+       intact) and takes dark ink at 4.58:1. */
+    --p1-ink: var(--ag-ink); --p2-ink: var(--ag-ink); --p3-ink: var(--ag-ink); --p4-ink: #fff;
     --p5-ink: #fff; --p6-ink: #fff; --p7-ink: #fff; --p8-ink: #fff;
     --done: var(--ag-marigold);
     --done-ink: var(--ag-ink);
+    /* Shape lock. One documented scale, used everywhere:
+       container 10px (panels, tiles, popover) | control 8px (buttons that are
+       not pills, inputs, cells, tracks) | swatch 3px (sub-1rem colour chips)
+       | pill (tabs, actions, chips). Nothing else. */
+    --r-container: 10px;
+    --r-control: 8px;
+    --r-swatch: 3px;
+    --r-pill: 999px;
+    --mono: "IBM Plex Mono", ui-monospace, Consolas, monospace;
+    /* Text sitting ON a solid accent fill. White on the light-scheme green is
+       5.13:1, but white on the dark-scheme green is only 3.33:1, and white on
+       tomato is 4.26:1 in both. So the ink flips, and solid danger fills use a
+       deeper red than the tomato used for borders and icons. */
+    --on-green: #ffffff;
+    --danger-solid: #bd381c;   /* white on this: 5.61:1 */
+    --on-danger: #ffffff;
+    /* Focus ring is ink, not an accent: it has to stay visible on top of every
+       step of the green ramp and on the marigold done-cell. */
+    --focus: #16201a;
     color-scheme: light;
   }
   @media (prefers-color-scheme: dark) {
@@ -43,12 +174,17 @@
       --card: #1b2b22;
       --muted: #b7c7b5;
       --lighter: #8a9a8b;
+      --focus: #e7efe5;
+      --on-green: #14201a;        /* 5.03:1 on the dark-scheme green */
+      --danger-solid: #ef7a5c;
+      --on-danger: #14201a;       /* 6.08:1 */
       --rule: rgba(230, 239, 227, 0.16);
       --grid: rgba(230, 239, 227, 0.08);
       --help-bg: rgba(216, 74, 42, 0.16);
-      --p1: #186012; --p2: #2f7429; --p3: #44893d; --p4: #599e52;
+      --p1: #186012; --p2: #2f7429; --p3: #408438; --p4: #599e52;
       --p5: #6db366; --p6: #82c97b; --p7: #98df90; --p8: #adf6a5;
-      --p1-ink: #fff; --p2-ink: #fff; --p3-ink: #fff; --p4-ink: #fff;
+      /* Same audit on dark: white on --p4 was 3.26:1, dark ink is 5.14:1. */
+      --p1-ink: #fff; --p2-ink: #fff; --p3-ink: #fff; --p4-ink: #14201a;
       --p5-ink: #14201a; --p6-ink: #14201a; --p7-ink: #14201a; --p8-ink: #14201a;
       --done-ink: #14201a;
       color-scheme: dark;
@@ -86,25 +222,27 @@
   .controls { display: flex; flex-wrap: wrap; align-items: center; gap: 0.6rem 0.9rem; margin-bottom: 1.2rem; }
   .tabs { display: flex; flex-wrap: wrap; gap: 0.35rem; }
   .tabs button {
-    padding: 0.25rem 0.9rem; border-radius: 999px; border: 1px solid var(--rule);
+    padding: 0.25rem 0.9rem; border-radius: var(--r-pill); border: 1px solid var(--rule);
     background: var(--card); color: var(--muted); cursor: pointer; font-weight: 500; font-size: 0.85rem;
   }
-  .tabs button[aria-selected="true"] { background: var(--ag-green); border-color: var(--ag-green); color: #fff; }
-  .controls label { display: inline-flex; align-items: center; gap: 0.4rem; font-size: 0.85rem; color: var(--muted); }
-  .controls input[type=date], .controls input[type=number] { padding: 0.15rem 0.4rem; border: 1px solid var(--rule); border-radius: 0.4rem; background: var(--card); color: var(--ag-ink); }
+  .tabs button[aria-selected="true"] { background: var(--ag-green); border-color: var(--ag-green); color: var(--on-green); }
+  .controls label { display: inline-flex; align-items: center; gap: 0.4rem; font-size: 0.85rem; color: var(--muted); cursor: pointer; }
+  .controls label input { cursor: pointer; }
+  .controls input[type=date], .controls input[type=number] { padding: 0.15rem 0.4rem; border: 1px solid var(--rule); border-radius: var(--r-control); background: var(--card); color: var(--ag-ink); }
   .controls input[type=number] { width: 4.6rem; }
   .controls .spacer { flex: 1 1 auto; }
   .btn {
-    padding: 0.25rem 0.9rem; border-radius: 999px; border: 1px solid var(--ag-green);
+    padding: 0.25rem 0.9rem; border-radius: var(--r-pill); border: 1px solid var(--ag-green);
     background: transparent; color: var(--ag-green); cursor: pointer; font-weight: 500; font-size: 0.85rem;
   }
-  .btn:hover, .btn:focus-visible { background: var(--ag-green); color: #fff; outline: none; }
+  .btn:hover { background: var(--ag-green); color: var(--on-green); }
+  .btn:focus-visible { background: var(--ag-green); color: var(--on-green); outline: 2px solid var(--focus); outline-offset: 2px; }
   .btn--quiet { border-color: var(--rule); color: var(--muted); }
   .btn--quiet:hover, .btn--quiet:focus-visible { background: transparent; color: var(--ag-tomato); border-color: var(--ag-tomato); }
 
   .tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr)); gap: 0.8rem; margin-bottom: 1.2rem; }
-  .tile { background: var(--card); border: 1px solid var(--rule); border-radius: 0.8rem; padding: 0.7rem 1rem 0.6rem; }
-  .tile .n { font-size: 1.9rem; font-weight: 600; line-height: 1.1; }
+  .tile { background: var(--card); border: 1px solid var(--rule); border-radius: var(--r-container); padding: 0.7rem 1rem 0.6rem; }
+  .tile .n { font-family: var(--mono); font-size: 1.75rem; font-weight: 600; line-height: 1.1; font-variant-numeric: tabular-nums; }
   .tile .n small { font-size: 0.95rem; font-weight: 400; color: var(--lighter); }
   .tile .l { font-size: 0.8rem; color: var(--muted); }
   .tile.is-help .n { color: var(--ag-tomato); }
@@ -115,7 +253,7 @@
   @media (max-width: 960px) { .panels { grid-template-columns: minmax(0, 1fr); } .side { position: static !important; } }
   .col { display: grid; gap: 1.2rem; }
   .side { position: sticky; top: 0.8rem; }
-  .panel { background: var(--card); border: 1px solid var(--rule); border-radius: 0.8rem; padding: 1rem 1.1rem; }
+  .panel { background: var(--card); border: 1px solid var(--rule); border-radius: var(--r-container); padding: 1rem 1.1rem; }
   .panel h2 { margin: 0 0 0.6rem; font-size: 0.95rem; font-weight: 600; display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.2rem 0.5rem; }
   .panel h2 small { font-weight: 300; color: var(--lighter); }
   .panel h2 .right { margin-left: auto; font-weight: 400; font-size: 0.78rem; }
@@ -126,14 +264,19 @@
   .panel--bars h2 { font-size: 1.1rem; }
   .bars { display: grid; grid-template-columns: max-content minmax(0, 1fr) 2.6rem; gap: 0.5rem 0.8rem; align-items: center; font-size: 1rem; }
   .bars .lab { color: var(--ag-ink); white-space: nowrap; display: flex; align-items: center; gap: 0.4rem; }
-  .bars .sw { width: 0.9rem; height: 0.9rem; border-radius: 0.2rem; border: 1px solid var(--rule); flex: none; }
-  .bars .trk { height: 1.25rem; background: var(--grid); border-radius: 0.3rem; overflow: hidden; }
-  .bars .bar { height: 100%; border-radius: 0 4px 4px 0; background: var(--ag-green); min-width: 0; transition: width 0.3s; }
-  .bars .val { text-align: right; font-variant-numeric: tabular-nums; font-weight: 600; font-size: 1.1rem; }
+  .bars .sw { width: 0.9rem; height: 0.9rem; border-radius: var(--r-swatch); border: 1px solid var(--rule); flex: none; }
+  .bars .trk { height: 1.25rem; background: var(--grid); border-radius: var(--r-control); overflow: hidden; }
+  .bars .bar { height: 100%; border-radius: 0 var(--r-control) var(--r-control) 0; background: var(--ag-green); min-width: 0; transition: width 0.3s; }
+  .bars .val { text-align: right; font-family: var(--mono); font-variant-numeric: tabular-nums; font-weight: 600; font-size: 1rem; }
   .chev {
     width: 1.3rem; height: 1.3rem; flex: none; border: 0; background: none; color: var(--lighter); cursor: pointer;
-    padding: 0; display: inline-flex; align-items: center; justify-content: center; border-radius: 0.3rem;
+    padding: 0; display: inline-flex; align-items: center; justify-content: center; border-radius: var(--r-control);
+    position: relative;
   }
+  /* The glyph stays 21px so the bar rows keep their rhythm, but the target
+     does not: this pseudo-element takes the hit area to 44px. Nothing it
+     overlaps is interactive. */
+  .chev::before { content: ""; position: absolute; inset: -11px; }
   .chev svg { width: 0.7rem; height: 0.7rem; transition: transform 0.15s; }
   .chev[aria-expanded="true"] svg { transform: rotate(90deg); }
   .chev:hover, .chev:focus-visible { background: var(--grid); color: var(--ag-ink); outline: none; }
@@ -152,14 +295,17 @@
   .grid { display: grid; grid-template-columns: repeat(10, minmax(0, 1fr)); gap: 4px; }
   @media (max-width: 560px) { .grid { grid-template-columns: repeat(5, minmax(0, 1fr)); } }
   .cell {
-    position: relative; aspect-ratio: 1.15; min-height: 3rem; border-radius: 0.45rem; border: 1px solid var(--rule);
-    background: var(--bg); color: var(--lighter); padding: 0.25rem 0.3rem; cursor: default; text-align: left;
+    position: relative; aspect-ratio: 1.15; min-height: 3rem; border-radius: var(--r-control); border: 1px solid var(--rule);
+    background: var(--bg); color: var(--lighter); padding: 0.25rem 0.3rem; cursor: pointer; text-align: left;
     display: flex; flex-direction: column; justify-content: space-between; overflow: hidden;
   }
-  .cell .no { font-weight: 600; font-size: 1.05rem; line-height: 1; }
+  /* a team that has never reported has nothing to open; render() gives those
+     cells tabindex="-1", so key off that rather than invent a second class */
+  .cell[tabindex="-1"] { cursor: default; }
+  .cell .no { font-family: var(--mono); font-weight: 600; font-size: 1rem; line-height: 1; font-variant-numeric: tabular-nums; }
   .cell .sub { font-size: 0.68rem; line-height: 1.15; opacity: 0.9; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .cell.is-on { border-color: transparent; }
-  .cell.is-stale { opacity: 0.45; border-style: dashed; border-color: var(--lighter); }
+  .cell.is-stale { opacity: 0.8; border-style: dashed; border-color: var(--lighter); }   /* was 0.45, which put the text far under AA. A quiet team is the one worth seeing: the dashed border carries the state, not a fade. */
   .cell.is-done { background: var(--done); color: var(--done-ink); }
   /* a team asking for help is what the board is for: heavy red ring and a raised hand, over any colour */
   .cell.has-help { opacity: 1; outline: 3px solid var(--ag-tomato); outline-offset: -1px; z-index: 1; }
@@ -169,16 +315,16 @@
   }
   @keyframes help-in { 0% { box-shadow: 0 0 0 0 rgba(216, 74, 42, 0.7); } 100% { box-shadow: 0 0 0 14px rgba(216, 74, 42, 0); } }
   .cell.has-help.is-new { animation: help-in 1.2s ease-out 3; }
-  .cell:focus-visible { outline: 2px solid var(--ag-marigold); outline-offset: 1px; }
+  .cell:focus-visible { outline: 2px solid var(--focus); outline-offset: 1px; }   /* ink, so it reads on every ramp step and on the done cell */
 
   .legend { display: flex; flex-wrap: wrap; gap: 0.3rem 0.9rem; margin: 0.7rem 0 0; font-size: 0.78rem; color: var(--muted); }
   .legend span { display: inline-flex; align-items: center; gap: 0.35rem; }
-  .legend i { width: 0.85rem; height: 0.85rem; border-radius: 0.2rem; border: 1px solid var(--rule); display: inline-block; }
+  .legend i { width: 0.85rem; height: 0.85rem; border-radius: var(--r-swatch); border: 1px solid var(--rule); display: inline-block; }
   .legend i.help { border-radius: 50%; background: var(--ag-tomato); border-color: transparent; width: 0.7rem; height: 0.7rem; }
 
   .tip {
-    position: fixed; z-index: 10; max-width: 20rem; padding: 0.55rem 0.8rem; border-radius: 0.6rem;
-    background: var(--card); color: var(--ag-ink); border: 1px solid var(--rule); box-shadow: 0 6px 24px rgba(0,0,0,0.14);
+    position: fixed; z-index: 10; max-width: 20rem; padding: 0.55rem 0.8rem; border-radius: var(--r-container);
+    background: var(--card); color: var(--ag-ink); border: 1px solid var(--rule); box-shadow: 0 6px 24px rgba(22, 32, 26, 0.16);
     font-size: 0.8rem; line-height: 1.45; pointer-events: none;
   }
   .tip b { font-weight: 600; }
@@ -186,10 +332,10 @@
   .tip .row span:last-child { font-variant-numeric: tabular-nums; }
   .tip .dim { color: var(--lighter); }
   .tip .msg { color: var(--ag-tomato); }
-  .tip.is-pinned { pointer-events: auto; border-color: var(--ag-tomato); }
+  .tip.is-pinned { pointer-events: auto; border-color: var(--ag-green); }   /* pinned is a mode, not an alarm: tomato stays semantic */
   .tip-btn {
-    display: block; width: 100%; margin-top: 0.5rem; padding: 0.4rem 0.8rem; border-radius: 999px; border: 0;
-    background: var(--ag-green); color: #fff; font-weight: 600; font-size: 0.9rem; cursor: pointer;
+    display: block; width: 100%; margin-top: 0.5rem; padding: 0.4rem 0.8rem; border-radius: var(--r-pill); border: 0;
+    background: var(--ag-green); color: var(--on-green); font-weight: 600; font-size: 0.9rem; cursor: pointer;
   }
   .tip-btn:hover, .tip-btn:focus-visible { background: var(--ag-green-deep); outline: none; }
   .tip.is-pinned { max-width: 24rem; }
@@ -200,19 +346,19 @@
   .tip .dev { display: grid; grid-template-columns: 0.7rem minmax(0, 1fr) auto; gap: 0.45rem; align-items: center; padding: 0.22rem 0; }
   .tip .dev .dot { width: 0.55rem; height: 0.55rem; border-radius: 50%; background: var(--ag-green); }
   .tip .dev .info { font-size: 0.78rem; }
-  .tip .dev .info b { font-family: "IBM Plex Mono", monospace; font-weight: 600; }
+  .tip .dev .info b { font-family: var(--mono); font-weight: 600; }
   .tip .dev.is-stale .dot { background: var(--lighter); }
   .tip .dev.is-stale .info { color: var(--lighter); }
   .tip-mini {
-    border: 1px solid var(--rule); background: transparent; color: var(--ag-tomato); border-radius: 999px;
+    border: 1px solid var(--rule); background: transparent; color: var(--ag-tomato); border-radius: var(--r-pill);
     padding: 0 0.65rem; font-size: 0.75rem; line-height: 1.8; cursor: pointer;
   }
-  .tip-mini:hover, .tip-mini:focus-visible { background: var(--ag-tomato); border-color: var(--ag-tomato); color: #fff; outline: none; }
+  .tip-mini:hover, .tip-mini:focus-visible { background: var(--danger-solid); border-color: var(--danger-solid); color: var(--on-danger); outline: none; }
   .tip-btn.tip-btn--danger { background: transparent; color: var(--ag-tomato); border: 1px solid var(--ag-tomato); font-weight: 500; font-size: 0.82rem; }
-  .tip-btn.tip-btn--danger:hover, .tip-btn.tip-btn--danger:focus-visible { background: var(--ag-tomato); color: #fff; }
+  .tip-btn.tip-btn--danger:hover, .tip-btn.tip-btn--danger:focus-visible { background: var(--danger-solid); color: var(--on-danger); }
 
   .unknown .unk {
-    border: 1px solid var(--rule); background: var(--card); color: var(--ag-ink); border-radius: 0.4rem;
+    border: 1px solid var(--rule); background: var(--card); color: var(--ag-ink); border-radius: var(--r-control);
     padding: 0 0.45rem; font: inherit; font-weight: 600; cursor: pointer;
   }
   .unknown .unk:hover, .unknown .unk:focus-visible { border-color: var(--ag-tomato); outline: none; }
@@ -262,7 +408,18 @@
   td.n { font-variant-numeric: tabular-nums; text-align: right; }
   .empty { color: var(--lighter); font-size: 0.85rem; padding: 0.6rem 0; }
   .foot { margin-top: 1.6rem; font-size: 0.78rem; color: var(--lighter); overflow-wrap: anywhere; }
-  .foot code { font-family: "IBM Plex Mono", monospace; font-size: 0.95em; }
+  .foot code { font-family: var(--mono); font-size: 0.95em; }
+  /* A TA runs this on a phone, one-handed, while walking the room. The board
+     is deliberately dense on a desktop, but a touch pointer needs real
+     targets, so every control grows where it is actually being tapped. */
+  @media (pointer: coarse) {
+    .tabs button, .btn { min-height: 44px; }
+    .controls label { min-height: 44px; }
+    .controls input[type=date], .controls input[type=number] { min-height: 40px; }
+    .cell { min-height: 3.4rem; }
+    .msgs .x { min-width: 44px; min-height: 44px; }
+  }
+
   [hidden] { display: none !important; }
 </style>
 </head>

@@ -16,9 +16,10 @@ theme:
   language: th
   icon:
     logo: material/sprout
-  font:
-    text: Prompt
-    code: IBM Plex Mono
+  # false: stop Material fetching from fonts.googleapis.com. The faces are
+  # self-hosted in docs/fonts/ and declared in docs/stylesheets/extra.css,
+  # which also sets --md-text-font / --md-code-font.
+  font: false
   features:
     - navigation.top
     - navigation.sections

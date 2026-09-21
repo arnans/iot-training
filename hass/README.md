@@ -164,15 +164,19 @@ The participant guide is [docs/install.md](../docs/install.md). It is written ag
 facts; change one here and the guide (and session 1's ก่อนเริ่ม) must change with it:
 
 - **VM name `Farm Workshop`** — the guide and session 1 tell participants to press Start on it.
-- **File names** `farm-workshop-x86-64.ova` (Windows + Intel Mac) and `farm-workshop-arm64.ova`
-  (Apple Silicon). Fill in the real download links, the file size, and the workshop
-  user/password where the guide says `TODO`.
+- **File names** as actually distributed: `Farm-Workshop-win-1.2.ova` (Windows + Intel Mac —
+  the `win` in the name is historical, Intel Macs use it too) and `Farm-Workshop-arm64-1.2.ova`
+  (Apple Silicon). Both guide tables (`docs/install.md`, `docs/resources.md`) and the instructor
+  handbook name them; the ARM64 download link and the workshop user/password are the only
+  placeholders left.
 - **Adapter 1 is Bridged.** The host NIC name inside the OVA is the build machine's, so
   every participant re-picks their WiFi card after import (guide step 2.3). Otherwise Start
   fails with "physical network interfaces were not found".
-- **Import with "Generate new MAC addresses for all network adapters".** Participants set this
-  explicitly (guide step 2.2). CPU and RAM come from the OVA; participants leave them alone. With "Include all network adapter MAC addresses", every clone
-  keeps the build machine's MAC, and 34 identical MACs in one zone break the network.
+- **MAC addresses regenerate by default.** Verified on the ARM64 build: a plain
+  `VBoxManage import` gave the clone a fresh MAC. The import default only preserves NAT-adapter
+  MACs, so a participant accepting the defaults cannot end up with the build machine's MAC — the
+  34-identical-MACs failure needs someone to actively choose "include all MAC addresses". The
+  guide is therefore right to say "leave the import settings alone"; do not add a MAC step to it.
 - **Port 80, IP read from the console.** The guide says to read the `IPv4 addresses` line and
   ignore `homeassistant.local`. Before sending the guide, replace the placeholder screenshots
   with real ones from the final build. The ARM64 banner differs: the interface is **`enp0s8`**,

@@ -1385,30 +1385,30 @@ body {
 <tr>
 <th>แล็ปท็อป</th>
 <th>VirtualBox</th>
-<th>ไฟล์ Farm Workshop (~2.6 GB)</th>
+<th>ไฟล์ Farm Workshop</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>Windows</td>
 <td><a href="https://www.virtualbox.org/wiki/Downloads">Windows hosts</a></td>
-<td><a href="https://drive.google.com/file/d/1DrX4O-jywvnCA0b4aqdQ3z9r7F2EkEf8/view?usp=sharing">Farm-Workshop-win-1.2.ova</a></td>
+<td><a href="https://drive.google.com/file/d/1DrX4O-jywvnCA0b4aqdQ3z9r7F2EkEf8/view?usp=sharing">Farm-Workshop-win-1.2.ova</a> (~2.6 GB)</td>
 </tr>
 <tr>
 <td>Mac ชิป Intel</td>
 <td><a href="https://www.virtualbox.org/wiki/Downloads">macOS / Intel hosts</a></td>
-<td><a href="https://drive.google.com/file/d/1DrX4O-jywvnCA0b4aqdQ3z9r7F2EkEf8/view?usp=sharing">Farm-Workshop-win-1.2.ova</a></td>
+<td><a href="https://drive.google.com/file/d/1DrX4O-jywvnCA0b4aqdQ3z9r7F2EkEf8/view?usp=sharing">Farm-Workshop-win-1.2.ova</a> (~2.6 GB)</td>
 </tr>
 <tr>
 <td>Mac ชิป Apple (M1 ขึ้นไป)</td>
-<td><a href="https://www.virtualbox.org/wiki/Downloads">macOS / Apple Silicon hosts</a></td>
-<td><strong>ยังไม่พร้อมให้ดาวน์โหลด</strong> ทีมผู้สอนจะแจ้งอีกครั้ง</td>
+<td><a href="https://www.virtualbox.org/wiki/Downloads">macOS / Apple Silicon hosts</a> — ต้อง <strong>รุ่น 7.2 ขึ้นไป</strong></td>
+<td><code>Farm-Workshop-arm64-1.2.ova</code> — ทีมผู้สอนจะแจ้งลิงก์ก่อนวันอบรม</td>
 </tr>
 </tbody>
 </table></div>
 <p>ติดตั้ง VirtualBox ตามค่าที่ตั้งไว้ กด Next หรือ Yes จนจบ</p>
 <blockquote>
-<p>ต้องมี RAM 8 GB และพื้นที่ว่างในเครื่อง 20 GB ขึ้นไป · Chromebook, iPad และ Windows ชิป ARM ใช้ไม่ได้ · ไฟล์สำหรับ Mac ชิป Apple ยังไม่พร้อม ในกลุ่มจึงขอให้มีอย่างน้อยหนึ่งเครื่องที่เป็น Windows หรือ Mac ชิป Intel (Mac: เมนู Apple → About This Mac ดูบรรทัด Chip หรือ Processor)</p>
+<p>ต้องมี RAM 8 GB และพื้นที่ว่างในเครื่อง 20 GB ขึ้นไป · Chromebook, iPad และ Windows ชิป ARM ใช้ไม่ได้ · <strong>Mac ชิป Apple ใช้ไฟล์ของ Windows ไม่ได้</strong> ต้องใช้ไฟล์ <code>arm64</code> และ VirtualBox รุ่น 7.2 ขึ้นไป (Mac: เมนู Apple → About This Mac ดูบรรทัด Chip หรือ Processor)</p>
 </blockquote>
 <hr />
 <h2 id="2-นำเขาเครอง-farm-workshop">2. นำเข้าเครื่อง Farm Workshop</h2>
@@ -1422,6 +1422,7 @@ body {
 <pre><code>IPv4 addresses for enp0s3: 192.168.1.50/24
 </code></pre>
 <p><img alt="หน้าจอเครื่อง Farm Workshop เมื่อเปิดเสร็จแล้ว มีกรอบสีแดงเน้นหมายเลข IP ในบรรทัด IPv4 addresses" src="../images/hass-server-screen.png" width="85%" /></p>
+<p>ภาพนี้ถ่ายจากเครื่อง Windows หรือ Mac ชิป Intel · <strong>Mac ชิป Apple</strong> บรรทัดนี้จะขึ้นเป็น <code>enp0s8</code> แทน <code>enp0s3</code> อ่านตัวเลขที่เดียวกัน</p>
 </li>
 <li>
 <p>เปิดเบราว์เซอร์ พิมพ์ <code>http://192.168.1.50</code> (ใช้เลขของเครื่องเรา) เห็นหน้า <strong>Login</strong> ของ Home Assistant ถือว่าผ่าน ยังไม่ต้องเข้าระบบ ผู้สอนจะแจ้งชื่อผู้ใช้และรหัสผ่านในวันอบรม</p>
@@ -1446,8 +1447,16 @@ body {
 </thead>
 <tbody>
 <tr>
-<td>ขึ้นข้อความเรื่อง <strong>VT-x</strong>, <strong>AMD-V</strong> หรือ <strong>virtualization</strong></td>
+<td>ขึ้นข้อความเรื่อง <strong>VT-x</strong>, <strong>AMD-V</strong> หรือ <strong>virtualization</strong> (Windows และ Mac ชิป Intel)</td>
 <td>ต้องเปิด virtualization ใน BIOS ของเครื่อง ค้นหา "ยี่ห้อเครื่อง enable virtualization" หรือแจ้งผู้สอน</td>
+</tr>
+<tr>
+<td><strong>นำเข้าไฟล์ไม่ได้</strong> หรือขึ้นว่าไฟล์ไม่รองรับ</td>
+<td>ใช้ไฟล์ผิดชนิด Mac ชิป Apple ใช้ <code>Farm-Workshop-arm64-1.2.ova</code> เท่านั้น · Windows และ Mac ชิป Intel ใช้ <code>Farm-Workshop-win-1.2.ova</code> เท่านั้น สองไฟล์นี้ใช้สลับกันไม่ได้</td>
+</tr>
+<tr>
+<td>Mac ชิป Apple นำเข้าไฟล์ <code>arm64</code> ไม่ได้</td>
+<td>ดูรุ่น VirtualBox ที่เมนู <strong>VirtualBox → About VirtualBox</strong> ถ้าต่ำกว่า 7.2 ให้ดาวน์โหลดรุ่นใหม่แล้วติดตั้งทับ</td>
 </tr>
 <tr>
 <td>ติดตั้ง VirtualBox แล้วขึ้นว่าต้องมี <strong>Visual C++ Redistributable</strong></td>

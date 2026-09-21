@@ -1,6 +1,6 @@
 # IoT Systems in Smart Farming — Session Overview
 
-A summary of the three hands-on sessions (150 min each), broken down by activity, and how each activity serves the six learning goals. The full plans, timings and rationale are in [COURSE-DESIGN.md](COURSE-DESIGN.md); the participant worksheets are in [docs/](../docs/).
+A summary of the four hands-on sessions (150 min each; Session 4 added 20 Sep 2026), broken down by activity, and how each activity serves the six learning goals. The full plans, timings and rationale are in [COURSE-DESIGN.md](COURSE-DESIGN.md); the participant worksheets are in [docs/](../docs/).
 
 ## The six learning goals
 
@@ -15,13 +15,14 @@ A summary of the three hands-on sessions (150 min each), broken down by activity
 
 Each post-test targets the two goals that are core in its session.
 
-## The three sessions at a glance
+## The four sessions at a glance
 
 | Session | Objective | Core goals | Introduced / applied | Evidence |
 |---|---|---|---|---|
 | **1** — ระบบสมองกลฝังตัวในฟาร์ม: รับรู้ ตัดสินใจ สั่งการ | Run a complete networked Input → Logic → Output system on the team's own kit and laptop, fix the vocabulary for the course, and hand the first decision over to software | 1, 2 | 3, 5, 6 | Post-test 1; facilitator checklist (history graph, lamp toggled from laptop and phone, two light rules passing) |
 | **2** — ตรรกะควบคุมอัตโนมัติและการออกแบบ Fail-safe สำหรับฟาร์ม | Move the Logic into software and make it robust: rules that do not chatter, and fail-safes that each answer a failure the team watched happen | 3, 5 | 6 extended; 4 seeded | Post-test 2; hysteresis automation and Fail-safes 1–2 demonstrated on the facilitator checklist |
 | **3** — โครงสร้างระบบ IoT: การสื่อสาร คลาวด์ แดชบอร์ด และการออกแบบระบบ | Open the two boxes kept closed so far, communication and power, then turn the course into a design the team can take home | 4, 6 | 2, 5 applied; 1 recap | Post-test 3; complete dashboard on the facilitator checklist; design blocks in worksheet 8.6 (canvas and rubric cut 18 Sep 2026) |
+| **4** — ขยายระบบไปแปลงที่ WiFi ไม่ถึง: ESP-NOW และบอร์ดตัวรับ | Build the network choice Session 3 only reasoned about: re-flash the plot board to broadcast over ESP-NOW, add a plain ESP32-C3 receiver in the farmhouse, read it by IP, then bring the far plot into Home Assistant with a dashboard and a link-lost alert | 4 | 5, 6 applied; 1 recap | Receiver page showing the team's own board (facilitator checklist); `แปลงไกล` dashboard and `แปลงเงียบ - เตือน` firing; worksheet `s4.*` |
 
 ---
 
@@ -70,9 +71,23 @@ Each post-test targets the two goals that are core in its session.
 
 ---
 
+## Session 4 — ขยายระบบไปแปลงที่ WiFi ไม่ถึง: ESP-NOW และบอร์ดตัวรับ
+
+**Goal 4 core · 5, 6 applied · 1 recap.** Added 20 Sep 2026. Session 3's network step chose a technology by elimination; this session builds one. By the end every team's GoGo board broadcasts its readings over ESP-NOW, a second ESP32-C3 in the "farmhouse" hears it and serves the values by IP, Home Assistant shows the far plot on a dashboard, and an automation says when the plot goes quiet. The pump is not used; every relay-driving rule stays off. In the room the GoGo board keeps its WiFi so the two paths can be compared and the board can be re-flashed; the worksheet says a real plot board would have none.
+
+| Activity | What the students do | Objective | Learning-outcome alignment |
+|---|---|---|---|
+| **Before start** (setup) | Five checks at the top of Activity 9: kit powered and float in its glass, Home Assistant reachable, both boards online, all relay-driving rules and `Pump Auto Mode` off, receiver devkit received but not plugged in. | Restore the Session 3 system and take the pump out of play. | — |
+| **Activity 9 — Send** (30 min) | Download the zone's `gogo-iot-<colour>.factory.bin` and install it on the GoGo board at web.esphome.io (**Install**, the same tool as Activity 1). Read the log: name unchanged, IP, then a `>>> GOGO,name,seq,temp,hum,light,pressure,vibration,float,pump` line every 3 s; copy one, decode its ten fields, watch the light field fall under a hand. On the board's page read the new `channel` and `espnow sent` diagnostics; confirm Home Assistant took the board back without re-adoption. Question: what does a plot board lose without WiFi, and how is it configured? | Meet a packet: see exactly what travels over the air, and learn that a firmware update is an ordinary maintenance act. | **Goal 4** core (a second protocol beside WiFi, seen at the byte level). **Goal 5** applied (maintenance: updating a field device). |
+| **Activity 10 — Receive** (50 min) | Flash `farm-receiver-<colour>.factory.bin` onto the plain ESP32-C3, read its name and IP, open `http://<ip>/`: every value empty, `other boards heard` cycling through the room's boards. Type the GoGo board's six-character suffix into `sender name`; values appear, link ON, RSSI read. Prove it is their board (hand over the sensor, float lifted). Carry the GoGo board across the room on its cell: RSSI at distance, packets lost from the sequence gaps. Switch the GoGo board off: link OFF and values NaN after ~15 s. Question: a neighbour's identical system — what goes wrong, and how to guard (select by name/MAC, encrypt). | Stand up a two-hop path and feel its properties: shared channel, no acknowledgements, signal versus distance, and a link that declares itself dead. | **Goal 4** core (channel, range, loss, addressing). **Goal 5** applied: the receiver blanks stale values — the Session 2 fail-safe habit on a radio link. |
+| **Activity 11 — Bridge** (45 min) | Adopt the receiver from its discovered card. Compare humidity and light from the GoGo device page and the receiver's (one sensor, two paths). Build dashboard `แปลงไกล`: link Tile on top, humidity Gauge, float Tile, RSSI Tile, optional two-line history graph. Automation `แปลงเงียบ - เตือน`: link → Disconnected for 30 s → persistent notification; test by switching the GoGo board off. Question: what changes at a real plot 150 m out, and how does the user know a value is current? | Make the far plot an ordinary part of the system, and give the user the one signal they need before trusting a number. | **Goal 6** applied (dashboard for a relayed source). **Goal 5** applied (link-lost alert). **Goal 4** closed: the technology chosen in 8.2 now exists on the table. |
+| **Wrap-up and kit return** (10 min) | Four summary points; the kit-return list (moved here from Activity 8) now includes the receiver; answers downloaded and submitted. | Close the course with the two boards plus one talking to each other, and the kit safe. | **Goal 1** recap. |
+
+---
+
 ## How the sessions connect
 
-- **One kit, one story.** The same two boards, pump and charge controller run through all three sessions. Session 1 gets them working, Session 2 makes them decide and survive failure, Session 3 explains the parts that were hidden and asks the team to design their own.
+- **One kit, one story.** The same two boards, pump and charge controller run through all four sessions. Session 1 gets them working, Session 2 makes them decide and survive failure, Session 3 explains the parts that were hidden and asks the team to design their own, and Session 4 adds one plain board and builds the network Session 3 only reasoned about.
 - **Experience first, vocabulary second.** Teams run a networked system on Day 1 without configuring an address; the network and power boxes are opened only in Session 3, when there is something concrete to explain.
 - **Hooks carried forward.** The threshold-hover question (Session 1 Activity 3 → Session 2 chatter count → hysteresis), the limits of Home-Assistant-side fail-safes (Session 2 summary table → 3), the one-sentence farm problem on the record sheet (Session 1 → 3) and the missing night in the history graph (the laptop went home) each pay off in a later session.
 - **Everyone swaps at every activity, on the instructor's cue.** There are no named roles (decided 8 Sep 2026): each team decides who does what, the instructor announces a swap at each activity boundary so everyone touches both the laptop and the kit (the worksheet carries no swap callouts, 9 Sep 2026), and the team answers one written question per activity, so no member of a team of four is a spectator.

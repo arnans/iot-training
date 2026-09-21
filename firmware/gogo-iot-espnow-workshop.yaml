@@ -1,0 +1,120 @@
+# GoGo-IoT sensor node — WORKSHOP image WITH ESP-NOW (session 4)
+#
+# The whole of gogo-iot-workshop.yaml, plus an ESP-NOW broadcast of the readings.
+# Built per zone like the others; published as gogo-iot-espnow-<zone>.factory.bin.
+# Participants flash it themselves in Activity 9, over the base image their board
+# has carried since session 1, so the upgrade is real: no `>>> GOGO,` lines
+# before, one every 3 s after.
+#
+# The DEVICE NAME DOES NOT CHANGE: device_base_name stays `gogo-iot`, so the
+# hostname is still gogo-iot-red-a1b2c3 and Home Assistant takes the board back
+# with its old entities, no re-adoption. Only the file name carries "espnow".
+#
+# Session 4's story: the plot is too far from the house for WiFi, so a second
+# ESP32-C3 (farm-receiver-workshop.yaml) sits in the house and hears this board
+# over ESP-NOW, Espressif's board-to-board protocol that needs no router and
+# carries further than a WiFi association. In the room the board KEEPS its WiFi
+# so Home Assistant still sees it directly and teams can compare the two paths;
+# the worksheet says that at a real plot the WiFi would be off.
+#
+# Design, and why:
+#   * BROADCAST, not a paired peer. Pairing needs the receiver's MAC in this
+#     image, which is built once per zone for ~34 boards. Broadcasting lets a
+#     prebuilt receiver hear everything on the channel and pick its own board
+#     by NAME, typed by the team - the same six-character suffix they already
+#     use to adopt the board in Home Assistant. (Runtime pairing to unicast was
+#     considered and declined, 20 Sep 2026: broadcast + filter has no pairing
+#     state to lose when a board reboots, and the shared channel is a lesson.)
+#   * PLAIN TEXT payload, one CSV line:
+#       GOGO,<name>,<seq>,<temp>,<hum>,<light>,<pressure>,<vibration>,<float>,<pump>
+#     e.g. GOGO,gogo-iot-red-a1b2c3,42,28.4,61.2,350,1009.8,4.1,1,0
+#     Readable in the USB log at web.esphome.io on both ends - teams can literally
+#     read what travels over the air. ~70 bytes, well inside the 250-byte frame.
+#     Missing readings print as "nan"; the receiver drops those fields.
+#   * `seq` counts packets so the receiver can show loss: ESP-NOW broadcasts are
+#     fire-and-forget, nothing is acknowledged or retried.
+#   * No `channel:`. With wifi: configured ESP-NOW MUST ride the channel the
+#     access point put the board on (ESPHome refuses the key). Both boards join
+#     the same zone SSID, so they normally share a channel - but a room with
+#     several APs on channels 1/6/11 can put them on different ones, and then the
+#     receiver hears nothing. Hence the "channel" diagnostic on both boards.
+#   * No encryption. Anyone on the channel can read the values - which is the
+#     point of the worksheet's "other boards heard" question. A real deployment
+#     would set a PMK/LMK or use packet_transport's encryption.
+#   * `power_save_mode: none` in the base image is now load-bearing twice:
+#     ESP-NOW reception and transmission are unreliable when the radio dozes.
+# Sending is unconditional - a board that lost WiFi still transmits, as it would
+# at a plot with no router; the receiver may or may not be on its channel then.
+#
+# Packages merge: top-level keys here are appended to the base's lists (sensor,
+# globals) or added (espnow, interval); substitutions here override the base's.
+
+packages:
+  base: !include gogo-iot-workshop.yaml
+
+substitutions:
+  # How often the readings go out over the air. 3 s: fast enough that a hand over
+  # the board shows on the receiver's page within a few seconds, slow enough that
+  # 100 boards in one room do not crowd the channel (each packet is ~70 bytes).
+  espnow_interval: 3s
+
+espnow:
+  id: espnow_bus
+
+globals:
+  # Packet counter. Goes into every packet so the receiver can see a gap, and
+  # feeds the "espnow sent" diagnostic below.
+  - id: espnow_seq
+    type: uint32_t
+    restore_value: false
+    initial_value: '0'
+
+sensor:
+  # The 2.4 GHz channel this board is on. ESP-NOW frames only reach a receiver
+  # that sits on the SAME channel, and every board follows its access point's
+  # channel. The receiver shows the same figure; when the two differ the receiver
+  # hears nothing, and this is the number to compare.
+  - platform: template
+    name: "ช่องสัญญาณ WiFi (channel)"
+    id: wifi_channel
+    icon: "mdi:radio-tower"
+    accuracy_decimals: 0
+    entity_category: diagnostic
+    update_interval: 30s
+    lambda: |-
+      const uint8_t ch = id(espnow_bus).get_wifi_channel();
+      if (ch == 0) return {};      // not associated yet
+      return ch;
+
+  # How many ESP-NOW packets have gone out since boot. The receiver counts what
+  # arrived; the difference is the packet loss the worksheet asks teams to
+  # notice (a broadcast is fire-and-forget, nothing is retried).
+  - platform: template
+    name: "แพ็กเก็ต ESP-NOW ที่ส่ง (espnow sent)"
+    icon: "mdi:upload-network-outline"
+    accuracy_decimals: 0
+    state_class: total_increasing
+    entity_category: diagnostic
+    update_interval: 15s
+    lambda: return id(espnow_seq);
+
+interval:
+  - interval: ${espnow_interval}
+    then:
+      - lambda: |-
+          static const uint8_t BROADCAST[6] = {0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF};
+          char buf[120];
+          const int n = snprintf(buf, sizeof buf, "GOGO,%s,%lu,%.1f,%.1f,%.0f,%.1f,%.1f,%d,%d",
+                                 App.get_name().c_str(), (unsigned long) id(espnow_seq),
+                                 id(air_temp).state, id(air_hum).state, id(light_lux).state,
+                                 id(air_pressure).state, id(vibration_rms).state,
+                                 id(float_switch).state ? 1 : 0, id(pump_running).state ? 1 : 0);
+          if (n <= 0 || n >= (int) sizeof buf) return;
+          const esp_err_t err = id(espnow_bus).send(BROADCAST, reinterpret_cast<const uint8_t *>(buf), n);
+          if (err == ESP_OK) {
+            id(espnow_seq) += 1;
+            // INFO so it shows in the USB log participants read; one line every 3 s.
+            ESP_LOGI("espnow", ">>> %s", buf);
+          } else {
+            ESP_LOGW("espnow", "send failed (%d): %s", (int) err, buf);
+          }

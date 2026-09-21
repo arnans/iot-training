@@ -1,6 +1,6 @@
 # Fillable worksheet — design notes
 
-The three session pages and the record sheet are forms. Teams type observations and answers
+The activity pages and the record sheet are forms. Teams type observations and answers
 straight into the worksheet; the browser remembers them; a JSON download is the team's copy
 and the instructor's submission. No server, nothing beyond GitHub Pages. Decided 8 Sep 2026,
 replacing the one-per-team printed record sheet (which survives as the blank fallback).
@@ -59,8 +59,8 @@ every team's saved answer for it, so add new keys rather than rename.
 | Prefix | Scope |
 |---|---|
 | `team.no` `team.zone` `team.wifi` | team identity (`team.zone` is the Thai label: แดง / เขียว / น้ำเงิน) |
-| `ha.ip1` `ha.ip2` `board.iot.*` `board.relay.*` `farm.problem` | addresses and the one-sentence farm problem, filled at the start of Session 1 |
-| `s1.*` `s2.*` `s3.*` | session observations and end-of-activity answers (`s1.q1` … `s3.q7` are the textareas) |
+| `ha.ip1` `ha.ip2` `board.iot.*` `board.relay.*` `board.rx.*` `farm.problem` | addresses and the one-sentence farm problem, filled at the start of Session 1 (`board.rx.*` is Session 4's receiver board, filled in 10.2) |
+| `s1.*` `s2.*` `s3.*` `s4.*` | session observations and end-of-activity answers (`s1.q1` … `s4.q11` are the textareas; `s4.tx.*` is the plot board after the reflash, `s4.rx.*` the receiver's own page, `s4.ha.*` the receiver in Home Assistant) |
 | `s2.sab.<round>.*` `s2.maint.<item>.*` `s3.comm.<tech>.*` `s3.dash.<row>.*` | table cells, row then column |
 | `d.*` | the Activity 7 design: scenario and problem (7.1), connectivity (7.2, 7.3), power (7.5) and the four design blocks (7.6); mirrored in the record sheet since the canvas was cut on 18 Sep 2026 |
 

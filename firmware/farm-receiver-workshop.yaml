@@ -1,0 +1,415 @@
+# Farm receiver — WORKSHOP image (session 4)
+#
+# A plain ESP32-C3 development board with NO sensors. It stands for the board in
+# the farmhouse: it listens over ESP-NOW for the GoGo-IoT board out at the plot
+# (firmware/gogo-iot-workshop.yaml, "ESP-NOW broadcast" block), republishes what
+# it hears as its own entities, and is the one device Home Assistant talks to.
+# Story for the room: the plot is out of WiFi range, ESP-NOW carries further,
+# and a cheap board in the house is enough to bridge it.
+#
+# Same provisioning strategy as the other two images: built once per zone by
+# build-zones.py, zone colour in the hostname (farm-receiver-red-a1b2c3), read
+# over USB at web.esphome.io, adopted in Home Assistant by its six-character
+# suffix. Which board a receiver LISTENS TO is not baked in: the team types
+# their GoGo-IoT board's name (or just its suffix) into the `sender name` text
+# box on the receiver's own web page or in Home Assistant, and the receiver
+# filters the broadcasts it hears by that name. Nothing to pair, nothing to
+# reflash when a board is swapped.
+#
+# HARDWARE: any ESP32-C3 devkit. The two common kinds differ in where the USB
+# port goes, and the log banner (DEVICE NAME / IP ADDRESS) only shows on the
+# port the logger writes to:
+#   * native USB straight to the chip (ESP32-C3 "Super Mini", DevKitC-02 v1.1's
+#     USB-C, Seeed XIAO ESP32C3) -> console: USB_SERIAL_JTAG  (default)
+#   * a USB-UART bridge chip (CP2102 / CH340) on the board (DevKitM-1, DevKitC-02
+#     via its UART port, most NodeMCU-style C3 boards) -> console: UART0
+# build-zones.py --receiver-console uart0 builds the second kind. Flashing at
+# web.esphome.io works either way; only where the log appears differs.
+
+substitutions:
+  device_base_name: farm-receiver
+  # Overridden per build by build-zones.py; defaults only so `esphome config` validates.
+  zone: red
+  wifi_ssid: farm-iot-red
+  wifi_password: SET_BY_BUILD_SCRIPT
+  # USB_SERIAL_JTAG (native USB) or UART0 (board with a USB-UART chip) — see above.
+  console: USB_SERIAL_JTAG
+  # How long without a packet from the chosen sender before the link is reported
+  # down and the mirrored readings go unknown. The sender transmits every 3 s, so
+  # 15 s is five missed packets — long enough to ride out ordinary loss, short
+  # enough that a team switching the plot board off sees the effect while they
+  # are still watching. This is the number the worksheet's "switch it off and
+  # count" step measures.
+  link_timeout_ms: "15000"
+
+esphome:
+  name: ${device_base_name}-${zone}
+  name_add_mac_suffix: true
+  # No friendly_name: ~34 identical receivers per zone; the hostname is what a
+  # team finds theirs by. Boot banner as in gogo-iot-workshop.yaml — it is the
+  # line participants read at web.esphome.io.
+  on_boot:
+    then:
+      - logger.log:
+          format: "================================================"
+          level: INFO
+      - logger.log:
+          format: "=====  DEVICE NAME: %s  ====="
+          args: ["App.get_name().c_str()"]
+          level: INFO
+      - logger.log:
+          format: "================================================"
+          level: INFO
+
+esp32:
+  board: esp32-c3-devkitm-1
+  framework:
+    type: esp-idf
+
+logger:
+  hardware_uart: ${console}
+  level: INFO
+
+api:
+  # No encryption key — see gogo-iot-workshop.yaml and firmware/README.md.
+  reboot_timeout: 0s
+
+ota:
+  - platform: esphome
+    password: !secret ota_password
+
+wifi:
+  ssid: ${wifi_ssid}
+  password: ${wifi_password}
+  # Load-bearing for ESP-NOW even more than for mDNS: a radio dozing between
+  # beacons misses broadcast frames, and ESP-NOW packets are exactly that.
+  power_save_mode: none
+  reboot_timeout: 0s
+  ap:
+    ssid: ${device_base_name}-${zone}-setup
+    password: !secret fallback_ap_password
+
+captive_portal:
+improv_serial:
+
+# The receiver's own page at http://<ip>/ — this is the "type the IP address and
+# see the plot's readings" step of session 4, with no Home Assistant involved.
+# `local: true` as everywhere else: no CDN in the room.
+web_server:
+  port: 80
+  local: true
+
+# ============================================================================
+# ESP-NOW receive side
+# ----------------------------------------------------------------------------
+# The sender broadcasts one CSV line every 3 s (format documented in
+# gogo-iot-workshop.yaml):
+#     GOGO,<name>,<seq>,<temp>,<hum>,<light>,<pressure>,<vibration>,<float>,<pump>
+#
+# Everything arrives through `on_unknown_peer`, on purpose:
+#   * ESP-NOW only hands broadcasts from REGISTERED peers to on_broadcast, and a
+#     peer table holds 20 entries. A ballroom has ~100 GoGo boards on the air;
+#     `auto_add_peer` would fill the table with the first 20 heard and the team's
+#     own board could be the 21st. So no peer is ever added and every frame is
+#     inspected here instead.
+#   * Filtering is by NAME in the payload, matched against what the team typed
+#     (case-insensitive, suffix match, so "a1b2c3" and "gogo-iot-red-a1b2c3"
+#     both work). A frame from any other board updates only the "other boards
+#     heard" diagnostic — the worksheet's cue that a shared channel is public.
+#   * Readings the sender printed as "nan" are skipped, not published.
+#   * `seq` gaps accumulate into "packets lost".
+# The link watchdog is the 1 s interval below: ${link_timeout_ms} without an
+# accepted frame flips the `link` binary sensor off and publishes NAN to the
+# mirrored sensors, so Home Assistant shows them as unknown rather than holding
+# a stale number — the fail-safe habit from session 2, applied to a radio link.
+# ============================================================================
+espnow:
+  id: espnow_bus
+  on_unknown_peer:
+    then:
+      - lambda: |-
+          if (size < 6 || size > 200) return;
+          char buf[201];
+          memcpy(buf, data, size);
+          buf[size] = '\0';
+
+          char name[40];
+          unsigned long seq;
+          float t, h, l, p, v;
+          int f, pr;
+          const int n = sscanf(buf, "GOGO,%39[^,],%lu,%f,%f,%f,%f,%f,%d,%d",
+                               name, &seq, &t, &h, &l, &p, &v, &f, &pr);
+          if (n != 9) return;                       // not a GoGo packet; ignore
+
+          const int rssi = info.rx_ctrl->rssi;
+          const uint32_t now = millis();
+
+          // What the team typed, trimmed and lower-cased; the packet's name lower-cased.
+          // (Hand-rolled rather than <cctype>, so the lambda needs no extra include.)
+          auto lower = [](std::string &s) {
+            for (auto &c : s) if (c >= 'A' && c <= 'Z') c = c - 'A' + 'a';
+          };
+          std::string want = id(sender_name).state;
+          while (!want.empty() && (want.back() == ' ' || want.back() == '\t')) want.pop_back();
+          size_t lead = 0;
+          while (lead < want.size() && (want[lead] == ' ' || want[lead] == '\t')) lead++;
+          want.erase(0, lead);
+          lower(want);
+          std::string got = name;
+          lower(got);
+          const bool match = !want.empty() && got.size() >= want.size() &&
+                             got.compare(got.size() - want.size(), want.size(), want) == 0;
+
+          if (!match) {
+            // Somebody else's board. Show one every 5 s at most: a busy room has
+            // dozens of these a second and each publish is a Home Assistant row.
+            if (now - id(other_ms) >= 5000 || id(other_ms) == 0) {
+              id(other_ms) = now;
+              char s[80];
+              snprintf(s, sizeof s, "%s (%d dBm)", name, rssi);
+              id(rx_other).publish_state(s);
+            }
+            return;
+          }
+
+          // Our board.
+          id(last_rx_ms) = now;
+          if (!id(link_up)) {
+            id(link_up) = true;
+            ESP_LOGI("espnow", "link up: hearing %s", name);
+          }
+          id(rx_count_n) += 1;
+          if (id(have_seq) && seq > id(last_seq) + 1) id(rx_lost_n) += seq - id(last_seq) - 1;
+          id(last_seq) = seq;
+          id(have_seq) = true;
+
+          if (!std::isnan(t)) id(rx_temp).publish_state(t);
+          if (!std::isnan(h)) id(rx_hum).publish_state(h);
+          if (!std::isnan(l)) id(rx_light).publish_state(l);
+          if (!std::isnan(p)) id(rx_pressure).publish_state(p);
+          if (!std::isnan(v)) id(rx_vib).publish_state(v);
+          id(rx_float).publish_state(f != 0);
+          id(rx_pump).publish_state(pr != 0);
+          id(rx_rssi).publish_state(rssi);
+          id(rx_count).publish_state(id(rx_count_n));
+          id(rx_lost).publish_state(id(rx_lost_n));
+          if (id(rx_sender).state != name) id(rx_sender).publish_state(name);
+          id(rx_raw).publish_state(buf);
+          // INFO so it shows in the USB log participants read; one line per packet.
+          ESP_LOGI("espnow", "<<< %s (%d dBm)", buf, rssi);
+
+globals:
+  - id: last_rx_ms            # millis() of the last accepted packet
+    type: uint32_t
+    restore_value: false
+    initial_value: '0'
+  - id: link_up
+    type: bool
+    restore_value: false
+    initial_value: 'false'
+  - id: last_seq
+    type: uint32_t
+    restore_value: false
+    initial_value: '0'
+  - id: have_seq
+    type: bool
+    restore_value: false
+    initial_value: 'false'
+  - id: rx_count_n
+    type: uint32_t
+    restore_value: false
+    initial_value: '0'
+  - id: rx_lost_n
+    type: uint32_t
+    restore_value: false
+    initial_value: '0'
+  - id: other_ms              # last time "other boards heard" was updated
+    type: uint32_t
+    restore_value: false
+    initial_value: '0'
+
+# Link watchdog — see the ESP-NOW block above.
+interval:
+  - interval: 1s
+    then:
+      - lambda: |-
+          if (!id(link_up)) return;
+          if (millis() - id(last_rx_ms) < ${link_timeout_ms}) return;
+          id(link_up) = false;
+          id(have_seq) = false;
+          ESP_LOGW("espnow", "link down: nothing from %s for %s ms", id(rx_sender).state.c_str(), "${link_timeout_ms}");
+          id(rx_temp).publish_state(NAN);
+          id(rx_hum).publish_state(NAN);
+          id(rx_light).publish_state(NAN);
+          id(rx_pressure).publish_state(NAN);
+          id(rx_vib).publish_state(NAN);
+          id(rx_rssi).publish_state(NAN);
+
+# Which GoGo-IoT board to listen to. Shown as a text box on the receiver's web
+# page and under Configuration on the Home Assistant device page. Survives a
+# power cut (restore_value). Changing it drops the current link so the readings
+# that follow are unmistakably the new board's.
+text:
+  - platform: template
+    name: "ชื่อบอร์ดที่แปลง (sender name)"
+    id: sender_name
+    icon: "mdi:link-variant"
+    entity_category: config
+    mode: text
+    optimistic: true
+    restore_value: true
+    min_length: 0
+    max_length: 32
+    on_value:
+      then:
+        - lambda: |-
+            id(link_up) = false;
+            id(have_seq) = false;
+            id(rx_sender).publish_state("");
+            ESP_LOGI("espnow", "sender name set to '%s'", x.c_str());
+
+# Mirrored readings. Same Thai names as the GoGo-IoT board so a team recognises
+# them, with "ESP-NOW" in the ASCII tag so the two paths are told apart in a
+# Home Assistant entity picker and the entity_ids stay unique and greppable.
+# `update_interval: never` — these publish from the receive lambda only.
+sensor:
+  - platform: template
+    name: "อุณหภูมิ (temperature, ESP-NOW)"
+    id: rx_temp
+    unit_of_measurement: "°C"
+    device_class: temperature
+    state_class: measurement
+    accuracy_decimals: 1
+    update_interval: never
+  - platform: template
+    name: "ความชื้นอากาศ (humidity, ESP-NOW)"
+    id: rx_hum
+    unit_of_measurement: "%"
+    device_class: humidity
+    state_class: measurement
+    accuracy_decimals: 1
+    update_interval: never
+  - platform: template
+    name: "ความสว่าง (light, ESP-NOW)"
+    id: rx_light
+    unit_of_measurement: "lx"
+    device_class: illuminance
+    state_class: measurement
+    accuracy_decimals: 0
+    update_interval: never
+  - platform: template
+    name: "ความกดอากาศ (pressure, ESP-NOW)"
+    id: rx_pressure
+    unit_of_measurement: "hPa"
+    device_class: atmospheric_pressure
+    state_class: measurement
+    accuracy_decimals: 1
+    update_interval: never
+  - platform: template
+    name: "ความสั่นสะเทือน (vibration, ESP-NOW)"
+    id: rx_vib
+    unit_of_measurement: "mg"
+    icon: "mdi:vibrate"
+    state_class: measurement
+    accuracy_decimals: 1
+    update_interval: never
+
+  # Diagnostics of the radio link itself.
+  - platform: template
+    name: "ความแรงสัญญาณ ESP-NOW (rssi)"
+    id: rx_rssi
+    unit_of_measurement: "dBm"
+    device_class: signal_strength
+    state_class: measurement
+    accuracy_decimals: 0
+    entity_category: diagnostic
+    update_interval: never
+  - platform: template
+    name: "แพ็กเก็ตที่รับ (packets received)"
+    id: rx_count
+    icon: "mdi:download-network-outline"
+    accuracy_decimals: 0
+    state_class: total_increasing
+    entity_category: diagnostic
+    update_interval: never
+  - platform: template
+    name: "แพ็กเก็ตที่หาย (packets lost)"
+    id: rx_lost
+    icon: "mdi:close-network-outline"
+    accuracy_decimals: 0
+    state_class: total_increasing
+    entity_category: diagnostic
+    update_interval: never
+  # Same figure as on the GoGo-IoT board; the two must agree or nothing is heard.
+  - platform: template
+    name: "ช่องสัญญาณ WiFi (channel)"
+    id: wifi_channel
+    icon: "mdi:radio-tower"
+    accuracy_decimals: 0
+    entity_category: diagnostic
+    update_interval: 30s
+    lambda: |-
+      const uint8_t ch = id(espnow_bus).get_wifi_channel();
+      if (ch == 0) return {};
+      return ch;
+  - platform: uptime
+    name: "เวลาทำงาน (uptime)"
+    update_interval: 60s
+    entity_category: diagnostic
+  - platform: wifi_signal
+    name: "ความแรงสัญญาณ WiFi"
+    update_interval: 60s
+    entity_category: diagnostic
+
+binary_sensor:
+  - platform: template
+    name: "สวิตช์ลูกลอย (float switch, ESP-NOW)"
+    id: rx_float
+    device_class: moisture       # Wet / Dry in Home Assistant, as on the GoGo board
+  - platform: template
+    name: "ปั๊มกำลังทำงาน (pump running, ESP-NOW)"
+    id: rx_pump
+    icon: "mdi:water-pump"
+  # The link itself. On while packets from the chosen sender keep arriving; off
+  # after ${link_timeout_ms} of silence. device_class connectivity reads
+  # Connected / Disconnected in Home Assistant, and is what session 4's
+  # optional "plot went quiet" automation triggers on.
+  - platform: template
+    name: "รับข้อมูลจากแปลง (link)"
+    id: rx_link
+    device_class: connectivity
+    lambda: return id(link_up);
+
+text_sensor:
+  - platform: template
+    name: "บอร์ดที่รับข้อมูลอยู่ (receiving from)"
+    id: rx_sender
+    icon: "mdi:access-point-check"
+    update_interval: never
+  # The last accepted frame, verbatim — the packet as it travelled over the air.
+  - platform: template
+    name: "ข้อมูลล่าสุดที่รับ (last packet)"
+    id: rx_raw
+    icon: "mdi:text-long"
+    entity_category: diagnostic
+    update_interval: never
+  # Any GoGo board heard that is NOT ours, one every 5 s at most. Its job is the
+  # worksheet question: a broadcast channel is shared, so pick and protect.
+  - platform: template
+    name: "บอร์ดอื่นที่ได้ยิน (other boards heard)"
+    id: rx_other
+    icon: "mdi:access-point-network"
+    entity_category: diagnostic
+    update_interval: never
+  - platform: wifi_info
+    ip_address:
+      name: "หมายเลข IP"
+      id: ip_addr
+      entity_category: diagnostic
+      # Second half of the boot banner, logged when WiFi has an address — see
+      # gogo-iot-workshop.yaml. This is the address for the web page above.
+      on_value:
+        - logger.log:
+            format: "=====  IP ADDRESS: %s  ====="
+            args: ["x.c_str()"]
+            level: INFO

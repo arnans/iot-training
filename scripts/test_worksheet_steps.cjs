@@ -3,7 +3,8 @@
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const { JSDOM } = require(process.argv[2] || 'jsdom');
-const PAGES = ['activity-1', 'activity-2', 'activity-3', 'activity-4', 'activity-5', 'activity-6', 'activity-7', 'activity-8'];
+const PAGES = ['activity-1', 'activity-2', 'activity-3', 'activity-4', 'activity-5', 'activity-6', 'activity-7', 'activity-8',
+               'activity-9', 'activity-10', 'activity-11'];
 for (const slug of PAGES) {
   const source = fs.readFileSync(`docs/${slug}.md`, 'utf8');
   const dom = new JSDOM(fs.readFileSync(`docs/renders/${slug}.html`, 'utf8'));
@@ -13,7 +14,7 @@ for (const slug of PAGES) {
     const id = decodeURIComponent(a.getAttribute('href').slice(1));
     assert.ok(dom.window.document.getElementById(id), `${slug}: link to missing anchor #${id}`);
   }
-  for (const match of source.matchAll(/^### [^\n]*\{ #(a[1-8]-[\w-]+|hist-[1-4]) \}\r?\n([\s\S]*?)(?=^### |^## |$(?![\s\S]))/gm)) {
+  for (const match of source.matchAll(/^### [^\n]*\{ #(a\d+-[\w-]+|hist-[1-4]) \}\r?\n([\s\S]*?)(?=^### |^## |$(?![\s\S]))/gm)) {
     const [, id, body] = match;
     const numbers = [...body.matchAll(/^(\d+)\. /gm)].map(m => Number(m[1]));
     if (!numbers.length) {

@@ -32,6 +32,14 @@ Use case: illustration-story. Decorative adult Thai smart farming workbook banne
 
 Use case: illustration-story. Decorative adult Thai smart farming workbook banner. Editorial illustration with clean charcoal outlines, muted sage greens, warm cream #fff6e3 and amber highlights. Represent actual farm APPLICATION, no workshop devices or wiring diagrams. No text, numbers, logos or floating icons. Wide shallow panoramic scene. Requested 6:1 canvas. If output 3:1 compose all meaningful artwork in central half height with plain cream upper and lower quarters, so display center cropped to 6:1. Distant panoramic viewpoint, complete small figures. Scene: Two farmers planning together over a paper farm map on a low table, vegetable beds, greenhouse and water tank behind them. Practical farm planning.
 
+## activity-09-send.png, activity-10-receive.png, activity-11-bridge.png — not yet generated
+
+Session 4 (20 Sep 2026) has no banners. Same style and constraints as above; scenes:
+
+- **09 Send** — a small weatherproof sensor post standing alone at the far edge of a wide field, the farmhouse tiny on the horizon; the distance is the subject.
+- **10 Receive** — the farmhouse porch or window with the field stretching away behind it; a person on the porch looking out toward the far plot.
+- **11 Bridge** — a farmer at the kitchen table in the evening, the far field visible through the window, the day's work laid out on the table (no screens, charts, text or numbers).
+
 ## activity-06-history.webp — generated 20 Sep 2026
 
 Built-in image generation; optimized with `scripts/build-banners.py` to 1600 × 267 WebP (about 99 KB). Added to Activity 6 and its rendered worksheet. Source PNG retained in the local generated-image archive and `.tmp/activity-06-history-source.png`; the published site uses only WebP.

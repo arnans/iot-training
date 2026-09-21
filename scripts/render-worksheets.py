@@ -81,8 +81,9 @@ REDIRECTS = {"session-1": "session-1-start", "session-2": "activity-4", "session
 SITE_NAME = "IoT ในฟาร์มอัจฉริยะ"
 # shown at the foot of every page, on screen and in print; the site footer carries the same line (mkdocs.yml)
 AI_DISCLOSURE = "เอกสารนี้เรียบเรียงขึ้นด้วย AI (Fable 5.1 และ GPT-6 Astra) ภายใต้การกำกับอย่างใกล้ชิดของผู้จัดทำ และรับรองว่าเนื้อหาเป็นไปตามเจตนาของผู้จัดทำทุกประการ"
-FONTS = ("https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700"
-         "&family=IBM+Plex+Mono:wght@400;600&display=swap")
+# No FONTS constant on purpose. Prompt and IBM Plex Mono are self-hosted in
+# docs/fonts/ and declared as @font-face in docs/stylesheets/extra.css, which
+# site_css() inlines below. Its ../fonts/ paths resolve from docs/renders/ too.
 
 
 def _load_hook(name: str):
@@ -104,7 +105,7 @@ VIDEOS = _load_hook("videos")
 def site_css() -> str:
     """extra.css with Material's scheme attributes swapped for the three-state theme pattern."""
     css = (DOCS / "stylesheets" / "extra.css").read_text(encoding="utf-8")
-    css = re.sub(r"^@import .*$\n?", "", css, flags=re.M)  # fonts arrive via <link>; the URL itself holds ";"
+    css = re.sub(r"^@import .*$\n?", "", css, flags=re.M)  # no @import may reach a self-contained render
     m = re.search(r'\[data-md-color-scheme="slate"\]\s*\{(.*?)\n\}', css, re.S)
     if not m:
         sys.exit("extra.css: dark (slate) block not found; update site_css()")
@@ -639,9 +640,6 @@ def page_shell(title: str, nav: str, main: str, scripts: str) -> str:
                 "  .ws-shell--solo { grid-template-columns: minmax(0, 47rem); justify-content: center; }\n}\n")
     return f"""<title>{html.escape(title)}</title>
 <meta name="description" content="ใบงานผู้เข้าร่วม {html.escape(SITE_NAME)}">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="{FONTS}">
 <style>
 {css}
 </style>

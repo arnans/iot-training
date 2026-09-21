@@ -5,10 +5,81 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Instructor & TA resources</title>
 <meta name="description" content="Instructor & TA handbook">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;600;700&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
 <style>
+/* Self-hosted Sarabun + IBM Plex Mono, thai+latin subsets (SIL OFL).
+   These pages are printed and handed to the venue's network provider; they must
+   not depend on a font CDN. Files in docs/fonts/, paths relative to docs/. */
+@font-face {
+  font-family: 'Sarabun';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(fonts/sarabun-400-thai.woff2) format('woff2');
+  unicode-range: U+02D7, U+0303, U+0331, U+0E01-0E5B, U+200C-200D, U+25CC;
+}
+
+@font-face {
+  font-family: 'Sarabun';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(fonts/sarabun-400-latin.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'Sarabun';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url(fonts/sarabun-600-thai.woff2) format('woff2');
+  unicode-range: U+02D7, U+0303, U+0331, U+0E01-0E5B, U+200C-200D, U+25CC;
+}
+
+@font-face {
+  font-family: 'Sarabun';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url(fonts/sarabun-600-latin.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'Sarabun';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url(fonts/sarabun-700-thai.woff2) format('woff2');
+  unicode-range: U+02D7, U+0303, U+0331, U+0E01-0E5B, U+200C-200D, U+25CC;
+}
+
+@font-face {
+  font-family: 'Sarabun';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url(fonts/sarabun-700-latin.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(fonts/ibm-plex-mono-400-latin.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url(fonts/ibm-plex-mono-600-latin.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
 :root {
   --ink: #14181d;
   --ink-soft: #4a545f;
@@ -215,7 +286,7 @@ figcaption {
   <header class="doc-head">
     <p class="kicker">Instructor & TA handbook</p>
     <h1>Instructor & TA resources</h1>
-    <p class="meta">IoT in Smart Farming workshop · Last updated 2026-09-20</p>
+    <p class="meta">IoT in Smart Farming workshop · Last updated 2026-09-21</p>
     <p class="disclosure">This document was compiled with Claude AI. Its content was designed and reviewed by those responsible, who certify that it reflects the intent of the preparing team in every respect.</p>
   </header>
   <p>Every file and link needed to prepare for and run the workshop, in one place.
@@ -299,7 +370,7 @@ figcaption {
   <tr>
   <td>Windows / Intel Mac</td>
   <td><a href="https://www.virtualbox.org/wiki/Downloads">Downloads</a></td>
-  <td><a href="https://drive.google.com/file/d/1DrX4O-jywvnCA0b4aqdQ3z9r7F2EkEf8/view?usp=sharing"><code>Farm-Workshop-win-1.2.ova</code></a> (Google Drive)</td>
+  <td><a href="https://drive.google.com/file/d/1GWS_Mk74MWxRo_mUM1nFinUM0xifLnG9/view?usp=sharing"><code>farm-workshop-x86-64-1.1.ova</code></a> (Google Drive)</td>
   </tr>
   <tr>
   <td>Apple Silicon Mac (M1+)</td>
@@ -380,20 +451,24 @@ figcaption {
   <td><a href="https://github.com/arnans/iot-training/blob/main/planning/COURSE-DESIGN.md">COURSE-DESIGN.md</a> <em>(repo)</em></td>
   </tr>
   <tr>
-  <td>Activity 1 — Thai presentation, worksheet sections 1.1–1.5 and closing question</td>
-  <td><a href="https://docs.google.com/presentation/d/1yoNUpS3mo2z2zOZJHEQtuMfSuLxuXltwDT22UHVSHzo/edit">Google Slides — 9 slides with instructor notes</a> <em>(edit this same deck in place; slide 8 has an image placeholder)</em></td>
+  <td>Activities 1–8 — Thai workshop presentation, activity covers and instructor notes</td>
+  <td><a href="https://docs.google.com/presentation/d/1yoNUpS3mo2z2zOZJHEQtuMfSuLxuXltwDT22UHVSHzo/edit">Google Slides — 84 slides</a> · <a href="slides/README.md">Inventory and build sources</a> <em>(edit this same deck in place; Activity 1's native slide <code>a1_slide_8</code>, currently ninth, retains its intentional image placeholder)</em></td>
+  </tr>
+  <tr>
+  <td>Reusable slide-generation reference</td>
+  <td><a href="SLIDE-GENERATION-GUIDE.md">Design, Thai writing, image treatment and native Slides workflow</a>, with saved cover and equipment-slide previews</td>
   </tr>
   <tr>
   <td>Known gaps and assumptions in the worksheets</td>
   <td><a href="https://github.com/arnans/iot-training/blob/main/planning/WORKSHEET-TODO.md">WORKSHEET-TODO.md</a> <em>(repo)</em></td>
   </tr>
   <tr>
-  <td>Network spec to hand the venue's provider — Thai</td>
-  <td><a href="https://arnans.github.io/iot-training/network-requirements.html">network-requirements.html</a></td>
+  <td><strong>Network setup</strong> — the ask for NT, Flint router checklist, who-joins-which-WiFi rules, acceptance test</td>
+  <td><a href="https://arnans.github.io/iot-training/network-setup.html">network-setup.html</a></td>
   </tr>
   <tr>
-  <td>Network spec — English</td>
-  <td><a href="https://arnans.github.io/iot-training/network-requirements-en.html">network-requirements-en.html</a></td>
+  <td>Old VLAN network spec — <strong>deprecated 21 Sep 2026</strong>, reference only (Thai / English)</td>
+  <td><a href="https://arnans.github.io/iot-training/network-requirements.html">network-requirements.html</a> · <a href="https://arnans.github.io/iot-training/network-requirements-en.html">network-requirements-en.html</a></td>
   </tr>
   </tbody>
   </table></div>

@@ -2,6 +2,8 @@
 
 These assets support the native Google Slides deck and `planning/slides/activity-2-8.json`.
 
+- `a4_11-mode-selector-v2.png` revises slide 39: Auto/Manual selector on the left; automatic pump symbol and hand operating an ON/OFF toggle on the right. Built-in image_gen edit; prompt in `planning/slides/automation-visuals.json`.
+
 - `a4_05-timeline-v2.png` replaces slide 33's clock/bulb scenes with an After–Before timeline showing a passed condition inside the interval and failed conditions outside. Built-in image_gen; prompt in `planning/slides/automation-visuals.json`.
 
 - `a4_07-timeline-v2.png` replaces slide 35's separate clock/bulb scenes with a timeline: After starts the permitted interval and Before ends it. Generated with built-in image_gen; full prompt in `planning/slides/automation-visuals.json`.

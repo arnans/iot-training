@@ -63,10 +63,10 @@
       "rightTitle": "ผลที่ได้: สวิตช์เลือกโหมดปั๊ม",
       "left": "ไปที่ Settings → Devices & services\nเลือก Helpers → Create helper → Toggle",
       "right": "ตั้งชื่อว่า Pump Auto Mode\nเปิดสวิตช์เพื่อใช้โหมด Auto\nปิดสวิตช์เพื่อเลือกโหมด Manual",
-      "scene": "LEFT: abstract toggle switch icon, blue active side and yellow fingertip touching it; no text. RIGHT: two generic mode symbols side by side: blue circular automation arrows around a small pump icon, and outline human hand beside a small pump icon for manual operation. No literal app UI, connectors, wires, text.",
+      "scene": "Left: explicit Auto/Manual mode selector. Right: pump with automatic circular arrows, beside a hand selecting an ON/OFF toggle for manual operation.",
       "showArrow": true,
-      "image": "planning/slide-reference/assets/a4_11-concept.png",
-      "prompt": "Match reference style ONLY: contemporary clean isometric technical line art, thin gray outlines, white/light gray surfaces, selective blue and golden yellow, plain warm cream #F6F2E8. Wide 3:1, TWO equal scenes separated by broad blank gap for editable arrow. No text, numbers, letters, captions, frames, pin headers, electrical connectors, circuit details, UI, farms or scenery. Clearly generic representative symbols; all objects fully visible. LEFT: abstract toggle switch icon, blue active side and yellow fingertip touching it; no text. RIGHT: two generic mode symbols side by side: blue circular automation arrows around a small pump icon, and outline human hand beside a small pump icon for manual operation. No literal app UI, connectors, wires, text."
+      "image": "planning/slide-reference/assets/a4_11-mode-selector-v2.png",
+      "prompt": "undefined\n"
     },
     {
       "id": "a4_12",

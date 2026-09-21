@@ -587,8 +587,8 @@
       "section": "4.8",
       "title": "สร้างสวิตช์เลือกโหมด",
       "caption": "ไปที่ Settings → Devices & services\nเลือก Helpers → Create helper → Toggle\nตั้งชื่อว่า Pump Auto Mode\nเปิดสวิตช์เพื่อใช้โหมด Auto\nปิดสวิตช์เพื่อเลือกโหมด Manual",
-      "image": "planning/slide-reference/assets/a4_11-concept.png",
-      "notes": "สร้าง Farm Dashboard ผ่าน Settings→Dashboards→Add dashboard→Overview(Legacy) เปิดAdd to sidebar หาสวิตช์ใหม่แล้วลองOn/Off\nภาพใช้สัญลักษณ์แทนเหตุการณ์และผลที่เกิดขึ้น ไม่ใช่ภาพอุปกรณ์จริงหรือแผนผังการต่อสาย",
+      "image": "planning/slide-reference/assets/a4_11-mode-selector-v2.png",
+      "notes": "สร้าง Farm Dashboard ผ่าน Settings→Dashboards→Add dashboard→Overview(Legacy) เปิดAdd to sidebar หาสวิตช์ใหม่แล้วลองOn/Off\nภาพใช้สัญลักษณ์แทนเหตุการณ์และผลที่เกิดขึ้น ไม่ใช่ภาพอุปกรณ์จริงหรือแผนผังการต่อสาย\nภาพแยกสวิตช์เลือกโหมด Auto/Manual ออกจากสวิตช์สั่งปั๊ม ON/OFF ในโหมด Manual: ภาพมือกดสวิตช์แทนการสั่งงานด้วยตนเอง ไม่ใช่มือครอบปั๊ม ภาพเป็นสัญลักษณ์ ไม่ใช่หน้าจอจริงของ Helper",
       "sources": [],
       "concept": {
         "leftTitle": "สร้างตัวเลือก Auto / Manual",

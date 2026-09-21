@@ -6,23 +6,20 @@
 
 ## 1. ก่อนวันอบรม — ติดตั้งลงแล็ปท็อป
 
-ทำให้เสร็จและส่งแบบยืนยัน **อย่างน้อย 3 วันก่อนวันอบรม** ขั้นตอนละเอียดพร้อมภาพประกอบอยู่ใน[คู่มือเตรียมแล็ปท็อป](install.md)
+ทำให้เสร็จ **ที่บ้านก่อนวันอบรม** ขั้นตอนละเอียดอยู่ใน[คู่มือเตรียมแล็ปท็อป](install.md)
 
 ดูว่าแล็ปท็อปของเราเป็นแบบไหน แล้วดาวน์โหลด **ทั้งสองไฟล์ในแถวนั้น** (Mac: เมนู Apple → About This Mac ดูบรรทัด Chip หรือ Processor)
 
-| แล็ปท็อป | VirtualBox | ไฟล์ Farm Workshop (TODO GB) |
+| แล็ปท็อป | VirtualBox | ไฟล์ Farm Workshop (~2.6 GB) |
 |---------|-----------|------------------------------|
-| Windows | [Windows hosts](https://www.virtualbox.org/wiki/Downloads) | [farm-workshop-x86-64-1.1.ova](https://drive.google.com/file/d/1GWS_Mk74MWxRo_mUM1nFinUM0xifLnG9/view?usp=sharing) |
-| Mac ชิป Intel | [macOS / Intel hosts](https://www.virtualbox.org/wiki/Downloads) | [farm-workshop-x86-64-1.1.ova](https://drive.google.com/file/d/1GWS_Mk74MWxRo_mUM1nFinUM0xifLnG9/view?usp=sharing) |
-| Mac ชิป Apple (M1 ขึ้นไป) | [macOS / Apple Silicon hosts](https://www.virtualbox.org/wiki/Downloads) | [farm-workshop-arm64.ova](https://TODO/farm-workshop-arm64.ova) |
+| Windows | [Windows hosts](https://www.virtualbox.org/wiki/Downloads) | [Farm-Workshop-win-1.2.ova](https://drive.google.com/file/d/1DrX4O-jywvnCA0b4aqdQ3z9r7F2EkEf8/view?usp=sharing) |
+| Mac ชิป Intel | [macOS / Intel hosts](https://www.virtualbox.org/wiki/Downloads) | [Farm-Workshop-win-1.2.ova](https://drive.google.com/file/d/1DrX4O-jywvnCA0b4aqdQ3z9r7F2EkEf8/view?usp=sharing) |
 
-> ไฟล์ `.ova` มีขนาดใหญ่ **ดาวน์โหลดที่บ้านหรือที่ทำงานล่วงหน้า** ดาวน์โหลดที่สถานที่อบรมไม่ทัน · ต้องมี RAM 8 GB และพื้นที่ว่าง 20 GB ขึ้นไป · Chromebook, iPad และ Windows ชิป ARM ใช้ไม่ได้
+> ไฟล์ `.ova` มีขนาดใหญ่ **ดาวน์โหลดที่บ้านหรือที่ทำงานล่วงหน้า** ดาวน์โหลดที่สถานที่อบรมไม่ทัน · ต้องมี RAM 8 GB และพื้นที่ว่าง 20 GB ขึ้นไป · Chromebook, iPad, Windows ชิป ARM และ Mac ชิป Apple (M1 ขึ้นไป) ใช้ไม่ได้ ในกลุ่มขอให้มีอย่างน้อยหนึ่งเครื่องที่เป็น Windows หรือ Mac ชิป Intel
 
 | สิ่งที่ต้องทำ | ลิงก์ |
 |--------------|-------|
-| คู่มือติดตั้งทีละขั้น | [เตรียมแล็ปท็อปก่อนการอบรม](install.md) |
-| ส่งภาพหน้าจอยืนยันว่าติดตั้งสำเร็จ | [แบบยืนยันการติดตั้ง](https://TODO/form) |
-| ติดปัญหาระหว่างติดตั้ง | ติดต่อทีมผู้สอน: TODO (ช่องทางติดต่อ และเวลาช่วงช่วยเหลือออนไลน์) |
+| คู่มือติดตั้งทีละขั้น | [เตรียมแล็ปท็อปก่อนวันอบรม](install.md) |
 | ไฟล์ที่ต้องมีหากติดตั้ง VirtualBox บน Windows แล้วไม่ผ่าน | [vc_redist.x64.exe](https://aka.ms/vs/17/release/vc_redist.x64.exe) |
 
 ---

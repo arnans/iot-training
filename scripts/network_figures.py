@@ -4,13 +4,15 @@ Layout is defined once; only the labels differ per language, so the Thai and
 English editions cannot drift apart visually. Written as plain SVG with no
 external dependencies, so the pages stay self-contained and print cleanly.
 
-Two figures:
+Three figures:
 
   zones      Three zone circles, each holding the pair of SSIDs that share its
              VLAN. Shows both design guidelines at once: the pair sees itself,
              the zones do not see each other.
   multicast  What must pass within a zone and what must not cross between
              zones, with the settings that silently break each.
+  setup      The current design: three zone routers on NT's wired ports and
+             NT's own 5 GHz WiFi beside them, internet-only.
 """
 
 from __future__ import annotations
@@ -249,7 +251,128 @@ def multicast_svg(lang: str) -> str:
     return "\n".join(out)
 
 
+SETUP_LABELS = {
+    "th": {
+        "caption": "เราเตอร์สามตัวที่เรานำมา โซนละตัว แต่ละตัวมี subnet ของตัวเอง · "
+                   "WiFi ของ NT ออกอินเทอร์เน็ตได้อย่างเดียว",
+        "gateway": "เกตเวย์ NT · อินเทอร์เน็ต",
+        "ports": "พอร์ตสายแลน 3 พอร์ต",
+        "nt1": "WiFi ของ NT · 5 GHz เท่านั้น",
+        "nt2": "แล็ปท็อปและโทรศัพท์ที่เหลือทั้งหมด",
+        "nt3": "ออกอินเทอร์เน็ตเท่านั้น ไม่ถึงบอร์ดหรือ HA",
+        "router": "เราเตอร์ Flint",
+        "in24a": "บอร์ด",
+        "in24b": "~67 ตัว",
+        "in5a": "แล็ปท็อป HA",
+        "in5b": "โทรศัพท์ 1 เครื่อง",
+    },
+    "en": {
+        "caption": "Three routers we bring, one per zone, each on its own subnet · "
+                   "NT's WiFi reaches only the internet",
+        "gateway": "NT gateway · internet",
+        "ports": "3 wired ports",
+        "nt1": "NT WiFi · 5 GHz only",
+        "nt2": "every other laptop and phone",
+        "nt3": "internet only, no boards, no HA",
+        "router": "Flint router",
+        "in24a": "boards",
+        "in24b": "~67",
+        "in5a": "HA laptop",
+        "in5b": "1 phone per team",
+    },
+}
+
+SETUP_ZONES = [
+    # cx, accent, tint, subnet, ssid 2.4, ssid 5
+    (160, "#c0392b", "#fdf1ef", "10.10.0.0/22", "farm-iot-red",   "farm-laptop-red"),
+    (480, "#1e8449", "#eef8f1", "10.20.0.0/22", "farm-iot-green", "farm-laptop-green"),
+    (800, "#21618c", "#eef4fa", "10.30.0.0/22", "farm-iot-blue",  "farm-laptop-blue"),
+]
+
+
+def setup_svg(lang: str) -> str:
+    """Two networks in one room: three zone routers on NT's gateway, NT's own WiFi beside."""
+    L = SETUP_LABELS[lang]
+    Z = LABELS[lang]
+    out = [
+        '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 488" role="img" '
+        f'aria-label="{L["caption"]}">',
+        _DEFS,
+    ]
+
+    # NT gateway, top centre-left, and NT's own WiFi beside it
+    gx, gy = 400, 40
+    out.append(f'  <rect x="{gx - 110}" y="{gy - 22}" width="220" height="44" rx="6" '
+               f'fill="#ffffff" stroke="{INK}" stroke-width="1.8"/>')
+    out.append(_t(gx, gy + 5, L["gateway"], 13, INK, "700"))
+
+    nx = 735
+    out.append(f'  <rect x="{nx - 165}" y="{gy - 26}" width="330" height="60" rx="6" '
+               f'fill="{RULE}" fill-opacity=".35" stroke="{SOFT}" stroke-width="1.4" '
+               'stroke-dasharray="6 4"/>')
+    out.append(_t(nx, gy - 7, L["nt1"], 12.5, INK, "700"))
+    out.append(_t(nx, gy + 10, L["nt2"], 11, SOFT))
+    out.append(_t(nx, gy + 26, L["nt3"], 11, STOP, "600"))
+    out.append(f'  <line x1="{gx + 110}" y1="{gy}" x2="{nx - 165}" y2="{gy}" '
+               f'stroke="{SOFT}" stroke-width="1.4" stroke-dasharray="6 4"/>')
+
+    # cables: each router up to a shared bus, then into the gateway
+    by = 108
+    out.append(f'  <line x1="160" y1="{by}" x2="800" y2="{by}" stroke="{INK}" '
+               'stroke-width="1.8"/>')
+    out.append(f'  <line x1="{gx}" y1="{gy + 22}" x2="{gx}" y2="{by}" stroke="{INK}" '
+               'stroke-width="1.8"/>')
+    out.append(_t(gx + 8, by - 8, L["ports"], 11, SOFT, "600", anchor="start"))
+
+    for i, (cx, accent, tint, subnet, ssid24, ssid5) in enumerate(SETUP_ZONES):
+        top, bottom = 150, 372
+        out.append(f'  <line x1="{cx}" y1="{by}" x2="{cx}" y2="{top}" stroke="{INK}" '
+                   'stroke-width="1.8"/>')
+        out.append(f'  <rect x="{cx - 145}" y="{top}" width="290" height="{bottom - top}" '
+                   f'rx="8" fill="{tint}" stroke="{accent}" stroke-width="2.5"/>')
+        out.append(_t(cx, top + 24, Z["zone_names"][i], 15, accent, "700"))
+        out.append(
+            f'  <text x="{cx}" y="{top + 43}" text-anchor="middle" font-family="{SANS}" '
+            f'font-size="11" fill="{SOFT}">{L["router"]}&#160;&#160;'
+            f'<tspan font-family="{MONO}" font-size="11.5" font-weight="600" '
+            f'fill="{INK}">{subnet}</tspan></text>')
+
+        iy, ir = top + 115, 50
+        for ix, band, l1, l2 in ((cx - 66, Z["band24"], L["in24a"], L["in24b"]),
+                                 (cx + 66, Z["band5"], L["in5a"], L["in5b"])):
+            out.append(f'  <circle cx="{ix}" cy="{iy}" r="{ir}" fill="#ffffff" '
+                       f'stroke="{accent}" stroke-width="1.5" stroke-opacity=".55"/>')
+            out.append(_t(ix, iy - 9, band, 13, INK, "700"))
+            out.append(_t(ix, iy + 9, l1, 10.5, SOFT))
+            out.append(_t(ix, iy + 24, l2, 10.5, SOFT))
+
+        out.append(f'  <path d="M{cx - 66},{iy + 48} Q{cx},{iy + 82} {cx + 66},{iy + 48}" '
+                   f'fill="none" stroke="{GOOD}" stroke-width="1.8" '
+                   'marker-start="url(#arrow-good)" marker-end="url(#arrow-good)"/>')
+        out.append(_t(cx, iy + 100, Z["sees"], 11, GOOD, "600"))
+
+        for j, (band, ssid) in enumerate(((Z["band24"], ssid24), (Z["band5"], ssid5))):
+            y = top + 265 + j * 22
+            out.append(
+                f'  <text x="{cx}" y="{y}" text-anchor="middle" font-family="{SANS}" '
+                f'font-size="10.5" fill="{SOFT}">{band}&#160;&#160;'
+                f'<tspan font-family="{MONO}" font-size="12" font-weight="600" '
+                f'fill="{INK}">{ssid}</tspan></text>')
+
+    # zones do not see each other: the gap between the boxes carries the mark
+    for bx in (320, 640):
+        out.append(f'  <circle cx="{bx}" cy="261" r="13" fill="#ffffff" '
+                   f'stroke="{STOP}" stroke-width="1.8"/>')
+        out.append(f'  <path d="M{bx - 5},256 L{bx + 5},266 M{bx + 5},256 L{bx - 5},266" '
+                   f'stroke="{STOP}" stroke-width="2" stroke-linecap="round"/>')
+
+    out.append(_t(480, 472, L["caption"], 11.5, SOFT))
+    out.append("</svg>")
+    return "\n".join(out)
+
+
 FIGURES = {
     "network-zones": zones_svg,
     "network-multicast": multicast_svg,
+    "network-setup": setup_svg,
 }

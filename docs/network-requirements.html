@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>ข้อกำหนดระบบเครือข่ายสำหรับการอบรม</title>
-<meta name="description" content="เอกสารข้อกำหนดทางเทคนิค">
+<meta name="description" content="เอกสารข้อกำหนดทางเทคนิค (ยกเลิกแล้ว)">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;600;700&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
@@ -213,11 +213,18 @@ figcaption {
 <body>
 <article class="doc">
   <header class="doc-head">
-    <p class="kicker">เอกสารข้อกำหนดทางเทคนิค</p>
+    <p class="kicker">เอกสารข้อกำหนดทางเทคนิค (ยกเลิกแล้ว)</p>
     <h1>ข้อกำหนดระบบเครือข่ายสำหรับการอบรม</h1>
-    <p class="meta">โครงการอบรม IoT ในฟาร์มอัจฉริยะ · ปรับปรุงล่าสุด 2026-09-15</p>
+    <p class="meta">โครงการอบรม IoT ในฟาร์มอัจฉริยะ · ปรับปรุงล่าสุด 2026-09-21</p>
     <p class="disclosure">เอกสารนี้เรียบเรียงด้วย Claude AI เนื้อหาได้รับการออกแบบและตรวจทานโดยผู้รับผิดชอบแล้ว ขอรับรองว่าเป็นไปตามเจตนาของคณะจัดทำทุกประการ</p>
   </header>
+  <blockquote>
+  <p><strong>เอกสารนี้ยกเลิกแล้ว — 21 กันยายน 2569 ไม่ต้องส่งเอกสารนี้ให้ผู้ให้บริการเครือข่าย</strong>
+  แบบเครือข่ายที่ใช้ VLAN แยกตาม SSID ในเอกสารนี้ถูกแทนที่ด้วยเราเตอร์ GL.iNet Flint สามตัวที่คณะจัดทำนำมาและตั้งค่าเอง
+  ตัวละหนึ่งโซน โดย NT ให้บริการ WiFi 5 GHz สำหรับอินเทอร์เน็ตและพอร์ตสายแลนสามพอร์ต เอกสารฉบับปัจจุบันคือ
+  <strong><a href="NETWORK-SETUP.md">NETWORK-SETUP.md</a></strong> (ภาษาอังกฤษ) เก็บไฟล์นี้ไว้เพื่ออ้างอิงเท่านั้น
+  ชื่อ SSID รหัสผ่าน และสีโซนยังคงเดิม ส่วนเรื่อง VLAN คอนโทรลเลอร์ และการตั้งค่า multicast ฝั่งผู้ให้บริการไม่ใช้แล้วทั้งหมด</p>
+  </blockquote>
   <h2>1. ชื่อ SSID และรหัสผ่าน</h2>
   <p>ห้องอบรมแบ่งเป็นสามโซน แต่ละโซนใช้ VLAN แยกกัน และมี SSID หนึ่งคู่ คือ 2.4 GHz สำหรับบอร์ด
   และ 5 GHz สำหรับแล็ปท็อปกับโทรศัพท์</p>

@@ -36,12 +36,17 @@ IMG_DIR = OUT_DIR / "images"
 
 # source markdown -> (output file, <html lang>, document kicker)
 DOCUMENTS = [
+    # Current design: three Flint routers we own plus NT's internet WiFi.
+    ("network/NETWORK-SETUP.md", "network-setup.html", "en",
+     "Network setup"),
+    # The per-SSID VLAN spec, deprecated 21 Sep 2026. Still rendered so the
+    # published pages carry the deprecation notice rather than going stale.
     # The kicker sits above the title, so keep it clear of the opening sentence,
     # which already names the audience in both editions.
     ("network/NETWORK-REQUIREMENTS-th.md", "network-requirements.html", "th",
-     "เอกสารข้อกำหนดทางเทคนิค"),
+     "เอกสารข้อกำหนดทางเทคนิค (ยกเลิกแล้ว)"),
     ("network/NETWORK-REQUIREMENTS.md", "network-requirements-en.html", "en",
-     "Vendor specification"),
+     "Vendor specification (deprecated)"),
     # Not a vendor document, but the same shape: one standalone page, no worksheet
     # theme, readable by anyone with the link. Its links are absolute so the page
     # works from the repository and from GitHub Pages alike.

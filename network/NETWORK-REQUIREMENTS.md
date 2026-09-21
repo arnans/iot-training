@@ -2,6 +2,13 @@
 
 *ฉบับภาษาไทย: [NETWORK-REQUIREMENTS-th.md](NETWORK-REQUIREMENTS-th.md)*
 
+> **DEPRECATED — 21 Sep 2026. Do not send this document to the network provider.**
+> The per-SSID VLAN design it describes was replaced by three GL.iNet Flint routers that we
+> bring and configure ourselves, one per zone, with NT providing 5 GHz internet WiFi and three
+> wired ports. The current document is **[NETWORK-SETUP.md](NETWORK-SETUP.md)**. This file is
+> kept for reference only: the SSID names, password and zone colours are unchanged, everything
+> about VLANs, controllers and provider-side multicast settings no longer applies.
+
 For the network provider. A hands-on IoT workshop needs one thing from the wireless network
 that default enterprise configurations do not give: **devices must find and talk to each other
 over WiFi, by hostname (mDNS), across bands.** Capacity matters, but every requirement below is

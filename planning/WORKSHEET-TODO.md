@@ -10,6 +10,7 @@ bench session (adoption flow, overnight, sabotage cards, instructor machines, in
 | Decision | Resolution | Consequence in the worksheet |
 |---|---|---|
 | Home Assistant host | Participants' own laptops, as a **pre-built VirtualBox OVA** (`hass/`) | Session 1 opens with "start the VM, open the IP on its screen"; the install guide shrinks to "install VirtualBox, import, Start" |
+| Zone network (21 Sep 2026) | **Three GL.iNet Flint routers we own, one per zone**, each its own subnet with the zone's SSID pair; NT gives 5 GHz-only internet WiFi for the other laptops and phones plus three wired ports (`network/NETWORK-SETUP.md`). Replaces the provider-built per-SSID VLANs | Team card: the HA laptop and one phone join the zone WiFi and nothing else; everyone else joins NT. Kits handed out by zone area. Worksheet text unchanged |
 | Network zoning | **Three logical zones** (red/green/blue), each a VLAN with a 2.4 GHz board SSID and a 5 GHz laptop SSID; all SSIDs on every AP; zones isolated from each other | Team card carries the zone colour; kits are colour-coded; the zone is in every board's hostname. Session 1 adds a "colour in the name matches your kit" check at the name-reading step |
 | Firmware per zone | **One source file per board, built three times** by `firmware/build-zones.py` (`esphome -s zone …`) | Six binaries in `firmware/dist/`. The only cross-zone risk is a wrong-coloured board at a table, and the board's own name reveals it |
 | Sensed input for watering | **Air humidity** (onboard) as a stand-in for soil moisture; **float switch** on GoGo-IoT port 1 as the reservoir-low guard | Worksheet says so explicitly ("จำลองสถานการณ์") rather than pretending humidity means soil |
@@ -168,9 +169,12 @@ step by step or teams will not find it): **+ Add integration** → type **ESPHom
 **without `.local`** (`gogo-iot-red-6749a4`). The bare name resolves; no suffix needed.
 
 Requirements this places on the network are written up in
-[NETWORK-REQUIREMENTS.md](../network/NETWORK-REQUIREMENTS.md) for the provider. The two that most often
-fail by default: **mDNS forwarded between wireless clients**, and **two MAC addresses allowed
-per laptop** (the Home Assistant VM is bridged, so it has its own MAC and IP).
+[NETWORK-SETUP.md](../network/NETWORK-SETUP.md). Since 21 Sep 2026 the zones are three GL.iNet
+Flint routers we configure ourselves rather than provider VLANs, so the two settings that most
+often failed by default on managed WiFi (**mDNS forwarded between wireless clients**, **two MAC
+addresses per laptop** for the bridged VM) are ours to get right, and an OpenWrt bridge gives
+both without configuration. The provider-facing VLAN spec
+[NETWORK-REQUIREMENTS.md](../network/NETWORK-REQUIREMENTS.md) is deprecated.
 
 Consequences for the install guide (drafted 11 Sep 2026 as `docs/install.md`):
 

@@ -1,0 +1,13 @@
+# Thai language review — 21 September 2026
+
+Follow-up natural-language pass: all 84 slides reviewed again after the user's slide 67 example. Revised 82 visible text boxes across 38 slides, including the requested heading “ปัจจัยสำคัญในการเลือกระบบเครือข่ายให้เหมาะกับงาน”. All final strings matched native readback. All 38 affected slides were rendered and inspected; longer split-column passages were shortened locally and re-rendered to remove wrapping collisions. The builder completed successfully. The structural check reported no errors and the same two intentional wiring-arrow warnings. Exact before/after wording is in `thai-natural-language-review.json`; final contact sheets are in `planning/slide-reference/thai-natural-review/`.
+
+Completed in the native Google Slides deck. All 84 slides were reviewed for visible Thai wording. The first and follow-up passes together revised 137 distinct text boxes; all final strings were verified by native readback. This includes slide 15's explicit Charge Controller terminals and slide 21's “ลองใช้ทั้งจากแล็ปท็อปและโทรศัพท์”.
+
+All 64 affected slides were rendered and visually inspected after the final updates. Text fits the existing layouts. The structural checker reported no errors; its two warnings concern intentional wiring arrows on slide 15, not list bullets.
+
+The earlier account usage block has been resolved. All 20 entries in `thai-language-pending.json` have now been applied and verified; that filename is retained as the revision record, and its status marks completion. `thai-language-revision.json` records the first pass. The content manifest and slide catalog include the final wording.
+
+Writing guidelines: name the equipment and terminal explicitly, use Thai connecting phrases where they clarify sequence or cause, phrase questions as a Thai instructor would ask them, and retain actual English UI labels only where learners need to find them on screen. Do not add filler mechanically or translate English sentence structure into Thai.
+
+Readiness follow-up (85-slide deck): applied the remaining network-language revisions on slides 69–70, rewrote the instructions on slides 9, 35 and 47, and clarified the battery examples (now 79–80). Added formula slide 78. The affected speaker notes now use complete Thai sentences. Exact copy and the new illustration prompt are recorded in `workshop-readiness-revisions.json`.

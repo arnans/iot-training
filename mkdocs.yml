@@ -40,7 +40,7 @@ theme:
 
 nav:
   - เริ่มต้นที่นี่: index.md
-  - เตรียมแล็ปท็อปก่อนการอบรม: install.md
+  - เตรียมแล็ปท็อปก่อนวันอบรม: install.md
   # the nav ends at activity 11; the record sheet, menu reference and file list are reached
   # from the front page (index.md, docs/index.html) so the course structure stays readable
   - "ช่วงที่ 1 — รับรู้ ตัดสินใจ สั่งการ":

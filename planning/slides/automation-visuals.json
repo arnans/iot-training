@@ -1,0 +1,129 @@
+{
+  "approvedExemplar": "a3_05",
+  "style": "Modern conceptual isometric line art; gray outlines, blue/yellow accents; no connectors or invented kit details.",
+  "slides": [
+    {
+      "id": "a4_03",
+      "leftTitle": "ตั้งเกณฑ์ปิดให้สูงกว่าเกณฑ์เปิด",
+      "rightTitle": "ช่วยลดการติด ๆ ดับ ๆ ของไฟ",
+      "left": "แสงลดต่ำกว่าเกณฑ์เปิด → ให้เปิดไฟ\nแสงเพิ่มสูงกว่าเกณฑ์ปิด → ให้ปิดไฟ\nระหว่างสองเกณฑ์ → ให้คงสถานะเดิม",
+      "right": "ทดลองให้แสงแกว่งใกล้เกณฑ์ 1 นาที\nแล้วครอบบอร์ดและเอามือออกอีกครั้ง\nสังเกตว่าไฟติด ๆ ดับ ๆ ลดลงหรือไม่",
+      "showArrow": false,
+      "image": "planning/slide-reference/assets/a4_03-hysteresis-v2.png",
+      "scene": "Light-level axis with distinct lower ON and higher OFF thresholds; light-blue keep-state band and small fluctuations inside it. Falling light crosses lower threshold to switch on; rising light crosses upper threshold to switch off.",
+      "prompt": "Create a scientifically accurate hysteresis teaching diagram replacing the reference illustration; use reference ONLY for modern thin gray technical outlines, cream #F6F2E8, blue and golden yellow colors, clean contemporary style. Wide 3:1 image, legible on slide at 600x200pt. Horizontal LIGHT LEVEL axis points right from dark left to bright right. Exactly TWO distinct vertical dashed threshold markers at 30% and 70% of axis. At left/lower threshold show glowing yellow generic bulb and a small left-pointing arrow crossing that threshold, meaning falling light switches ON. At right/higher threshold show gray unlit bulb and right-pointing arrow crossing that threshold, meaning rising light switches OFF. Shade space BETWEEN thresholds light blue, and show a small blue zigzag entirely WITHIN this band as a symbolic fluctuating reading (not a time graph). Above band clear label 'ให้คงสถานะเดิม'. Left threshold label exactly 'เกณฑ์เปิดไฟ'; right threshold label exactly 'เกณฑ์ปิดไฟ'. Axis endpoints small labels 'มืด' on left, 'สว่าง' on right. These are the only five text labels, Thai modern sans serif dark green #163E33 large and accurate. No numbers, no other text, no center flow arrow, no sensor tile or connectors. Clean spacious layout, fully visible diagram, no overlap. Both threshold markers and the gap between them must be visually unmistakable. Keep bulbs modest size to prioritize diagram. No scenery, antique texture, shading gradients or photo effects."
+    },
+    {
+      "id": "a4_05",
+      "leftTitle": "Condition: อยู่ในช่วงเวลาหรือไม่?",
+      "rightTitle": "ผลที่เห็น: เปิดไฟเมื่อผ่านเงื่อนไข",
+      "left": "ใน And if ให้เลือก Time and sun → Time\nตั้งเวลาเริ่มที่ After และเวลาสิ้นสุดที่ Before",
+      "right": "ลองให้แสงข้ามเกณฑ์ทั้งในและนอกช่วงเวลา\nแล้วใช้ Traces ตรวจว่ากฎหยุดที่ขั้นตอนไหน",
+      "scene": "After–Before timeline: condition passes inside the blue interval and fails outside. Failure skips the action; it does not turn a light off.",
+      "showArrow": false,
+      "image": "planning/slide-reference/assets/a4_05-timeline-v2.png",
+      "prompt": "undefined\n"
+    },
+    {
+      "id": "a4_07",
+      "leftTitle": "ตั้งเวลาให้กฎทำงาน",
+      "rightTitle": "ลองทดสอบช่วงเวลาสั้น ๆ",
+      "left": "เพิ่ม Trigger แบบ Time แล้วตั้ง At time\nกฎเปิดให้ตรงกับ After; กฎปิดตรงกับ Before\nในกฎเปิด ให้เพิ่มเงื่อนไขแสง Below ด้วย\nจากนั้นบันทึกทั้งสองกฎ",
+      "right": "ให้ปิดรีเลย์ แล้วครอบเซนเซอร์แสงค้างไว้\nตั้งให้เปิดอีก 2 นาที และปิดในนาทีถัดมา\nปรับ At time ให้ตรงกับ After / Before\nแล้วดูว่าไฟเปิด–ปิดตามเวลาหรือไม่",
+      "scene": "Horizontal timeline with After start and Before end, blue permitted interval between them and gray outside-time regions. No fixed example hours; light condition still applies.",
+      "showArrow": false,
+      "image": "planning/slide-reference/assets/a4_07-timeline-v2.png",
+      "prompt": "undefined\n",
+      "footer": "ดูขั้นตอนการตั้งค่าและการทดสอบเพิ่มเติมในใบงาน 4.4"
+    },
+    {
+      "id": "a4_08",
+      "leftTitle": "เหตุการณ์: กฎสั่งให้เปิดไฟ",
+      "rightTitle": "Action: แสดงข้อความแจ้งเตือน",
+      "left": "ให้กฎ “มืด-เปิดไฟ” ทำงานตามปกติ\nแล้วเพิ่มคำสั่งแจ้งเตือนใน Then do",
+      "right": "เลือก Send a persistent notification\nพิมพ์ “ไฟสวนเปิดแล้ว” แล้วทดลองอีกครั้ง\nตรวจว่าไฟติดและมีข้อความแจ้งเตือนหรือไม่",
+      "scene": "LEFT: one yellow glowing generic bulb. RIGHT: blue outlined generic notification card with golden bell and small green check mark, blank card with NO letters or pretend UI text. Clear light on leads to notification.",
+      "showArrow": false,
+      "image": "planning/slide-reference/assets/a4_08-concept.png",
+      "prompt": "Match reference style ONLY: contemporary clean isometric technical line art, thin gray outlines, white/light gray surfaces, selective blue and golden yellow, plain warm cream #F6F2E8. Wide 3:1, TWO equal scenes separated by broad blank gap for editable arrow. No text, numbers, letters, captions, frames, pin headers, electrical connectors, circuit details, UI, farms or scenery. Clearly generic representative symbols; all objects fully visible. LEFT: one yellow glowing generic bulb. RIGHT: blue outlined generic notification card with golden bell and small green check mark, blank card with NO letters or pretend UI text. Clear light on leads to notification."
+    },
+    {
+      "id": "a4_10",
+      "leftTitle": "Trigger: ความชื้นข้ามค่าเกณฑ์",
+      "rightTitle": "Action: เปิดหรือปิดปั๊ม",
+      "left": "ให้ใช้ความชื้นอากาศแทนความชื้นดิน\nตั้ง Below สำหรับเปิด และ Above สำหรับปิด",
+      "right": "ให้ตั้งเกณฑ์ปิดสูงกว่าเกณฑ์เปิด\nประมาณ 5–10 จุดเปอร์เซ็นต์\nแล้วเปลี่ยนความชื้นเพื่อดูว่าปั๊มทำงานอย่างไร",
+      "scene": "LEFT: abstract blue humidity sensor tile bearing a simple water-drop symbol, adjacent low and high droplet indicators, no numbers. RIGHT: generic blue pump symbol with short spout, blue flowing water drops and green check upper, plus smaller gray stopped pump with no flow lower. Clearly conceptual water control, no soil, farm, connectors, wiring.",
+      "showArrow": true,
+      "image": "planning/slide-reference/assets/a4_10-concept.png",
+      "prompt": "Match reference style ONLY: contemporary clean isometric technical line art, thin gray outlines, white/light gray surfaces, selective blue and golden yellow, plain warm cream #F6F2E8. Wide 3:1, TWO equal scenes separated by broad blank gap for editable arrow. No text, numbers, letters, captions, frames, pin headers, electrical connectors, circuit details, UI, farms or scenery. Clearly generic representative symbols; all objects fully visible. LEFT: abstract blue humidity sensor tile bearing a simple water-drop symbol, adjacent low and high droplet indicators, no numbers. RIGHT: generic blue pump symbol with short spout, blue flowing water drops and green check upper, plus smaller gray stopped pump with no flow lower. Clearly conceptual water control, no soil, farm, connectors, wiring."
+    },
+    {
+      "id": "a4_11",
+      "leftTitle": "สร้างตัวเลือก Auto / Manual",
+      "rightTitle": "ผลที่ได้: สวิตช์เลือกโหมดปั๊ม",
+      "left": "ไปที่ Settings → Devices & services\nเลือก Helpers → Create helper → Toggle",
+      "right": "ตั้งชื่อว่า Pump Auto Mode\nเปิดสวิตช์เพื่อใช้โหมด Auto\nปิดสวิตช์เพื่อเลือกโหมด Manual",
+      "scene": "Left: explicit Auto/Manual mode selector. Right: pump with automatic circular arrows, beside a hand selecting an ON/OFF toggle for manual operation.",
+      "showArrow": true,
+      "image": "planning/slide-reference/assets/a4_11-mode-selector-v2.png",
+      "prompt": "undefined\n"
+    },
+    {
+      "id": "a4_12",
+      "leftTitle": "Condition: ต้องเปิดโหมด Auto",
+      "rightTitle": "ผลที่เห็น: ปั๊มเริ่มเองในโหมด Auto",
+      "left": "เปิดกฎ “รดน้ำ - เปิดปั๊ม” แล้วเพิ่ม And if\nเลือก Pump Auto Mode → Switch is on",
+      "right": "กด Save แล้วทดลองเมื่อความชื้นข้ามเกณฑ์\nเปรียบเทียบตอนเปิดและปิดโหมด Auto\nการปิดโหมดนี้ไม่ได้สั่งให้ปั๊มหยุด",
+      "scene": "Same Auto/Manual segmented selector as slide 39, with Auto selected blue, paired with the existing blue pump and water flow.",
+      "showArrow": true,
+      "image": "planning/slide-reference/assets/a4_12-auto-selector-v2.png",
+      "prompt": "undefined\n"
+    },
+    {
+      "id": "a5_02",
+      "leftTitle": "Trigger + Condition: น้ำต่ำ",
+      "rightTitle": "Action: หยุดปั๊มและแจ้งเตือน",
+      "left": "ใน When ให้เริ่มเมื่อลูกลอยเป็น Dry\nหรือเมื่อรีเลย์เริ่ม On\nใน And if ให้ตรวจว่าลูกลอยเป็น Dry",
+      "right": "ใน Then do ให้สั่งรีเลย์ Off\nพร้อมข้อความแจ้งเตือน\nแล้วทดสอบทั้งก่อนและหลังเปิดปั๊ม",
+      "scene": "LEFT: simple transparent blue water tank with very LOW water level and floating small yellow ball sensor clearly above low water mark, golden caution triangle. RIGHT: gray generic pump with a clear terracotta stop symbol, NO water flow; beside it a notification bell in yellow. No pipes elaboration, wiring, connectors or actual kit.",
+      "showArrow": true,
+      "image": "planning/slide-reference/assets/a5_02-concept.png",
+      "prompt": "Match reference style ONLY: contemporary clean isometric technical line art, thin gray outlines, white/light gray surfaces, selective blue and golden yellow, plain warm cream #F6F2E8. Wide 3:1, TWO equal scenes separated by broad blank gap for editable arrow. No text, numbers, letters, captions, frames, pin headers, electrical connectors, circuit details, UI, farms or scenery. Clearly generic representative symbols; all objects fully visible. LEFT: simple transparent blue water tank with very LOW water level and floating small yellow ball sensor clearly above low water mark, golden caution triangle. RIGHT: gray generic pump with a clear terracotta stop symbol, NO water flow; beside it a notification bell in yellow. No pipes elaboration, wiring, connectors or actual kit."
+    },
+    {
+      "id": "a5_05",
+      "leftTitle": "ตั้งกฎให้ตรวจหลังสั่งเปิด",
+      "rightTitle": "ลองจำลองว่าปั๊มไม่ทำงาน",
+      "left": "ตั้ง Trigger ให้รีเลย์ On ครบ 15 วินาที\nแล้วตรวจว่า pump running ยังเป็น Off\nถ้าใช่ ให้สั่งรีเลย์ Off พร้อมแจ้งเตือน\nใช้ Traces ตรวจว่ากฎทำงานหรือไม่",
+      "right": "ก่อนถอดสายปั๊ม ให้ Off และถอดปลั๊ก\nจ่ายไฟกลับ แล้วลองสั่งรีเลย์ On\nเมื่อครบ 15 วินาที รีเลย์ควร Off\nพร้อมแสดงข้อความแจ้งเตือน",
+      "scene": "Left stationary pump with a round blue vibration-sensor puck attached to its motor housing, replacing the timer; right stopped pump, stop symbol and alert bell preserved.",
+      "showArrow": true,
+      "image": "planning/slide-reference/assets/a5_05-vibration-sensor-v2.png",
+      "prompt": "undefined\n",
+      "footer": "หลังทดสอบ ให้ Off และถอดปลั๊กก่อนต่อสายคืน แล้วลองเปิดปั๊มอีกครั้ง — ดูใบงาน 5.2"
+    },
+    {
+      "id": "a5_06",
+      "leftTitle": "Trigger: ไม่ได้รับค่าเซนเซอร์",
+      "rightTitle": "Action: หยุดปั๊มและแจ้งเตือน",
+      "left": "เลือกค่าความชื้น แล้วตั้ง State changed\nให้ตรวจสถานะ Unavailable หรือ Unknown",
+      "right": "ให้สั่งรีเลย์ Off พร้อมข้อความแจ้งเตือน\nแล้วจำลองการขาดการติดต่อ\nและตรวจหลักฐานใน Traces",
+      "scene": "LEFT: abstract blue humidity sensor tile with water-drop symbol, disconnected radio waves broken by a terracotta cross, clearly missing sensor signal. RIGHT: generic gray stopped pump with terracotta stop sign and yellow notification bell. No actual board, connector, wires, labels or text.",
+      "showArrow": true,
+      "image": "planning/slide-reference/assets/a5_06-concept.png",
+      "prompt": "Match reference style ONLY: contemporary clean isometric technical line art, thin gray outlines, white/light gray surfaces, selective blue and golden yellow, plain warm cream #F6F2E8. Wide 3:1, TWO equal scenes separated by broad blank gap for editable arrow. No text, numbers, letters, captions, frames, pin headers, electrical connectors, circuit details, UI, farms or scenery. Clearly generic representative symbols; all objects fully visible. LEFT: abstract blue humidity sensor tile with water-drop symbol, disconnected radio waves broken by a terracotta cross, clearly missing sensor signal. RIGHT: generic gray stopped pump with terracotta stop sign and yellow notification bell. No actual board, connector, wires, labels or text."
+    },
+    {
+      "id": "a5_07",
+      "leftTitle": "Trigger: ปั๊มทำงานครบเวลา",
+      "rightTitle": "Action: หยุดปั๊มและแจ้งเตือน",
+      "left": "ให้ตรวจว่ารีเลย์ On ต่อเนื่อง\nโดยตั้ง For at least เป็น 30 วินาที",
+      "right": "ใน Then do ให้สั่งรีเลย์ Off\nพร้อมข้อความแจ้งเตือน\nแล้วจับเวลาทดสอบว่าปั๊มหยุดตามที่ตั้งไว้",
+      "scene": "LEFT: generic blue pump flowing water next to a prominent stopwatch with full golden progress ring indicating elapsed duration. RIGHT: same generic pump now gray and stopped, no flow, terracotta stop sign and golden notification bell. No numeric duration, text, wiring or connectors.",
+      "showArrow": true,
+      "image": "planning/slide-reference/assets/a5_07-concept.png",
+      "prompt": "Match reference style ONLY: contemporary clean isometric technical line art, thin gray outlines, white/light gray surfaces, selective blue and golden yellow, plain warm cream #F6F2E8. Wide 3:1, TWO equal scenes separated by broad blank gap for editable arrow. No text, numbers, letters, captions, frames, pin headers, electrical connectors, circuit details, UI, farms or scenery. Clearly generic representative symbols; all objects fully visible. LEFT: generic blue pump flowing water next to a prominent stopwatch with full golden progress ring indicating elapsed duration. RIGHT: same generic pump now gray and stopped, no flow, terracotta stop sign and golden notification bell. No numeric duration, text, wiring or connectors."
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "date": "2026-09-21",
+  "presentationId": "1yoNUpS3mo2z2zOZJHEQtuMfSuLxuXltwDT22UHVSHzo",
+  "slideCount": 85,
+  "visibleTextFieldsVerified": 26,
+  "speakerNotesVerified": 8,
+  "renderedAndInspected": [
+    "a1_slide_8",
+    "a4_07",
+    "a5_05",
+    "a8_04",
+    "a8_05",
+    "a8_12b",
+    "a8_13",
+    "a8_14"
+  ],
+  "structuralCheck": "No errors; two unchanged intentional wiring-arrow warnings on slide 15",
+  "builder": {
+    "slides": 75,
+    "images": 26,
+    "requests": 3030
+  },
+  "placeholderRemoved": true
+}

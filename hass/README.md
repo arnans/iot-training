@@ -67,6 +67,70 @@ participant even opens VirtualBox. See
 17. **Test-import** on a second machine of the same architecture before trusting it.
 18. **Write the team card**: VM user/password, zone colour, laptop SSID and password.
 
+### ARM64 specifics, exactly as built (verified 21 Sep 2026 — M4 host, VirtualBox 7.2.18, HAOS 18.3)
+
+Apple Silicon needs VirtualBox **7.2 or newer** (7.1 added Arm Linux guests; 7.2 is a normal
+release, not the old developer preview). The x86-64 OVA cannot be imported there at all — there is
+no Intel emulation. The ARM64 disk is a separate release asset:
+`haos_generic-aarch64-<ver>.vdi.zip` (the `haos_ova-*` files are x86-64 only).
+
+```sh
+VM="Farm Workshop"; V=18.3
+curl -LO "https://github.com/home-assistant/operating-system/releases/download/$V/haos_generic-aarch64-$V.vdi.zip"
+unzip -q "haos_generic-aarch64-$V.vdi.zip"
+VBoxManage createvm --name "$VM" --platform-architecture arm --ostype Oracle_arm64 --register
+D="$HOME/VirtualBox VMs/$VM/Farm Workshop-disk001.vdi"
+VBoxManage modifyvm "$VM" --memory 2048 --cpus 2 --firmware efi \
+  --graphicscontroller vmsvga --vram 16 --rtc-use-utc on --audio-driver none \
+  --usb-ohci off --usb-xhci on --mouse usbtablet --keyboard usb \
+  --nic1 bridged --bridge-adapter1 en0 --nic-type1 virtio
+VBoxManage storagectl "$VM" --name VirtioSCSI --add virtio --controller VirtIO --portcount 1 --bootable on
+cp "haos_generic-aarch64-$V.vdi" "$D"
+VBoxManage internalcommands sethduuid "$D"          # new UUID, or import clashes with the source disk
+VBoxManage modifymedium disk "$D" --resize 32768    # before first boot only
+VBoxManage storageattach "$VM" --storagectl VirtioSCSI --port 0 --device 0 --type hdd --medium "$D"
+```
+
+Every difference from the x86-64 image is forced by the architecture, not taste:
+
+| x86-64 image | ARM64 image |
+|---|---|
+| `OSType` `Oracle_64` | `Oracle_arm64` |
+| chipset PIIX3/ICH9 | `armv8virtual` |
+| SATA (AHCI) disk + IDE DVD | VirtioSCSI disk, no IDE controller |
+| E1000 (`82540EM`) NIC | virtio-net |
+| `ensoniq1371` sound card | no audio device |
+| OHCI + EHCI USB | xHCI |
+| guest interface `enp0s3` | guest interface **`enp0s8`** |
+
+Same on both: 2 vCPU, 2048 MB RAM, 16 MB VRAM, VMSVGA, EFI, UTC clock, 32 GiB disk, Adapter 1
+bridged, HA on port 80.
+
+What the build confirmed on ARM64, beyond the x86 bench:
+
+- HAOS 18.3 aarch64 pulls Core **2026.9.3**, machine `qemuarm-64`, and serves **port 80** with no
+  change — the port-80 step is a check, not an edit.
+- `ha core check` passes against this directory's `configuration.yaml`, so the no-`default_config`
+  diet has no aarch64-only dependency gap.
+- File editor (`core_configurator` 6.1.0) installs and starts; its *Show in sidebar*
+  (`ingress_panel`) defaults to **false** and must be turned on by hand.
+
+**Provisioning gotcha, hit on this build:** bridged-over-WiFi worked for ~4 minutes, then the host
+lost the guest entirely (`route get` shows `REJECT`, empty ARP) — the AP filtering the VM's second
+MAC, the same failure the participant guide's troubleshooting row describes. Do the whole build
+over NAT and switch Adapter 1 back to Bridged just before export:
+
+```sh
+VBoxManage controlvm "$VM" nic1 nat
+VBoxManage controlvm "$VM" natpf1 "ha,tcp,127.0.0.1,18080,,80"   # then provision via 127.0.0.1:18080
+```
+
+Under NAT the guest reaches the build machine at `10.0.2.2`, so config files can be pulled in with
+`curl` from a throwaway `python3 -m http.server` instead of retyped into the console. To drive the
+console without a GUI: `VBoxManage controlvm "$VM" keyboardputstring '<cmd>'`, then
+`keyboardputscancode 1c 9c` for Enter, then `screenshotpng` to read the result. `login` at the
+`ha >` prompt drops to a root shell where `jq` is available.
+
 This also closes the two install-guide risks already in planning/WORKSHEET-TODO: the bridged-vs-NAT
 adapter choice (baked in) and port 80 reachability from phones (the VM's firewall is ours).
 

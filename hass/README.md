@@ -131,6 +131,30 @@ console without a GUI: `VBoxManage controlvm "$VM" keyboardputstring '<cmd>'`, t
 `keyboardputscancode 1c 9c` for Enter, then `screenshotpng` to read the result. `login` at the
 `ha >` prompt drops to a root shell where `jq` is available.
 
+**`controlvm nic1 nat` and `natpf1` persist to the `.vbox` file.** They are not runtime-only: both
+forwards turned up as `<Forwarding .../>` entries in a test export, i.e. they would have shipped to
+every participant. Delete them explicitly before the real export:
+
+```sh
+VBoxManage modifyvm "$VM" --nic1 bridged --bridge-adapter1 en0
+VBoxManage modifyvm "$VM" --natpf1 delete ha
+```
+
+**Export/import round trip, verified here on a throwaway export taken before onboarding:**
+
+- `VBoxManage export` wrote a **1.98 GB** OVA in 64 s from the 32 GiB dynamic disk — the dynamic
+  format exports at used size, so the 32 GiB cap costs nothing (the x86-64 image ships ~2.6 GB).
+- The OVF carries `<Platform architecture="ARM">`, so VirtualBox on an Intel host refuses the file
+  outright instead of failing later at boot. The wrong-architecture mistake is self-policing in
+  both directions, which is worth saying in the guide.
+- `Farm Workshop.nvram` (768 KB of EFI variables) is part of the appliance and the re-imported
+  clone reached the HA onboarding endpoint in ~12 s, so the ARM EFI boot entry survives export.
+- Plain `VBoxManage import` regenerated the adapter MAC (`…AF597E` → `…69E1B3`). The GUI checkbox
+  the guide names is the same behaviour; there is no path where a participant silently keeps the
+  build machine's MAC unless they choose "include all MAC addresses".
+- The clone's `/config/configuration.yaml` SHA-256 matched this repo's file and File editor was
+  still `started`, so `/config` and add-on state both survive the round trip.
+
 This also closes the two install-guide risks already in planning/WORKSHEET-TODO: the bridged-vs-NAT
 adapter choice (baked in) and port 80 reachability from phones (the VM's firewall is ours).
 
@@ -151,8 +175,9 @@ facts; change one here and the guide (and session 1's ก่อนเริ่�
   keeps the build machine's MAC, and 34 identical MACs in one zone break the network.
 - **Port 80, IP read from the console.** The guide says to read the `IPv4 addresses` line and
   ignore `homeassistant.local`. Before sending the guide, replace the placeholder screenshots
-  with real ones from the final build, and check the banner wording matches, especially on
-  ARM64, where the interface name may not be `enp0s3`.
+  with real ones from the final build. The ARM64 banner differs: the interface is **`enp0s8`**,
+  not `enp0s3`, so a screenshot from the x86-64 image does not match what an Apple Silicon
+  participant sees on the same line.
 
 ## What the team config removes, honestly
 

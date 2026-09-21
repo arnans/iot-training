@@ -87,6 +87,7 @@ What is inside, each item checked on the exported file after re-importing it:
 | Port | 80, confirmed in Settings → System → Network |
 | Disk | 4.8 GB used of 30.8 GB |
 | Health | zero repair issues, zero persistent notifications, state `RUNNING` |
+| **Reachability (step 15)** | **passed on the real image**: after a clean import on the M4 host with Adapter 1 bridged to WiFi, the VM answered on `http://<IP>` from a laptop browser **and from a phone on the same WiFi** |
 
 Two things the "deliberately absent" list below does not actually achieve on HAOS, observed here:
 
@@ -157,10 +158,13 @@ What the build confirmed on ARM64, beyond the x86 bench:
 - File editor (`core_configurator` 6.1.0) installs and starts; its *Show in sidebar*
   (`ingress_panel`) defaults to **false** and must be turned on by hand.
 
-**Provisioning gotcha, hit on this build:** bridged-over-WiFi worked for ~4 minutes, then the host
-lost the guest entirely (`route get` shows `REJECT`, empty ARP) — the AP filtering the VM's second
-MAC, the same failure the participant guide's troubleshooting row describes. Do the whole build
-over NAT and switch Adapter 1 back to Bridged just before export:
+**Provisioning gotcha, hit once on this build:** bridged-over-WiFi worked for ~4 minutes, then the
+host lost the guest entirely (`route get` shows `REJECT`, empty ARP) while the guest kept its lease
+and its internet access. It did **not** reproduce: the finished image, imported fresh on the same
+host and the same WiFi, was reachable from both a laptop browser and a phone. So treat this as a
+transient bridged-adapter/AP hiccup, not as the network blocking the VM's second MAC — but it
+costs an hour if it strikes mid-build, so do the build over NAT anyway and switch Adapter 1 back
+to Bridged just before export:
 
 ```sh
 VBoxManage controlvm "$VM" nic1 nat

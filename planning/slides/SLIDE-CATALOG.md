@@ -1,6 +1,6 @@
 # Workshop slide catalog
 
-[Native deck](https://docs.google.com/presentation/d/1yoNUpS3mo2z2zOZJHEQtuMfSuLxuXltwDT22UHVSHzo/edit) — 84 slides, 21 September 2026.
+[Native deck](https://docs.google.com/presentation/d/1yoNUpS3mo2z2zOZJHEQtuMfSuLxuXltwDT22UHVSHzo/edit) — 85 slides, 21 September 2026.
 
 Positions are an inventory only; no manual page numbers are printed on the slides.
 
@@ -83,10 +83,11 @@ Positions are an inventory only; no manual page numbers are printed on the slide
 | 75 | `a8_10` | 8 / 8.4 | จำเป็นต้องมีแบตเตอรี่หรือไม่? | dark |
 | 76 | `a8_11` | 8 / 8.4 | โหลด AC ต้องมีอุปกรณ์แปลงไฟ | visual |
 | 77 | `a8_12` | 8 / 8.5 | กำลังไฟ กับพลังงาน | split |
-| 78 | `a8_13` | 8 / 8.5 | ตัวอย่าง: เปิดไฟ LED 50 W วันละ 8 ชั่วโมง | table |
-| 79 | `a8_14` | 8 / 8.5 | ตัวอย่าง: ใช้ปั๊ม 1,100 W วันละ 2 ชั่วโมง | table |
-| 80 | `a8_15` | 8 / 8.5 | มีพลังงานพอ แล้วปั๊มจะเริ่มทำงานได้ไหม? | dark |
-| 81 | `a8_16` | 8 / 8.5 | แต่ละส่วนของระบบจะใช้ไฟจากไหน? | table |
-| 82 | `a8_17` | 8 / 8.6 | สรุปแผนระบบที่จะนำไปทดลองในฟาร์ม | table |
-| 83 | `a8_18` | 8 / 8.6 | นำเสนอแผนให้เพื่อนฟัง แล้วช่วยกันเสนอแนะ | split |
-| 84 | `a8_19` | 8 | คืนอุปกรณ์และส่งคำตอบ | dark |
+| 78 | `a8_12b` | 8 / 8.5 | คำนวณแบตเตอรี่และแผงโซลาร์อย่างไร? | table / prominent formulas |
+| 79 | `a8_13` | 8 / 8.5 | ตัวอย่าง: เปิดไฟ LED 50 W วันละ 8 ชั่วโมง | table |
+| 80 | `a8_14` | 8 / 8.5 | ตัวอย่าง: ใช้ปั๊ม 1,100 W วันละ 2 ชั่วโมง | table |
+| 81 | `a8_15` | 8 / 8.5 | มีพลังงานพอ แล้วปั๊มจะเริ่มทำงานได้ไหม? | dark |
+| 82 | `a8_16` | 8 / 8.5 | แต่ละส่วนของระบบจะใช้ไฟจากไหน? | table |
+| 83 | `a8_17` | 8 / 8.6 | สรุปแผนระบบที่จะนำไปทดลองในฟาร์ม | table |
+| 84 | `a8_18` | 8 / 8.6 | นำเสนอแผนให้เพื่อนฟัง แล้วช่วยกันเสนอแนะ | split |
+| 85 | `a8_19` | 8 | คืนอุปกรณ์และส่งคำตอบ | dark |

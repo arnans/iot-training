@@ -23,3 +23,5 @@ These assets support the native Google Slides deck and `planning/slides/activity
 - `a5-3-sensor-unavailable.png` is a frame at 55% of the matching 25.25-second MP4, showing the state-change trigger configuration. The other selected frames were taken from the recordings' original frame sequences, either the final useful screen or just before the Save dialog.
 
 Do not use video poster title cards as substitutes for interface screenshots. Preserve the full relevant screenshot content and use native small-radius image masks. Keep edge-to-edge cover banners square.
+
+- `a1-response-time-v1.png`: generated with the built-in image_gen tool on 21 September 2026 for slide 9, replacing the placeholder. Symbolic shaded light sensor, screen update, and stopwatch; modern gray line art with blue/yellow accents. Exact prompt: `planning/slides/workshop-readiness-revisions.json` → `slide9.prompt`.

@@ -167,3 +167,7 @@ The saved previews are the final Activity 1 cover and board-overview composition
 **Apply a later design change:**
 
 > Update the presentation for [specific change], then revise planning/SLIDE-GENERATION-GUIDE.md and the relevant saved previews so future slides follow the new decision.
+
+### Readiness refinements (21 September 2026)
+
+Use `concept.footer` for a short worksheet reference when a conceptual illustration needs concise test instructions: the shared layout reduces the image proportionally and preserves 15 pt instructions. Avoid wrapping past four lines in either column. Use the table exemplar with `energyFormula` for prominent, editable full-width equations (`scripts/energy_formula_layout.mjs`); do not bake Thai formulas into an image. State exercise assumptions explicitly next to worked values. The current deck has 85 slides; identify targets by native IDs, since inserting the formula slide changed positions 78 onward. The Activity 1 response-time illustration and exact prompt are recorded in `planning/slides/workshop-readiness-revisions.json`.

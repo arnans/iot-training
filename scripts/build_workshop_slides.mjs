@@ -5,6 +5,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import {conceptLayout} from './concept_slide_layout.mjs';
+import {energyFormulaLayout} from './energy_formula_layout.mjs';
 const [sourceFile, outputDir] = process.argv.slice(2);
 if (!sourceFile || !outputDir) throw new Error('Usage: node scripts/build_workshop_slides.mjs SOURCE_JSON OUTPUT_DIR');
 const source = JSON.parse(fs.readFileSync(sourceFile, 'utf8').replace(/^\uFEFF/, ''));
@@ -100,12 +101,16 @@ for(const slide of manifest.slides){
   for(const [old,num,y] of [['a1_4_name_label','01',124],['a1_4_ip_label','02',210],['a1_4_hint','03',296]]){geo(old,35,y,49,47);txt(old,num,25,color.gold,true);para(old);}
  }else if(slide.type==='table'){
   header(6);
+  if(slide.energyFormula){
+   req.push(...energyFormulaLayout(slide.id,ref.pageElements.map(e=>({...e,objectId:id(e.objectId)})),slide.energyFormula));
+  }else{
   txt('rd_6_col1',slide.heads[0],16,color.sage,true);txt('rd_6_col2',slide.heads[1],16,color.sage,true);
   geo('rd_6_col1',35,114,300,32);geo('rd_6_col2',367,114,318,32);
   for(let i=0;i<4;i++){
    geo(`a1_6_action${i}`,35,151+i*56,320,54);txt(`a1_6_action${i}`,slide.rows[i][0],18,color.ink);para(`a1_6_action${i}`);
    geo(`a1_6_result${i}`,367,151+i*56,318,54);txt(`a1_6_result${i}`,slide.rows[i][1],18,color.ink);para(`a1_6_result${i}`);
    geo(`rd_6_rule${i}`,35,204+i*56,650,0.7);
+  }
   }
  }else if(slide.type==='split'){
   header(7);geo('a1_7_title',29,48,321,101);

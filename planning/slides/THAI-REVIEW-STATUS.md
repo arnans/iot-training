@@ -9,3 +9,5 @@ All 64 affected slides were rendered and visually inspected after the final upda
 The earlier account usage block has been resolved. All 20 entries in `thai-language-pending.json` have now been applied and verified; that filename is retained as the revision record, and its status marks completion. `thai-language-revision.json` records the first pass. The content manifest and slide catalog include the final wording.
 
 Writing guidelines: name the equipment and terminal explicitly, use Thai connecting phrases where they clarify sequence or cause, phrase questions as a Thai instructor would ask them, and retain actual English UI labels only where learners need to find them on screen. Do not add filler mechanically or translate English sentence structure into Thai.
+
+Readiness follow-up (85-slide deck): applied the remaining network-language revisions on slides 69–70, rewrote the instructions on slides 9, 35 and 47, and clarified the battery examples (now 79–80). Added formula slide 78. The affected speaker notes now use complete Thai sentences. Exact copy and the new illustration prompt are recorded in `workshop-readiness-revisions.json`.

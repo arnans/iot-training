@@ -49,7 +49,7 @@ Air humidity is explicitly labeled as a classroom stand-in for soil moisture. Ma
 
 The completed native deck was read back with 84 slides in order. The structural issue checker reported zero issues. Google rendered all 84 slides for visual review; the corrected image/caption slides were rendered again. Covers, Thai text fit, worksheet circles, image proportions and actual small-corner masks were checked. No manual page counters or discarded footer/action bars were added.
 
-Activity 1's pre-existing, intentionally labeled image placeholder remains on native slide `a1_slide_8` (currently ninth). Activities 2–8 have no new image placeholders. The live Slides document is stored in Drive; Git stores the guide, content manifest, request builder, reference assets and catalog, not the native Slides file itself.
+Activity 1's former placeholder on `a1_slide_8` (slide 9) has been replaced with a generated technical illustration of shading a sensor and timing the screen update. The deck has no remaining instructional image placeholders. The live Slides document is stored in Drive; Git stores the guide, content manifest, request builder, reference assets and catalog, not the native Slides file itself.
 
 ## Approved automation illustration layout
 
@@ -72,3 +72,11 @@ Slide 24 (native ID a3_05) is the approved exemplar: modern conceptual line art 
 `automation-visuals.json` records the 11 additional illustrations, exact prompts and Thai copy. `slide-24-review-example.json` records the approved exemplar. The manifest now supplies `concept` fields to the shared `scripts/concept_slide_layout.mjs` layout, used by the standard builder. Rebuilds preserve all 12 conceptual slides.
 
 Rollout verified on 21 September 2026: all 44 new/revised text fields matched native readback, deck order and count stayed at 84 slides, and all 12 concept slides were rendered and visually inspected. The issue checker reported no errors; the two existing warnings concern intentional wiring arrows on slide 15. Review sheets are saved as `planning/slide-reference/automation-concepts-1.jpg` through `automation-concepts-3.jpg`. The 74-slide Activity 2–8 builder completed successfully with all 12 concept layouts.
+
+## Workshop readiness revisions — 21 September 2026
+
+The live deck now has 85 slides. A new editable formula slide (`a8_12b`, position 78) explains battery Ah and preliminary solar-panel W before the worked examples, which move to positions 79–80. The examples explicitly label the 12 V battery and 50%/85% usable-capacity assumptions and one-day reserve. The 75-slide Activity 2–8 builder preserves the new layout through `energy_formula_layout.mjs`.
+
+Slides 35 and 47 retain their conceptual illustrations with concise setup/test instructions and worksheet notes. Slides 37 and 46 remain simple, with equipment mapping taught by the instructor. Slide 9 uses `assets/a1-response-time-v1.png`; the exact generation prompt, placement context, Thai copy, and notes are recorded in `workshop-readiness-revisions.json`. Slide 9 is part of the existing Activity 1 base deck, not the Activity 2–8 manifest. The compact conceptual layout is activated by a `concept.footer` worksheet note.
+
+The follow-up Thai edits clarify network-selection wording and battery assumptions, and replace compressed speaker notes on the affected slides with complete Thai instructions. Final native render previews are in `planning/slide-reference/readiness-review/`.

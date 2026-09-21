@@ -26,14 +26,15 @@
     },
     {
       "id": "a4_07",
-      "leftTitle": "Trigger: เมื่อถึงเวลาที่ตั้งไว้",
-      "rightTitle": "Action: เปิดหรือปิดไฟตามกฎ",
-      "left": "ให้เพิ่ม Trigger แบบ Time ในทั้งสองกฎ\nกฎเปิดใช้เวลาที่ตั้งใน After\nส่วนกฎปิดใช้เวลาที่ตั้งใน Before",
-      "right": "ในกฎเปิด ให้เพิ่มเงื่อนไขแสง Below ด้วย\nเมื่อถึงเวลา ระบบจึงตรวจว่ามืดพอหรือยัง\nแล้วบันทึกทั้งกฎเปิดและกฎปิด",
+      "leftTitle": "ตั้งเวลาให้กฎทำงาน",
+      "rightTitle": "ลองทดสอบช่วงเวลาสั้น ๆ",
+      "left": "เพิ่ม Trigger แบบ Time แล้วตั้ง At time\nกฎเปิดให้ตรงกับ After; กฎปิดตรงกับ Before\nในกฎเปิด ให้เพิ่มเงื่อนไขแสง Below ด้วย\nจากนั้นบันทึกทั้งสองกฎ",
+      "right": "ให้ปิดรีเลย์ แล้วครอบเซนเซอร์แสงค้างไว้\nตั้งให้เปิดอีก 2 นาที และปิดในนาทีถัดมา\nปรับ At time ให้ตรงกับ After / Before\nแล้วดูว่าไฟเปิด–ปิดตามเวลาหรือไม่",
       "scene": "Horizontal timeline with After start and Before end, blue permitted interval between them and gray outside-time regions. No fixed example hours; light condition still applies.",
       "showArrow": false,
       "image": "planning/slide-reference/assets/a4_07-timeline-v2.png",
-      "prompt": "undefined\n"
+      "prompt": "undefined\n",
+      "footer": "ดูขั้นตอนการตั้งค่าและการทดสอบเพิ่มเติมในใบงาน 4.4"
     },
     {
       "id": "a4_08",
@@ -92,14 +93,15 @@
     },
     {
       "id": "a5_05",
-      "leftTitle": "สั่งเปิดแล้ว ปั๊มทำงานหรือไม่?",
-      "rightTitle": "Action: สั่งรีเลย์ปิดและแจ้งเตือน",
-      "left": "ตั้ง Trigger ให้รีเลย์ On ครบ 15 วินาที\nจากนั้นตรวจสถานะ pump running\nว่ายังเป็น Off อยู่หรือไม่",
-      "right": "ถ้ายังไม่พบการสั่น ให้สั่งรีเลย์ Off\nพร้อมแจ้งเตือนให้ตรวจปั๊ม\nและใช้ Traces ยืนยันว่ากฎทำงาน",
+      "leftTitle": "ตั้งกฎให้ตรวจหลังสั่งเปิด",
+      "rightTitle": "ลองจำลองว่าปั๊มไม่ทำงาน",
+      "left": "ตั้ง Trigger ให้รีเลย์ On ครบ 15 วินาที\nแล้วตรวจว่า pump running ยังเป็น Off\nถ้าใช่ ให้สั่งรีเลย์ Off พร้อมแจ้งเตือน\nใช้ Traces ตรวจว่ากฎทำงานหรือไม่",
+      "right": "ก่อนถอดสายปั๊ม ให้ Off และถอดปลั๊ก\nจ่ายไฟกลับ แล้วลองสั่งรีเลย์ On\nเมื่อครบ 15 วินาที รีเลย์ควร Off\nพร้อมแสดงข้อความแจ้งเตือน",
       "scene": "Left stationary pump with a round blue vibration-sensor puck attached to its motor housing, replacing the timer; right stopped pump, stop symbol and alert bell preserved.",
       "showArrow": true,
       "image": "planning/slide-reference/assets/a5_05-vibration-sensor-v2.png",
-      "prompt": "undefined\n"
+      "prompt": "undefined\n",
+      "footer": "หลังทดสอบ ให้ Off และถอดปลั๊กก่อนต่อสายคืน แล้วลองเปิดปั๊มอีกครั้ง — ดูใบงาน 5.2"
     },
     {
       "id": "a5_06",

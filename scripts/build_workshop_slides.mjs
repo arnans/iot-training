@@ -111,6 +111,13 @@ for(const slide of manifest.slides){
   header(7);geo('a1_7_title',29,48,321,101);
   const sets=[['a1_7_num','a1_7_numval','a1_7_meaning',slide.left,35,color.green,color.ink,color.sage],['a1_7_state','a1_7_stateval','a1_7_meaning2',slide.right,391,color.gold,color.cream,color.cream]];
   for(const [head,body,foot,text,x,hc,bc,fc]of sets){geo(head,x,178,294,50);txt(head,text[0],23,hc,true);geo(body,x,237,294,94);txt(body,text[1],22,bc);geo(foot,x,341,294,50);txt(foot,text[2],16,fc);}
+  if(slide.formulaFocus){
+   for(const [head,body,foot,text,x,w,hc,bc]of [['a1_7_num','a1_7_numval','a1_7_meaning',slide.left,35,300,color.green,color.ink],['a1_7_state','a1_7_stateval','a1_7_meaning2',slide.right,385,310,color.gold,color.cream]]){
+    geo(head,x,178,w,36);txt(head,text[0],21,hc,true);para(head);
+    geo(foot,x,224,w,76);txt(foot,text[2],36,hc,true);para(foot);
+    geo(body,x,318,w,73);txt(body,text[1],18,bc);para(body);
+   }
+  }
  }
  batches.push({id:slide.id,activity:slide.activity,exemplar:ref.objectId,requests:req,image_uris:imagePath,notes:`${slide.title.replaceAll('\n',' ')}\nใบงานกิจกรรมที่ ${slide.activity}${slide.section?' ข้อ '+slide.section:''}\n${slide.notes}\n\n[Sources]\nเนื้อหา: docs/activity-${slide.activity}.md\n${slide.image?'ภาพ: '+slide.image+'\n':''}${(slide.sources||[]).join('\n')}\n[/Sources]`});
 }

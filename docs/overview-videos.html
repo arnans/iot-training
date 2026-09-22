@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>วิดีโอภาพรวม: ระบบอัตโนมัติที่ใช้ได้จริง</title>
+<meta name="description" content="วิดีโอสามตอน ว่าด้วยการออกแบบระบบอัตโนมัติให้ใช้งานได้จริง">
+<style>
+/* Self-hosted Sarabun + IBM Plex Mono, thai+latin subsets (SIL OFL).
+   These pages are printed and handed to the venue's network provider; they must
+   not depend on a font CDN. Files in docs/fonts/, paths relative to docs/. */
+@font-face {
+  font-family: 'Sarabun';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(fonts/sarabun-400-thai.woff2) format('woff2');
+  unicode-range: U+02D7, U+0303, U+0331, U+0E01-0E5B, U+200C-200D, U+25CC;
+}
+
+@font-face {
+  font-family: 'Sarabun';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(fonts/sarabun-400-latin.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'Sarabun';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url(fonts/sarabun-600-thai.woff2) format('woff2');
+  unicode-range: U+02D7, U+0303, U+0331, U+0E01-0E5B, U+200C-200D, U+25CC;
+}
+
+@font-face {
+  font-family: 'Sarabun';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url(fonts/sarabun-600-latin.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'Sarabun';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url(fonts/sarabun-700-thai.woff2) format('woff2');
+  unicode-range: U+02D7, U+0303, U+0331, U+0E01-0E5B, U+200C-200D, U+25CC;
+}
+
+@font-face {
+  font-family: 'Sarabun';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url(fonts/sarabun-700-latin.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(fonts/ibm-plex-mono-400-latin.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url(fonts/ibm-plex-mono-600-latin.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+:root {
+  --ink: #14181d;
+  --ink-soft: #4a545f;
+  --rule: #d9dee4;
+  --rule-soft: #eaeef2;
+  --paper: #ffffff;
+  --wash: #f5f7f9;
+  --accent: #0f6b63;
+  --accent-wash: #e8f3f1;
+  --flag: #8a5a00;
+  --flag-wash: #fdf4e3;
+  --mono: "IBM Plex Mono", ui-monospace, "Cascadia Mono", Consolas, monospace;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  padding: 3.5rem 1.25rem 5rem;
+  background: var(--wash);
+  color: var(--ink);
+  font-family: Sarabun, "Leelawadee UI", "Noto Sans Thai", -apple-system,
+               BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  font-size: 16px;
+  line-height: 1.85;
+}
+
+.doc {
+  max-width: 54rem;
+  margin: 0 auto;
+  padding: 3.5rem clamp(1.5rem, 5vw, 4rem) 3rem;
+  background: var(--paper);
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  box-shadow: 0 1px 2px rgba(20, 24, 29, .04), 0 12px 32px rgba(20, 24, 29, .06);
+}
+
+/* ---- masthead ---------------------------------------------------------- */
+
+.doc-head { border-bottom: 3px solid var(--accent); padding-bottom: 1.5rem; margin-bottom: 2.5rem; }
+
+.kicker {
+  margin: 0 0 .6rem;
+  font-size: .78rem;
+  font-weight: 600;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.doc-head h1 { margin: 0; font-size: clamp(1.7rem, 4vw, 2.3rem); line-height: 1.3; font-weight: 700; }
+
+.meta { margin: .75rem 0 0; font-size: .9rem; color: var(--ink-soft); }
+
+.disclosure {
+  margin: 1.1rem 0 0;
+  padding-top: .85rem;
+  border-top: 1px solid var(--rule-soft);
+  font-size: .82rem;
+  line-height: 1.7;
+  color: var(--ink-soft);
+}
+
+/* ---- headings ---------------------------------------------------------- */
+
+h2 {
+  margin: 3rem 0 1rem;
+  padding-bottom: .5rem;
+  border-bottom: 1px solid var(--rule);
+  font-size: 1.4rem;
+  line-height: 1.4;
+  font-weight: 700;
+}
+
+h3 {
+  margin: 2rem 0 .75rem;
+  font-size: 1.12rem;
+  line-height: 1.5;
+  font-weight: 700;
+  color: var(--accent);
+}
+
+h2 + h3 { margin-top: 1.25rem; }
+
+p { margin: 0 0 1.15rem; }
+
+a { color: var(--accent); text-underline-offset: 2px; }
+
+strong { font-weight: 700; }
+
+hr { height: 0; margin: 3rem 0; border: 0; border-top: 1px solid var(--rule-soft); }
+
+/* ---- lists ------------------------------------------------------------- */
+
+ul, ol { margin: 0 0 1.15rem; padding-left: 1.35rem; }
+li { margin-bottom: .5rem; }
+li > ul, li > ol { margin-top: .5rem; margin-bottom: .25rem; }
+
+/* ---- tables ------------------------------------------------------------ */
+
+.table-scroll { overflow-x: auto; margin: 0 0 1.6rem; -webkit-overflow-scrolling: touch; }
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: .92rem;
+  line-height: 1.65;
+}
+
+th, td {
+  padding: .6rem .8rem;
+  border: 1px solid var(--rule);
+  text-align: left;
+  vertical-align: top;
+}
+
+thead th {
+  background: var(--wash);
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+tbody tr:nth-child(even) { background: #fbfcfd; }
+
+/* ---- callouts (blockquotes carry the load-bearing asks) ---------------- */
+
+blockquote {
+  margin: 0 0 1.6rem;
+  padding: 1.1rem 1.35rem .35rem;
+  background: var(--flag-wash);
+  border: 1px solid #f0dfba;
+  border-left: 4px solid var(--flag);
+  border-radius: 3px;
+}
+
+blockquote p { margin-bottom: .8rem; }
+
+/* ---- code -------------------------------------------------------------- */
+
+code {
+  padding: .12em .38em;
+  background: var(--accent-wash);
+  border-radius: 3px;
+  font-family: var(--mono);
+  font-size: .88em;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+blockquote code { background: #fff; border: 1px solid #ecdcb8; }
+
+figure {
+  margin: 0 0 1.9rem;
+  padding: 1.25rem 1.25rem .9rem;
+  background: #fcfdfd;
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+}
+
+figure svg { display: block; width: 100%; height: auto; }
+
+figcaption {
+  margin-top: .9rem;
+  padding-top: .7rem;
+  border-top: 1px solid var(--rule-soft);
+  font-size: .82rem;
+  line-height: 1.6;
+  color: var(--ink-soft);
+  text-align: center;
+}
+
+/* ---- footer ------------------------------------------------------------ */
+
+.doc-foot {
+  margin-top: 3.5rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--rule);
+  font-size: .82rem;
+  color: var(--ink-soft);
+}
+
+.doc-foot p { margin: 0; }
+
+/* ---- print ------------------------------------------------------------- */
+
+@media print {
+  @page { size: A4; margin: 16mm 14mm; }
+  body { padding: 0; background: #fff; font-size: 10.5pt; line-height: 1.6; }
+  .doc { max-width: none; padding: 0; border: 0; border-radius: 0; box-shadow: none; }
+  a { color: inherit; text-decoration: none; }
+  h2 { break-after: avoid; page-break-after: avoid; }
+  h3 { break-after: avoid; page-break-after: avoid; }
+  table, blockquote, .table-scroll, figure { break-inside: avoid; page-break-inside: avoid; }
+  tr, li { break-inside: avoid; page-break-inside: avoid; }
+  thead { display: table-header-group; }
+  .doc-foot { break-before: avoid; }
+}
+
+/* ---- video list -------------------------------------------------------- */
+
+.watch {
+  display: inline-block;
+  margin: .25rem 0 1.5rem;
+  padding: .7rem 1.4rem;
+  background: var(--accent);
+  color: #fff;
+  border-radius: 4px;
+  font-weight: 700;
+  text-decoration: none;
+}
+.watch:hover { filter: brightness(1.1); }
+
+.video {
+  margin: 0 0 1.9rem;
+  padding: 1.4rem 1.5rem .6rem;
+  border: 1px solid var(--rule);
+  border-left: 4px solid var(--accent);
+  border-radius: 4px;
+  background: #fcfdfd;
+}
+.video h2 { margin: 0 0 .3rem; padding: 0; border: 0; font-size: 1.25rem; }
+.video .part { margin: 0 0 .1rem; font-size: .8rem; font-weight: 600; letter-spacing: .08em; color: var(--accent); }
+.video .len { margin: 0 0 1rem; font-size: .88rem; color: var(--ink-soft); }
+.video h3 { margin: 1.1rem 0 .4rem; font-size: 1rem; }
+</style>
+</head>
+<body>
+<article class="doc">
+  <header class="doc-head">
+    <p class="kicker">ดูก่อนเข้าอบรม</p>
+    <h1>ระบบอัตโนมัติที่ใช้ได้จริง — วิดีโอภาพรวม 3 ตอน</h1>
+    <p class="meta">IoT in Smart Farming · ความยาวรวมประมาณ 27 นาที</p>
+  </header>
+
+  <p>วิดีโอชุดนี้เล่าภาพรวมของการออกแบบระบบอัตโนมัติ ตั้งแต่อุปกรณ์ที่ใช้ ไปจนถึงการทำให้ระบบทำงานได้จริงในฟาร์ม
+  และการใช้ข้อมูลที่ระบบเก็บไว้ช่วยตัดสินใจ ไม่ได้สอนขั้นตอนในใบงาน จึงไม่จำเป็นต้องดูก่อนเข้าอบรม
+  แต่ถ้าได้ดูไว้ก่อนจะเห็นภาพว่าแต่ละกิจกรรมต่อกันอย่างไร</p>
+  <p>แต่ละตอนดูแยกกันได้ ไม่ต้องเรียงตามลำดับ</p>
+
+  <p><a class="watch" href="https://drive.google.com/drive/folders/1PTIwi0gkMGGLgAXyBcSkfQKgP8RMJioP?usp=sharing">ดูวิดีโอทั้ง 3 ตอนใน Google Drive</a></p>
+
+  <section class="video">
+    <p class="part">ตอนที่ 1/3</p>
+    <h2>ประกอบระบบอัตโนมัติ</h2>
+    <p class="len">ประมาณ 15 นาที · เซ็นเซอร์ แอคชูเอเตอร์ และโลจิก</p>
+    <p>ระบบอัตโนมัติทุกระบบมีส่วนประกอบหลักแค่ 3 ส่วน คือ ตัวรับค่า (เซ็นเซอร์) ตัวสั่งงาน (แอคชูเอเตอร์)
+    และโลจิกที่ตัดสินใจว่าเมื่อไรควรทำอะไร ตอนนี้ไล่ดูทีละส่วนว่าควรเลือกอย่างไร</p>
+    <h3>ในตอนนี้</h3>
+    <ul>
+      <li><strong>เซ็นเซอร์</strong> — ตอนนี้หาซื้อได้ง่ายและราคาถูก แต่ต้องดูความละเอียดที่ต้องการจริง
+        การกันน้ำกันฝน และวิธีส่งข้อมูล (WiFi ไม่ใช่ทางเลือกเดียว)</li>
+      <li><strong>แอคชูเอเตอร์</strong> — งานในฟาร์มส่วนใหญ่เป็นแค่การเปิด-ปิด ผ่านรีเลย์หรือคอนแทกเตอร์
+        ต้องเลือกให้รับกระแสของโหลดได้ ไม่อย่างนั้นความร้อนสะสมจนเกิดไฟไหม้ได้ และงานไฟ 220 โวลต์ต้องระวังความปลอดภัย</li>
+      <li><strong>โลจิกและ Home Assistant</strong> — จาก PLC ในโรงงาน มาเป็นซอฟต์แวร์โอเพนซอร์สที่ติดตั้งได้ฟรี
+        ใช้กับฟาร์มได้สบาย เปิดทิ้งไว้เป็นแม่ข่าย เก็บประวัติค่า และดูได้ทั้งในเบราว์เซอร์และแอปบนมือถือ</li>
+      <li><strong>สร้าง Automation</strong> — ใช้เมนูแบบ wizard ไม่ต้องเขียนโค้ด กำหนดเงื่อนไข (Trigger) แล้วกำหนดสิ่งที่ให้ทำ (Action)</li>
+    </ul>
+  </section>
+
+  <section class="video">
+    <p class="part">ตอนที่ 2/3</p>
+    <h2>Fail-safe: ทำอย่างไรเมื่อระบบไม่ทำงานอย่างที่คาด</h2>
+    <p class="len">ประมาณ 7 นาทีครึ่ง · ทำให้ระบบใช้ได้จริง</p>
+    <p>ทำให้ระบบทำงานได้เป็นครึ่งที่ง่าย อีกครึ่งคือทำให้ระบบยังปลอดภัยเมื่อมีบางอย่างผิดพลาด
+    ตอนนี้ยกตัวอย่างสิ่งที่เกิดขึ้นจริงกับระบบรดน้ำ และวิธีป้องกันแต่ละแบบ</p>
+    <h3>ในตอนนี้</h3>
+    <ul>
+      <li><strong>น้ำหมด</strong> — ปั๊มเดินตัวเปล่าจนเสีย ป้องกันด้วยลูกลอย</li>
+      <li><strong>ต่อลูกลอยสองแบบ</strong> — ต่อผ่าน Home Assistant หรือต่อตัดไฟปั๊มโดยตรง
+        แบบหลังยังทำงานแม้วันนั้นเน็ตดับและ Home Assistant ล่ม</li>
+      <li><strong>ปั๊มไม่เดิน</strong> — สั่งเปิดแล้วแต่ปั๊มไม่ทำงาน ตรวจได้ด้วยเซ็นเซอร์วัดการสั่นหรือการไหลของน้ำ</li>
+      <li><strong>เซ็นเซอร์หาย</strong> — แบตเตอรี่หมดโดยไม่มีใครรู้ ต้องให้ระบบแจ้งเมื่อเซ็นเซอร์ไม่ส่งค่า</li>
+      <li><strong>Timeout</strong> — กำหนดเวลาทำงานสูงสุดไว้เสมอ</li>
+    </ul>
+  </section>
+
+  <section class="video">
+    <p class="part">ตอนที่ 3/3</p>
+    <h2>ตัดสินใจด้วยข้อมูล</h2>
+    <p class="len">ประมาณ 4 นาทีครึ่ง · สิ่งที่ระบบ IoT ให้มากกว่าความสะดวก</p>
+    <p>ประโยชน์ที่แท้จริงของระบบ IoT คือข้อมูลที่เก็บไว้ ซึ่งทำให้เราเรียนรู้สิ่งใหม่เกี่ยวกับฟาร์มของเราเอง</p>
+    <h3>ในตอนนี้</h3>
+    <ul>
+      <li><strong>ดูกราฟย้อนหลัง</strong> — เช่น ค่าออกซิเจนละลายน้ำ (DO) ในบ่อปลาที่ขึ้นลงตามอุณหภูมิ</li>
+      <li><strong>รดน้ำให้คุ้ม</strong> — ใช้พยากรณ์อากาศและความกดอากาศ เพื่อไม่ต้องรดน้ำก่อนฝนตก</li>
+      <li><strong>สรุป</strong> — นอกจากทักษะแล้ว ต้องมีความรู้เรื่องที่เราทำอยู่ด้วย และควรไปศึกษาอะไรต่อ</li>
+    </ul>
+  </section>
+
+  <footer class="doc-foot">
+    <p>วิดีโอเก็บไว้ใน Google Drive เปิดดูในเบราว์เซอร์ได้เลยโดยไม่ต้องดาวน์โหลด</p>
+  </footer>
+</article>
+</body>
+</html>

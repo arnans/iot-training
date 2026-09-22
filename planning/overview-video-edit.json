@@ -1,0 +1,171 @@
+{
+  "_doc": "Edit decisions for the three pre-workshop overview videos. See OVERVIEW-VIDEO-PLAN.md. Built by scripts/overview_video.py. All times are SOURCE seconds in the one take. Insert 'cue' is a phrase in the ASR word stream (ASR spelling, no spaces), searched forward from the previous insert; the insert starts on the phrase. src forms: have:<repo path> | make:<name> | shoot:<S#> | source:<src-id> | pair:[src, src]. 'hook' is the cold open: quick shots, each {in, out, show} with show 'talk' (speaker at the edit's zoom there, or 'level') or an insert id; hard-cut, then a fade to black, then the cover as a banner fading in and out with the intro music (<work_dir>/music/intro.*).",
+  "source": "user-import/overview-video/automation-iot-overview.mp4",
+  "asr": "user-import/overview-video/asr-gpu-large/automation-iot-overview.json",
+  "wav": "user-import/overview-video/wav/automation-iot-overview.wav",
+  "work_dir": "user-import/overview-video",
+  "sequence": {"width": 1920, "height": 1080, "fps": 30},
+  "base_scale": 115,
+  "zoom_scale": 132,
+  "push_s": 0.4,
+  "cover_s": 3.0,
+  "hook_tail_s": 0.5,
+  "banner_fade_in_s": 0.4,
+  "banner_fade_out_s": 0.6,
+  "music_lufs": -22,
+  "end_s": 5.0,
+  "lead_s": 0.15,
+  "hold_still_s": 6.0,
+  "hold_video_s": 8.0,
+  "max_speed": 6.0,
+  "videos": [
+    {
+      "id": "V1",
+      "title": "ประกอบระบบอัตโนมัติ",
+      "subtitle": "ตอนที่ 1/3 · เซ็นเซอร์ แอคชูเอเตอร์ และโลจิก",
+      "in": 3.30,
+      "out": 901.5,
+      "hook": {"why": "it's easy now → many sensors → but be careful", "shots": [
+        {"in": 105.2, "out": 106.55, "show": "i26", "line": "ทำได้ง่ายเลยทีเดียว"},
+        {"in": 126.95, "out": 127.97, "show": "i05", "line": "มีเซ็นเซอร์มากมาย"},
+        {"in": 503.43, "out": 504.4, "show": "talk", "line": "220 โวลต์"},
+        {"in": 420.96, "out": 421.85, "show": "i14", "line": "เกิดไฟไหม้"}
+      ]},
+      "chapters": [
+        [0.0, "เปิดเรื่อง"],
+        ["ก็ในระบบอัตโน", "องค์ประกอบ 3 ส่วน"],
+        ["เรื่องของเซ็นเซอร์นะครับยุคนี้", "เซ็นเซอร์"],
+        ["ฝั่งActuator", "แอคชูเอเตอร์"],
+        ["ทีนี้หัวใจหลักสำคัญ", "โลจิก และ Home Assistant"],
+        ["รายละเอียดว่าHomeAssistantทำ", "รัน Home Assistant จริง"],
+        ["พอเสร็จแล้วก็ต้องเข้าไปศึกษาConcept", "สร้าง Automation"]
+      ],
+      "zooms": [
+        {"id": "Z1", "in_cue": "แต่จริงๆแล้วผมคิดว่ามีประเด็น", "out_cue": "ฉะนั้นในคลิปนี้", "level": 140, "style": "push", "line": "แต่จริงๆแล้วผมคิดว่ามีประเด็นที่จะต้องคำนึงถึงการเอาไปใช้ในชีวิตจริง", "why": "V1 thesis — signature push"},
+        {"id": "Z1b", "in_cue": "เป็นตัวที่ท้าทาย", "out_cue": "แต่ในปัจจุบันในส่วนของโลจิก", "level": 132, "line": "(โลจิก) มักจะเป็นตัวที่ท้าทาย", "why": "the problem, before the turn; out on 'แต่ในปัจจุบัน'"},
+        {"id": "Z1c", "in_cue": "ยิ่งความละเอียดสูง", "out_cue": "จากนั้นก็ต้องดู", "level": 132, "line": "ยิ่งความละเอียดสูง … ราคาก็จะไปตามนั้นด้วย", "why": "the conclusion of the resolution point"},
+        {"id": "Z1e", "in_cue": "ก็น่าจะพอ", "out_cue": "ฝั่งActuator", "level": 132, "line": "ก็น่าจะพอทำอาหารกินได้แล้ว", "why": "aside/joke; punch out on the topic change to actuators"},
+        {"id": "Z2", "in_cue": "ไม่ถึงร้อยเปอร์เซ็นต์", "out_cue": "ตอบมักจะเป็นว่า", "level": 132, "line": "ไม่ถึงร้อยเปอร์เซ็นต์ แปดสิบเก้าสิบเปอร์เซ็นต์", "why": "number; tier 1", "callout": {"big": "80–90%", "small": "ของงานควบคุม คือเปิด/ปิด"}},
+        {"id": "Z2b", "in_cue": "ตอบมักจะเป็นว่า", "level": 140, "line": "คำตอบมักจะเป็นว่าเป็นการเปิดปิด", "why": "the reveal; tier 2"},
+        {"id": "Z1g", "in_cue": "แค่เปิดปิดไฟได้เปิดปิดน้ำได้", "level": 132, "line": "แค่เปิดปิดไฟได้ เปิดปิดน้ำได้ … สบายแล้ว", "why": "punchline"},
+        {"id": "Z1h", "in_cue": "แต่การเลือกใช้ในชีวิตจริง", "level": 132, "line": "แต่การเลือกใช้ในชีวิตจริงมีความท้าทาย", "why": "turn to the real-world catch"},
+        {"id": "Z1i", "in_cue": "ถ้าเราใช้Relayตัวที่เล็กเกินไป", "level": 132, "line": "ถ้าเราใช้ Relay ตัวที่เล็กเกินไป", "why": "warning; the burnt relay follows"},
+        {"id": "Z3", "in_cue": "เรื่องactuatorมันเกี่ยวข้องกับไฟ", "out_cue": "โดยเฉพาะถ้าจะไปคอนโทรลไฟบ้าน", "level": 132, "line": "เรื่อง actuator มันเกี่ยวข้องกับไฟ", "why": "safety; tier 1"},
+        {"id": "Z3b", "in_cue": "โดยเฉพาะถ้าจะไปคอนโทรลไฟบ้าน", "out_cue": "เข้าใจconcept", "level": 140, "line": "โดยเฉพาะถ้าจะไปคอนโทรลไฟบ้าน 220 โวลต์", "why": "safety escalates; tier 2", "callout": {"big": "220 V", "small": "ไฟบ้าน — ต้องระวัง"}},
+        {"id": "Z1l", "in_cue": "แต่ว่าระบบที่ผมคิดว่าน่าสนใจ", "level": 132, "line": "แต่ว่าระบบที่ผมคิดว่าน่าสนใจสำหรับคนเริ่มต้น", "why": "reveal of the recommendation"},
+        {"id": "Z1n", "in_cue": "ผมก็คิดว่าสักสามพัน", "out_cue": "แล้วเวลาเราเข้าไป", "level": 132, "line": "ผมก็คิดว่าสักสามพัน", "why": "number (price)", "callout": {"big": "~3,000 บาท", "small": "Raspberry Pi ครบชุด"}},
+        {"id": "Z1o", "in_cue": "ระบบHomeAssistantถือว่าฝึกใช้งาน", "out_cue": "ฉะนั้นใครที่เลือกเซ็นเซอร์ได้", "level": 132, "line": "ระบบ Home Assistant ถือว่าฝึกใช้งานได้ง่ายขึ้นเยอะ", "why": "claim; tier 1 of the closer"},
+        {"id": "Z1p", "in_cue": "ฉะนั้นใครที่เลือกเซ็นเซอร์ได้", "level": 140, "style": "push", "line": "…อาจจะเป็น farm อัจฉริยะ นี่ผมคิดว่าผ่านแล้ว", "why": "V1 closer — signature push; tier 2"}
+      ],
+      "inserts": [
+        {"id": "i01", "cue": "ส่วนประกอบหลักๆเลยก็จะมีอยู่แค่3ส่วน", "hold": 14, "src": "make:spine", "desc": "Spine diagram: Sensor → Logic → Actuator"},
+        {"id": "i02", "cue": "เช่นดินแห้ง", "src": "make:soil-dry-trigger-action", "desc": "Soil dry → water, trigger→action illustration"},
+        {"id": "i03", "cue": "ใช้ระบบที่ชื่อHomeAssistant", "src": "have:user-import/overview-video/images/hass create new automation.mp4", "desc": "First look at the HA automation editor"},
+        {"id": "i04", "cue": "ยุคนี้เป็นยุคทองของเซ็นเซอร์", "hold": 7, "src": "have:user-import/overview-video/images/sensor-on-shopee.mp4", "desc": "Shopee/Lazada search results for เซ็นเซอร์"},
+        {"id": "i05", "cue": "เช่นถ้าเป็นอุณ", "hold": 8, "src": "make:sensor-grid", "desc": "Labelled photo grid of sensor modules"},
+        {"id": "i06", "cue": "ถ้าเกิดว่าเราอยากจะดูแบบบวกลบได้1องศา", "hold": 9, "src": "make:resolution-chart", "desc": "Same temperature at three resolutions"},
+        {"id": "i07", "labels": ["วงจรเปลือย", "หัววัดแบบกันน้ำ"], "cue": "แต่ถ้ามันเป็นวงจรเปลือยเปล่า", "src": "pair:[have:user-import/overview-video/images/non-water-proof-soil-humidity-sensor.png, have:user-import/overview-video/images/water-proof-soil-humidity.png]", "desc": "Bare soil-moisture board vs sealed waterproof probe"},
+        {"id": "i08", "cue": "แต่ระบบไร้สายก็มีหลากหลาย", "hold": 10, "src": "make:wireless-range", "desc": "WiFi / Zigbee / LoRa range over a plot of land"},
+        {"id": "i09", "labels": ["หลอดไฟ", "ปั๊มน้ำ"], "cue": "สองอย่างนี้ถ้าเลือก", "src": "pair:[source:src-02a, source:src-02b]", "desc": "A lamp, and a pump / solenoid valve"},
+        {"id": "i10", "labels": ["รีเลย์", "คอนแทคเตอร์"], "cue": "ก็มักจะเป็นอุปกรณ์ประเภทrelay", "src": "pair:[have:docs/images/relay-board.jpg, have:user-import/overview-video/images/magnetic-contactor.png]", "desc": "Relay board and a contactor"},
+        {"id": "i11", "cue": "หลักการข้างในจริงๆก็คล้ายกัน", "hold": 8, "src": "make:switch-vs-relay", "desc": "Wall switch vs relay in the same circuit"},
+        {"id": "i12", "labels": ["ขั้วต่อของรีเลย์"], "cue": "common,normally", "hold": 8, "src": "have:docs/images/relay-board-terminals.png", "desc": "Relay terminals COM / NO / NC"},
+        {"id": "i13", "cue": "ตกลงเท่าไหร่กี่Watt", "hold": 7, "src": "make:pump-spec-plate", "desc": "Pump with its spec plate circled, arrow to the plate close-up", "note": ""},
+        {"id": "i14", "labels": ["รีเลย์ที่ร้อนจนไหม้"], "cue": "ใช้ได้ไม่นานกว่าพัง", "hold": 5, "src": "have:user-import/overview-video/images/burnt-relay.png", "desc": "Burnt relay contacts"},
+        {"id": "i15", "labels": ["รีเลย์แบบเปลือย", "กล่องรีเลย์กันน้ำ"], "cue": "ต้องกันน้ำกันฝนไหม", "src": "pair:[have:docs/images/relay-board.jpg, source:src-01b]", "desc": "Bare relay board vs relays in a sealed box"},
+        {"id": "i16", "labels": ["PLC ในตู้ควบคุม"], "cue": "ถ้าเป็นในโรงงานเราก็เรียกว่าPLC", "src": "source:src-05", "desc": "PLC in a control cabinet"},
+        {"id": "i17", "labels": ["โปรแกรม PLC แบบ Ladder"], "cue": "เขาจะยากเหมือนเข้ารหัส", "hold": 5, "src": "source:src-06", "desc": "Ladder logic"},
+        {"id": "i18", "labels": ["Home Assistant"], "cue": "ระบบที่ชื่อว่าHomeAssistant", "src": "have:user-import/overview-video/images/hass-banner.png", "desc": "HA in the browser"},
+        {"id": "i19", "cue": "เขาเน้นเอามาใช้กับระบบSmartHome", "src": "have:docs/images/walkthroughs/a4-8b-farm-dashboard.mp4", "desc": "The farm dashboard"},
+        {"id": "i20", "cue": "สนับสนุนมาตรฐาน", "src": "have:user-import/overview-video/images/ha-integration-scrollthough.mp4", "desc": "HA integrations list, scrolling"},
+        {"id": "i21", "cue": "ที่ก็เรียกว่าเป็นแม่ข่าย", "hold": 8, "src": "make:always-on-hub", "desc": "Always-on hub: sensors in, phone/laptop out"},
+        {"id": "i22", "cue": "ใน24ชั่วโมงในสัปดาห์ที่ผ่านมา", "src": "have:docs/images/walkthroughs/hist-1-history-graph.mp4", "desc": "History graph"},
+        {"id": "i23", "labels": ["Raspberry Pi"], "cue": "ที่ชื่อว่าRaspberryPi", "src": "have:user-import/overview-video/images/raspberry-pi-5.png", "desc": "Raspberry Pi"},
+        {"id": "i24", "labels": ["เบราว์เซอร์และแอปบนมือถือ"], "cue": "เข้าไปใช้ผ่านทางเว็บBrowser", "hold": 9, "src": "have:user-import/overview-video/images/hass-dashboard-laptop-and-phone-cropped.png", "desc": "Browser and phone, same dashboard"},
+        {"id": "i25", "cue": "เขาก็จะเรียกว่าการสร้างautomation", "src": "have:user-import/overview-video/images/hass create new automation.mp4", "desc": "Create-automation flow"},
+        {"id": "i26", "cue": "ก็จะเป็นเหมือนเป็นwizard", "src": "make:automation-soil-watering", "desc": "Automation editor still, highlights: When → humidity trigger → time trigger → Then do → pump on", "hold": 29.5}
+      ]
+    },
+    {
+      "id": "V2",
+      "title": "Fail-safe: ทำอย่างไรเมื่อระบบไม่ทำงานอย่างที่คาด",
+      "subtitle": "ตอนที่ 2/3 · ทำให้ระบบใช้ได้จริง",
+      "in": 906.40,
+      "out": 1361.53,
+      "hook": {"why": "bad luck → everything fails → silent failure → danger", "shots": [
+        {"in": 1074.45, "out": 1075.25, "show": "talk", "line": "โชคร้ายจังเลย"},
+        {"in": 1075.25, "out": 1076.95, "show": "i33", "line": "น้ำหมด … เน็ตดับ"},
+        {"in": 1223.8, "out": 1224.85, "show": "i34", "line": "แต่มันไม่สูบน้ำ"},
+        {"in": 1158.65, "out": 1160.05, "show": "talk", "line": "อันนี้อันตรายเลย"}
+      ]},
+      "chapters": [
+        [906.40, "ครึ่งหลังที่ยากกว่า"],
+        ["ถ้าเกิดท่านมีระบบที่ไปควบคุมปั๊มน้ำ", "น้ำหมด"],
+        ["บางทีของพวกนี้เราก็จะไม่นิยม", "ต่อลูกลอยสองแบบ"],
+        ["ไม่ว่าปั๊มจะผิดพลาด", "ปั๊มไม่เดิน"],
+        ["เซนเซอร์ดับ", "เซ็นเซอร์หาย"],
+        ["เคสสุดท้าย", "Timeout"]
+      ],
+      "zooms": [
+        {"id": "Z4", "in_cue": "เอาไปใช้จริงให้ได้ผล", "out_cue": "ซึ่งบางทีมันจะมีบริบท", "level": 140, "style": "push", "line": "เอาไปใช้จริงให้ได้ผล มันคือครึ่งหลังที่อาจจะมีความท้าทายหน่อย", "why": "V2 thesis — signature push"},
+        {"id": "Z4b", "in_cue": "เรานิยมที่จะตัดการทำงาน", "level": 132, "line": "เรานิยมที่จะตัดการทำงานในรูปแบบที่ไม่เกี่ยวกับระบบคอมเลย", "why": "the surprising principle"},
+        {"id": "Z5", "in_cue": "เพราะว่าถ้าบังเอิญวันนั้น", "level": 132, "line": "เพราะว่าถ้าบังเอิญวันนั้นโชคร้ายจังเลย", "why": "sets up the failure story; the diagram takes the three failures"},
+        {"id": "Z5c", "in_cue": "ถึงจะเห็น", "out_cue": "จริงๆมีอีกเยอะ", "level": 132, "line": "ดูไปดูมาถึงจะเห็น อ๋อ ลูกลอยเมื่อวานนี้ตัดเพราะน้ำหมด", "why": "punchline — the discovery (recovered from an ASR dropout)"},
+        {"id": "Z6", "in_cue": "อันนี้อันตรายเลย", "out_cue": "ฉะนั้นในระบบอัตโนมัติเนี่ย", "level": 132, "line": "อันนี้อันตรายเลย ก็อาจจะเกิดไฟไหม้ได้", "why": "danger; out on the turn"},
+        {"id": "Z6b", "in_cue": "ก็เป็นแบบproactive", "out_cue": "แต่ว่าถ้าถามว่า", "level": 132, "line": "เป็นแบบ proactive ไม่ได้เป็นแบบ react … ป้องกันไว้ก่อน", "why": "principle"},
+        {"id": "Z6a", "in_cue": "ก็อื้ออยู่แหละ", "out_cue": "เช่นน้ำในเครื่อง", "level": 132, "line": "มันก็อื้ออยู่แหละ แต่มันไม่สูบน้ำ", "why": "punchline (recovered)"},
+        {"id": "Z6c", "in_cue": "ถ้ามันทำงานนานเกินกว่าช่วงปกติ", "out_cue": "เพราะมันเกิดขึ้นได้", "level": 132, "line": "อาจจะเป็น 2 ชั่วโมง 3 ชั่วโมง", "why": "number", "callout": {"big": "2–3 ชม.", "small": "เวลาทำงานสูงสุดที่ตั้งไว้"}},
+        {"id": "Z7", "in_cue": "เรื่องนี้สำคัญมาก", "out_cue": "มันจะแยกคนที่เป็นมือใหม่", "level": 132, "line": "เรื่องนี้สำคัญมาก", "why": "closer; tier 1"},
+        {"id": "Z7b", "in_cue": "มันจะแยกคนที่เป็นมือใหม่", "level": 140, "style": "push", "line": "มันจะแยกคนที่เป็นมือใหม่กับคนที่มีประสบการณ์ออกจากกันได้", "why": "V2 closer — signature push; tier 2"}
+      ],
+      "inserts": [
+        {"id": "i29", "cue": "ถ้าเกิดสมมติน้ำมันหมด", "hold": 12, "src": "make:tank-running-dry", "desc": "Tank level below intake, pump still running"},
+        {"id": "i30", "labels": ["ลูกลอย"], "cue": "ต้องเพิ่มลูกลอยเข้าไป", "src": "have:user-import/overview-video/images/float-switch.png", "desc": "Float switch"},
+        {"id": "i31", "cue": "มันมีสองทางที่ทำได้", "hold": 14, "src": "make:float-two-ways", "desc": "Float through HA vs float wired into pump power"},
+        {"id": "i32", "cue": "แบบที่สองเราพ่วงเจ้าลูกลอย", "hold": 12, "src": "make:float-two-ways-panel2", "desc": "Panel 2: float in series with pump power"},
+        {"id": "i33", "cue": "น้ำหมดเน็ตดับ", "hold": 7, "src": "make:float-two-ways-failure", "desc": "Panel 1: water out, net down, HA down, pump damaged"},
+        {"id": "i34", "cue": "ไม่ว่าปั๊มจะผิดพลาด", "hold": 20, "src": "pair:[have:user-import/overview-video/images/pump-with-vibration-sensor-on-top.png, have:user-import/overview-video/images/vibration-sensor-close-up.png]", "desc": "Pump with the vibration sensor on top, and a close-up", "labels": ["ปั๊มน้ำ", "เซ็นเซอร์วัดการสั่น"]},
+        {"id": "i35", "cue": "มันจะสั่น", "src": "make:automation-vibration", "desc": "Vibration automation still, highlights: pump-running condition → turn off + notify", "hold": 17},
+        {"id": "i36", "cue": "เซ็นเซอร์วัดการไหลของน้ำ", "hold": 8, "src": "make:flow-sensor", "desc": "Flow sensor inline, pump on but no flow"},
+        {"id": "i37", "cue": "เราก็อาจจะเผลอทิ้งไว้", "src": "make:automation-unavailable", "desc": "Sensor-unavailable automation still, highlights: unavailable trigger → turn off + notify", "hold": 28},
+        {"id": "i38", "cue": "เรามักจะมีการตั้งtimeout", "hold": 20, "src": "make:automation-timeout", "desc": "Timeout automation still, highlights: relay on for 2:00:00 → turn off + notify"}
+      ]
+    },
+    {
+      "id": "V3",
+      "title": "ตัดสินใจด้วยข้อมูล",
+      "subtitle": "ตอนที่ 3/3 · สิ่งที่ระบบ IoT ให้มากกว่าความสะดวก",
+      "in": 1367.00,
+      "out": 1640.80,
+      "hook": {"why": "the rain story, then amateur vs professional", "shots": [
+        {"in": 1486.6, "out": 1488.05, "show": "i44", "line": "ปรากฏว่าฝนตก"},
+        {"in": 1489.55, "out": 1490.65, "show": "i42", "line": "เสียน้ำเปล่า"},
+        {"in": 1592.0, "out": 1592.95, "show": "talk", "level": 132, "line": "มือสมัครเล่น"},
+        {"in": 1595.93, "out": 1597.1, "show": "talk", "level": 140, "line": "เหมือนมืออาชีพได้"}
+      ]},
+      "chapters": [
+        [1367.00, "ข้อมูลคือผลตอบแทนที่แท้จริง"],
+        ["ถ้าเราเลี้ยงปลา", "ออกซิเจนในบ่อปลา"],
+        ["ระบบลดน้ำอัตโนมัติ", "น้ำ ฝน และความกดอากาศ"],
+        ["โอเคครับก็นั่นก็เป็นoverview", "สรุป"]
+      ],
+      "zooms": [
+        {"id": "Z8a", "in_cue": "ไม่ใช่แค่การทำให้เรา", "out_cue": "แต่เป็นเพราะเราได้เรียนรู้", "level": 132, "line": "ไม่ใช่แค่การทำให้เราประหยัดแรงประหยัดเวลา", "why": "setup; tier 1"},
+        {"id": "Z8b", "in_cue": "แต่เป็นเพราะเราได้เรียนรู้", "out_cue": "สิ่งเหล่านี้เนี่ย", "level": 140, "style": "push", "line": "แต่เป็นเพราะเราได้เรียนรู้เรื่องใหม่ๆ", "why": "V3 thesis — signature push; tier 2"},
+        {"id": "Z8f", "in_cue": "ปรากฏว่าฝนตก", "out_cue": "บางทีมันมีเทคนิค", "level": 132, "line": "ปรากฏว่าฝนตกตามมาทีหลัง ก็เสียน้ำเปล่า", "why": "punchline (recovered)"},
+        {"id": "Z8c", "in_cue": "ถ้าเราสามารถประหยัดการเปิด", "out_cue": "ซึ่งประเด็นนี้", "level": 132, "line": "ประหยัดการเปิดปั๊มได้สักครึ่งชั่วโมง 1 ชั่วโมง", "why": "number", "callout": {"big": "30–60 นาที", "small": "เวลาเปิดปั๊มที่ประหยัดได้"}},
+        {"id": "Z8d", "in_cue": "ไม่ใช่แค่ทักษะ", "out_cue": "ฉะนั้นก็เป็นสิ่งที่ต้องไปใช้", "level": 132, "line": "ไม่ใช่แค่ทักษะ ไม่ใช่แค่ skill … ต้องมี knowledge", "why": "principle"},
+        {"id": "Z8", "in_cue": "ซึ่งผมคิดว่านี่เป็นอีกหนึ่งปัจจัย", "out_cue": "ระหว่างคนที่", "level": 132, "line": "ซึ่งผมคิดว่านี่เป็นอีกหนึ่งปัจจัย", "why": "closer; tier 1"},
+        {"id": "Z8e", "in_cue": "ระหว่างคนที่", "out_cue": "โอเคครับก็นั่นก็เป็นoverview", "level": 140, "style": "push", "line": "…แยกระหว่างคนที่ทำแบบมือสมัครเล่น … มืออาชีพ", "why": "V3 closer — signature push; tier 2; out wide for the outro"}
+      ],
+      "inserts": [
+        {"id": "i39", "cue": "เราเอากราฟมาดู", "src": "make:history-anomaly", "desc": "History graph still, one anomaly circled, slow push-in", "hold": 12},
+        {"id": "i40", "labels": ["เครื่องตีน้ำ"], "cue": "ถ้าเราเลี้ยงปลา", "hold": 7, "src": "source:src-08", "desc": "Fish pond with paddlewheel aerator"},
+        {"id": "i41", "cue": "เห็นความสอดคล้องของค่าดิโอ", "hold": 10, "src": "make:do-vs-temperature", "desc": "DO and temperature on one time axis"},
+        {"id": "i42", "labels": ["สปริงเกอร์"], "cue": "การเปิดน้ำบางทีเป็นต้นทุนที่สูง", "src": "source:src-09", "desc": "Sprinkler running"},
+        {"id": "i43", "cue": "ลิงก์ไปยังระบบพยากร", "src": "have:user-import/overview-video/images/hass-forecast.png", "desc": "HA weather forecast card"},
+        {"id": "i44", "cue": "การเปลี่ยนของความกดอากาศ", "hold": 10, "src": "make:pressure-before-rain", "desc": "Pressure falling before rain, 48 h"}
+      ]
+    }
+  ]
+}

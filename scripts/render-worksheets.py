@@ -72,8 +72,9 @@ PAGES = [
     ("record-sheet.md", "record-sheet", "อ้างอิง", "", "ใบบันทึกของกลุ่ม"),
 ]
 SLUGS = {p[1] for p in PAGES}
-# the switcher ends at activity 11: the reference pages are reached from docs/index.html, so the
-# course structure stays readable. They are still rendered (and linked from the front door).
+# the course itself ends at activity 11; the three reference pages follow it in the sidebar as
+# their own group, so troubleshooting is one tap away from any activity. NAV_PAGES is the course
+# run in order: the combined file and the prev/next pager are built from it alone.
 NAV_PAGES = [p for p in PAGES if p[2] != "อ้างอิง"]
 # the session pages became one page per activity; the old render names forward to the session's first page
 REDIRECTS = {"session-1": "session-1-start", "session-2": "activity-4", "session-3": "activity-6", "session-3-history": "activity-6"}
@@ -150,6 +151,22 @@ body {
   gap: 0.4rem 1rem;
 }
 .ws-brand { font-weight: 600; font-size: 1.05rem; letter-spacing: 0.01em; }
+/* no underline on hover: the band is a flat surface, and an underlined title reads as a 1998 nav bar */
+a.ws-brand { color: inherit; text-decoration: none; opacity: 1; transition: opacity 0.12s ease; }
+a.ws-brand:hover { opacity: 0.82; }
+/* the way back to the front door: every page carries it, so browser-back is never the only route */
+.ws-home {
+  flex: none;
+  padding: 0.15rem 0.7rem;
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  border-radius: 999px;
+  color: #ffffff;
+  text-decoration: none;
+  font-size: 0.82rem;
+  font-weight: 500;
+  white-space: nowrap;
+}
+.ws-home:hover { background: rgba(255, 255, 255, 0.16); border-color: #ffffff; }
 
 /* ---- shell: page switcher + reading column ---- */
 .ws-shell {
@@ -525,7 +542,7 @@ def youtube_embed(m: re.Match) -> str:
             f'<p class="video-link"><a href="{html.escape(url)}" target="_blank" rel="noopener">▶ เปิดวิดีโอใน YouTube</a></p></div>')
 
 
-def render_page(src: str, slug: str, combined: bool, inline: bool = False) -> dict:
+def render_page(src: str, slug: str, combined: bool, inline: bool = False, home: str = "../index.html") -> dict:
     text = (DOCS / src).read_text(encoding="utf-8")
     title = re.search(r"^# (.+)$", text, re.M).group(1).strip()
     text = FIELDS.MARKER.sub(FIELDS._render, text)
@@ -543,10 +560,14 @@ def render_page(src: str, slug: str, combined: bool, inline: bool = False) -> di
         body = re.sub(r'(<(?:h[1-6]|p|div) id=")', r"\1" + prefix, body)
         body = body.replace('href="#', 'href="#' + prefix)
 
-    # links to the other worksheets; anything else in docs/ is not rendered, so unwrap it
+    # links to the other worksheets; the front door is not a render, so it is pointed at directly.
+    # Anything else in docs/ is not rendered, so unwrap it -- and say so, or the link vanishes unseen.
     def link(m):
         target, anchor, inner = m.group(1), m.group(2) or "", m.group(3)
+        if target == "index":
+            return f'<a href="{home}{anchor}">{inner}</a>'
         if target not in SLUGS:
+            print(f"  warning: {src} links to {target}.md, which is not a rendered page — link dropped", file=sys.stderr)
             return inner
         if combined:
             a = f' data-anchor="{target}--{anchor[1:]}"' if anchor else ""
@@ -581,8 +602,11 @@ def _toc_tokens(tokens):
 def switcher(pages: list[dict], current: str | None, combined: bool) -> str:
     rows, group = [], None
     by_slug = {p["slug"]: p for p in pages}
-    cur_group = next((g for _, s, g, *_ in NAV_PAGES if s == current), None)
-    for _, slug, grp, eyebrow, name in NAV_PAGES:
+    # the reference pages ride along in the sidebar (last group) whenever they were rendered;
+    # the combined file carries NAV_PAGES only, so they drop out of it on their own
+    entries = [p for p in PAGES if p[1] in by_slug]
+    cur_group = next((g for _, s, g, *_ in entries if s == current), None)
+    for _, slug, grp, eyebrow, name in entries:
         p = by_slug[slug]
         ingrp = ' in-group' if grp == cur_group else ""
         num = f' data-n="{eyebrow.split()[-1]}"' if eyebrow else ""    # "กิจกรรม 4" -> the badge shows 4
@@ -631,13 +655,16 @@ def pager(slug: str, combined: bool) -> str:
     return f'<nav class="ws-pager" aria-label="หน้าก่อนหน้าและถัดไป">{prev}{nxt}</nav>' if prev or nxt else ""
 
 
-def page_shell(title: str, nav: str, main: str, scripts: str) -> str:
+def page_shell(title: str, nav: str, main: str, scripts: str, home: str | None = "../index.html") -> str:
     css = BASE_CSS + site_css() + LATE_CSS
     # With no switcher the grid must not keep the sidebar column, or the text renders in it.
     shell = "ws-shell" if nav else "ws-shell ws-shell--solo"
     if not nav:
         css += ("\n@media (min-width: 64rem) {\n"
                 "  .ws-shell--solo { grid-template-columns: minmax(0, 47rem); justify-content: center; }\n}\n")
+    # the band is the way back to the front door; the combined file has no front door to go to
+    brand = (f'<a class="ws-brand" href="{home}">{html.escape(SITE_NAME)}</a>'
+             f'<a class="ws-home" href="{home}">หน้าแรก</a>') if home else f'<span class="ws-brand">{html.escape(SITE_NAME)}</span>'
     return f"""<title>{html.escape(title)}</title>
 <meta name="description" content="ใบงานผู้เข้าร่วม {html.escape(SITE_NAME)}">
 <style>
@@ -645,7 +672,7 @@ def page_shell(title: str, nav: str, main: str, scripts: str) -> str:
 </style>
 <header class="ws-top">
   <div class="ws-top__inner">
-    <span class="ws-brand">{html.escape(SITE_NAME)}</span>
+    {brand}
   </div>
 </header>
 <div class="{shell}">
@@ -670,13 +697,15 @@ def full_document(fragment: str) -> str:
 
 # Pages that also get a <slug>-standalone.html: no sidebar, no links out to the other
 # worksheets, images inlined. The pre-workshop guide is sent to people who have nothing else
-# from the course yet, so it must not offer them the workshop navigation.
+# from the course yet, so it must not offer them the workshop navigation -- its only link out
+# is the front door, at its published address, because the file travels on its own.
 STANDALONE = ["install"]
+SITE_URL = "https://arnans.github.io/iot-training/"
 
 
 def standalone_page(src: str, slug: str) -> str:
-    page = render_page(src, slug, combined=False, inline=True)
-    return full_document(page_shell(page["title"], "", page["body"], ""))
+    page = render_page(src, slug, combined=False, inline=True, home=SITE_URL)
+    return full_document(page_shell(page["title"], "", page["body"], "", home=SITE_URL))
 
 
 def main() -> None:
@@ -707,12 +736,13 @@ def main() -> None:
             f'<a href="{new}.html">{new}.html</a></p></body></html>\n', encoding="utf-8")
 
     if args.combined:
-        cpages = [render_page(src, slug, combined=True, inline=True) for src, slug, *_ in NAV_PAGES]
+        cpages = [render_page(src, slug, combined=True, inline=True, home=SITE_URL) for src, slug, *_ in NAV_PAGES]
         main_html = "\n".join(
             f'<section class="ws-page" data-page="{p["slug"]}">\n{p["body"]}\n</section>' for p in cpages
         )
+        # one file with every page in it: there is no front door beside it to link to
         frag = page_shell(SITE_NAME, switcher(cpages, cpages[0]["slug"], True), main_html,
-                          f"<script>{TABS_JS}</script>")
+                          f"<script>{TABS_JS}</script>", home=None)
         out = pathlib.Path(args.combined)
         out.write_text(frag, encoding="utf-8")
         print(f"wrote {out}  ({out.stat().st_size / 1e6:.1f} MB)")

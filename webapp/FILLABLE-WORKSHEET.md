@@ -12,7 +12,7 @@ replacing the one-per-team printed record sheet (which survives as the blank fal
 | Where do answers live during the workshop? | `localStorage`, one JSON blob per browser origin | Zero infrastructure; survives reloads, tab closes, and both days as long as the same browser on the same device is used. Strictly *site data*, not cache: "clear cache" leaves it alone, "clear site data" and incognito do not. |
 | Durable copy | **ดาวน์โหลดคำตอบ** → `farm-team-<n>-<zone>.json`, and **พิมพ์ / บันทึก PDF** of the record sheet | localStorage cannot be promised past the workshop (Safari evicts after 7 idle days, shared laptops get wiped). The file is also what teams send the instructor, so there is no submission endpoint to run. |
 | Moving between devices | **นำเข้าจากไฟล์** merges a downloaded file into the current browser | The Recorder may type on a phone while the Driver holds the laptop; export on one, import on the other. Merge fills blanks and asks once before overwriting values that differ. |
-| Save timing | Every `input` event, debounced 300 ms; radios and checkboxes on `change` | Saving on blur loses the field being typed when the phone locks or the tab closes. |
+| Save timing | Every `input` event, debounced 300 ms; radios and checkboxes on `change`; flushed at once when a field loses focus, when the page is hidden, and on `pagehide` | Saving on blur alone loses the field being typed when the phone locks or the tab closes. The debounce alone loses the last keystroke when a link is tapped inside the 300 ms — leaving the page ends the script, so the timer must be forced before it does. |
 | Identity | Team number and zone only, no member names | Roger, 8 Sep 2026. Team number also names the export file. |
 | Where fields appear | Inline in the session pages at the moment of measurement, **again** in the activity's task list at the top, **and** collected on the record sheet, all sharing the same keys | Inline is where the team is when the number appears; the task list is what the team works from; the record sheet is the compact printable summary and the paper fallback. One key, three places, one value. |
 | Activity task list | `### สิ่งที่กลุ่มต้องทำและตอบ { #a5 }` then `<div class="ws-tasks" markdown>` holding one `- [ ]` item per sub-section: a bold link to the sub-section (`#a5-3`), the question with its fields, and for step-only items the tick criterion. Each sub-section ends with `[↑ กลับไปที่รายการ](#a5){ .ws-back }` | Roger, 13 Sep 2026, after the TA workshop: teams listened to the instructor instead of reading the prose. A list of what to do and answer, with the steps one tap away, works alongside the talk. Step-only sub-sections are listed too, so jumping between questions cannot skip a rule-state change. Piloted on Session 2 Activity 5, then applied to Activities 1–4, 6–8 and Session 3's graph-reading block. Wide tables become one sub-bullet per row inside the item. Ids: `a<n>` for the list, `a<n>-<sub>` for headings, `a<n>-q` for the end question (a paragraph id via `{: #… }`); the graph-reading block uses `hist`. |
@@ -76,12 +76,12 @@ a quick check is to extract the markers from all four files and diff the key set
   "v": 1,
   "updated": "2026-09-08T07:12:40.000Z",
   "fields": { "team.no": "17", "team.zone": "แดง", "s1.hum.room": "61", "s1.q1": "…" },
-  "checks": { "/session-1/#3": true }
+  "checks": { "activity-1#yn3bza": true }
 }
 ```
 
 - `fields` — key → string. Radios store the chosen label. Empty strings are written as typed.
-- `checks` — `"<pathname>#<index>": true` for ticked task-list boxes, index in page order. Editing a checklist shifts indexes; that is accepted for progress ticks.
+- `checks` — `"<page>#<hash of the step's text>": true` for ticked task-list boxes; a second step with the same text in one page gets `.2`, `.3` appended. The page is the file name (`activity-1`), not the path, so a worksheet keeps its ticks whether it is opened from `renders/`, from the MkDocs preview or from a copy on disk; in the combined file it is the `<section data-page>`. Editing a checklist no longer shifts ticks onto the wrong steps — only editing a step's own wording releases its tick. Keys written before 22 Sep 2026 (`"<pathname>#<index>"`) are migrated by position on first load.
 - `dev`, `prog`, `last` — the progress tracker's device id, per-page activity counts, and last tick (PROGRESS-DASHBOARD.md). Not part of the export file.
 - Bump the storage suffix (`v1` → `v2` in `extra.js`) only if the shape changes incompatibly; old data is then ignored, not migrated.
 

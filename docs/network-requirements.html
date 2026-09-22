@@ -121,6 +121,11 @@ body {
 
 /* ---- masthead ---------------------------------------------------------- */
 
+/* the way back to the workshop front door, above the masthead; hidden in print, where a link is no use */
+.doc-home { margin: -1.5rem 0 1.6rem; font-size: .85rem; }
+.doc-home a { color: var(--ink-soft); text-decoration: none; transition: color 0.12s ease; }
+.doc-home a:hover { color: var(--accent); }
+
 .doc-head { border-bottom: 3px solid var(--accent); padding-bottom: 1.5rem; margin-bottom: 2.5rem; }
 
 .kicker {
@@ -271,6 +276,7 @@ figcaption {
   @page { size: A4; margin: 16mm 14mm; }
   body { padding: 0; background: #fff; font-size: 10.5pt; line-height: 1.6; }
   .doc { max-width: none; padding: 0; border: 0; border-radius: 0; box-shadow: none; }
+  .doc-home { display: none; }
   a { color: inherit; text-decoration: none; }
   h2 { break-after: avoid; page-break-after: avoid; }
   h3 { break-after: avoid; page-break-after: avoid; }
@@ -283,17 +289,18 @@ figcaption {
 </head>
 <body>
 <article class="doc">
+  <p class="doc-home"><a href="https://arnans.github.io/iot-training/">← หน้าแรกของการอบรม</a></p>
   <header class="doc-head">
     <p class="kicker">เอกสารข้อกำหนดทางเทคนิค (ยกเลิกแล้ว)</p>
     <h1>ข้อกำหนดระบบเครือข่ายสำหรับการอบรม</h1>
-    <p class="meta">โครงการอบรม IoT ในฟาร์มอัจฉริยะ · ปรับปรุงล่าสุด 2026-09-21</p>
+    <p class="meta">โครงการอบรม IoT ในฟาร์มอัจฉริยะ · ปรับปรุงล่าสุด 2026-09-22</p>
     <p class="disclosure">เอกสารนี้เรียบเรียงด้วย Claude AI เนื้อหาได้รับการออกแบบและตรวจทานโดยผู้รับผิดชอบแล้ว ขอรับรองว่าเป็นไปตามเจตนาของคณะจัดทำทุกประการ</p>
   </header>
   <blockquote>
   <p><strong>เอกสารนี้ยกเลิกแล้ว — 21 กันยายน 2569 ไม่ต้องส่งเอกสารนี้ให้ผู้ให้บริการเครือข่าย</strong>
   แบบเครือข่ายที่ใช้ VLAN แยกตาม SSID ในเอกสารนี้ถูกแทนที่ด้วยเราเตอร์ GL.iNet Flint สามตัวที่คณะจัดทำนำมาและตั้งค่าเอง
   ตัวละหนึ่งโซน โดย NT ให้บริการ WiFi 5 GHz สำหรับอินเทอร์เน็ตและพอร์ตสายแลนสามพอร์ต เอกสารฉบับปัจจุบันคือ
-  <strong><a href="NETWORK-SETUP.md">NETWORK-SETUP.md</a></strong> (ภาษาอังกฤษ) เก็บไฟล์นี้ไว้เพื่ออ้างอิงเท่านั้น
+  <strong><a href="network-setup.html">NETWORK-SETUP.md</a></strong> (ภาษาอังกฤษ) เก็บไฟล์นี้ไว้เพื่ออ้างอิงเท่านั้น
   ชื่อ SSID รหัสผ่าน และสีโซนยังคงเดิม ส่วนเรื่อง VLAN คอนโทรลเลอร์ และการตั้งค่า multicast ฝั่งผู้ให้บริการไม่ใช้แล้วทั้งหมด</p>
   </blockquote>
   <h2>1. ชื่อ SSID และรหัสผ่าน</h2>

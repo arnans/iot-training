@@ -121,6 +121,11 @@ body {
 
 /* ---- masthead ---------------------------------------------------------- */
 
+/* the way back to the workshop front door, above the masthead; hidden in print, where a link is no use */
+.doc-home { margin: -1.5rem 0 1.6rem; font-size: .85rem; }
+.doc-home a { color: var(--ink-soft); text-decoration: none; transition: color 0.12s ease; }
+.doc-home a:hover { color: var(--accent); }
+
 .doc-head { border-bottom: 3px solid var(--accent); padding-bottom: 1.5rem; margin-bottom: 2.5rem; }
 
 .kicker {
@@ -271,6 +276,7 @@ figcaption {
   @page { size: A4; margin: 16mm 14mm; }
   body { padding: 0; background: #fff; font-size: 10.5pt; line-height: 1.6; }
   .doc { max-width: none; padding: 0; border: 0; border-radius: 0; box-shadow: none; }
+  .doc-home { display: none; }
   a { color: inherit; text-decoration: none; }
   h2 { break-after: avoid; page-break-after: avoid; }
   h3 { break-after: avoid; page-break-after: avoid; }
@@ -283,13 +289,14 @@ figcaption {
 </head>
 <body>
 <article class="doc">
+  <p class="doc-home"><a href="https://arnans.github.io/iot-training/">← Workshop home</a></p>
   <header class="doc-head">
     <p class="kicker">Network setup</p>
     <h1>Workshop Network Setup</h1>
-    <p class="meta">IoT in Smart Farming workshop · Last updated 2026-09-21</p>
+    <p class="meta">IoT in Smart Farming workshop · Last updated 2026-09-22</p>
     <p class="disclosure">This document was compiled with Claude AI. Its content was designed and reviewed by those responsible, who certify that it reflects the intent of the preparing team in every respect.</p>
   </header>
-  <p><em>Supersedes <a href="NETWORK-REQUIREMENTS.md">NETWORK-REQUIREMENTS.md</a> (the per-SSID VLAN design), retired
+  <p><em>Supersedes <a href="network-requirements-en.html">NETWORK-REQUIREMENTS.md</a> (the per-SSID VLAN design), retired
   21 Sep 2026. That document and its Thai edition stay in the repository for reference only.</em></p>
   <p>The workshop runs <strong>two separate wireless networks in one room</strong>:</p>
   <ol>
@@ -737,7 +744,7 @@ figcaption {
   </table></div>
   <hr>
   <h2>6. Why this replaced the VLAN design</h2>
-  <p>The VLAN design (<a href="NETWORK-REQUIREMENTS.md">NETWORK-REQUIREMENTS.md</a>) asked the provider to build
+  <p>The VLAN design (<a href="network-requirements-en.html">NETWORK-REQUIREMENTS.md</a>) asked the provider to build
   three VLANs, broadcast six SSIDs on every AP, forward mDNS inside each VLAN and not between them,
   tolerate two MACs per client and hold long DHCP leases. Every one of those is off by default on
   managed enterprise WiFi, the acceptance test existed to catch them, and one wrong controller

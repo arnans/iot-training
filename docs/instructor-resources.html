@@ -121,6 +121,11 @@ body {
 
 /* ---- masthead ---------------------------------------------------------- */
 
+/* the way back to the workshop front door, above the masthead; hidden in print, where a link is no use */
+.doc-home { margin: -1.5rem 0 1.6rem; font-size: .85rem; }
+.doc-home a { color: var(--ink-soft); text-decoration: none; transition: color 0.12s ease; }
+.doc-home a:hover { color: var(--accent); }
+
 .doc-head { border-bottom: 3px solid var(--accent); padding-bottom: 1.5rem; margin-bottom: 2.5rem; }
 
 .kicker {
@@ -271,6 +276,7 @@ figcaption {
   @page { size: A4; margin: 16mm 14mm; }
   body { padding: 0; background: #fff; font-size: 10.5pt; line-height: 1.6; }
   .doc { max-width: none; padding: 0; border: 0; border-radius: 0; box-shadow: none; }
+  .doc-home { display: none; }
   a { color: inherit; text-decoration: none; }
   h2 { break-after: avoid; page-break-after: avoid; }
   h3 { break-after: avoid; page-break-after: avoid; }
@@ -283,10 +289,11 @@ figcaption {
 </head>
 <body>
 <article class="doc">
+  <p class="doc-home"><a href="https://arnans.github.io/iot-training/">← Workshop home</a></p>
   <header class="doc-head">
     <p class="kicker">Instructor & TA handbook</p>
     <h1>Instructor & TA resources</h1>
-    <p class="meta">IoT in Smart Farming workshop · Last updated 2026-09-21</p>
+    <p class="meta">IoT in Smart Farming workshop · Last updated 2026-09-22</p>
     <p class="disclosure">This document was compiled with Claude AI. Its content was designed and reviewed by those responsible, who certify that it reflects the intent of the preparing team in every respect.</p>
   </header>
   <p>Every file and link needed to prepare for and run the workshop, in one place.
@@ -383,7 +390,7 @@ figcaption {
   declares <code>&lt;Platform architecture="ARM"&gt;</code>, so VirtualBox on an Intel host rejects the file instead
   of importing something that will not boot. Apple Silicon needs VirtualBox <strong>7.2+</strong>; 7.1 and older
   cannot run the ARM64 guest. Build notes and the exact settings of both images:
-  <a href="../hass/README.md">hass/README.md</a>.</p>
+  <a href="https://github.com/arnans/iot-training/blob/main/hass/README.md">hass/README.md</a> <em>(repo)</em>.</p>
   <p>Import steps, settings and the login are in the participant guide:
   <strong><a href="https://arnans.github.io/iot-training/renders/install.html">เตรียมแล็ปท็อป</a></strong>. The two things
   that go wrong: Adapter 1 must be <strong>Bridged</strong> and set to the laptop's own WiFi card, and the VM is
@@ -457,11 +464,11 @@ figcaption {
   </tr>
   <tr>
   <td>Activities 1–8 — Thai workshop presentation, activity covers and instructor notes</td>
-  <td><a href="https://docs.google.com/presentation/d/1yoNUpS3mo2z2zOZJHEQtuMfSuLxuXltwDT22UHVSHzo/edit">Google Slides — 84 slides</a> · <a href="slides/README.md">Inventory and build sources</a> <em>(edit this same deck in place; Activity 1's native slide <code>a1_slide_8</code>, currently ninth, retains its intentional image placeholder)</em></td>
+  <td><a href="https://docs.google.com/presentation/d/1yoNUpS3mo2z2zOZJHEQtuMfSuLxuXltwDT22UHVSHzo/edit">Google Slides — 84 slides</a> · <a href="https://github.com/arnans/iot-training/blob/main/planning/slides/README.md">Inventory and build sources</a> <em>(repo — edit this same deck in place; Activity 1's native slide <code>a1_slide_8</code>, currently ninth, retains its intentional image placeholder)</em></td>
   </tr>
   <tr>
   <td>Reusable slide-generation reference</td>
-  <td><a href="SLIDE-GENERATION-GUIDE.md">Design, Thai writing, image treatment and native Slides workflow</a>, with saved cover and equipment-slide previews</td>
+  <td><a href="https://github.com/arnans/iot-training/blob/main/planning/SLIDE-GENERATION-GUIDE.md">Design, Thai writing, image treatment and native Slides workflow</a> <em>(repo)</em>, with saved cover and equipment-slide previews</td>
   </tr>
   <tr>
   <td>Known gaps and assumptions in the worksheets</td>

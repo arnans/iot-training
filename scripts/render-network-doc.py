@@ -54,6 +54,20 @@ DOCUMENTS = [
      "Instructor & TA handbook"),
 ]
 
+# Published twins of the sibling documents. The Markdown links to the file, because it is also
+# read in the repository; the rendered page must link to the page beside it, or the link 404s
+# on GitHub Pages, which serves docs/ and no Markdown.
+PUBLISHED = {
+    "NETWORK-SETUP.md": "network-setup.html",
+    "NETWORK-REQUIREMENTS.md": "network-requirements-en.html",
+    "NETWORK-REQUIREMENTS-th.md": "network-requirements.html",
+}
+
+# every page is handed out on its own (the venue's provider, a TA's phone), so the way back
+# to the workshop front door is its published address, not a path beside the file
+SITE_URL = "https://arnans.github.io/iot-training/"
+HOME_LABELS = {"en": "Workshop home", "th": "หน้าแรกของการอบรม"}
+
 EXTENSIONS = ["tables", "attr_list", "sane_lists", "md_in_html"]
 
 FONTFACE = """/* Self-hosted Sarabun + IBM Plex Mono, thai+latin subsets (SIL OFL).
@@ -146,6 +160,7 @@ TEMPLATE = """<!DOCTYPE html>
 </head>
 <body>
 <article class="doc">
+  <p class="doc-home"><a href="{home_url}">← {home_label}</a></p>
   <header class="doc-head">
     <p class="kicker">{kicker}</p>
     <h1>{title}</h1>
@@ -202,6 +217,11 @@ body {
 }
 
 /* ---- masthead ---------------------------------------------------------- */
+
+/* the way back to the workshop front door, above the masthead; hidden in print, where a link is no use */
+.doc-home { margin: -1.5rem 0 1.6rem; font-size: .85rem; }
+.doc-home a { color: var(--ink-soft); text-decoration: none; transition: color 0.12s ease; }
+.doc-home a:hover { color: var(--accent); }
 
 .doc-head { border-bottom: 3px solid var(--accent); padding-bottom: 1.5rem; margin-bottom: 2.5rem; }
 
@@ -353,6 +373,7 @@ figcaption {
   @page { size: A4; margin: 16mm 14mm; }
   body { padding: 0; background: #fff; font-size: 10.5pt; line-height: 1.6; }
   .doc { max-width: none; padding: 0; border: 0; border-radius: 0; box-shadow: none; }
+  .doc-home { display: none; }
   a { color: inherit; text-decoration: none; }
   h2 { break-after: avoid; page-break-after: avoid; }
   h3 { break-after: avoid; page-break-after: avoid; }
@@ -425,6 +446,14 @@ def render(md_name: str, out_name: str, lang: str, kicker: str) -> pathlib.Path:
     html = html.replace("<table>", '<div class="table-scroll"><table>')
     html = html.replace("</table>", "</table></div>")
 
+    # Sibling documents: link to the published page, not to the Markdown that GitHub Pages
+    # does not serve. Anything else still pointing at a .md file would 404, so say so.
+    html = re.sub(r'href="(?:\.\./)?(?:network/)?(' + "|".join(map(re.escape, PUBLISHED)) + r')(#[^"]*)?"',
+                  lambda m: f'href="{PUBLISHED[m.group(1)]}{m.group(2) or ""}"', html)
+    for dead in re.findall(r'href="((?!https?:)[^"]+\.md(?:#[^"]*)?)"', html):
+        print(f"  warning: {md_name} links to {dead}, which is not published — the rendered link 404s",
+              file=sys.stderr)
+
     # Indent the body so the generated file reads like hand-written HTML.
     body = "\n".join("  " + line if line else "" for line in html.splitlines())
 
@@ -439,6 +468,8 @@ def render(md_name: str, out_name: str, lang: str, kicker: str) -> pathlib.Path:
         disclosure=DISCLOSURES[lang],
         meta=METAS[lang].format(date=date),
         footer=FOOTERS[lang].format(src=md_name.rsplit("/", 1)[-1]),
+        home_url=SITE_URL,
+        home_label=HOME_LABELS[lang],
     )
 
     out = OUT_DIR / out_name

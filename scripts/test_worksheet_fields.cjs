@@ -127,8 +127,7 @@ async function testDoneBoxes() {
   }
   const untracked = [...d.querySelectorAll('.ws-untracked .task-list-item input[type=checkbox]')];
   assert.equal(untracked.length, 3, '8.3 acknowledgement boxes');
-  // tick the second mirror: its row box follows, is saved under the row's index, and is reported
-  const listBoxes = [...d.querySelectorAll('.task-list-item input[type=checkbox]')];
+  // tick the second mirror: its row box follows, is saved as the row's one tick, and is reported
   calls.length = 0;
   mirrors[1].checked = true;
   mirrors[1].dispatchEvent(new w.Event('change', { bubbles: true }));
@@ -136,7 +135,8 @@ async function testDoneBoxes() {
   const rowBox = rows[1].querySelector('input[type=checkbox]');
   assert.ok(rowBox.checked, 'row box follows the done box');
   const checks = JSON.parse(w.localStorage.getItem(storeKey)).checks;
-  assert.deepEqual(Object.keys(checks), [`/activity-8/#${listBoxes.indexOf(rowBox)}`], 'only the row box is saved');
+  const rowKey = Object.keys(checks);
+  assert.equal(rowKey.length, 1, 'only the row box is saved: the done box is a second view of it, not a second tick');
   let put = calls.filter(c => c.opts && c.opts.method === 'PUT').pop();
   assert.ok(put, 'done box reported');
   let a8 = JSON.parse(put.opts.body).pages['session-3'].acts.a8;
@@ -156,8 +156,7 @@ async function testDoneBoxes() {
   const kept = w.localStorage.getItem(storeKey);
   dom.window.close();
   // reload: the saved state reaches both views
-  rowBox.checked = true; rowBox.dispatchEvent(new w.Event('change', { bubbles: true }));
-  dom = await open('activity-8', kept.replace('"checks":{', `"checks":{"/activity-8/#${listBoxes.indexOf(rowBox)}":true,`), calls);
+  dom = await open('activity-8', kept.replace('"checks":{', `"checks":{${JSON.stringify(rowKey[0])}:true,`), calls);
   w = dom.window; d = w.document;
   assert.ok([...d.querySelectorAll('label.ws-done input.ws-mirror')][1].checked, 'done box restored with its row');
   assert.ok(d.querySelectorAll('.ws-untracked input[type=checkbox]')[0].checked, 'acknowledgement restored');

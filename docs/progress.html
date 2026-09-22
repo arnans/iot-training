@@ -214,6 +214,8 @@
   header.top .wrap { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.3rem 1.2rem; }
   header.top h1 { margin: 0; font-size: 1.35rem; font-weight: 600; }
   header.top .brand { font-size: 0.8rem; opacity: 0.9; letter-spacing: 0.04em; }
+  header.top a.brand { color: inherit; text-decoration: none; transition: opacity 0.12s ease; }
+  header.top a.brand:hover { opacity: 1; }
   header.top .live { margin-left: auto; font-size: 0.85rem; font-weight: 500; white-space: nowrap; }
   header.top .live .dot { display: inline-block; width: 0.6em; height: 0.6em; border-radius: 50%; background: #fff; margin-right: 0.4em; opacity: 0.5; }
   header.top .live.is-live .dot { opacity: 1; box-shadow: 0 0 0 4px rgba(255,255,255,0.25); }
@@ -427,7 +429,7 @@
 
 <header class="top">
   <div class="wrap">
-    <span class="brand">IoT ในฟาร์มอัจฉริยะ</span>
+    <a class="brand" href="index.html">← IoT ในฟาร์มอัจฉริยะ</a>
     <h1>กระดานความคืบหน้าของกลุ่ม</h1>
     <span class="live" id="live"><span class="dot"></span><span id="live-text">กำลังเชื่อมต่อ…</span></span>
   </div>

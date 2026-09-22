@@ -42,8 +42,8 @@ theme:
 nav:
   - เริ่มต้นที่นี่: index.md
   - เตรียมแล็ปท็อปก่อนวันอบรม: install.md
-  # the nav ends at activity 11; the record sheet, menu reference and file list are reached
-  # from the front page (index.md, docs/index.html) so the course structure stays readable
+  # the reference pages close the nav as their own group, the same shape the rendered
+  # worksheets carry (scripts/render-worksheets.py), so both routes read alike
   - "ช่วงที่ 1 — รับรู้ ตัดสินใจ สั่งการ":
       - เตรียมพร้อมก่อนเริ่ม: session-1-start.md
       - "กิจกรรม 1 · อ่านค่าเซนเซอร์ (Sense)": activity-1.md
@@ -60,6 +60,10 @@ nav:
       - "กิจกรรม 9 · ส่งข้อมูลด้วย ESP-NOW (Send)": activity-9.md
       - "กิจกรรม 10 · เพิ่มบอร์ดตัวรับ (Receive)": activity-10.md
       - "กิจกรรม 11 · แดชบอร์ดแปลงไกล (Bridge)": activity-11.md
+  - "อ้างอิง":
+      - "รวมไฟล์และลิงก์": resources.md
+      - "เมนูและวิธีแก้ปัญหา": reference.md
+      - "ใบบันทึกของกลุ่ม": record-sheet.md
 
 hooks:
   - hooks/fields.py   # {{f:key}} markers -> form fields, see webapp/FILLABLE-WORKSHEET.md

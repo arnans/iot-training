@@ -175,10 +175,60 @@
     }
   }
 
-  function saveSoon() { clearTimeout(saveTimer); saveTimer = setTimeout(writeStore, 300); }
-  function saveNow() { clearTimeout(saveTimer); writeStore(); }
+  function saveSoon() { clearTimeout(saveTimer); saveTimer = setTimeout(saveNow, 300); }
+  function saveNow() { clearTimeout(saveTimer); saveTimer = 0; writeStore(); }
 
-  function pageId() { return location.pathname.replace(/index\.html$/, ""); }
+  function pageId() { return location.pathname.replace(/index\.html$/, ""); }   // pre-2026-09 check keys
+
+  /* Which page a box belongs to. The file name, not the path: the same worksheet keeps its ticks
+     whether it is opened from renders/, from the MkDocs preview, or from a copy on disk. In the
+     combined file every page is a <section data-page>, and that wins. */
+  function pageSlug(el) {
+    var sec = el && el.closest && el.closest(".ws-page[data-page]");
+    if (sec) return sec.dataset.page;
+    var p = location.pathname.replace(/\/+$/, "");
+    return p.slice(p.lastIndexOf("/") + 1).replace(/\.html$/, "") || "index";
+  }
+
+  /* A tick is keyed by what the step says, not by its position in the list: inserting a step into
+     a worksheet then no longer shifts every tick after it onto the wrong line. Steps that read the
+     same within one page are told apart by the order they appear in. */
+  function stepHash(cb) {
+    var li = cb.closest("li");
+    var text = (li ? li.textContent : "").replace(/\s+/g, " ").trim().slice(0, 300);
+    var h = 2166136261;
+    for (var i = 0; i < text.length; i++) {
+      h ^= text.charCodeAt(i);
+      h = (h + ((h << 1) + (h << 4) + (h << 7) + (h << 8) + (h << 24))) >>> 0;
+    }
+    return h.toString(36);
+  }
+
+  /* keys for every box on the page, in document order: [{ cb, key }] */
+  function checkKeys(root) {
+    var seen = {};
+    return taskBoxes(root).map(function (cb) {
+      var base = pageSlug(cb) + "#" + stepHash(cb);
+      seen[base] = (seen[base] || 0) + 1;
+      return { cb: cb, key: seen[base] > 1 ? base + "." + seen[base] : base };
+    });
+  }
+
+  function checkKey(cb) {
+    var hit = checkKeys(document).filter(function (r) { return r.cb === cb; })[0];
+    return hit ? hit.key : null;
+  }
+
+  /* ticks saved before the keys were content-derived: carry them over once, by position */
+  function migrateChecks() {
+    var pid = pageId(), moved = false;
+    checkKeys(document).forEach(function (r, i) {
+      var old = pid + "#" + i;
+      if (store.checks[old]) { store.checks[r.key] = true; moved = true; }
+      if (old in store.checks) { delete store.checks[old]; moved = true; }
+    });
+    if (moved) saveNow();
+  }
 
   function taskBoxes(root) {
     return Array.prototype.slice.call(
@@ -468,7 +518,7 @@
             function () { pushState = "fail"; setStatus(); });
   }
 
-  function pushSoon() { clearTimeout(pushTimer); pushTimer = setTimeout(function () { pushNow(); }, 1500); }
+  function pushSoon() { clearTimeout(pushTimer); pushTimer = setTimeout(function () { pushTimer = 0; pushNow(); }, 1500); }
 
   /* ---- messages to the instructor: "ขอความช่วยเหลือ", "เสร็จแล้ว", or a short line of text ---- */
   var MSG_MAX = 120, MSG_GAP = 5000, lastMsgAt = 0;
@@ -581,10 +631,9 @@
       grow(el);
     });
     markTeamBoxes();
-    var pid = pageId();
-    taskBoxes(root).forEach(function (cb, i) {
-      cb.disabled = false;
-      cb.checked = !!store.checks[pid + "#" + i];
+    checkKeys(root).forEach(function (r) {
+      r.cb.disabled = false;
+      r.cb.checked = !!store.checks[r.key];
     });
     syncMirrors();
   }
@@ -821,9 +870,8 @@
       return;
     }
     if (el.type === "checkbox" && el.closest && el.closest(".task-list-item")) {
-      var i = taskBoxes().indexOf(el);
-      if (i < 0) return;
-      var key = pageId() + "#" + i;
+      var key = checkKey(el);
+      if (!key) return;
       if (el.checked) store.checks[key] = true; else delete store.checks[key];
       saveNow();
       syncMirrors();
@@ -834,8 +882,25 @@
     }
   });
 
+  /* Answers are written 300 ms after the last keystroke and reported 1.5 s later. Leaving the page
+     must not outrun either timer: a tapped link, the back button, a closed tab or a sleeping phone
+     ends the script, and an unwritten answer is gone without a word. Both requests already carry
+     keepalive, so the report survives the page it was sent from. */
+  function flushNow() {
+    if (saveTimer) saveNow();
+    if (pushTimer && store.sentAs && teamClean(store.fields["team.no"]) === store.sentAs) {
+      clearTimeout(pushTimer);
+      pushTimer = 0;
+      pushNow();                                   // never from here if the number is still unverified: no dialog on the way out
+    }
+  }
+
+  window.addEventListener("pagehide", flushNow);
+  document.addEventListener("blur", function (e) {
+    if (e.target && e.target.classList && e.target.classList.contains("fld")) flushNow();
+  }, true);
   /* a phone that slept, or a laptop that lost WiFi, reports again as soon as it can */
-  document.addEventListener("visibilitychange", function () { if (!document.hidden) pushSoon(); });
+  document.addEventListener("visibilitychange", function () { if (document.hidden) flushNow(); else pushSoon(); });
   window.addEventListener("online", pushSoon);
 
   document.addEventListener("click", function (e) {
@@ -880,6 +945,7 @@
     bindHover(document);
     addMirrors();
     store = loadStore();
+    migrateChecks();                              // positional tick keys from before the content keys
     buildBar();                                   // first, so the toolbar's team box is filled with the rest
     fillFields(document);
     pushSoon();                                   // opening a page reports where the team stands

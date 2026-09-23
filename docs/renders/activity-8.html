@@ -37,6 +37,22 @@ body {
   gap: 0.4rem 1rem;
 }
 .ws-brand { font-weight: 600; font-size: 1.05rem; letter-spacing: 0.01em; }
+/* no underline on hover: the band is a flat surface, and an underlined title reads as a 1998 nav bar */
+a.ws-brand { color: inherit; text-decoration: none; opacity: 1; transition: opacity 0.12s ease; }
+a.ws-brand:hover { opacity: 0.82; }
+/* the way back to the front door: every page carries it, so browser-back is never the only route */
+.ws-home {
+  flex: none;
+  padding: 0.15rem 0.7rem;
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  border-radius: 999px;
+  color: #ffffff;
+  text-decoration: none;
+  font-size: 0.82rem;
+  font-weight: 500;
+  white-space: nowrap;
+}
+.ws-home:hover { background: rgba(255, 255, 255, 0.16); border-color: #ffffff; }
 
 /* ---- shell: page switcher + reading column ---- */
 .ws-shell {
@@ -1476,11 +1492,11 @@ body {
 </style>
 <header class="ws-top">
   <div class="ws-top__inner">
-    <span class="ws-brand">IoT ในฟาร์มอัจฉริยะ</span>
+    <a class="ws-brand" href="../index.html">IoT ในฟาร์มอัจฉริยะ</a><a class="ws-home" href="../index.html">หน้าแรก</a>
   </div>
 </header>
 <div class="ws-shell">
-<nav class="ws-side" aria-label="หน้าในชุดใบงาน"><ul class="ws-pages"><li class="ws-group" data-group="ก่อนการอบรม"><a href="install.html">ก่อนการอบรม</a></li><li data-page="install" data-group="ก่อนการอบรม"><a href="install.html"><span class="ws-g">ก่อนการอบรม</span><span class="ws-t">เตรียมแล็ปท็อป</span></a></li><li class="ws-group" data-group="ช่วงที่ 1"><a href="session-1-start.html">ช่วงที่ 1</a></li><li data-page="session-1-start" data-group="ช่วงที่ 1"><a href="session-1-start.html"><span class="ws-g">ช่วง 1</span><span class="ws-t">เตรียมพร้อมก่อนเริ่ม</span></a></li><li data-page="activity-1" data-group="ช่วงที่ 1"><a href="activity-1.html" data-n="1"><span class="ws-g">ช่วง 1</span><span class="ws-n">กิจกรรม 1</span><span class="ws-t">อ่านค่าเซนเซอร์ (Sense)</span></a></li><li data-page="activity-2" data-group="ช่วงที่ 1"><a href="activity-2.html" data-n="2"><span class="ws-g">ช่วง 1</span><span class="ws-n">กิจกรรม 2</span><span class="ws-t">ต่อวงจรและสั่งงานหลอดไฟ (Act)</span></a></li><li data-page="activity-3" data-group="ช่วงที่ 1"><a href="activity-3.html" data-n="3"><span class="ws-g">ช่วง 1</span><span class="ws-n">กิจกรรม 3</span><span class="ws-t">สร้างกฎควบคุมระบบ (Logic)</span></a></li><li class="ws-group" data-group="ช่วงที่ 2"><a href="activity-4.html">ช่วงที่ 2</a></li><li data-page="activity-4" data-group="ช่วงที่ 2"><a href="activity-4.html" data-n="4"><span class="ws-g">ช่วง 2</span><span class="ws-n">กิจกรรม 4</span><span class="ws-t">ตั้งกฎอัตโนมัติ (Think)</span></a></li><li data-page="activity-5" data-group="ช่วงที่ 2"><a href="activity-5.html" data-n="5"><span class="ws-g">ช่วง 2</span><span class="ws-n">กิจกรรม 5</span><span class="ws-t">จำลองปัญหาและป้องกัน (Failure lab)</span></a></li><li class="ws-group in-group" data-group="ช่วงที่ 3"><a href="activity-6.html">ช่วงที่ 3</a></li><li data-page="activity-6" data-group="ช่วงที่ 3" class="in-group"><a href="activity-6.html" data-n="6"><span class="ws-g">ช่วง 3</span><span class="ws-n">กิจกรรม 6</span><span class="ws-t">อ่านข้อมูลย้อนหลัง (History)</span></a></li><li data-page="activity-7" data-group="ช่วงที่ 3" class="in-group"><a href="activity-7.html" data-n="7"><span class="ws-g">ช่วง 3</span><span class="ws-n">กิจกรรม 7</span><span class="ws-t">สร้างแดชบอร์ด (Dashboard)</span></a></li><li data-page="activity-8" data-group="ช่วงที่ 3" class="is-current in-group"><a href="activity-8.html" aria-current="page" data-n="8"><span class="ws-g">ช่วง 3</span><span class="ws-n">กิจกรรม 8</span><span class="ws-t">ออกแบบระบบฟาร์ม (Design)</span></a><ul class="ws-toc"><li><a href="#a8">ใบงาน</a></li><li><a href="#a8-1">8.1 เลือกโจทย์</a></li><li><a href="#a8-2b">8.2 เลือกเครือข่ายในฟาร์ม</a></li><li><a href="#a8-2c">8.3 การเข้าถึงจากนอกฟาร์มและคลาวด์</a></li><li><a href="#a8-3">8.4 เลือกแบตเตอรี่สำหรับระบบโซลาร์</a></li><li><a href="#a8-3b">8.5 คำนวณพลังงานแล้วเลือกแหล่งจ่ายไฟ</a></li><li><a href="#a8-4">8.6 ออกแบบระบบสำหรับทดลองหนึ่งจุด</a></li><li><a href="#กอนจบชวงท-3">ก่อนจบช่วงที่ 3</a></li></ul></li><li class="ws-group" data-group="ช่วงที่ 4"><a href="activity-9.html">ช่วงที่ 4</a></li><li data-page="activity-9" data-group="ช่วงที่ 4"><a href="activity-9.html" data-n="9"><span class="ws-g">ช่วง 4</span><span class="ws-n">กิจกรรม 9</span><span class="ws-t">ส่งข้อมูลด้วย ESP-NOW (Send)</span></a></li><li data-page="activity-10" data-group="ช่วงที่ 4"><a href="activity-10.html" data-n="10"><span class="ws-g">ช่วง 4</span><span class="ws-n">กิจกรรม 10</span><span class="ws-t">เพิ่มบอร์ดตัวรับ (Receive)</span></a></li><li data-page="activity-11" data-group="ช่วงที่ 4"><a href="activity-11.html" data-n="11"><span class="ws-g">ช่วง 4</span><span class="ws-n">กิจกรรม 11</span><span class="ws-t">แดชบอร์ดแปลงไกล (Bridge)</span></a></li></ul></nav>
+<nav class="ws-side" aria-label="หน้าในชุดใบงาน"><ul class="ws-pages"><li class="ws-group" data-group="ก่อนการอบรม"><a href="install.html">ก่อนการอบรม</a></li><li data-page="install" data-group="ก่อนการอบรม"><a href="install.html"><span class="ws-g">ก่อนการอบรม</span><span class="ws-t">เตรียมแล็ปท็อป</span></a></li><li class="ws-group" data-group="ช่วงที่ 1"><a href="session-1-start.html">ช่วงที่ 1</a></li><li data-page="session-1-start" data-group="ช่วงที่ 1"><a href="session-1-start.html"><span class="ws-g">ช่วง 1</span><span class="ws-t">เตรียมพร้อมก่อนเริ่ม</span></a></li><li data-page="activity-1" data-group="ช่วงที่ 1"><a href="activity-1.html" data-n="1"><span class="ws-g">ช่วง 1</span><span class="ws-n">กิจกรรม 1</span><span class="ws-t">อ่านค่าเซนเซอร์ (Sense)</span></a></li><li data-page="activity-2" data-group="ช่วงที่ 1"><a href="activity-2.html" data-n="2"><span class="ws-g">ช่วง 1</span><span class="ws-n">กิจกรรม 2</span><span class="ws-t">ต่อวงจรและสั่งงานหลอดไฟ (Act)</span></a></li><li data-page="activity-3" data-group="ช่วงที่ 1"><a href="activity-3.html" data-n="3"><span class="ws-g">ช่วง 1</span><span class="ws-n">กิจกรรม 3</span><span class="ws-t">สร้างกฎควบคุมระบบ (Logic)</span></a></li><li class="ws-group" data-group="ช่วงที่ 2"><a href="activity-4.html">ช่วงที่ 2</a></li><li data-page="activity-4" data-group="ช่วงที่ 2"><a href="activity-4.html" data-n="4"><span class="ws-g">ช่วง 2</span><span class="ws-n">กิจกรรม 4</span><span class="ws-t">ตั้งกฎอัตโนมัติ (Think)</span></a></li><li data-page="activity-5" data-group="ช่วงที่ 2"><a href="activity-5.html" data-n="5"><span class="ws-g">ช่วง 2</span><span class="ws-n">กิจกรรม 5</span><span class="ws-t">จำลองปัญหาและป้องกัน (Failure lab)</span></a></li><li class="ws-group in-group" data-group="ช่วงที่ 3"><a href="activity-6.html">ช่วงที่ 3</a></li><li data-page="activity-6" data-group="ช่วงที่ 3" class="in-group"><a href="activity-6.html" data-n="6"><span class="ws-g">ช่วง 3</span><span class="ws-n">กิจกรรม 6</span><span class="ws-t">อ่านข้อมูลย้อนหลัง (History)</span></a></li><li data-page="activity-7" data-group="ช่วงที่ 3" class="in-group"><a href="activity-7.html" data-n="7"><span class="ws-g">ช่วง 3</span><span class="ws-n">กิจกรรม 7</span><span class="ws-t">สร้างแดชบอร์ด (Dashboard)</span></a></li><li data-page="activity-8" data-group="ช่วงที่ 3" class="is-current in-group"><a href="activity-8.html" aria-current="page" data-n="8"><span class="ws-g">ช่วง 3</span><span class="ws-n">กิจกรรม 8</span><span class="ws-t">ออกแบบระบบฟาร์ม (Design)</span></a><ul class="ws-toc"><li><a href="#a8">ใบงาน</a></li><li><a href="#a8-1">8.1 เลือกโจทย์</a></li><li><a href="#a8-2b">8.2 เลือกเครือข่ายในฟาร์ม</a></li><li><a href="#a8-2c">8.3 การเข้าถึงจากนอกฟาร์มและคลาวด์</a></li><li><a href="#a8-3">8.4 เลือกแบตเตอรี่สำหรับระบบโซลาร์</a></li><li><a href="#a8-3b">8.5 คำนวณพลังงานแล้วเลือกแหล่งจ่ายไฟ</a></li><li><a href="#a8-4">8.6 ออกแบบระบบสำหรับทดลองหนึ่งจุด</a></li><li><a href="#กอนจบชวงท-3">ก่อนจบช่วงที่ 3</a></li></ul></li><li class="ws-group" data-group="ช่วงที่ 4"><a href="activity-9.html">ช่วงที่ 4</a></li><li data-page="activity-9" data-group="ช่วงที่ 4"><a href="activity-9.html" data-n="9"><span class="ws-g">ช่วง 4</span><span class="ws-n">กิจกรรม 9</span><span class="ws-t">ส่งข้อมูลด้วย ESP-NOW (Send)</span></a></li><li data-page="activity-10" data-group="ช่วงที่ 4"><a href="activity-10.html" data-n="10"><span class="ws-g">ช่วง 4</span><span class="ws-n">กิจกรรม 10</span><span class="ws-t">เพิ่มบอร์ดตัวรับ (Receive)</span></a></li><li data-page="activity-11" data-group="ช่วงที่ 4"><a href="activity-11.html" data-n="11"><span class="ws-g">ช่วง 4</span><span class="ws-n">กิจกรรม 11</span><span class="ws-t">แดชบอร์ดแปลงไกล (Bridge)</span></a></li><li class="ws-group" data-group="อ้างอิง"><a href="resources.html">อ้างอิง</a></li><li data-page="resources" data-group="อ้างอิง"><a href="resources.html"><span class="ws-g">อ้างอิง</span><span class="ws-t">รวมไฟล์และลิงก์</span></a></li><li data-page="reference" data-group="อ้างอิง"><a href="reference.html"><span class="ws-g">อ้างอิง</span><span class="ws-t">เมนูและวิธีแก้ปัญหา</span></a></li><li data-page="record-sheet" data-group="อ้างอิง"><a href="record-sheet.html"><span class="ws-g">อ้างอิง</span><span class="ws-t">ใบบันทึกของกลุ่ม</span></a></li></ul></nav>
 <main class="md-content__inner md-typeset" id="ws-main">
 <h1 id="กจกรรมท-8--ออกแบบระบบสำหรบฟารม-design">กิจกรรมที่ 8 — ออกแบบระบบสำหรับฟาร์ม (Design)</h1>
 <p><img alt="เกษตรกรร่วมกันวางแผนระบบบนแผนผังฟาร์ม" class="activity-banner" decoding="async" height="267" loading="lazy" src="../images/activity-banners/activity-08-design.webp" width="1600" /></p>
@@ -2064,10 +2080,60 @@ body {
     }
   }
 
-  function saveSoon() { clearTimeout(saveTimer); saveTimer = setTimeout(writeStore, 300); }
-  function saveNow() { clearTimeout(saveTimer); writeStore(); }
+  function saveSoon() { clearTimeout(saveTimer); saveTimer = setTimeout(saveNow, 300); }
+  function saveNow() { clearTimeout(saveTimer); saveTimer = 0; writeStore(); }
 
-  function pageId() { return location.pathname.replace(/index\.html$/, ""); }
+  function pageId() { return location.pathname.replace(/index\.html$/, ""); }   // pre-2026-09 check keys
+
+  /* Which page a box belongs to. The file name, not the path: the same worksheet keeps its ticks
+     whether it is opened from renders/, from the MkDocs preview, or from a copy on disk. In the
+     combined file every page is a <section data-page>, and that wins. */
+  function pageSlug(el) {
+    var sec = el && el.closest && el.closest(".ws-page[data-page]");
+    if (sec) return sec.dataset.page;
+    var p = location.pathname.replace(/\/+$/, "");
+    return p.slice(p.lastIndexOf("/") + 1).replace(/\.html$/, "") || "index";
+  }
+
+  /* A tick is keyed by what the step says, not by its position in the list: inserting a step into
+     a worksheet then no longer shifts every tick after it onto the wrong line. Steps that read the
+     same within one page are told apart by the order they appear in. */
+  function stepHash(cb) {
+    var li = cb.closest("li");
+    var text = (li ? li.textContent : "").replace(/\s+/g, " ").trim().slice(0, 300);
+    var h = 2166136261;
+    for (var i = 0; i < text.length; i++) {
+      h ^= text.charCodeAt(i);
+      h = (h + ((h << 1) + (h << 4) + (h << 7) + (h << 8) + (h << 24))) >>> 0;
+    }
+    return h.toString(36);
+  }
+
+  /* keys for every box on the page, in document order: [{ cb, key }] */
+  function checkKeys(root) {
+    var seen = {};
+    return taskBoxes(root).map(function (cb) {
+      var base = pageSlug(cb) + "#" + stepHash(cb);
+      seen[base] = (seen[base] || 0) + 1;
+      return { cb: cb, key: seen[base] > 1 ? base + "." + seen[base] : base };
+    });
+  }
+
+  function checkKey(cb) {
+    var hit = checkKeys(document).filter(function (r) { return r.cb === cb; })[0];
+    return hit ? hit.key : null;
+  }
+
+  /* ticks saved before the keys were content-derived: carry them over once, by position */
+  function migrateChecks() {
+    var pid = pageId(), moved = false;
+    checkKeys(document).forEach(function (r, i) {
+      var old = pid + "#" + i;
+      if (store.checks[old]) { store.checks[r.key] = true; moved = true; }
+      if (old in store.checks) { delete store.checks[old]; moved = true; }
+    });
+    if (moved) saveNow();
+  }
 
   function taskBoxes(root) {
     return Array.prototype.slice.call(
@@ -2357,7 +2423,7 @@ body {
             function () { pushState = "fail"; setStatus(); });
   }
 
-  function pushSoon() { clearTimeout(pushTimer); pushTimer = setTimeout(function () { pushNow(); }, 1500); }
+  function pushSoon() { clearTimeout(pushTimer); pushTimer = setTimeout(function () { pushTimer = 0; pushNow(); }, 1500); }
 
   /* ---- messages to the instructor: "ขอความช่วยเหลือ", "เสร็จแล้ว", or a short line of text ---- */
   var MSG_MAX = 120, MSG_GAP = 5000, lastMsgAt = 0;
@@ -2470,10 +2536,9 @@ body {
       grow(el);
     });
     markTeamBoxes();
-    var pid = pageId();
-    taskBoxes(root).forEach(function (cb, i) {
-      cb.disabled = false;
-      cb.checked = !!store.checks[pid + "#" + i];
+    checkKeys(root).forEach(function (r) {
+      r.cb.disabled = false;
+      r.cb.checked = !!store.checks[r.key];
     });
     syncMirrors();
   }
@@ -2704,9 +2769,8 @@ body {
       return;
     }
     if (el.type === "checkbox" && el.closest && el.closest(".task-list-item")) {
-      var i = taskBoxes().indexOf(el);
-      if (i < 0) return;
-      var key = pageId() + "#" + i;
+      var key = checkKey(el);
+      if (!key) return;
       if (el.checked) store.checks[key] = true; else delete store.checks[key];
       saveNow();
       syncMirrors();
@@ -2717,8 +2781,25 @@ body {
     }
   });
 
+  /* Answers are written 300 ms after the last keystroke and reported 1.5 s later. Leaving the page
+     must not outrun either timer: a tapped link, the back button, a closed tab or a sleeping phone
+     ends the script, and an unwritten answer is gone without a word. Both requests already carry
+     keepalive, so the report survives the page it was sent from. */
+  function flushNow() {
+    if (saveTimer) saveNow();
+    if (pushTimer && store.sentAs && teamClean(store.fields["team.no"]) === store.sentAs) {
+      clearTimeout(pushTimer);
+      pushTimer = 0;
+      pushNow();                                   // never from here if the number is still unverified: no dialog on the way out
+    }
+  }
+
+  window.addEventListener("pagehide", flushNow);
+  document.addEventListener("blur", function (e) {
+    if (e.target && e.target.classList && e.target.classList.contains("fld")) flushNow();
+  }, true);
   /* a phone that slept, or a laptop that lost WiFi, reports again as soon as it can */
-  document.addEventListener("visibilitychange", function () { if (!document.hidden) pushSoon(); });
+  document.addEventListener("visibilitychange", function () { if (document.hidden) flushNow(); else pushSoon(); });
   window.addEventListener("online", pushSoon);
 
   document.addEventListener("click", function (e) {
@@ -2763,6 +2844,7 @@ body {
     bindHover(document);
     addMirrors();
     store = loadStore();
+    migrateChecks();                              // positional tick keys from before the content keys
     buildBar();                                   // first, so the toolbar's team box is filled with the rest
     fillFields(document);
     pushSoon();                                   // opening a page reports where the team stands

@@ -1,6 +1,8 @@
 # MkDocs build output (regenerate with: mkdocs build)
 site/
 __pycache__/
+# local Python environment for the render scripts (python3 -m venv .venv && .venv/bin/pip install -r requirements.txt)
+.venv/
 .DS_Store
 Thumbs.db
 

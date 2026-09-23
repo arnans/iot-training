@@ -121,6 +121,11 @@ body {
 
 /* ---- masthead ---------------------------------------------------------- */
 
+/* the way back to the workshop front door, above the masthead; hidden in print, where a link is no use */
+.doc-home { margin: -1.5rem 0 1.6rem; font-size: .85rem; }
+.doc-home a { color: var(--ink-soft); text-decoration: none; transition: color 0.12s ease; }
+.doc-home a:hover { color: var(--accent); }
+
 .doc-head { border-bottom: 3px solid var(--accent); padding-bottom: 1.5rem; margin-bottom: 2.5rem; }
 
 .kicker {
@@ -271,6 +276,7 @@ figcaption {
   @page { size: A4; margin: 16mm 14mm; }
   body { padding: 0; background: #fff; font-size: 10.5pt; line-height: 1.6; }
   .doc { max-width: none; padding: 0; border: 0; border-radius: 0; box-shadow: none; }
+  .doc-home { display: none; }
   a { color: inherit; text-decoration: none; }
   h2 { break-after: avoid; page-break-after: avoid; }
   h3 { break-after: avoid; page-break-after: avoid; }
@@ -283,17 +289,18 @@ figcaption {
 </head>
 <body>
 <article class="doc">
+  <p class="doc-home"><a href="https://arnans.github.io/iot-training/">← Workshop home</a></p>
   <header class="doc-head">
     <p class="kicker">Vendor specification (deprecated)</p>
     <h1>Workshop Network Requirements</h1>
-    <p class="meta">IoT in Smart Farming workshop · Last updated 2026-09-21</p>
+    <p class="meta">IoT in Smart Farming workshop · Last updated 2026-09-22</p>
     <p class="disclosure">This document was compiled with Claude AI. Its content was designed and reviewed by those responsible, who certify that it reflects the intent of the preparing team in every respect.</p>
   </header>
   <blockquote>
   <p><strong>DEPRECATED — 21 Sep 2026. Do not send this document to the network provider.</strong>
   The per-SSID VLAN design it describes was replaced by three GL.iNet Flint routers that we
   bring and configure ourselves, one per zone, with NT providing 5 GHz internet WiFi and three
-  wired ports. The current document is <strong><a href="NETWORK-SETUP.md">NETWORK-SETUP.md</a></strong>. This file is
+  wired ports. The current document is <strong><a href="network-setup.html">NETWORK-SETUP.md</a></strong>. This file is
   kept for reference only: the SSID names, password and zone colours are unchanged, everything
   about VLANs, controllers and provider-side multicast settings no longer applies.</p>
   </blockquote>

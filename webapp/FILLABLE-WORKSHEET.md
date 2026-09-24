@@ -130,7 +130,8 @@ the workshop is the paper fallback.
 - Do not use a private/incognito window for the worksheet.
 - The bar under the page title holds the team number, a dot that turns green once the
   instructor's board has heard from this browser, the **⋯ เครื่องมือ** menu (download, import,
-  print, clear), and the message composer (PROGRESS-DASHBOARD.md). Saving is silent; the JSON
+  print, clear). Messages to the instructor sit behind a round chat-bubbles button in the bottom-right
+  corner (PROGRESS-DASHBOARD.md). Saving is silent; the JSON
   download is the proof.
 
 ## Known limits

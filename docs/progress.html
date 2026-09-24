@@ -254,9 +254,15 @@
   .tile.is-help .n { color: var(--ag-tomato); }
   .tile .n, .tile .l, .panel h2 { overflow-wrap: anywhere; }
 
-  /* main column: where teams are (first, largest), then the board; side: the live message feed */
+  /* main column: where teams are (first, largest), then the board; side: messages floating up */
   .panels { display: grid; grid-template-columns: minmax(0, 1fr) minmax(17rem, 22rem); gap: 1.2rem; align-items: start; }
-  @media (max-width: 960px) { .panels { grid-template-columns: minmax(0, 1fr); } .side { position: static !important; } }
+  @media (max-width: 960px) {
+    .panels { grid-template-columns: minmax(0, 1fr); }
+    .side { position: fixed !important; right: 0.5rem; bottom: 0.5rem; top: auto !important; width: min(18rem, 62vw); z-index: 5; }
+    .side .lane { position: absolute; inset: auto 0 0 auto; width: 100%; height: 42vh; }
+    .bubble .sway { font-size: 0.82rem; padding: 0.4rem 0.7rem 0.45rem; }   /* over the page on a phone: keep them small */
+    .lane-label { display: none; }
+  }
   .col { display: grid; gap: 1.2rem; }
   .side { position: sticky; top: 0.8rem; }
   .panel { background: var(--card); border: 1px solid var(--rule); border-radius: var(--r-container); padding: 1rem 1.1rem; }
@@ -264,10 +270,6 @@
   .panel h2 small { font-weight: 300; color: var(--lighter); }
   .panel h2 .right { margin-left: auto; font-weight: 400; font-size: 0.78rem; }
   .panel h2 .right button { border: 0; background: none; color: var(--ag-green); cursor: pointer; padding: 0; font-size: inherit; }
-  .panel h2 .right { display: inline-flex; gap: 0.9em; align-items: baseline; }
-  .panel h2 .right button.danger { color: var(--ag-tomato); }
-  .msgs-reset { margin: -0.3rem 0 0.5rem; font-size: 0.78rem; color: var(--muted); }
-  .msgs-reset button { border: 0; background: none; padding: 0; color: var(--ag-green); text-decoration: underline; cursor: pointer; font: inherit; }
 
   /* bars: how many teams stand at each activity -- the pacing view, so it is the biggest thing on the page;
      a chevron opens the activity's task boxes */
@@ -373,31 +375,40 @@
   }
   .unknown .unk:hover, .unknown .unk:focus-visible { border-color: var(--ag-tomato); outline: none; }
 
-  /* messages from teams: a live feed down the side, newest on top, new ones slide in */
-  .msgs { list-style: none; margin: 0; padding: 0; font-size: 0.88rem; max-height: calc(100vh - 9rem); overflow-y: auto; }
-  .msgs li {
-    display: grid; grid-template-columns: 3.4rem minmax(0, 1fr) 1.4rem; grid-template-areas: "team txt x" "t txt x"; gap: 0 0.5rem; align-items: start;
-    padding: 0.45rem 0.4rem 0.45rem 0.6rem; border-top: 1px solid var(--grid); border-left: 3px solid transparent;
+  /* messages from teams: each new one floats up the right column as a bubble and fades away.
+     Help calls never float: the grid's red ring carries them until a TA marks them handled. */
+  /* the lane is fixed to the window (JS lines it up with the right column), so bubbles always start
+     at the bottom of the screen and rise to the column's top, whatever the scroll position */
+  .lane { position: fixed; top: 0.8rem; bottom: 0.8rem; right: 0.8rem; width: 20rem; overflow: hidden; pointer-events: none; }
+  .lane-label {
+    position: absolute; left: 0; right: 0; bottom: 0; padding: 0.5rem 0.2rem 0.2rem; font-size: 0.8rem;
+    color: var(--lighter); text-align: center; border-top: 1px dashed var(--rule); background: var(--bg);
   }
-  .msgs li:first-child { border-top: 0; }
-  .msgs .team { grid-area: team; }
-  .msgs .t { grid-area: t; font-size: 0.75rem; }
-  .msgs .txt { grid-area: txt; }
-  .msgs .x { grid-area: x; }
-  @keyframes msg-in { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: none; } }
-  .msgs li.is-new { animation: msg-in 0.45s ease-out; }
-  .msgs li.k-help { border-left-color: var(--ag-tomato); background: var(--help-bg); }
-  .msgs li.k-done { border-left-color: var(--ag-green); }
-  .msgs li.is-hidden { opacity: 0.45; }
-  .msgs li.is-cancelled { border-left-color: var(--lighter); background: none; }   /* no longer an open call */
-  .msgs li.is-cancelled.is-hidden { opacity: 0.75; }   /* a team withdrawing its call is still news for a few minutes */
-  .msgs .cx { font-size: 0.75rem; color: var(--lighter); white-space: nowrap; }
-  .msgs .t { color: var(--lighter); font-variant-numeric: tabular-nums; }
-  .msgs .team { font-weight: 600; }
-  .msgs .txt { overflow-wrap: anywhere; }
-  .msgs .txt .k { margin-right: 0.3rem; }
-  .msgs .x { border: 0; background: none; color: var(--lighter); cursor: pointer; padding: 0; font-size: 1rem; line-height: 1; }
-  .msgs .x:hover, .msgs .x:focus-visible { color: var(--ag-tomato); outline: none; }
+  .bubble {
+    position: absolute; bottom: 2.2rem; left: 0; max-width: 64%;   /* two tracks, left and right, so a burst does not stack */
+    animation: bubble-rise var(--dur, 13s) linear forwards; will-change: transform, opacity;
+  }
+  .bubble .sway {
+    display: block; padding: 0.5rem 0.85rem 0.55rem; border-radius: 1.1rem 1.1rem 1.1rem 0.35rem;
+    background: var(--card); border: 1px solid var(--rule); box-shadow: 0 6px 18px rgba(20, 40, 25, 0.12);
+    font-size: 0.92rem; line-height: 1.4; overflow-wrap: anywhere;
+    animation: bubble-sway 3.2s ease-in-out infinite alternate;
+  }
+  .bubble.k-done .sway { border-color: var(--ag-green); }
+  .bubble .who { display: block; font-size: 0.75rem; font-weight: 600; color: var(--muted); }
+  .bubble .who .t { font-weight: 400; color: var(--lighter); margin-left: 0.4em; font-variant-numeric: tabular-nums; }
+  @keyframes bubble-rise {
+    0%   { transform: translateY(40%) scale(0.85); opacity: 0; }
+    7%   { transform: translateY(0) scale(1); opacity: 1; }
+    75%  { opacity: 1; }
+    100% { transform: translateY(calc(-1 * var(--rise, 600px))) scale(0.96); opacity: 0; }
+  }
+  @keyframes bubble-sway { from { transform: translateX(-5px); } to { transform: translateX(5px); } }
+  /* Reduced motion (Windows "Animation effects" off, which many lab machines have) keeps the slow
+     rise, since rising is what the column is for, and drops only the side-to-side sway. */
+  @media (prefers-reduced-motion: reduce) {
+    .bubble .sway { animation: none; }
+  }
 
   .ticker { list-style: none; margin: 0; padding: 0; font-size: 0.83rem; }
   .ticker li { display: flex; gap: 0.6rem; padding: 0.22rem 0; border-top: 1px solid var(--grid); }
@@ -427,7 +438,6 @@
     .controls label { min-height: 44px; }
     .controls input[type=date], .controls input[type=number] { min-height: 40px; }
     .cell { min-height: 3.4rem; }
-    .msgs .x { min-width: 44px; min-height: 44px; }
   }
 
   [hidden] { display: none !important; }
@@ -489,12 +499,9 @@
     </div>
 
     <aside class="col side">
-      <section class="panel panel--msgs">
-        <h2>ข้อความจากกลุ่ม <small id="msgs-note"></small><span class="right"><button type="button" id="show-hidden">แสดงที่ซ่อนไว้</button><button type="button" class="danger" id="msgs-clear" title="ลบข้อความทั้งหมดออกจากจอนี้ ข้อมูลในฐานข้อมูลและจออื่นไม่เปลี่ยน">ล้าง</button></span></h2>
-        <p class="msgs-reset" id="msgs-reset" hidden><span id="msgs-reset-text"></span> <button type="button" id="msgs-undo">แสดงข้อความเดิม</button></p>
-        <ul class="msgs" id="msgs"></ul>
-        <div class="empty" id="msgs-empty" hidden>ยังไม่มีข้อความ · กลุ่มส่งได้จากแถบบนใบงาน</div>
-      </section>
+      <div class="lane" id="lane" aria-live="polite" aria-label="ข้อความจากกลุ่ม">
+        <div class="lane-label">💬 ข้อความจากกลุ่มจะลอยขึ้นที่นี่</div>
+      </div>
     </aside>
   </div>
 
@@ -522,13 +529,12 @@
   var trees = {};          // day -> raw progress tree from the stream
   var msgTrees = {};       // day -> raw messages tree
   var resets = {};         // day -> this screen's ล้างทั้งหมด cutoff (database clock); older data is not shown here
-  var msgResets = {};      // day -> this screen's cutoff from the messages panel's ล้าง; older messages are not shown here
   var streams = {};        // "progress:day" / "messages:day" -> EventSource
   var status = {};         // stream key -> "live" | "off" | "wait"
   var pending = {};        // message id -> { on, at }: a TA's "helped" press not yet echoed by the database
   var openActs = loadJson("farm-progress.open") || {};   // activities whose task boxes are expanded
-  var showTable = false, showHidden = false, showTicker = !!loadJson("farm-progress.ticker"), renderTimer, saveTimers = {};
-  var seenMsg = null, seenHelp = null;     // ids already on screen: only newcomers animate
+  var showTable = false, showTicker = !!loadJson("farm-progress.ticker"), renderTimer, saveTimers = {};
+  var seenMsg = null, seenHelp = null;     // ids already seen: only newcomers float or animate
 
   var $ = function (id) { return document.getElementById(id); };
 
@@ -568,9 +574,6 @@
   $("ticker-toggle").addEventListener("click", function () {
     showTicker = !showTicker; this.setAttribute("aria-pressed", String(showTicker)); saveJson("farm-progress.ticker", showTicker); render();
   });
-  $("show-hidden").addEventListener("click", function () {
-    showHidden = !showHidden; this.textContent = showHidden ? "ซ่อนที่ซ่อนไว้" : "แสดงที่ซ่อนไว้"; render();
-  });
   $("export").addEventListener("click", exportJson);
   $("clear").addEventListener("click", function () {
     if (!window.confirm("ลบข้อมูลของวันนี้ที่จำไว้ในเบราว์เซอร์นี้? ข้อมูลในฐานข้อมูลไม่ถูกลบ และจะโหลดกลับมาใหม่ทันทีที่เชื่อมต่อได้")) return;
@@ -580,8 +583,6 @@
 
   $("clear-all").addEventListener("click", clearAll);
   $("reset-undo").addEventListener("click", undoReset);
-  $("msgs-clear").addEventListener("click", clearMessages);
-  $("msgs-undo").addEventListener("click", undoMessages);
 
   function syncUrl() {
     var u = new URLSearchParams();
@@ -648,7 +649,6 @@
       if (!trees[d]) trees[d] = loadJson("farm-progress." + d) || {};
       if (!msgTrees[d]) msgTrees[d] = loadJson("farm-messages." + d) || {};
       if (!resets[d]) resets[d] = +loadJson("farm-progress.reset." + d) || 0;
-      if (!msgResets[d]) msgResets[d] = +loadJson("farm-messages.reset." + d) || 0;
       connect("progress", d);
       connect("messages", d);
     });
@@ -665,6 +665,10 @@
       return function (e) {
         var msg; try { msg = JSON.parse(e.data); } catch (err) { return; }
         bag[d] = Progress.applyEvent(bag[d], ev, msg.path, msg.data);
+        if (kind === "messages" && ev === "put" && msg.path === "/") {   // the day's snapshot, on connect: already there, never floats
+          seenMsg = seenMsg || {};
+          Object.keys(Progress.objectify(bag[d]) || {}).forEach(function (id) { seenMsg[id] = true; });
+        }
         status[key] = "live"; showLive();
         scheduleRender(); scheduleSave(kind, d);
       };
@@ -713,7 +717,7 @@
   function combinedMsgs() {
     var out = {};
     days().forEach(function (d) {
-      var t = Progress.afterReset(msgTrees[d], Math.max(resets[d] || 0, msgResets[d] || 0));
+      var t = Progress.afterReset(msgTrees[d], resets[d]);
       Object.keys(t).forEach(function (id) { if (t[id] && typeof t[id] === "object") { out[id] = Object.assign({}, t[id], { _day: d }); } });
     });
     return out;
@@ -750,12 +754,6 @@
     return off;
   }
 
-  /* A withdrawal stays in the feed for a few minutes, struck through, though it no longer counts
-     as an open call: a TA already walking over should see that the team has sorted it out, not
-     find the row quietly gone. After that it joins the hidden pile with the handled ones. */
-  var CANCEL_SHOW_MS = 3 * 60 * 1000;
-  function justCancelled(m) { return !!m.cancelled && !m.handled && Date.now() - m.cancelled < CANCEL_SHOW_MS; }
-
   /* ---- render ---- */
   var STEPS = 8, CHEV = '<svg viewBox="0 0 10 10" aria-hidden="true"><path d="M3 1l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>';
   function stepFor(pos, n) { return n <= 1 ? STEPS : Math.round(pos * (STEPS - 1) / (n - 1)) + 1; }
@@ -778,28 +776,15 @@
       if (!lastMsgByTeam[m.team]) lastMsgByTeam[m.team] = m;
       if (m.kind === "help" && !isHidden(m)) { if (!helpTeams[m.team]) openHelp++; helpTeams[m.team] = true; }
     });
-    var shown = msgs.filter(function (m) { return showHidden || !isHidden(m) || justCancelled(m); }).slice(0, 80);
     var firstPaint = seenMsg === null, nowSeen = {};
-    $("msgs").innerHTML = shown.map(function (m) {
-      var hid = isHidden(m), fresh = !firstPaint && !seenMsg[m.id];
-      var withdrawn = !!m.cancelled && !m.handled;
-      var restore = hid && !justCancelled(m);                     // a fresh withdrawal is dismissed, not restored
+    msgs.slice().reverse().forEach(function (m) {                  // oldest first, so a burst rises in order
+      if (!firstPaint && !seenMsg[m.id]) floatMessage(m);
       nowSeen[m.id] = true;
-      return '<li class="k-' + m.kind + (hid ? " is-hidden" : "") + (withdrawn ? " is-cancelled" : "") + (fresh ? " is-new" : "") + '" data-id="' + esc(m.id) + '">' +
-        '<span class="team">กลุ่ม ' + esc(m.team) + '</span><span class="t">' + hhmm(m.ts) + '</span>' +
-        '<span class="txt"><span class="k">' + KIND[m.kind] + '</span>' +
-          (withdrawn ? '<s>' + esc(m.text) + '</s> <span class="cx">กลุ่มยกเลิกแล้ว</span>' : esc(m.text)) + '</span>' +
-        '<button type="button" class="x" data-do="' + (restore ? "show" : "hide") + '" title="' + (restore ? "นำกลับมา" : "ซ่อน (จัดการแล้ว)") + '" aria-label="' + (restore ? "นำกลับมา" : "ซ่อน") + '">' + (restore ? "↺" : "×") + '</button></li>';
-    }).join("");
-    msgs.forEach(function (m) { nowSeen[m.id] = true; });
+    });
     seenMsg = nowSeen;
     var newHelp = {}, prevHelp = seenHelp;
     Object.keys(helpTeams).forEach(function (t) { if (prevHelp && !prevHelp[t]) newHelp[t] = true; });
     seenHelp = helpTeams;
-    $("msgs-empty").hidden = shown.length > 0;
-    var hiddenN = msgs.filter(isHidden).length;
-    $("msgs-note").textContent = (msgs.length ? msgs.length + " ข้อความ" : "") + (hiddenN ? " · ซ่อนไว้ " + hiddenN : "");
-    $("show-hidden").hidden = hiddenN === 0 && !showHidden;
 
     // tiles
     $("t-reported").textContent = b.reported;
@@ -901,13 +886,6 @@
     saveJson("farm-progress.open", openActs);
     render();
   });
-  $("msgs").addEventListener("click", function (e) {
-    var x = e.target.closest(".x"), li = e.target.closest("li[data-id]");
-    if (!x || !li) return;
-    var m = lastMsgs.filter(function (mm) { return mm.id === li.dataset.id; })[0];
-    if (m) setHandled(m, x.dataset.do !== "show");
-  });
-
   /* ---- one team's devices, and removing them ----
      Each device's slot is progress/<day>/<team>/<dev>. Removing it clears that device's progress
      from every screen. A worksheet still open on that device reports again on its next tick, so
@@ -1082,32 +1060,9 @@
 
   function undoReset() {
     days().forEach(function (d) {
-      resets[d] = 0; msgResets[d] = 0;
-      try { localStorage.removeItem("farm-progress.reset." + d); localStorage.removeItem("farm-messages.reset." + d); } catch (e) {}
+      resets[d] = 0;
+      try { localStorage.removeItem("farm-progress.reset." + d); localStorage.removeItem("farm-messages.reset." + d); } catch (e) {}   // the second: the old messages-panel ล้าง
     });
-    seenMsg = null; seenHelp = null;
-    render();
-  }
-
-  /* ---- the messages panel's ล้าง: this screen drops every message received so far, help calls
-     included, the same way ล้างทั้งหมด does for the whole board. Messages are create-only in the
-     database, and other TAs' screens keep theirs. แสดงข้อความเดิม brings them back. ---- */
-  function clearMessages() {
-    var ds = days(), n = Progress.messageList(combinedMsgs()).length;
-    if (!n) return;
-    if (!window.confirm("ล้างข้อความทั้งหมด " + n + " ข้อความออกจากจอนี้?\n\n" +
-                        "คำขอความช่วยเหลือที่ยังค้างอยู่จะหายไปด้วย ข้อความใหม่จะแสดงตามปกติ\n" +
-                        "ข้อมูลในฐานข้อมูลและจออื่นไม่เปลี่ยน กด แสดงข้อความเดิม เพื่อดูอีกครั้ง")) return;
-    ds.forEach(function (d) {
-      msgResets[d] = Progress.resetTime(null, msgTrees[d], Date.now());
-      saveJson("farm-messages.reset." + d, msgResets[d]);
-    });
-    seenMsg = null; seenHelp = null;
-    render();
-  }
-
-  function undoMessages() {
-    days().forEach(function (d) { msgResets[d] = 0; try { localStorage.removeItem("farm-messages.reset." + d); } catch (e) {} });
     seenMsg = null; seenHelp = null;
     render();
   }
@@ -1116,9 +1071,75 @@
     var at = days().map(function (d) { return resets[d] || 0; }).filter(Boolean);
     $("reset-note").hidden = !at.length;
     if (at.length) $("reset-text").textContent = "จอนี้ล้างเมื่อ " + hhmm(Math.max.apply(null, at)) + " ·";
-    var mat = days().filter(function (d) { return (msgResets[d] || 0) > (resets[d] || 0); }).map(function (d) { return msgResets[d]; });
-    $("msgs-reset").hidden = !mat.length;
-    if (mat.length) $("msgs-reset-text").textContent = "ล้างข้อความบนจอนี้เมื่อ " + hhmm(Math.max.apply(null, mat)) + " ·";
+  }
+
+  /* ---- floating messages ----
+     A message that arrives while the screen is open rises up the right column and fades out.
+     Help calls do not float (the grid shows them), nor do messages already there when the page
+     opens, nor ones older than FRESH_MS (a reconnect replaying the day), nor anything while the
+     tab is in the background. No message is ever dropped and there is no cap on bubbles in
+     flight: normally they leave GAP_MS apart so they do not stack, and when many arrive at once
+     the gap shrinks with the backlog, down to MIN_GAP_MS. Bubbles alternate between a left and a
+     right track, so at the fastest each track gets one per second: about a bubble's height apart,
+     which keeps one-line messages readable. A burst of 30 is out in about 15 s. */
+  var RISE_MS = 13000, GAP_MS = 1300, MIN_GAP_MS = 500, FRESH_MS = 5 * 60 * 1000;
+  var queue = [], lastLaunch = 0, launchTimer = null, lastSide = 0;
+
+  /* keep the fixed lane over the right column: its left edge and width, and its top where the
+     column starts (or near the window's top once the page has scrolled past it) */
+  var narrow = window.matchMedia("(max-width: 960px)");
+  function placeLane() {
+    var lane = $("lane");
+    if (narrow.matches) { lane.style.left = lane.style.width = lane.style.top = ""; return; }
+    var r = lane.parentNode.getBoundingClientRect();
+    lane.style.left = Math.round(r.left) + "px";
+    lane.style.width = Math.round(r.width) + "px";
+    lane.style.top = Math.round(Math.max(r.top, 13)) + "px";
+  }
+  window.addEventListener("resize", placeLane);
+  window.addEventListener("scroll", placeLane, { passive: true });
+  placeLane();
+
+  function floatMessage(m) {
+    if (m.kind === "help" || document.hidden) return;
+    if (m.ts && Math.abs(Date.now() - m.ts) > FRESH_MS) return;
+    queue.push(m);
+    launch();
+  }
+
+  function launch() {
+    if (launchTimer || !queue.length) return;
+    var gap = Math.max(MIN_GAP_MS, GAP_MS - 150 * (queue.length - 1));   // backlog of 6+: fastest
+    var lane = $("lane"), wait = Math.max(0, lastLaunch + gap - Date.now());
+    if (wait) { launchTimer = setTimeout(function () { launchTimer = null; launch(); }, wait); return; }
+    var m = queue.shift();
+    lastLaunch = Date.now();
+    var el = document.createElement("div");
+    el.className = "bubble k-" + m.kind;
+    el.innerHTML = '<span class="sway"><span class="who">กลุ่ม ' + esc(m.team) + '<span class="t">' + hhmm(m.ts) + '</span></span>' +
+                   (m.kind === "done" ? KIND.done + " " : "") + esc(m.text) + '</span>';
+    lane.appendChild(el);
+    var room = Math.max(0, lane.clientWidth - el.offsetWidth);
+    lastSide = 1 - lastSide;                                        // alternate tracks, with a little play
+    el.style.left = Math.round(room * (lastSide ? 0.88 + Math.random() * 0.12 : Math.random() * 0.12)) + "px";
+    el.style.setProperty("--rise", Math.max(200, lane.clientHeight - el.offsetHeight - 40) + "px");
+    el.style.setProperty("--dur", RISE_MS + "ms");
+    el.addEventListener("animationend", function (e) { if (e.target === el) el.remove(); });
+    if (queue.length) launch();
+  }
+
+  /* demo (?demo=1): a stream of made-up messages, so the bubbles can be seen without real teams */
+  if (DEMO) {
+    var DEMO_LINES = ["ปั๊มทำงานแล้ว 🎉", "ลูกลอยติด 😅", "So cool! 🔥", "ไฟติดแล้ว 👍", "ค่าความชื้นขึ้นเร็วมาก 💧", "กฎทำงานแล้ว 🌱",
+                      "ขอบคุณครับ 🙏", "ปั๊มไม่หมุน ลองเปลี่ยนสายแล้วก็ยังไม่ได้ 🤔", "เสร็จแล้ว!"];
+    var demoN = 0;
+    setInterval(function () {
+      var now = Date.now(), id = "-demo-live" + (demoN++);
+      msgTrees[day] = msgTrees[day] || {};
+      msgTrees[day][id] = { team: String(1 + Math.floor(Math.random() * TEAM_MAX)), kind: "note",
+                            text: DEMO_LINES[Math.floor(Math.random() * DEMO_LINES.length)], ts: now, srv: now, zone: "red", page: "session-1" };
+      scheduleRender();
+    }, 1800);
   }
 
   /* ---- export: everything this browser holds for the chosen day(s) ---- */

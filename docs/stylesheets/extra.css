@@ -849,17 +849,79 @@
 #ws-bar .ws-hint { color: var(--ag-marigold-deep); font-weight: 500; }
 #ws-bar .ws-note { color: var(--md-typeset-color); font-weight: 500; }
 
-/* message row: a chat composer, the shape every phone user already knows -- 🙋 button, then
-   [ 😊 | type here… | ➤ ]; the emoji strip drops down under it */
+/* messages to the instructor: a round button fixed in the bottom-right corner (it lives in the
+   toolbar's markup, so extra.js finds it there); pressed, it opens a card above it holding the
+   chat composer -- 🙋 button, then [ 😊 | type here… | ➤ ], the emoji strip under it */
+#ws-bar .ws-dock {
+  position: fixed;
+  right: 1rem;
+  bottom: 1rem;
+  z-index: 6;
+}
+
+.ws-fab {
+  position: relative;
+  width: 3.4rem;
+  height: 3.4rem;
+  padding: 0;
+  border: 1px solid var(--ag-chip-border);
+  border-radius: 50%;
+  background: var(--md-default-bg-color);
+  line-height: 0;
+  cursor: pointer;
+  box-shadow: 0 6px 18px rgba(20, 40, 25, 0.28);
+  transition: transform 0.15s;
+}
+
+/* two chat bubbles, blue with text and yellow with a smile (drawn in extra.js); they tilt a little on hover */
+.ws-fab-ico { width: 2.3rem; height: 2.3rem; transition: transform 0.2s; }
+.ws-fab:hover, .ws-fab:focus-visible { transform: translateY(-2px); outline: none; }
+.ws-fab:hover .ws-fab-ico, .ws-dock.is-open .ws-fab-ico { transform: rotate(-8deg) scale(1.06); }
+.ws-fab:focus-visible { box-shadow: 0 0 0 3px var(--ag-marigold), 0 6px 18px rgba(20, 40, 25, 0.28); }
+.ws-dock.is-open .ws-fab { border-color: var(--ag-green); }
+
+/* an open call for help shows on the folded button: amber ring and a 🙋 badge */
+.ws-fab-badge {
+  display: none;
+  position: absolute;
+  top: -0.35rem;
+  right: -0.35rem;
+  width: 1.6rem;
+  height: 1.6rem;
+  border-radius: 50%;
+  background: var(--ag-marigold);
+  font-size: 0.95rem;
+  line-height: 1.6rem;
+  box-shadow: 0 0 0 2px var(--md-default-bg-color);
+}
+
+.ws-dock.has-help .ws-fab-badge { display: block; }
+.ws-dock.has-help .ws-fab { box-shadow: 0 0 0 3px var(--ag-marigold), 0 6px 18px rgba(20, 40, 25, 0.28); }
+
 #ws-bar .ws-msg {
-  flex: 1 1 100%;
-  display: flex;
+  display: none;
+  position: absolute;
+  right: 0;
+  bottom: calc(100% + 0.7rem);
+  width: min(24rem, calc(100vw - 2rem));
   flex-wrap: wrap;
   align-items: center;
-  gap: 0.5rem 0.6rem;
-  margin: 0.2rem 0 0;
-  padding-top: 0.6rem;
-  border-top: 1px dashed var(--ag-chip-border);
+  gap: 0.55rem 0.6rem;
+  margin: 0;
+  padding: 0.8rem 0.9rem 0.9rem;
+  border: 1px solid var(--ag-chip-border);
+  border-radius: 1rem;
+  background: var(--ag-panel-record);
+  box-shadow: 0 12px 32px rgba(20, 40, 25, 0.22);
+}
+
+#ws-bar .ws-dock.is-open .ws-msg { display: flex; }
+#ws-bar .ws-dock-h { flex: 1 1 100%; font-weight: 600; color: var(--md-typeset-color); }
+#ws-bar .ws-dock .ws-help { flex: 1 1 100%; }
+
+@media (prefers-reduced-motion: reduce) {
+  .ws-fab, .ws-fab-ico { transition: none; }
+  .ws-fab:hover, .ws-fab:focus-visible, .ws-fab:hover .ws-fab-ico, .ws-dock.is-open .ws-fab-ico { transform: none; }
 }
 
 .ws-help {

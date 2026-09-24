@@ -580,6 +580,11 @@
     b.textContent = open ? HELP_CANCEL : HELP_LABEL;
     b.classList.toggle("is-open", open);
     b.title = open ? "ยกเลิกคำขอความช่วยเหลือที่ส่งไปแล้ว" : "";
+    var d = document.querySelector("#ws-bar .ws-dock");
+    if (d) {                                          // folded, the corner button still shows the call is open
+      d.classList.toggle("has-help", open);
+      d.querySelector(".ws-fab").setAttribute("aria-label", open ? "ข้อความถึงผู้สอน (ขอความช่วยเหลืออยู่)" : "ข้อความถึงผู้สอน");
+    }
     helpWatch();
   }
 
@@ -664,7 +669,20 @@
         '</div></details>' +
       '<input type="file" accept=".json,application/json" hidden>' +
       (PROGRESS_DB ?
+        /* messages to the instructor: a round button in the bottom corner that opens the composer
+           above it, and folds back when the team clicks, taps or tabs anywhere else */
+        '<div class="ws-dock">' +
+        '<button type="button" class="ws-fab" aria-expanded="false" aria-label="ข้อความถึงผู้สอน" title="ส่งข้อความหรือขอความช่วยเหลือจากผู้สอน">' +
+          '<svg class="ws-fab-ico" viewBox="0 0 64 64" aria-hidden="true">' +
+            '<path d="M10 5h24a6 6 0 0 1 6 6v15a6 6 0 0 1-6 6H21l-9 8v-8h-2a6 6 0 0 1-6-6V11a6 6 0 0 1 6-6z" fill="#9cc5f8"/>' +
+            '<rect x="10" y="11" width="20" height="3" rx="1.5" fill="#fff"/><rect x="10" y="17.5" width="20" height="3" rx="1.5" fill="#fff"/>' +
+            '<rect x="10" y="24" width="9" height="3" rx="1.5" fill="#fff"/>' +
+            '<path d="M28 22h26a6 6 0 0 1 6 6v17a6 6 0 0 1-6 6h-1v9l-10-9H28a6 6 0 0 1-6-6V28a6 6 0 0 1 6-6z" fill="#ffc04d"/>' +
+            '<ellipse cx="34.5" cy="33.5" rx="2.2" ry="3" fill="#433f47"/><ellipse cx="47.5" cy="33.5" rx="2.2" ry="3" fill="#433f47"/>' +
+            '<path d="M33.5 41q7.5 6.5 15 0" fill="none" stroke="#433f47" stroke-width="2.6" stroke-linecap="round"/></svg>' +
+            '<span class="ws-fab-badge" aria-hidden="true">🙋</span></button>' +
         '<form class="ws-msg" autocomplete="off">' +
+          '<div class="ws-dock-h">ข้อความถึงผู้สอน</div>' +
           '<button type="button" class="ws-help" data-msg="help">' + HELP_LABEL + '</button>' +
           '<div class="ws-composer">' +
             '<button type="button" class="ws-emoji-toggle" aria-expanded="false" aria-label="อีโมจิ">😊</button>' +
@@ -674,7 +692,7 @@
           '<div class="ws-emojis" role="group" aria-label="ใส่อีโมจิ" hidden>' +
             MSG_EMOJIS.map(function (e) { return '<button type="button" class="ws-emo" data-emoji="' + e + '" aria-label="' + e + '">' + e + '</button>'; }).join("") +
           '</div>' +
-        '</form>' : "");
+        '</form></div>' : "");
     var h1 = inner.querySelector("h1");
     if (h1) h1.insertAdjacentElement("afterend", bar); else inner.insertBefore(bar, inner.firstChild);
     bar.querySelector("input[type=file]").addEventListener("change", function (e) {
@@ -709,9 +727,44 @@
         var help = e.target.closest && e.target.closest(".ws-help");
         if (help) { if (helpOpen()) cancelHelp(); else sendMessage("help", "ขอความช่วยเหลือ"); }
       });
+      bar.querySelector(".ws-fab").addEventListener("click", function () { dockOpen(!dockIsOpen()); });
     }
     setStatus();
     helpSync();
+  }
+
+  /* ---- the message dock: open and fold ----
+     Folds on a click or tap outside it, on focus moving outside it (Tab), and on Escape. One set
+     of document listeners for the whole visit: Material's instant navigation rebuilds the bar. */
+  function dock() { return document.querySelector("#ws-bar .ws-dock"); }
+  function dockIsOpen() { var d = dock(); return !!(d && d.classList.contains("is-open")); }
+  function dockOpen(on) {
+    var d = dock();
+    if (!d) return;
+    d.classList.toggle("is-open", on);
+    d.querySelector(".ws-fab").setAttribute("aria-expanded", String(on));
+    if (on) {
+      var coarse = window.matchMedia && window.matchMedia("(pointer: coarse)").matches;
+      if (!coarse) d.querySelector(".ws-composer input[type=text]").focus();   // a phone would open its keyboard: let the team choose
+    } else {
+      var strip = d.querySelector(".ws-emojis"), t = d.querySelector(".ws-emoji-toggle");
+      if (strip) strip.hidden = true;
+      if (t) t.setAttribute("aria-expanded", "false");
+    }
+  }
+  if (!window.__wsDockBound) {
+    window.__wsDockBound = true;
+    document.addEventListener("pointerdown", function (e) {
+      var d = dock();
+      if (d && dockIsOpen() && !d.contains(e.target)) dockOpen(false);
+    });
+    document.addEventListener("focusin", function (e) {
+      var d = dock();
+      if (d && dockIsOpen() && !d.contains(e.target)) dockOpen(false);
+    });
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape" && dockIsOpen()) { dockOpen(false); dock().querySelector(".ws-fab").focus(); }
+    });
   }
 
   /* a short note inside the composer ("ส่งแล้ว ✓"), where the eye already is */

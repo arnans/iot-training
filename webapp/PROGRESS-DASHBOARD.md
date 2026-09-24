@@ -102,7 +102,13 @@ to "23" is never checked. The status shows "● กำลังตรวจส�
 
 ### Messages (`messages/<day>/<pushId>`)
 
-The toolbar on every worksheet has a second row shaped like a chat composer: the button
+Every worksheet has a round button with two chat bubbles (blue with text, yellow with a smile;
+inline SVG drawn for this site) fixed in the bottom-right corner (24 Sep 2026;
+until then this was a second row of the toolbar under the page title). Pressing it opens a card
+above it; a click or tap anywhere else, focus moving elsewhere, or Escape folds it back. While
+the team's own call for help is open, the folded button carries an amber ring and a 🙋 badge.
+The markup stays inside `#ws-bar`, fixed by CSS, so the code finds it as before. The card
+holds a chat composer: the button
 **🙋 ขอความช่วยเหลือ** (sends at once), then a pill with **😊** (opens a strip of eight emoji that
 drop into the box: 👍 🎉 🤔 😅 🙏 🔥 🌱 💧), the text box (120 characters), and a round green **➤**.
 "ส่งแล้ว ✓" appears inside the pill for a moment. Each message is one document sent by `POST`, so the database
@@ -117,10 +123,11 @@ stays valid in the rules for compatibility.)
 
 `kind` is `help`, `done` or `note`; the dashboard paints help red and rings the team's cell
 until a TA marks it done: **click the cell → ✓ ช่วยเหลือแล้ว** (clears every open call from that
-team), or × on one message in the feed. That writes `handled: <timestamp>` onto the message, so
-**every dashboard screen agrees**, TAs on phones included; ↺ on a hidden message clears it
-again. "แสดงที่ซ่อนไว้" lists the handled ones. One message per five seconds per browser; the team
-number must be valid, otherwise the usual prompt appears first.
+team). That writes `handled: <timestamp>` onto the message, so **every dashboard screen
+agrees**, TAs on phones included. (Until 24 Sep 2026 the feed also had × and ↺ per message and
+a "แสดงที่ซ่อนไว้" list; the floating bubbles replaced the feed, see Dashboard reading.) One
+message per five seconds per browser; the team number must be valid, otherwise the usual
+prompt appears first.
 
 **Withdrawing a call (20 Sep 2026).** Teams often sort the problem out while they wait, so the
 🙋 button turns into **✖ ยกเลิกคำขอ** (amber, so it never reads as a second way to ask) as soon as
@@ -132,11 +139,8 @@ worksheet polls that one field every 20 s while a call is open), on a new day, o
 minutes — a team is never left unable to call again.
 
 `handled` and `cancelled` are the only fields of a message that may change after it is written.
-A withdrawn call stops counting in **กลุ่มที่ขอความช่วยเหลือ** and its cell loses the ring at once, but the
-message **stays in the feed for three minutes**, struck through and tagged กลุ่มยกเลิกแล้ว, so a TA
-already walking over sees what happened instead of finding the row gone; × dismisses it sooner.
-After that it joins the hidden pile. ↺ on a hidden one clears `handled` and `cancelled` both,
-which brings the call back for everyone.
+A withdrawn call stops counting in **กลุ่มที่ขอความช่วยเหลือ** and its cell loses the ring at once, on
+every screen. (The feed used to keep it for three minutes, struck through; the feed is gone.)
 
 ### Dashboard reading
 
@@ -151,8 +155,29 @@ listed under "หมายเลขกลุ่มที่ไม่อยู่
 Layout (revised 14 Sep 2026, Roger's priorities): the **กลุ่มใดอยู่กิจกรรมใด** bars are the largest
 element and come first in the main column; the team grid sits under them, its first job being
 to show **who is asking for help** (heavy red ring and 🙋, pulsing when new) and only second the
-colour overview; messages run as a **sticky live feed down the right side**, newest on top,
-new ones sliding in; the tick ticker is an admin view behind the **ติ๊กล่าสุด** toggle, off by default.
+colour overview; the tick ticker is an admin view behind the **ติ๊กล่าสุด** toggle, off by default.
+
+**Messages float (24 Sep 2026, replaced the feed panel).** Each message that arrives while the
+screen is open appears as a bubble at the bottom of the right column (group number, time,
+text), drifts up with a slight sway over about 13 s and fades out near the column's top.
+- **Help calls never float**: the grid's red ring and the help tile carry them until handled.
+- Messages already there when the page opens never float (the stream's first snapshot of the
+  day is marked seen), nor ones more than 5 minutes old (a reconnect replaying the day), nor
+  anything while the tab is in the background.
+- Bubbles leave 1.3 s apart, alternating left and right. **No global limit** (Roger, 24 Sep
+  2026: many people send at once): nothing is dropped and there is no cap in flight; with a
+  backlog the gap shrinks by 0.15 s per waiting message down to 0.5 s. Bubbles are at most
+  64% of the column wide and alternate between a left and a right track, so at full pace each
+  track gets one per second, about a bubble's height apart (0.3 s, tried first, buried each
+  bubble under the next). 30 sent at once all float within about 15 s. The only send limit is per browser: one message per
+  5 s (`MSG_GAP` in extra.js).
+- The column is fixed to the window and lined up with the right column by script, so bubbles
+  always start at the bottom of the screen whatever the scroll. Below 960 px it becomes a
+  small strip in the bottom-right corner over the page (it does not take taps).
+- Reduced motion (Windows "Animation effects" off) keeps the rise and drops only the sway. A
+  first version faded bubbles in place there, which on such a machine read as "not floating".
+- `progress.html?demo=1` sends a made-up message every 1.8 s, to watch the bubbles.
+- A team's latest message is still in its cell popover and in the ตาราง view.
 
 - **Cell colour** = the furthest activity the team has touched, on an 8-step green ramp
   (light and dark variants validated as ordinal ramps against the site surfaces).
@@ -251,14 +276,12 @@ written: the database, and every other TA's screen, keep everything.
 - The cutoff is just after the newest document this screen has received (`resetTime`), not
   the computer's clock, so a screen whose clock is wrong still hides exactly what it showed.
 - Hidden: device documents last written before the cutoff (`progressAfter`) and messages sent
-  before it (`afterReset`), everywhere on the screen: grid, bars, tiles, feed, "แสดงที่ซ่อนไว้",
-  each team's latest message, the device list in a team's popover.
+  before it (`afterReset`), everywhere on the screen: grid, bars, tiles, help rings, each
+  team's latest message, the device list in a team's popover.
 - "จอนี้ล้างเมื่อ 14:05 · **แสดงทั้งหมด**" appears next to the button; แสดงทั้งหมด drops the cutoff.
 - **ดาวน์โหลด JSON** after a reset exports the teams on screen, and the full raw data as before.
-- **ล้าง** in the messages panel does the same for messages alone (`farm-messages.reset.<day>`):
-  the feed, the help rings and the help count empty on this screen, progress stays, new messages
-  appear as they arrive, and **แสดงข้อความเดิม** under the heading brings the old ones back.
-  แสดงทั้งหมด (whole board) clears both cutoffs. Verified live the same day with two screens.
+- The messages panel had its own **ล้าง** the same day; it went with the panel when messages
+  became floating bubbles, which leave by themselves. แสดงทั้งหมด still removes its old key.
 
 As everywhere on the board, a browser that still has the old group's worksheet open re-sends
 its whole state on its next tick, and so reappears. Before the new group starts, close the old
@@ -278,13 +301,13 @@ a device writing afterwards appeared on A, the reset survived a reload, แส�
 
 Any number of TAs may open the same URL, each on their own device. A help call rings on
 every screen; whoever presses **✓ ช่วยเหลือแล้ว** writes `handled` to the database and the ring
-clears on every screen within a second or two; ↺ on any screen brings it back everywhere. Two
+clears on every screen within a second or two (the feed's ↺, which brought it back, went with the feed). Two
 TAs pressing at the same moment is harmless (both write a timestamp; the last one stays).
 Each screen shows its own press immediately and waits for the database to agree; if the write
 fails, that screen reverts and says so. Verified 14 Sep 2026 with two screens: clear on A,
 undo on B, simultaneous clear on both — the screens stayed in step each time. A team
 withdrawing its own call (✖ ยกเลิกคำขอ on the worksheet) clears the ring on every screen the same
-way, and leaves the struck-through message behind for three minutes.
+way.
 - Storage: kilobytes.
 
 ## Testing checklist (browser)

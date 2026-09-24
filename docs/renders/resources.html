@@ -1048,17 +1048,79 @@ a.ws-brand:hover { opacity: 0.82; }
 #ws-bar .ws-hint { color: var(--ag-marigold-deep); font-weight: 500; }
 #ws-bar .ws-note { color: var(--md-typeset-color); font-weight: 500; }
 
-/* message row: a chat composer, the shape every phone user already knows -- 🙋 button, then
-   [ 😊 | type here… | ➤ ]; the emoji strip drops down under it */
+/* messages to the instructor: a round button fixed in the bottom-right corner (it lives in the
+   toolbar's markup, so extra.js finds it there); pressed, it opens a card above it holding the
+   chat composer -- 🙋 button, then [ 😊 | type here… | ➤ ], the emoji strip under it */
+#ws-bar .ws-dock {
+  position: fixed;
+  right: 1rem;
+  bottom: 1rem;
+  z-index: 6;
+}
+
+.ws-fab {
+  position: relative;
+  width: 3.4rem;
+  height: 3.4rem;
+  padding: 0;
+  border: 1px solid var(--ag-chip-border);
+  border-radius: 50%;
+  background: var(--md-default-bg-color);
+  line-height: 0;
+  cursor: pointer;
+  box-shadow: 0 6px 18px rgba(20, 40, 25, 0.28);
+  transition: transform 0.15s;
+}
+
+/* two chat bubbles, blue with text and yellow with a smile (drawn in extra.js); they tilt a little on hover */
+.ws-fab-ico { width: 2.3rem; height: 2.3rem; transition: transform 0.2s; }
+.ws-fab:hover, .ws-fab:focus-visible { transform: translateY(-2px); outline: none; }
+.ws-fab:hover .ws-fab-ico, .ws-dock.is-open .ws-fab-ico { transform: rotate(-8deg) scale(1.06); }
+.ws-fab:focus-visible { box-shadow: 0 0 0 3px var(--ag-marigold), 0 6px 18px rgba(20, 40, 25, 0.28); }
+.ws-dock.is-open .ws-fab { border-color: var(--ag-green); }
+
+/* an open call for help shows on the folded button: amber ring and a 🙋 badge */
+.ws-fab-badge {
+  display: none;
+  position: absolute;
+  top: -0.35rem;
+  right: -0.35rem;
+  width: 1.6rem;
+  height: 1.6rem;
+  border-radius: 50%;
+  background: var(--ag-marigold);
+  font-size: 0.95rem;
+  line-height: 1.6rem;
+  box-shadow: 0 0 0 2px var(--md-default-bg-color);
+}
+
+.ws-dock.has-help .ws-fab-badge { display: block; }
+.ws-dock.has-help .ws-fab { box-shadow: 0 0 0 3px var(--ag-marigold), 0 6px 18px rgba(20, 40, 25, 0.28); }
+
 #ws-bar .ws-msg {
-  flex: 1 1 100%;
-  display: flex;
+  display: none;
+  position: absolute;
+  right: 0;
+  bottom: calc(100% + 0.7rem);
+  width: min(24rem, calc(100vw - 2rem));
   flex-wrap: wrap;
   align-items: center;
-  gap: 0.5rem 0.6rem;
-  margin: 0.2rem 0 0;
-  padding-top: 0.6rem;
-  border-top: 1px dashed var(--ag-chip-border);
+  gap: 0.55rem 0.6rem;
+  margin: 0;
+  padding: 0.8rem 0.9rem 0.9rem;
+  border: 1px solid var(--ag-chip-border);
+  border-radius: 1rem;
+  background: var(--ag-panel-record);
+  box-shadow: 0 12px 32px rgba(20, 40, 25, 0.22);
+}
+
+#ws-bar .ws-dock.is-open .ws-msg { display: flex; }
+#ws-bar .ws-dock-h { flex: 1 1 100%; font-weight: 600; color: var(--md-typeset-color); }
+#ws-bar .ws-dock .ws-help { flex: 1 1 100%; }
+
+@media (prefers-reduced-motion: reduce) {
+  .ws-fab, .ws-fab-ico { transition: none; }
+  .ws-fab:hover, .ws-fab:focus-visible, .ws-fab:hover .ws-fab-ico, .ws-dock.is-open .ws-fab-ico { transform: none; }
 }
 
 .ws-help {
@@ -2347,6 +2409,11 @@ a.ws-brand:hover { opacity: 0.82; }
     b.textContent = open ? HELP_CANCEL : HELP_LABEL;
     b.classList.toggle("is-open", open);
     b.title = open ? "ยกเลิกคำขอความช่วยเหลือที่ส่งไปแล้ว" : "";
+    var d = document.querySelector("#ws-bar .ws-dock");
+    if (d) {                                          // folded, the corner button still shows the call is open
+      d.classList.toggle("has-help", open);
+      d.querySelector(".ws-fab").setAttribute("aria-label", open ? "ข้อความถึงผู้สอน (ขอความช่วยเหลืออยู่)" : "ข้อความถึงผู้สอน");
+    }
     helpWatch();
   }
 
@@ -2431,7 +2498,20 @@ a.ws-brand:hover { opacity: 0.82; }
         '</div></details>' +
       '<input type="file" accept=".json,application/json" hidden>' +
       (PROGRESS_DB ?
+        /* messages to the instructor: a round button in the bottom corner that opens the composer
+           above it, and folds back when the team clicks, taps or tabs anywhere else */
+        '<div class="ws-dock">' +
+        '<button type="button" class="ws-fab" aria-expanded="false" aria-label="ข้อความถึงผู้สอน" title="ส่งข้อความหรือขอความช่วยเหลือจากผู้สอน">' +
+          '<svg class="ws-fab-ico" viewBox="0 0 64 64" aria-hidden="true">' +
+            '<path d="M10 5h24a6 6 0 0 1 6 6v15a6 6 0 0 1-6 6H21l-9 8v-8h-2a6 6 0 0 1-6-6V11a6 6 0 0 1 6-6z" fill="#9cc5f8"/>' +
+            '<rect x="10" y="11" width="20" height="3" rx="1.5" fill="#fff"/><rect x="10" y="17.5" width="20" height="3" rx="1.5" fill="#fff"/>' +
+            '<rect x="10" y="24" width="9" height="3" rx="1.5" fill="#fff"/>' +
+            '<path d="M28 22h26a6 6 0 0 1 6 6v17a6 6 0 0 1-6 6h-1v9l-10-9H28a6 6 0 0 1-6-6V28a6 6 0 0 1 6-6z" fill="#ffc04d"/>' +
+            '<ellipse cx="34.5" cy="33.5" rx="2.2" ry="3" fill="#433f47"/><ellipse cx="47.5" cy="33.5" rx="2.2" ry="3" fill="#433f47"/>' +
+            '<path d="M33.5 41q7.5 6.5 15 0" fill="none" stroke="#433f47" stroke-width="2.6" stroke-linecap="round"/></svg>' +
+            '<span class="ws-fab-badge" aria-hidden="true">🙋</span></button>' +
         '<form class="ws-msg" autocomplete="off">' +
+          '<div class="ws-dock-h">ข้อความถึงผู้สอน</div>' +
           '<button type="button" class="ws-help" data-msg="help">' + HELP_LABEL + '</button>' +
           '<div class="ws-composer">' +
             '<button type="button" class="ws-emoji-toggle" aria-expanded="false" aria-label="อีโมจิ">😊</button>' +
@@ -2441,7 +2521,7 @@ a.ws-brand:hover { opacity: 0.82; }
           '<div class="ws-emojis" role="group" aria-label="ใส่อีโมจิ" hidden>' +
             MSG_EMOJIS.map(function (e) { return '<button type="button" class="ws-emo" data-emoji="' + e + '" aria-label="' + e + '">' + e + '</button>'; }).join("") +
           '</div>' +
-        '</form>' : "");
+        '</form></div>' : "");
     var h1 = inner.querySelector("h1");
     if (h1) h1.insertAdjacentElement("afterend", bar); else inner.insertBefore(bar, inner.firstChild);
     bar.querySelector("input[type=file]").addEventListener("change", function (e) {
@@ -2476,9 +2556,44 @@ a.ws-brand:hover { opacity: 0.82; }
         var help = e.target.closest && e.target.closest(".ws-help");
         if (help) { if (helpOpen()) cancelHelp(); else sendMessage("help", "ขอความช่วยเหลือ"); }
       });
+      bar.querySelector(".ws-fab").addEventListener("click", function () { dockOpen(!dockIsOpen()); });
     }
     setStatus();
     helpSync();
+  }
+
+  /* ---- the message dock: open and fold ----
+     Folds on a click or tap outside it, on focus moving outside it (Tab), and on Escape. One set
+     of document listeners for the whole visit: Material's instant navigation rebuilds the bar. */
+  function dock() { return document.querySelector("#ws-bar .ws-dock"); }
+  function dockIsOpen() { var d = dock(); return !!(d && d.classList.contains("is-open")); }
+  function dockOpen(on) {
+    var d = dock();
+    if (!d) return;
+    d.classList.toggle("is-open", on);
+    d.querySelector(".ws-fab").setAttribute("aria-expanded", String(on));
+    if (on) {
+      var coarse = window.matchMedia && window.matchMedia("(pointer: coarse)").matches;
+      if (!coarse) d.querySelector(".ws-composer input[type=text]").focus();   // a phone would open its keyboard: let the team choose
+    } else {
+      var strip = d.querySelector(".ws-emojis"), t = d.querySelector(".ws-emoji-toggle");
+      if (strip) strip.hidden = true;
+      if (t) t.setAttribute("aria-expanded", "false");
+    }
+  }
+  if (!window.__wsDockBound) {
+    window.__wsDockBound = true;
+    document.addEventListener("pointerdown", function (e) {
+      var d = dock();
+      if (d && dockIsOpen() && !d.contains(e.target)) dockOpen(false);
+    });
+    document.addEventListener("focusin", function (e) {
+      var d = dock();
+      if (d && dockIsOpen() && !d.contains(e.target)) dockOpen(false);
+    });
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape" && dockIsOpen()) { dockOpen(false); dock().querySelector(".ws-fab").focus(); }
+    });
   }
 
   /* a short note inside the composer ("ส่งแล้ว ✓"), where the eye already is */

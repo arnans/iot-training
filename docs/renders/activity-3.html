@@ -624,6 +624,16 @@ a.ws-brand:hover { opacity: 0.82; }
   }
 }
 
+/* ---------- lesson photos open full size on click (extra.js bindZoom) ---------- */
+.md-typeset img.ws-zoom {
+  cursor: zoom-in;
+}
+
+.md-typeset img.ws-zoom:focus-visible {
+  outline: 2px solid var(--ag-marigold);
+  outline-offset: 3px;
+}
+
 /* ---------- role chips (extra.js tags <strong>Hardware</strong> etc.) ---------- */
 .md-typeset strong.role {
   display: inline-block;
@@ -1470,18 +1480,18 @@ a.ws-brand:hover { opacity: 0.82; }
 }
 .md-typeset input.fld:focus-visible, .md-typeset textarea.fld-ta:focus-visible { outline: 2px solid var(--ag-green); }
 
-/* lightbox for the ดูภาพ chips (the site uses glightbox) */
+/* lightbox for the ดูภาพ chips and for lesson photos (the site uses glightbox) */
 #shot-box {
   border: 0;
   padding: 0.6rem;
-  max-width: min(96vw, 1100px);
+  max-width: min(98vw, 1800px);
   border-radius: 0.8rem;
   background: var(--md-default-bg-color);
   color: var(--md-default-fg-color);
   box-shadow: 0 20px 60px var(--ag-shadow);
 }
 #shot-box::backdrop { background: rgba(10, 20, 12, 0.72); }
-#shot-box img { display: block; max-width: 100%; max-height: 80vh; margin: 0 auto; border-radius: 0.5rem; }
+#shot-box img { display: block; max-width: 100%; max-height: 86vh; margin: 0 auto; border-radius: 0.5rem; }
 #shot-box p { margin: 0.5rem 0.2rem 0; font-size: 0.85rem; color: var(--md-default-fg-color--light); }
 
 @media print {
@@ -1523,6 +1533,28 @@ a.ws-brand:hover { opacity: 0.82; }
 </div>
 <p><img alt="" class="activity-divider" decoding="async" height="64" loading="lazy" src="../images/activity-dividers/farmhouse.webp" width="1200" /></p>
 <h3 id="a3-1"><span class="sub-num">3.1</span>เพิ่มบอร์ดทั้งสองเข้า Home Assistant</h3>
+<p><strong>ชื่อและหมายเลข IP ของบอร์ดทั้งสอง</strong> ที่จดไว้ในกิจกรรมที่ 1 และ 2 จะแสดงในตารางนี้ให้เอง ใช้เทียบกับการ์ดในขั้นตอนถัดไปได้เลย ไม่ต้องเปิดกลับไปดู (ถ้าช่องว่าง ให้กรอกจากที่จดไว้)</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>บอร์ด</th>
+<th>ชื่อบอร์ดเต็ม (DEVICE NAME)</th>
+<th>หมายเลข IP</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GoGo-IoT (บอร์ดเซนเซอร์)</td>
+<td><input class="fld" type="text" data-k="board.iot.name" data-size="22" size="22" autocomplete="off" spellcheck="false"></td>
+<td><input class="fld" type="text" data-k="board.iot.ip" data-size="15" size="15" autocomplete="off" spellcheck="false"></td>
+</tr>
+<tr>
+<td>บอร์ดรีเลย์</td>
+<td><input class="fld" type="text" data-k="board.relay.name" data-size="22" size="22" autocomplete="off" spellcheck="false"></td>
+<td><input class="fld" type="text" data-k="board.relay.ip" data-size="15" size="15" autocomplete="off" spellcheck="false"></td>
+</tr>
+</tbody>
+</table></div>
 <p class="ws-phase"><strong>เข้าสู่ Home Assistant</strong></p>
 <ol>
 <li>ที่แล็ปท็อปของตัวแทนกลุ่ม กลับไปที่หน้า Login ของ Home Assistant ที่เปิดไว้ตอนก่อนเริ่ม ใส่ <strong>ชื่อผู้ใช้และรหัสผ่านที่ผู้สอนแจ้ง</strong> แล้วกด <strong>Log in</strong> (ถ้าหน้าเปิดไม่ขึ้น ให้อ่านที่อยู่ IP จากหน้าจอเครื่อง Farm Workshop ใหม่)</li>
@@ -1530,7 +1562,7 @@ a.ws-brand:hover { opacity: 0.82; }
 <p class="ws-phase"><strong>เพิ่มและตั้งชื่อบอร์ด</strong></p>
 <ol start="2" style="counter-reset: step 1">
 <li>ไปที่ <strong>Settings → Devices &amp; services</strong> จะเห็นการ์ดของบอร์ดที่ระบบค้นพบเองอยู่แล้ว ซึ่งมีของทุกกลุ่มในโซนเราปนกันอยู่</li>
-<li><strong>หาการ์ดที่ชื่อลงท้ายด้วยรหัสหกตัวท้ายของบอร์ด GoGo-IoT</strong> ที่จดไว้ (เช่น <code>a1b2c3</code>) ตรวจสีในชื่ออีกครั้ง แล้วกดเพิ่ม ไม่ต้องพิมพ์อะไร ไม่มีรหัสให้ใส่</li>
+<li><strong>หาการ์ดที่ชื่อลงท้ายด้วยรหัสหกตัวท้ายของบอร์ด GoGo-IoT</strong> ตามตารางด้านบน (เช่น <code>a1b2c3</code>) ตรวจสีในชื่ออีกครั้ง แล้วกดเพิ่ม ไม่ต้องพิมพ์อะไร ไม่มีรหัสให้ใส่</li>
 <li>เพิ่ม <strong>บอร์ดรีเลย์</strong> เข้าไปใน Home Assistant ด้วยวิธีเดียวกัน</li>
 <li>เปลี่ยนชื่ออุปกรณ์ทั้งสองเป็นชื่อกลุ่มของเรา (ไม่บังคับทำ) เพื่อให้หาเจอง่าย</li>
 </ol>
@@ -1581,7 +1613,6 @@ a.ws-brand:hover { opacity: 0.82; }
 <p><a class="ws-back" href="#a3">↑ กลับไปที่ใบงาน</a></p>
 <p><img alt="" class="activity-divider" decoding="async" height="58" loading="lazy" src="../images/activity-dividers/greenhouse.webp" width="1200" /></p>
 <h3 id="a3-3c"><span class="sub-num">3.5</span>สร้างและทดสอบกฎอัตโนมัติ</h3>
-<div class="video"><div class="video-frame"><iframe src="https://www.youtube-nocookie.com/embed/Q2D7aAni7Xo?rel=0" title="วิดีโอสาธิต" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div><p class="video-link"><a href="https://youtu.be/Q2D7aAni7Xo" target="_blank" rel="noopener">▶ เปิดวิดีโอใน YouTube</a></p></div>
 <p>วางเมาส์บนป้าย 📷 ท้ายข้อเพื่อดูภาพหน้าจอของขั้นนั้น (หน้าจอสัมผัสให้แตะ)</p>
 <p class="ws-phase"><strong>เปิดหน้าสร้างกฎ</strong></p>
 <ol>
@@ -1693,6 +1724,8 @@ a.ws-brand:hover { opacity: 0.82; }
       download (JSON), import (merge), print, and clear. Design notes: webapp/FILLABLE-WORKSHEET.md.
    4. Each sub-activity ends with a "ทำข้อนี้เสร็จแล้ว" box: a second view of its item in the
       task list at the top, so a team that has just finished need not scroll back to tick.
+   5. Lesson photos and diagrams open full size when clicked (bindZoom); banners and
+      dividers do not.
    Runs on every page load, including Material's instant navigation. */
 (function () {
   var ROLES = { Hardware: "hardware", Driver: "driver", Recorder: "recorder", Tester: "tester" };
@@ -2615,10 +2648,53 @@ a.ws-brand:hover { opacity: 0.82; }
     vids.forEach(function (v) { io.observe(v); });
   }
 
+  /* ---- click a lesson photo or diagram to see it full size ----
+     Banners, dividers, images inside links (the ดูภาพ chips) and images with empty alt text
+     (decorative) are left alone. The site opens the photo in glightbox; the standalone renders
+     have no glightbox and open it in their own #shot-box dialog instead. */
+  function zoomable(img) {
+    if (img.closest("a")) return false;
+    if (img.matches(".activity-banner, .activity-divider, .twemoji, .emojione, .off-glb")) return false;
+    return (img.getAttribute("alt") || "").trim() !== "";
+  }
+
+  function openZoom(img) {
+    var src = img.currentSrc || img.src, alt = img.getAttribute("alt") || "";
+    var box = document.getElementById("shot-box");
+    if (box && typeof box.showModal === "function") {
+      box.querySelector("img").src = src;
+      box.querySelector("p").textContent = alt;
+      box.showModal();
+      return;
+    }
+    if (typeof window.GLightbox === "function") {
+      window.GLightbox({ elements: [{ href: src, type: "image", description: alt }],
+                         touchNavigation: true, zoomable: true, openEffect: "zoom", closeEffect: "zoom" }).open();
+      return;
+    }
+    window.open(src, "_blank", "noopener");
+  }
+
+  function bindZoom(root) {
+    root.querySelectorAll(".md-typeset img").forEach(function (img) {
+      if (img.dataset.zoomBound || !zoomable(img)) return;
+      img.dataset.zoomBound = "1";
+      img.classList.add("ws-zoom");
+      img.tabIndex = 0;
+      img.setAttribute("role", "button");
+      img.title = "กดเพื่อดูภาพขนาดเต็ม";
+      img.addEventListener("click", function () { openZoom(img); });
+      img.addEventListener("keydown", function (e) {
+        if (e.key === "Enter" || e.key === " ") { e.preventDefault(); openZoom(img); }
+      });
+    });
+  }
+
   function init() {
     decorate(document);
     playInView(document);
     bindHover(document);
+    bindZoom(document);
     addMirrors();
     store = loadStore();
     migrateChecks();                              // positional tick keys from before the content keys

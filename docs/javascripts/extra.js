@@ -11,6 +11,8 @@
       download (JSON), import (merge), print, and clear. Design notes: webapp/FILLABLE-WORKSHEET.md.
    4. Each sub-activity ends with a "ทำข้อนี้เสร็จแล้ว" box: a second view of its item in the
       task list at the top, so a team that has just finished need not scroll back to tick.
+   5. Lesson photos and diagrams open full size when clicked (bindZoom); banners and
+      dividers do not.
    Runs on every page load, including Material's instant navigation. */
 (function () {
   var ROLES = { Hardware: "hardware", Driver: "driver", Recorder: "recorder", Tester: "tester" };
@@ -939,10 +941,53 @@
     vids.forEach(function (v) { io.observe(v); });
   }
 
+  /* ---- click a lesson photo or diagram to see it full size ----
+     Banners, dividers, images inside links (the ดูภาพ chips) and images with empty alt text
+     (decorative) are left alone. The site opens the photo in glightbox; the standalone renders
+     have no glightbox and open it in their own #shot-box dialog instead. */
+  function zoomable(img) {
+    if (img.closest("a")) return false;
+    if (img.matches(".activity-banner, .activity-divider, .twemoji, .emojione, .off-glb")) return false;
+    return (img.getAttribute("alt") || "").trim() !== "";
+  }
+
+  function openZoom(img) {
+    var src = img.currentSrc || img.src, alt = img.getAttribute("alt") || "";
+    var box = document.getElementById("shot-box");
+    if (box && typeof box.showModal === "function") {
+      box.querySelector("img").src = src;
+      box.querySelector("p").textContent = alt;
+      box.showModal();
+      return;
+    }
+    if (typeof window.GLightbox === "function") {
+      window.GLightbox({ elements: [{ href: src, type: "image", description: alt }],
+                         touchNavigation: true, zoomable: true, openEffect: "zoom", closeEffect: "zoom" }).open();
+      return;
+    }
+    window.open(src, "_blank", "noopener");
+  }
+
+  function bindZoom(root) {
+    root.querySelectorAll(".md-typeset img").forEach(function (img) {
+      if (img.dataset.zoomBound || !zoomable(img)) return;
+      img.dataset.zoomBound = "1";
+      img.classList.add("ws-zoom");
+      img.tabIndex = 0;
+      img.setAttribute("role", "button");
+      img.title = "กดเพื่อดูภาพขนาดเต็ม";
+      img.addEventListener("click", function () { openZoom(img); });
+      img.addEventListener("keydown", function (e) {
+        if (e.key === "Enter" || e.key === " ") { e.preventDefault(); openZoom(img); }
+      });
+    });
+  }
+
   function init() {
     decorate(document);
     playInView(document);
     bindHover(document);
+    bindZoom(document);
     addMirrors();
     store = loadStore();
     migrateChecks();                              // positional tick keys from before the content keys

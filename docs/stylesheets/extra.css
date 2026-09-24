@@ -425,6 +425,16 @@
   }
 }
 
+/* ---------- lesson photos open full size on click (extra.js bindZoom) ---------- */
+.md-typeset img.ws-zoom {
+  cursor: zoom-in;
+}
+
+.md-typeset img.ws-zoom:focus-visible {
+  outline: 2px solid var(--ag-marigold);
+  outline-offset: 3px;
+}
+
 /* ---------- role chips (extra.js tags <strong>Hardware</strong> etc.) ---------- */
 .md-typeset strong.role {
   display: inline-block;

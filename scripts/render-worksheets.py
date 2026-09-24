@@ -379,18 +379,18 @@ LATE_CSS = """
 }
 .md-typeset input.fld:focus-visible, .md-typeset textarea.fld-ta:focus-visible { outline: 2px solid var(--ag-green); }
 
-/* lightbox for the ดูภาพ chips (the site uses glightbox) */
+/* lightbox for the ดูภาพ chips and for lesson photos (the site uses glightbox) */
 #shot-box {
   border: 0;
   padding: 0.6rem;
-  max-width: min(96vw, 1100px);
+  max-width: min(98vw, 1800px);
   border-radius: 0.8rem;
   background: var(--md-default-bg-color);
   color: var(--md-default-fg-color);
   box-shadow: 0 20px 60px var(--ag-shadow);
 }
 #shot-box::backdrop { background: rgba(10, 20, 12, 0.72); }
-#shot-box img { display: block; max-width: 100%; max-height: 80vh; margin: 0 auto; border-radius: 0.5rem; }
+#shot-box img { display: block; max-width: 100%; max-height: 86vh; margin: 0 auto; border-radius: 0.5rem; }
 #shot-box p { margin: 0.5rem 0.2rem 0; font-size: 0.85rem; color: var(--md-default-fg-color--light); }
 
 @media print {

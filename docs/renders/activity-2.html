@@ -624,6 +624,16 @@ a.ws-brand:hover { opacity: 0.82; }
   }
 }
 
+/* ---------- lesson photos open full size on click (extra.js bindZoom) ---------- */
+.md-typeset img.ws-zoom {
+  cursor: zoom-in;
+}
+
+.md-typeset img.ws-zoom:focus-visible {
+  outline: 2px solid var(--ag-marigold);
+  outline-offset: 3px;
+}
+
 /* ---------- role chips (extra.js tags <strong>Hardware</strong> etc.) ---------- */
 .md-typeset strong.role {
   display: inline-block;
@@ -1470,18 +1480,18 @@ a.ws-brand:hover { opacity: 0.82; }
 }
 .md-typeset input.fld:focus-visible, .md-typeset textarea.fld-ta:focus-visible { outline: 2px solid var(--ag-green); }
 
-/* lightbox for the ดูภาพ chips (the site uses glightbox) */
+/* lightbox for the ดูภาพ chips and for lesson photos (the site uses glightbox) */
 #shot-box {
   border: 0;
   padding: 0.6rem;
-  max-width: min(96vw, 1100px);
+  max-width: min(98vw, 1800px);
   border-radius: 0.8rem;
   background: var(--md-default-bg-color);
   color: var(--md-default-fg-color);
   box-shadow: 0 20px 60px var(--ag-shadow);
 }
 #shot-box::backdrop { background: rgba(10, 20, 12, 0.72); }
-#shot-box img { display: block; max-width: 100%; max-height: 80vh; margin: 0 auto; border-radius: 0.5rem; }
+#shot-box img { display: block; max-width: 100%; max-height: 86vh; margin: 0 auto; border-radius: 0.5rem; }
 #shot-box p { margin: 0.5rem 0.2rem 0; font-size: 0.85rem; color: var(--md-default-fg-color--light); }
 
 @media print {
@@ -1509,7 +1519,7 @@ a.ws-brand:hover { opacity: 0.82; }
 <p>คลิกชื่อหัวข้อเพื่อดูวิธีทำ เมื่อทำเสร็จให้ทำเครื่องหมายและบันทึกผลในช่องที่กำหนด กรอกที่นี่หรือในขั้นตอนด้านล่างก็ได้ คำตอบจะปรากฏทั้งสองจุด</p>
 <ul class="task-list">
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> <strong><a href="#a2-1">2.1 รู้จักบอร์ดรีเลย์</a></strong> ให้ทุกคนในกลุ่มชี้บนบอร์ดจริงว่าขั้วใดต่อไฟไปหลอดไฟ และขั้วใดห้ามต่อสาย</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> <strong><a href="#a2-1b">2.2 อ่านชื่อและหมายเลข IP แล้วลองสั่งรีเลย์</a></strong> ชื่อบอร์ดเต็มจาก DEVICE NAME <input class="fld" type="text" data-k="board.relay.name" data-size="22" size="22" autocomplete="off" spellcheck="false"> หมายเลข IP จาก IP ADDRESS (ไม่ต้องใส่ http://) <input class="fld" type="text" data-k="board.relay.ip" data-size="15" size="15" autocomplete="off" spellcheck="false"> สั่งรีเลย์จากสวิตช์บนหน้าเว็บและจากปุ่มบนบอร์ด แล้วถอดปลายสาย USB ออกจากแล็ปท็อป</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> <strong><a href="#a2-1b">2.2 อ่านชื่อและหมายเลข IP แล้วลองสั่งรีเลย์</a></strong> ชื่อบอร์ดเต็มจาก DEVICE NAME <input class="fld" type="text" data-k="board.relay.name" data-size="22" size="22" autocomplete="off" spellcheck="false"> หมายเลข IP จาก IP ADDRESS (ไม่ต้องใส่ http://) <input class="fld" type="text" data-k="board.relay.ip" data-size="15" size="15" autocomplete="off" spellcheck="false"> สั่งรีเลย์จากสวิตช์บนหน้าเว็บและจากปุ่ม BOOT บนบอร์ด แล้วถอดปลายสาย USB ออกจากแล็ปท็อป</li>
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> <strong><a href="#a2-2">2.3 รู้จักกล่องจ่ายไฟและวงจรหลอดไฟ</a></strong> หาขั้วไฟเข้า คู่กลาง (สัญลักษณ์แบตเตอรี่) ขั้วไฟออก คู่ขวาสุด (สัญลักษณ์หลอดไฟ) และช่อง USB สองช่องใช้จ่ายไฟเลี้ยงบอร์ดรีเลย์</li>
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> <strong><a href="#a2-2b">2.4 ต่อสายวงจรหลอดไฟ</a></strong> ต่อสายให้ครบหกข้อโดยยังไม่เสียบปลั๊กอะแดปเตอร์ ให้อีกคนตรวจว่าสกรูแน่นทุกจุด ไม่มีปลายสายแตะกัน ไม่มีสายเข้า <strong>NC</strong> และ <strong>7-60 Input / GND</strong></li>
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> <strong><a href="#a2-2c">2.5 จ่ายไฟและทดสอบหลอดไฟ</a></strong> หันเลนส์หลอดออกจากบอร์ด GoGo-IoT เสียบอะแดปเตอร์ แล้วสั่ง On ให้หลอดติด สั่ง Off ให้หลอดดับ</li>
@@ -1519,7 +1529,7 @@ a.ws-brand:hover { opacity: 0.82; }
 <p><img alt="" class="activity-divider" decoding="async" height="58" loading="lazy" src="../images/activity-dividers/greenhouse.webp" width="1200" /></p>
 <h3 id="a2-1"><span class="sub-num">2.1</span>รู้จักบอร์ดรีเลย์</h3>
 <p>บอร์ดรีเลย์เป็นบอร์ดคนละตัวกับบอร์ดเซนเซอร์ มีคอนโทรลเลอร์ของตัวเอง (ESP32-C6) และมีขั้วต่อสองกลุ่ม ดูตำแหน่งขั้วต่อจากแผนภาพนี้ก่อนต่อสาย</p>
-<p><img alt="แผนภาพบอร์ดรีเลย์ ESP32-C6 ชี้ตำแหน่งขั้ว NO COM NC ทางซ้าย ขั้วไฟเข้า 7-60 Input และ GND ทางขวา ช่อง USB Type-C ปุ่มบนบอร์ด ไฟ LED และไฟแสดงสถานะรีเลย์" src="../images/relay-board-terminals.png" width="100%" /></p>
+<p><img alt="แผนภาพบอร์ดรีเลย์ ESP32-C6 ชี้ตำแหน่งขั้ว NO COM NC ทางซ้าย ขั้วไฟเข้า 7-60 Input และ GND ทางขวา ช่อง USB Type-C ปุ่ม Reset ปุ่ม Manual ON/OFF ไฟ WiFi Status และไฟแสดงสถานะรีเลย์" src="../images/relay-board-terminals.png" width="100%" /></p>
 <p class="ws-phase"><strong>สำรวจขั้วต่อบนบอร์ด</strong></p>
 <ol>
 <li>เทียบภาพกับบอร์ดจริง ให้ทุกคนชี้ขั้วที่ใช้ต่อหลอดไฟและขั้วที่ห้ามต่อสาย โดยดูตารางนี้ประกอบ</li>
@@ -1544,7 +1554,7 @@ a.ws-brand:hover { opacity: 0.82; }
 <td><strong>ไม่ใช้</strong> ปล่อยว่างไว้ ห้ามต่อสายเข้า</td>
 </tr>
 <tr>
-<td><strong>USB Type-c</strong></td>
+<td><strong>USB Type-C</strong></td>
 <td>ช่อง USB</td>
 <td>ไฟเลี้ยงบอร์ด ในข้อ 2.2 ใช้ไฟจากแล็ปท็อป ตั้งแต่ข้อ 2.4 ใช้ไฟจากกล่องจ่ายไฟ</td>
 </tr>
@@ -1554,14 +1564,19 @@ a.ws-brand:hover { opacity: 0.82; }
 <td>ติดเมื่อรีเลย์ทำงาน ตั้งแต่ข้อ 2.5 เราจะดูไฟดวงนี้คู่กับหลอดไฟ</td>
 </tr>
 <tr>
-<td><strong>LED</strong></td>
+<td><strong>WiFi Status</strong></td>
 <td>ไฟแสดงการเชื่อมต่อ WiFi</td>
 <td>ติดค้าง = ต่อ WiFi ได้ · กะพริบ = หลุด WiFi · ดับ = ไม่มีไฟ</td>
 </tr>
 <tr>
-<td><strong>Programmable keys</strong></td>
-<td>ปุ่มบนบอร์ด</td>
+<td><strong>Manual ON/OFF</strong></td>
+<td>ปุ่ม BOOT บนบอร์ด</td>
 <td>กดสั่งรีเลย์ด้วยมือได้ แม้ไม่มี Home Assistant</td>
+</tr>
+<tr>
+<td><strong>Reset</strong></td>
+<td>ปุ่ม RST บนบอร์ด</td>
+<td><strong>ไม่ต้องกด</strong> บอร์ดจะเริ่มทำงานใหม่เหมือนถอดไฟแล้วเสียบใหม่</td>
 </tr>
 </tbody>
 </table></div>
@@ -1577,7 +1592,7 @@ a.ws-brand:hover { opacity: 0.82; }
 <ol start="3" style="counter-reset: step 2">
 <li>เปิดแท็บใหม่ไปที่ <code>http://</code> ตามด้วยหมายเลข IP ของบอร์ดรีเลย์ จะเห็น entity ชื่อ <strong>รีเลย์ (relay)</strong> เป็นสวิตช์</li>
 <li>กดให้เป็น On หนึ่งวินาที แล้ว Off ฟังเสียงคลิก และดูไฟ <strong>Relay Indicator</strong> ติดดับตาม</li>
-<li>กด <strong>ปุ่มบนบอร์ด</strong> หนึ่งครั้ง รีเลย์คลิกและสวิตช์บนหน้าเว็บเปลี่ยนตาม กดอีกครั้งให้กลับเป็น Off</li>
+<li>กด <strong>ปุ่ม BOOT บนบอร์ด</strong> (Manual ON/OFF ในแผนภาพ ไม่ใช่ปุ่ม RST) หนึ่งครั้ง รีเลย์คลิกและสวิตช์บนหน้าเว็บเปลี่ยนตาม กดอีกครั้งให้กลับเป็น Off</li>
 </ol>
 <p class="ws-phase"><strong>เตรียมต่อวงจร</strong></p>
 <ol start="6" style="counter-reset: step 5">
@@ -1615,7 +1630,7 @@ a.ws-brand:hover { opacity: 0.82; }
 <ol start="6" style="counter-reset: step 5">
 <li>ตรวจว่าสกรูทุกตัวขันแน่น ไม่มีปลายสายเปลือยแตะกัน ไม่มีสายเข้าขั้ว <strong>NC</strong> และไม่มีสายเข้าขั้ว <strong>7-60 Input / GND</strong></li>
 </ol>
-<p><img alt="ตัวอย่างวงจรที่ต่อหลอด LED เสร็จแล้ว: อะแดปเตอร์ 12V ต่อเข้าคู่แบตเตอรี่ของ charge controller แทนแบตเตอรี่ จอแสดง 12.0V สายบวกจากคู่โหลดของ charge controller เข้า COM ของบอร์ดรีเลย์ แล้วออกจาก NO ไปแผงต่อสายสีขาว สายลบจากคู่โหลดไปแผงต่อสายโดยตรง หลอด LED ต่อออกจากแผงต่อสาย บอร์ดรีเลย์รับไฟจากช่อง USB ของ charge controller ทางสาย USB-C" src="../images/session2-relay-led-wiring.jpg" width="85%" /></p>
+<p><img alt="ตัวอย่างวงจรที่ต่อหลอด LED เสร็จแล้ว: อะแดปเตอร์ 12V ต่อเข้าคู่แบตเตอรี่ของ charge controller แทนแบตเตอรี่ สายบวกจากคู่โหลดของ charge controller เข้า COM ของบอร์ดรีเลย์ แล้วออกจาก NO ไปแผงต่อสายสีขาว สายลบจากคู่โหลดไปแผงต่อสายโดยตรง หลอด LED ต่อออกจากแผงต่อสาย บอร์ดรีเลย์รับไฟจากช่อง USB ของ charge controller ทางสาย USB-C" src="../images/session2-relay-led-wiring-studio.png" width="85%" /></p>
 <blockquote>
 <p><strong>ทำไมรีเลย์ต่ออยู่ที่สายบวกเพียงเส้นเดียว</strong> กระแสไฟจะไหลได้เมื่อวงจรครบ การเปิดหน้าสัมผัสรีเลย์ที่จุดเดียวจึงทำให้หลอดดับได้ ในวงจร 12V นี้ เราให้รีเลย์ตัดต่อสายบวก ส่วนสายลบต่อกลับไปยังกล่องจ่ายไฟโดยตรง</p>
 </blockquote>
@@ -1684,6 +1699,8 @@ a.ws-brand:hover { opacity: 0.82; }
       download (JSON), import (merge), print, and clear. Design notes: webapp/FILLABLE-WORKSHEET.md.
    4. Each sub-activity ends with a "ทำข้อนี้เสร็จแล้ว" box: a second view of its item in the
       task list at the top, so a team that has just finished need not scroll back to tick.
+   5. Lesson photos and diagrams open full size when clicked (bindZoom); banners and
+      dividers do not.
    Runs on every page load, including Material's instant navigation. */
 (function () {
   var ROLES = { Hardware: "hardware", Driver: "driver", Recorder: "recorder", Tester: "tester" };
@@ -2606,10 +2623,53 @@ a.ws-brand:hover { opacity: 0.82; }
     vids.forEach(function (v) { io.observe(v); });
   }
 
+  /* ---- click a lesson photo or diagram to see it full size ----
+     Banners, dividers, images inside links (the ดูภาพ chips) and images with empty alt text
+     (decorative) are left alone. The site opens the photo in glightbox; the standalone renders
+     have no glightbox and open it in their own #shot-box dialog instead. */
+  function zoomable(img) {
+    if (img.closest("a")) return false;
+    if (img.matches(".activity-banner, .activity-divider, .twemoji, .emojione, .off-glb")) return false;
+    return (img.getAttribute("alt") || "").trim() !== "";
+  }
+
+  function openZoom(img) {
+    var src = img.currentSrc || img.src, alt = img.getAttribute("alt") || "";
+    var box = document.getElementById("shot-box");
+    if (box && typeof box.showModal === "function") {
+      box.querySelector("img").src = src;
+      box.querySelector("p").textContent = alt;
+      box.showModal();
+      return;
+    }
+    if (typeof window.GLightbox === "function") {
+      window.GLightbox({ elements: [{ href: src, type: "image", description: alt }],
+                         touchNavigation: true, zoomable: true, openEffect: "zoom", closeEffect: "zoom" }).open();
+      return;
+    }
+    window.open(src, "_blank", "noopener");
+  }
+
+  function bindZoom(root) {
+    root.querySelectorAll(".md-typeset img").forEach(function (img) {
+      if (img.dataset.zoomBound || !zoomable(img)) return;
+      img.dataset.zoomBound = "1";
+      img.classList.add("ws-zoom");
+      img.tabIndex = 0;
+      img.setAttribute("role", "button");
+      img.title = "กดเพื่อดูภาพขนาดเต็ม";
+      img.addEventListener("click", function () { openZoom(img); });
+      img.addEventListener("keydown", function (e) {
+        if (e.key === "Enter" || e.key === " ") { e.preventDefault(); openZoom(img); }
+      });
+    });
+  }
+
   function init() {
     decorate(document);
     playInView(document);
     bindHover(document);
+    bindZoom(document);
     addMirrors();
     store = loadStore();
     migrateChecks();                              // positional tick keys from before the content keys

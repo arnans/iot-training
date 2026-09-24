@@ -153,7 +153,7 @@
       "section": "2.4",
       "title": "ให้เพื่อนตรวจวงจรก่อนจ่ายไฟ",
       "caption": "เสียบสาย USB ของรีเลย์เข้ากล่องจ่ายไฟ\nแล้วตรวจว่าสกรูแน่น ไม่มีสายแตะกัน และขั้วที่ห้ามใช้ยังว่าง",
-      "image": "docs/images/session2-relay-led-wiring.jpg",
+      "image": "docs/images/session2-relay-led-wiring-studio.png",
       "notes": "นี่คือขั้นตอน 5–6 ของใบงาน ให้อีกคนตรวจทุกจุด ยังไม่เสียบอะแดปเตอร์ ย้ำ NC และ 7-60 Input / GND ไม่ใช้",
       "sources": []
     },

@@ -585,6 +585,18 @@ a.ws-brand:hover { opacity: 0.82; }
   line-height: calc(2rem - 4px);
 }
 
+/* ---------- a task-list row that ticked itself (extra.js autoTick): a brief green wash ---------- */
+@keyframes ws-autotick {
+  from { background: rgba(46, 125, 50, 0.22); }
+  to { background: transparent; }
+}
+
+.md-typeset .ws-tasks li.ws-autoticked { animation: ws-autotick 1.6s ease-out; border-radius: 0.4em; }
+
+@media (prefers-reduced-motion: reduce) {
+  .md-typeset .ws-tasks li.ws-autoticked { animation: none; }
+}
+
 /* ---------- screenshot chip (glightbox link after a step) ---------- */
 .md-typeset a.glightbox {
   display: inline-flex;
@@ -1842,6 +1854,8 @@ a.ws-brand:hover { opacity: 0.82; }
       task list at the top, so a team that has just finished need not scroll back to tick.
    5. Lesson photos and diagrams open full size when clicked (bindZoom); banners and
       dividers do not.
+   6. A row of the task list whose answer boxes are all filled ticks itself (autoTick), once the
+      last answer is committed: the box loses focus, or a radio option is chosen.
    Runs on every page load, including Material's instant navigation. */
 (function () {
   var ROLES = { Hardware: "hardware", Driver: "driver", Recorder: "recorder", Tester: "tester" };
@@ -2133,6 +2147,38 @@ a.ws-brand:hover { opacity: 0.82; }
 
   function syncMirrors() {
     mirrors.forEach(function (pair) { pair.m.checked = pair.cb.checked; });
+  }
+
+  /* ---- a task-list row ticks itself once every answer box in it is filled ----
+     Checked when an answer is committed (the change event: a text box losing focus or Enter, a
+     radio option chosen), never while typing, so a half-typed IP does not tick 1.2. The same key
+     can sit in the row and in the section below it; either copy counts. It only ever ticks: a
+     box the team unticks, or an answer rubbed out later, is left as the team has it. The tick
+     goes through the box's change event, so it is saved, mirrored and reported like a click. */
+  function rowFields(li) {
+    return Array.prototype.slice.call(li.querySelectorAll(".fld")).filter(function (f) {
+      return f.closest(".task-list-item") === li;                   // not the fields of a nested row
+    });
+  }
+
+  function answered(f) {
+    var v = store.fields[f.dataset.k];
+    return v !== undefined && v !== null && String(v).trim() !== "";
+  }
+
+  function autoTick(key) {
+    document.querySelectorAll(".ws-tasks .task-list-item").forEach(function (li) {
+      var cb = li.querySelector("input[type=checkbox]");
+      if (!cb || cb.checked || cb.closest(".task-list-item") !== li) return;
+      var fields = rowFields(li);
+      if (!fields.length || !fields.some(function (f) { return f.dataset.k === key; })) return;
+      if (!fields.every(answered)) return;
+      cb.checked = true;
+      cb.dispatchEvent(new Event("change", { bubbles: true }));
+      li.classList.remove("ws-autoticked");
+      void li.offsetWidth;                                          // restart the flash if it ticks twice in a row
+      li.classList.add("ws-autoticked");
+    });
   }
 
   /* a box grows to fit what is typed, so nothing is clipped on screen or in print */
@@ -2730,6 +2776,7 @@ a.ws-brand:hover { opacity: 0.82; }
       });
       saveNow();
       pushSoon();
+      autoTick(el.dataset.k);
       return;
     }
     if (el.classList && el.classList.contains("fld") && el.dataset.k === "team.no") {
@@ -2738,6 +2785,12 @@ a.ws-brand:hover { opacity: 0.82; }
       markTeamBoxes();
       saveNow();
       pushNow();                                   // verifies the number first; the dot appears once it is confirmed
+      return;
+    }
+    if (el.classList && el.classList.contains("fld")) {           // a text answer, committed: the box was left, or Enter
+      store.fields[el.dataset.k] = el.value;
+      saveNow();
+      autoTick(el.dataset.k);
       return;
     }
     if (el.classList && el.classList.contains("ws-mirror")) {

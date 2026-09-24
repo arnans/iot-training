@@ -386,6 +386,18 @@
   line-height: calc(2rem - 4px);
 }
 
+/* ---------- a task-list row that ticked itself (extra.js autoTick): a brief green wash ---------- */
+@keyframes ws-autotick {
+  from { background: rgba(46, 125, 50, 0.22); }
+  to { background: transparent; }
+}
+
+.md-typeset .ws-tasks li.ws-autoticked { animation: ws-autotick 1.6s ease-out; border-radius: 0.4em; }
+
+@media (prefers-reduced-motion: reduce) {
+  .md-typeset .ws-tasks li.ws-autoticked { animation: none; }
+}
+
 /* ---------- screenshot chip (glightbox link after a step) ---------- */
 .md-typeset a.glightbox {
   display: inline-flex;

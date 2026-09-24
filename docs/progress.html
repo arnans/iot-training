@@ -241,6 +241,10 @@
   .btn:focus-visible { background: var(--ag-green); color: var(--on-green); outline: 2px solid var(--focus); outline-offset: 2px; }
   .btn--quiet { border-color: var(--rule); color: var(--muted); }
   .btn--quiet:hover, .btn--quiet:focus-visible { background: transparent; color: var(--ag-tomato); border-color: var(--ag-tomato); }
+  .btn--danger { border-color: var(--ag-tomato); color: var(--ag-tomato); }
+  .btn--danger:hover, .btn--danger:focus-visible { background: var(--danger-solid); border-color: var(--danger-solid); color: var(--on-danger); }
+  .reset-note { font-size: 0.82rem; color: var(--muted); }
+  .reset-note button { border: 0; background: none; padding: 0; color: var(--ag-green); text-decoration: underline; cursor: pointer; font: inherit; }
 
   .tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr)); gap: 0.8rem; margin-bottom: 1.2rem; }
   .tile { background: var(--card); border: 1px solid var(--rule); border-radius: var(--r-container); padding: 0.7rem 1rem 0.6rem; }
@@ -260,6 +264,10 @@
   .panel h2 small { font-weight: 300; color: var(--lighter); }
   .panel h2 .right { margin-left: auto; font-weight: 400; font-size: 0.78rem; }
   .panel h2 .right button { border: 0; background: none; color: var(--ag-green); cursor: pointer; padding: 0; font-size: inherit; }
+  .panel h2 .right { display: inline-flex; gap: 0.9em; align-items: baseline; }
+  .panel h2 .right button.danger { color: var(--ag-tomato); }
+  .msgs-reset { margin: -0.3rem 0 0.5rem; font-size: 0.78rem; color: var(--muted); }
+  .msgs-reset button { border: 0; background: none; padding: 0; color: var(--ag-green); text-decoration: underline; cursor: pointer; font: inherit; }
 
   /* bars: how many teams stand at each activity -- the pacing view, so it is the biggest thing on the page;
      a chevron opens the activity's task boxes */
@@ -446,6 +454,8 @@
     <button class="btn btn--quiet" id="table-toggle" type="button" aria-pressed="false">ตาราง</button>
     <button class="btn btn--quiet" id="ticker-toggle" type="button" aria-pressed="false" title="รายการติ๊กล่าสุด สำหรับตรวจสอบระบบ">ติ๊กล่าสุด</button>
     <button class="btn btn--quiet" id="clear" type="button">ล้างข้อมูลที่จำไว้</button>
+    <button class="btn btn--danger" id="clear-all" type="button" title="ล้างกระดานบนจอนี้ เพื่อเริ่มกับกลุ่มผู้เข้าอบรมชุดใหม่ ข้อมูลในฐานข้อมูลและจออื่นไม่เปลี่ยน">ล้างทั้งหมด</button>
+    <span class="reset-note" id="reset-note" hidden><span id="reset-text"></span> <button type="button" id="reset-undo">แสดงทั้งหมด</button></span>
   </div>
 
   <div class="tiles">
@@ -480,7 +490,8 @@
 
     <aside class="col side">
       <section class="panel panel--msgs">
-        <h2>ข้อความจากกลุ่ม <small id="msgs-note"></small><span class="right"><button type="button" id="show-hidden">แสดงที่ซ่อนไว้</button></span></h2>
+        <h2>ข้อความจากกลุ่ม <small id="msgs-note"></small><span class="right"><button type="button" id="show-hidden">แสดงที่ซ่อนไว้</button><button type="button" class="danger" id="msgs-clear" title="ลบข้อความทั้งหมดออกจากจอนี้ ข้อมูลในฐานข้อมูลและจออื่นไม่เปลี่ยน">ล้าง</button></span></h2>
+        <p class="msgs-reset" id="msgs-reset" hidden><span id="msgs-reset-text"></span> <button type="button" id="msgs-undo">แสดงข้อความเดิม</button></p>
         <ul class="msgs" id="msgs"></ul>
         <div class="empty" id="msgs-empty" hidden>ยังไม่มีข้อความ · กลุ่มส่งได้จากแถบบนใบงาน</div>
       </section>
@@ -510,6 +521,8 @@
   var TEAM_MAX = loadMax();
   var trees = {};          // day -> raw progress tree from the stream
   var msgTrees = {};       // day -> raw messages tree
+  var resets = {};         // day -> this screen's ล้างทั้งหมด cutoff (database clock); older data is not shown here
+  var msgResets = {};      // day -> this screen's cutoff from the messages panel's ล้าง; older messages are not shown here
   var streams = {};        // "progress:day" / "messages:day" -> EventSource
   var status = {};         // stream key -> "live" | "off" | "wait"
   var pending = {};        // message id -> { on, at }: a TA's "helped" press not yet echoed by the database
@@ -564,6 +577,11 @@
     days().forEach(function (d) { try { localStorage.removeItem("farm-progress." + d); localStorage.removeItem("farm-messages." + d); } catch (e) {} });
     trees = {}; msgTrees = {}; reconnect();
   });
+
+  $("clear-all").addEventListener("click", clearAll);
+  $("reset-undo").addEventListener("click", undoReset);
+  $("msgs-clear").addEventListener("click", clearMessages);
+  $("msgs-undo").addEventListener("click", undoMessages);
 
   function syncUrl() {
     var u = new URLSearchParams();
@@ -629,6 +647,8 @@
     days().forEach(function (d) {
       if (!trees[d]) trees[d] = loadJson("farm-progress." + d) || {};
       if (!msgTrees[d]) msgTrees[d] = loadJson("farm-messages." + d) || {};
+      if (!resets[d]) resets[d] = +loadJson("farm-progress.reset." + d) || 0;
+      if (!msgResets[d]) msgResets[d] = +loadJson("farm-messages.reset." + d) || 0;
       connect("progress", d);
       connect("messages", d);
     });
@@ -677,10 +697,10 @@
   /* the tree the board reads: one day, or two days merged with device ids kept apart */
   function combined() {
     var ds = days();
-    if (ds.length === 1) return trees[ds[0]] || {};
+    if (ds.length === 1) return shownTree(ds[0]);
     var out = {};
     ds.forEach(function (d) {
-      var t = Progress.objectify(trees[d]) || {};
+      var t = shownTree(d);
       Object.keys(t).forEach(function (team) {
         if (!t[team] || typeof t[team] !== "object") return;
         out[team] = out[team] || {};
@@ -689,10 +709,11 @@
     });
     return out;
   }
+  function shownTree(d) { return Progress.progressAfter(trees[d], resets[d]); }   // after this screen's ล้างทั้งหมด
   function combinedMsgs() {
     var out = {};
     days().forEach(function (d) {
-      var t = Progress.objectify(msgTrees[d]) || {};
+      var t = Progress.afterReset(msgTrees[d], Math.max(resets[d] || 0, msgResets[d] || 0));
       Object.keys(t).forEach(function (id) { if (t[id] && typeof t[id] === "object") { out[id] = Object.assign({}, t[id], { _day: d }); } });
     });
     return out;
@@ -744,6 +765,7 @@
 
   var lastBoard = null, lastMsgs = [], helpTeams = {}, lastMsgByTeam = {};
   function render() {
+    showResetNote();
     var b = lastBoard = Progress.board(combined(), page, Date.now(), TEAM_MAX);
     var n = b.order.length;
     var lab = function (id) { return Progress.actLabel(id, b.names); };
@@ -893,7 +915,7 @@
   function rawDevices(team) {
     var out = {};
     days().forEach(function (d) {
-      var t = Progress.objectify(trees[d]) || {}, sub = Progress.objectify(t[team]);
+      var t = shownTree(d), sub = Progress.objectify(t[team]);
       if (!sub || typeof sub !== "object") return;
       Object.keys(sub).forEach(function (dev) { if (sub[dev] && typeof sub[dev] === "object") out[d + "/" + dev] = sub[dev]; });
     });
@@ -1037,6 +1059,67 @@
   });
   document.addEventListener("click", function () { if (pinnedTeam) unpin(); });
   document.addEventListener("keydown", function (e) { if (e.key === "Escape" && pinnedTeam) unpin(); });
+
+  /* ---- ล้างทั้งหมด: this screen starts over for a new group running the same workshop ----
+     Nothing is deleted and nothing is written: the screen remembers a cutoff per day (in this
+     browser) and shows only progress and messages that arrive after it. Other TAs' screens and
+     the database keep everything. แสดงทั้งหมด drops the cutoff again. */
+  function clearAll() {
+    var ds = days();
+    if (!window.confirm("ล้างกระดานบนจอนี้ เพื่อเริ่มกับกลุ่มผู้เข้าอบรมชุดใหม่?\n\n" +
+                        "จอนี้จะแสดงเฉพาะความคืบหน้าและข้อความที่ส่งเข้ามาหลังจากนี้ (วันที่ " + ds.join(" และ ") + ")\n" +
+                        "ข้อมูลในฐานข้อมูลและกระดานบนจออื่นไม่เปลี่ยน กด แสดงทั้งหมด เพื่อดูข้อมูลเดิมอีกครั้ง\n\n" +
+                        "ก่อนกลุ่มใหม่เริ่ม ให้ปิดใบงานของกลุ่มเดิม หรือกด ล้างคำตอบทั้งหมด ในใบงานนั้น\n" +
+                        "มิฉะนั้นเครื่องที่ยังเปิดใบงานเดิมอยู่จะกลับมาบนกระดานเมื่อติ๊กครั้งถัดไป")) return;
+    ds.forEach(function (d) {
+      resets[d] = Progress.resetTime(trees[d], msgTrees[d], Date.now());
+      saveJson("farm-progress.reset." + d, resets[d]);
+    });
+    seenMsg = null; seenHelp = null;                                // the next paint is a fresh board: nothing animates
+    unpin();
+    render();
+  }
+
+  function undoReset() {
+    days().forEach(function (d) {
+      resets[d] = 0; msgResets[d] = 0;
+      try { localStorage.removeItem("farm-progress.reset." + d); localStorage.removeItem("farm-messages.reset." + d); } catch (e) {}
+    });
+    seenMsg = null; seenHelp = null;
+    render();
+  }
+
+  /* ---- the messages panel's ล้าง: this screen drops every message received so far, help calls
+     included, the same way ล้างทั้งหมด does for the whole board. Messages are create-only in the
+     database, and other TAs' screens keep theirs. แสดงข้อความเดิม brings them back. ---- */
+  function clearMessages() {
+    var ds = days(), n = Progress.messageList(combinedMsgs()).length;
+    if (!n) return;
+    if (!window.confirm("ล้างข้อความทั้งหมด " + n + " ข้อความออกจากจอนี้?\n\n" +
+                        "คำขอความช่วยเหลือที่ยังค้างอยู่จะหายไปด้วย ข้อความใหม่จะแสดงตามปกติ\n" +
+                        "ข้อมูลในฐานข้อมูลและจออื่นไม่เปลี่ยน กด แสดงข้อความเดิม เพื่อดูอีกครั้ง")) return;
+    ds.forEach(function (d) {
+      msgResets[d] = Progress.resetTime(null, msgTrees[d], Date.now());
+      saveJson("farm-messages.reset." + d, msgResets[d]);
+    });
+    seenMsg = null; seenHelp = null;
+    render();
+  }
+
+  function undoMessages() {
+    days().forEach(function (d) { msgResets[d] = 0; try { localStorage.removeItem("farm-messages.reset." + d); } catch (e) {} });
+    seenMsg = null; seenHelp = null;
+    render();
+  }
+
+  function showResetNote() {
+    var at = days().map(function (d) { return resets[d] || 0; }).filter(Boolean);
+    $("reset-note").hidden = !at.length;
+    if (at.length) $("reset-text").textContent = "จอนี้ล้างเมื่อ " + hhmm(Math.max.apply(null, at)) + " ·";
+    var mat = days().filter(function (d) { return (msgResets[d] || 0) > (resets[d] || 0); }).map(function (d) { return msgResets[d]; });
+    $("msgs-reset").hidden = !mat.length;
+    if (mat.length) $("msgs-reset-text").textContent = "ล้างข้อความบนจอนี้เมื่อ " + hhmm(Math.max.apply(null, mat)) + " ·";
+  }
 
   /* ---- export: everything this browser holds for the chosen day(s) ---- */
   function exportJson() {

@@ -123,6 +123,29 @@ eq("handled flag and day pass through", P.messageList({ "-Ad": { team: "3", kind
 eq("cancelled flag passes through", P.messageList({ "-Ae": { team: "3", kind: "help", text: "x", ts: 1, cancelled: 77 } })[0].cancelled + "|" +
    P.messageList({ "-Ae": { team: "3", kind: "help", text: "x", ts: 1 } })[0].cancelled, "77|0");
 
+// a multi-path PATCH (ล้างทั้งหมด) streams back as one patch whose keys are paths
+let mp = P.applyEvent(null, "put", "/", { "1": { a: { team: "1" } }, "2": { b: { team: "2" }, c: { team: "2" } } });
+mp = P.applyEvent(mp, "patch", "/", { "1/a": null, "2/b": null });
+eq("multi-path patch deletes the named leaves only", mp, { "1": {}, "2": { c: { team: "2" } } });
+let mm = P.applyEvent(null, "put", "/", { "-M1": { team: "3", kind: "help", text: "x", ts: 1 } });
+mm = P.applyEvent(mm, "patch", "/", { "-M1/handled": 55 });
+eq("multi-path patch sets a nested field", mm["-M1"].handled, 55);
+let np = P.applyEvent({ "4": { d: { team: "4", x: 1 } } }, "patch", "/4/d", { x: 2, y: null });
+eq("plain patch at a path still merges", np, { "4": { d: { team: "4", x: 2 } } });
+
+// after ล้างทั้งหมด: messages older than the reset belong to the previous group and are dropped
+const mixed = { "-Ba": { team: "3", kind: "help", text: "old", ts: 50, srv: 100 },
+                "-Bb": { team: "3", kind: "note", text: "new", ts: 999, srv: 300 },
+                "-Bc": { team: "4", kind: "note", text: "clock", ts: 250 } };
+eq("reset drops older messages by server time", Object.keys(P.afterReset(mixed, 200)).sort(), ["-Bb", "-Bc"]);
+eq("no reset keeps every message", Object.keys(P.afterReset(mixed, 0)).length, 3);
+eq("reset of an empty day", P.afterReset(null, 200), {});
+const prog = { "1": { a: { team: "1", ts: 50, srv: 100 } }, "2": { b: { team: "2", srv: 90 }, c: { team: "2", ts: 400 } } };
+eq("reset hides devices last written before it, and teams left with none", P.progressAfter(prog, 200), { "2": { c: { team: "2", ts: 400 } } });
+eq("a device that writes again comes back", Object.keys(P.progressAfter(Object.assign({}, prog, { "1": { a: { team: "1", srv: 250 } } }), 200)), ["1", "2"]);
+eq("reset time is just after the newest thing received", P.resetTime(prog, mixed, 1), 401);
+eq("reset time with nothing received is the clock", P.resetTime(null, null, 777), 777);
+
 // 5. labels and the day key
 eq("activity label", [P.actLabel("a5"), P.actLabel("page"), P.actLabel("ก่อนเริ่ม")], ["กิจกรรม 5", "รายการอื่น", "ก่อนเริ่ม"]);
 eq("vowel-less slug is labelled by the heading text the worksheet sent", P.actLabel("กอนเรม", { "กอนเรม": "ก่อนเริ่ม" }), "ก่อนเริ่ม");

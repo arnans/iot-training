@@ -43,8 +43,15 @@
     }
     var leaf = parts[parts.length - 1];
     if (kind === "patch") {
-      var target = leaf === undefined ? node : (node[leaf] = (typeof node[leaf] === "object" && node[leaf]) || {});
+      /* a multi-path update arrives as one patch whose keys are themselves paths ("17/dev1": null,
+         "-Mx/handled": 123), as the dashboard's ล้างทั้งหมด sends: apply each as a put at its own path */
       Object.keys(data || {}).forEach(function (k) {
+        if (k.indexOf("/") >= 0) { tree = applyEvent(tree, "put", parts.concat(k.split("/")).join("/"), data[k]); return; }
+        var target = leaf === undefined ? tree : (function () {
+          var n = tree;
+          for (var j = 0; j < parts.length; j++) n = (typeof n[parts[j]] === "object" && n[parts[j]]) || (n[parts[j]] = {});
+          return n;
+        })();
         if (data[k] === null) delete target[k]; else target[k] = data[k];
       });
     } else if (data === null || data === undefined) {
@@ -216,6 +223,54 @@
     return out;
   }
 
+  /* ---- ล้างทั้งหมด: one dashboard screen starts over for a new group. It keeps a cutoff time per
+     day and shows only what arrived after it; the database and other screens are untouched.
+     A document's time is the database's clock (srv) when it has one. ---- */
+  function stamp(d) { return num(d && d.srv) || num(d && d.ts); }
+
+  /* messages/<day> without the messages sent before `since` */
+  function afterReset(tree, since) {
+    tree = objectify(tree) || {};
+    if (!num(since)) return tree;
+    var out = {};
+    Object.keys(tree).forEach(function (id) {
+      var m = tree[id];
+      if (m && typeof m === "object" && stamp(m) >= since) out[id] = m;
+    });
+    return out;
+  }
+
+  /* progress/<day> without the device documents last written before `since`. A device that
+     writes again (a worksheet ticks) is newer than the cutoff and comes back whole. */
+  function progressAfter(tree, since) {
+    tree = objectify(tree) || {};
+    if (!num(since)) return tree;
+    var out = {};
+    Object.keys(tree).forEach(function (team) {
+      var devs = objectify(tree[team]);
+      if (!devs || typeof devs !== "object") return;
+      Object.keys(devs).forEach(function (dev) {
+        if (devs[dev] && typeof devs[dev] === "object" && stamp(devs[dev]) >= since) (out[team] = out[team] || {})[dev] = devs[dev];
+      });
+    });
+    return out;
+  }
+
+  /* the cutoff for a reset pressed now: just after the newest thing this screen has received,
+     so the reset hides everything on screen whatever this computer's clock says. With nothing
+     received yet, the computer's clock. */
+  function resetTime(progressTree, msgTree, now) {
+    var latest = 0;
+    var p = objectify(progressTree) || {};
+    Object.keys(p).forEach(function (team) {
+      var devs = objectify(p[team]) || {};
+      Object.keys(devs).forEach(function (dev) { latest = Math.max(latest, stamp(devs[dev])); });
+    });
+    var m = objectify(msgTree) || {};
+    Object.keys(m).forEach(function (id) { latest = Math.max(latest, stamp(m[id])); });
+    return latest ? latest + 1 : (now || Date.now());
+  }
+
   /* "กิจกรรม 5" for a5; otherwise the heading text the worksheet sent, since the id has lost its vowels */
   function actLabel(id, names) {
     var m = /^a(\d+)$/.exec(id);
@@ -233,6 +288,6 @@
   return {
     TEAM_MAX: TEAM_MAX, STALE_MS: STALE_MS,
     applyEvent: applyEvent, objectify: objectify, pageOrder: pageOrder, teamView: teamView, activityOrder: activityOrder,
-    standing: standing, board: board, deviceList: deviceList, messageList: messageList, actLabel: actLabel, localDay: localDay
+    standing: standing, board: board, deviceList: deviceList, messageList: messageList, afterReset: afterReset, progressAfter: progressAfter, resetTime: resetTime, actLabel: actLabel, localDay: localDay
   };
 });

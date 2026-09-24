@@ -239,6 +239,41 @@ re-sends its full state on its next tick:
 The typical sign of a leftover: the cell shows a team further along than it is (devices merge
 by maximum), and the popover shows one faded device ahead of the live one.
 
+### Starting a screen over for a new group (ล้างทั้งหมด, 24 Sep 2026)
+
+For running the same workshop again with a new set of groups while the day's board still holds
+the previous groups. **ล้างทั้งหมด** (red, in the control row) asks once, then **this screen
+only** shows progress and messages that arrive after that moment. Nothing is deleted or
+written: the database, and every other TA's screen, keep everything.
+
+- The screen remembers a cutoff per day in its own browser (`farm-progress.reset.<day>`), so
+  it survives a reload. With "รวมวันก่อนหน้า" on, both days get one.
+- The cutoff is just after the newest document this screen has received (`resetTime`), not
+  the computer's clock, so a screen whose clock is wrong still hides exactly what it showed.
+- Hidden: device documents last written before the cutoff (`progressAfter`) and messages sent
+  before it (`afterReset`), everywhere on the screen: grid, bars, tiles, feed, "แสดงที่ซ่อนไว้",
+  each team's latest message, the device list in a team's popover.
+- "จอนี้ล้างเมื่อ 14:05 · **แสดงทั้งหมด**" appears next to the button; แสดงทั้งหมด drops the cutoff.
+- **ดาวน์โหลด JSON** after a reset exports the teams on screen, and the full raw data as before.
+- **ล้าง** in the messages panel does the same for messages alone (`farm-messages.reset.<day>`):
+  the feed, the help rings and the help count empty on this screen, progress stays, new messages
+  appear as they arrive, and **แสดงข้อความเดิม** under the heading brings the old ones back.
+  แสดงทั้งหมด (whole board) clears both cutoffs. Verified live the same day with two screens.
+
+As everywhere on the board, a browser that still has the old group's worksheet open re-sends
+its whole state on its next tick, and so reappears. Before the new group starts, close the old
+worksheets or press **ล้างคำตอบทั้งหมด** in each. The confirm dialog says so.
+
+A first version (same day) deleted everyone's progress from the database and marked all
+messages handled, affecting every screen; Roger wanted the reset limited to the screen that
+presses it. What it found is kept: a multi-path `PATCH` reaches stream clients as one `patch`
+event whose keys are paths (`"17/dev1": null`), and `applyEvent` now applies each such key at
+its own path.
+
+Verified 24 Sep 2026 against the live database on the test day 2026-01-01 with two screens in
+separate browser profiles: screen A empty after the reset, screen B and the database unchanged,
+a device writing afterwards appeared on A, the reset survived a reload, แสดงทั้งหมด restored all.
+
 ### Several TAs at once
 
 Any number of TAs may open the same URL, each on their own device. A help call rings on

@@ -1,6 +1,6 @@
 # Progress dashboard — design notes
 
-A live board for the instructor showing where each of the 100 teams stands in the worksheet,
+A live board for the instructor showing where each of the 120 teams stands in the worksheet,
 so the session can be paced on evidence rather than a show of hands. Decided 13 Sep 2026.
 Companion to [FILLABLE-WORKSHEET.md](FILLABLE-WORKSHEET.md), which owns the worksheet itself.
 
@@ -13,7 +13,7 @@ Companion to [FILLABLE-WORKSHEET.md](FILLABLE-WORKSHEET.md), which owns the work
 | What is sent? | **Counts only**: per activity, task boxes ticked / total and answer boxes filled / total, plus the last tick and its label | Pacing needs position, not content. Answers stay in the browser and still travel by the JSON download. |
 | How is a write namespaced? | By calendar day: `progress/<YYYY-MM-DD>/<team>/<device>` | A rehearsal, the two workshop days, and someone reading the worksheet at home next month never land on the same board. No join code, no button. |
 | How does a team "connect"? | Typing a valid team number is the whole act | Every extra tap is something 100 teams forget. The status line under the title shows a green dot once the board has heard from this browser. |
-| Team identity | Integer 1–100 (`TEAM_MAX` in extra.js), Thai or ASCII digits, canonicalised in the browser; the database rules refuse anything else | Typos would otherwise make phantom cells. |
+| Team identity | Integer 1–120 (`TEAM_MAX` in extra.js), Thai or ASCII digits, canonicalised in the browser; the database rules refuse anything else | Typos would otherwise make phantom cells. |
 | Two devices per team? | Each browser has a random device id; the dashboard merges devices by taking the maximum per activity | The Recorder's phone and the Driver's laptop both report; neither overwrites the other. |
 | Where is the dashboard's memory? | In the database, mirrored to the dashboard's `localStorage`, and downloadable as JSON | A dashboard opened late starts complete; one opened offline shows what it last saw. |
 | Access | Reads public per day, writes only at the device leaf with a self-consistent document | Team numbers and counts are not sensitive. Nobody can wipe a day; anyone with the URL can post as any team, which is accepted for a pacing signal. |
@@ -148,7 +148,7 @@ every screen. (The feed used to keep it for three minutes, struck through; the f
 `&plus=1` also streams the previous day and merges it, for the second workshop day.
 **จำนวนกลุ่ม** sets how many cells the grid shows (1–400; remembered in the browser and in the
 URL as `&max=`); teams above it are counted and listed rather than drawn. It only changes the display: the worksheet's own limit is `TEAM_MAX` in
-extra.js (100 for this workshop — change it per event), and the database rules accept 1–400 so
+extra.js (120 for this workshop — change it per event; keep `TEAM_MAX` in progress.js, the grid's default, equal to it), and the database rules accept 1–400 so
 that constant can move without another rules paste. Numbers above the dashboard's setting are
 listed under "หมายเลขกลุ่มที่ไม่อยู่ในช่วง".
 

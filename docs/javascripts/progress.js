@@ -19,11 +19,11 @@
 })(typeof self !== "undefined" ? self : this, function () {
   "use strict";
 
-  var TEAM_MAX = 100;
+  var TEAM_MAX = 120;
   var STALE_MS = 10 * 60 * 1000;
 
   /* Firebase serialises a node whose keys are mostly small integers as an array, with null
-     for the gaps -- exactly what a day of teams 1..100 looks like. Back to an object, no gaps. */
+     for the gaps -- exactly what a day of teams 1..120 looks like. Back to an object, no gaps. */
   function objectify(data) {
     if (!Array.isArray(data)) return data;
     var out = {};

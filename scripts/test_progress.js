@@ -97,8 +97,10 @@ eq("teams per box", b.steps.a1.map(s => s.l + "=" + s.n), ["1.1 ต่อสา�
 
 // 4d2. the dashboard's team count decides the grid; numbers above it are listed, not dropped
 let big = P.applyEvent(null, "put", "/", { "110": { d: { team: "110", dev: "d", ts: 1, srv: 1, pages: { "session-1": s1(A(1, 3, 0, 2), A(0, 5, 0, 3)) } } } });
-eq("team 110 is unknown on a 100-team board", P.board(big, "session-1", 2).unknown.map(v => v.team), ["110"]);
-eq("team 110 is a cell on a 120-team board", [Object.keys(P.board(big, "session-1", 2, 120).cells), P.board(big, "session-1", 2, 120).unknown.length], [["110"], 0]);
+eq("team 110 is unknown on a 100-team board", P.board(big, "session-1", 2, 100).unknown.map(v => v.team), ["110"]);
+eq("team 110 is a cell on the default board", [Object.keys(P.board(big, "session-1", 2).cells), P.board(big, "session-1", 2).unknown.length], [["110"], 0]);
+let over = P.applyEvent(null, "put", "/", { "121": { d: { team: "121", dev: "d", ts: 1, srv: 1, pages: { "session-1": s1(A(1, 3, 0, 2), A(0, 5, 0, 3)) } } } });
+eq("team 121 is unknown on the default board", P.board(over, "session-1", 2).unknown.map(v => v.team), ["121"]);
 
 // 4d3. one team's devices, newest first, each placed on the page, silent ones marked
 const devs = P.deviceList("17", {

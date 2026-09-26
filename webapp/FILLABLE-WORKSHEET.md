@@ -140,7 +140,7 @@ the workshop is the paper fallback.
 - One team per browser profile. A second team on the same laptop must **ล้างคำตอบทั้งหมด** first
   (the button asks for confirmation and suggests downloading first).
 - No history or undo beyond the browser's own field undo. The export file is the backup.
-- Team number is validated in the browser only: an integer 1–100 (`TEAM_MAX` in extra.js), typed
+- Team number is validated in the browser only: an integer 1–120 (`TEAM_MAX` in extra.js), typed
   in Thai or ASCII digits, stored as plain digits without leading zeros. A box holding anything
   else gets a red underline and the toolbar says why; export and the progress tracker refuse it.
   The toolbar carries a `team.no` box so the number can be typed on any page.

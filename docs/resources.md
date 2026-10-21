@@ -12,9 +12,9 @@
 
 | แล็ปท็อป | VirtualBox | ไฟล์ Farm Workshop |
 |---------|-----------|------------------------------|
-| Windows | [Windows hosts](https://www.virtualbox.org/wiki/Downloads) | [Farm-Workshop-win-1.2.ova](https://drive.google.com/file/d/1DrX4O-jywvnCA0b4aqdQ3z9r7F2EkEf8/view?usp=sharing) (~2.6 GB) |
-| Mac ชิป Intel | [macOS / Intel hosts](https://www.virtualbox.org/wiki/Downloads) | [Farm-Workshop-win-1.2.ova](https://drive.google.com/file/d/1DrX4O-jywvnCA0b4aqdQ3z9r7F2EkEf8/view?usp=sharing) (~2.6 GB) |
-| Mac ชิป Apple (M1 ขึ้นไป) | [macOS / Apple Silicon hosts](https://www.virtualbox.org/wiki/Downloads) — ต้อง **รุ่น 7.2 ขึ้นไป** | [Farm-Workshop-arm64-1.2.ova](https://drive.google.com/drive/folders/1XiTigV52XVenZ8DhMZ6351dHOZvRHgMD) (~1.9 GB) — ลิงก์เปิดเป็นโฟลเดอร์ ให้ดาวน์โหลดไฟล์ `.ova` ที่อยู่ข้างใน |
+| Windows | [Windows hosts](https://www.virtualbox.org/wiki/Downloads) | [Farm-Workshop-win-1.3.ova](https://github.com/arnans/iot-training/releases/download/vm-1.3/Farm-Workshop-win-1.3.ova) (~2.1 GB) |
+| Mac ชิป Intel | [macOS / Intel hosts](https://www.virtualbox.org/wiki/Downloads) | [Farm-Workshop-win-1.3.ova](https://github.com/arnans/iot-training/releases/download/vm-1.3/Farm-Workshop-win-1.3.ova) (~2.1 GB) |
+| Mac ชิป Apple (M1 ขึ้นไป) | [macOS / Apple Silicon hosts](https://www.virtualbox.org/wiki/Downloads) — ต้อง **รุ่น 7.2 ขึ้นไป** | [Farm-Workshop-arm64-1.3.ova](https://github.com/arnans/iot-training/releases/download/vm-1.3/Farm-Workshop-arm64-1.3.ova) (~2.1 GB) |
 
 > ไฟล์ `.ova` มีขนาดใหญ่ **ดาวน์โหลดที่บ้านหรือที่ทำงานล่วงหน้า** ดาวน์โหลดที่สถานที่อบรมไม่ทัน · ต้องมี RAM 8 GB และพื้นที่ว่าง 20 GB ขึ้นไป · Chromebook, iPad และ Windows ชิป ARM ใช้ไม่ได้ · **Mac ชิป Apple ใช้ไฟล์ของ Windows ไม่ได้** ต้องใช้ไฟล์ `arm64` และ VirtualBox รุ่น 7.2 ขึ้นไป
 

@@ -2,7 +2,7 @@
 
 ในการอบรม Home Assistant จะทำงานบนแล็ปท็อปของเรา ผ่านเครื่องเสมือนชื่อ **Farm Workshop** ที่ทีมผู้สอนตั้งค่าไว้ให้แล้ว เราแค่ติดตั้ง VirtualBox นำเข้าไฟล์ แล้วกด Start
 
-> **ทำให้เสร็จที่บ้านก่อนมาอบรม** ใช้เวลาราว 20 นาที ไม่รวมเวลาดาวน์โหลด ไฟล์มีขนาดประมาณ 2.6 GB **ห้ามรอมาดาวน์โหลดที่สถานที่อบรม** เพราะทุกกลุ่มดาวน์โหลดพร้อมกันไม่ทันแน่นอน
+> **ทำให้เสร็จที่บ้านก่อนมาอบรม** ใช้เวลาราว 20 นาที ไม่รวมเวลาดาวน์โหลด ไฟล์มีขนาดประมาณ 2.1 GB **ห้ามรอมาดาวน์โหลดที่สถานที่อบรม** เพราะทุกกลุ่มดาวน์โหลดพร้อมกันไม่ทันแน่นอน
 
 ---
 
@@ -12,9 +12,9 @@
 
 | แล็ปท็อป | VirtualBox | ไฟล์ Farm Workshop |
 |---------|-----------|------------------------------|
-| Windows | [Windows hosts](https://www.virtualbox.org/wiki/Downloads) | [Farm-Workshop-win-1.2.ova](https://drive.google.com/file/d/1DrX4O-jywvnCA0b4aqdQ3z9r7F2EkEf8/view?usp=sharing) (~2.6 GB) |
-| Mac ชิป Intel | [macOS / Intel hosts](https://www.virtualbox.org/wiki/Downloads) | [Farm-Workshop-win-1.2.ova](https://drive.google.com/file/d/1DrX4O-jywvnCA0b4aqdQ3z9r7F2EkEf8/view?usp=sharing) (~2.6 GB) |
-| Mac ชิป Apple (M1 ขึ้นไป) | [macOS / Apple Silicon hosts](https://www.virtualbox.org/wiki/Downloads) — ต้อง **รุ่น 7.2 ขึ้นไป** | [Farm-Workshop-arm64-1.2.ova](https://drive.google.com/drive/folders/1XiTigV52XVenZ8DhMZ6351dHOZvRHgMD) (~1.9 GB) — ลิงก์เปิดเป็นโฟลเดอร์ ให้ดาวน์โหลดไฟล์ `.ova` ที่อยู่ข้างใน |
+| Windows | [Windows hosts](https://www.virtualbox.org/wiki/Downloads) | [Farm-Workshop-win-1.3.ova](https://github.com/arnans/iot-training/releases/download/vm-1.3/Farm-Workshop-win-1.3.ova) (~2.1 GB) |
+| Mac ชิป Intel | [macOS / Intel hosts](https://www.virtualbox.org/wiki/Downloads) | [Farm-Workshop-win-1.3.ova](https://github.com/arnans/iot-training/releases/download/vm-1.3/Farm-Workshop-win-1.3.ova) (~2.1 GB) |
+| Mac ชิป Apple (M1 ขึ้นไป) | [macOS / Apple Silicon hosts](https://www.virtualbox.org/wiki/Downloads) — ต้อง **รุ่น 7.2 ขึ้นไป** | [Farm-Workshop-arm64-1.3.ova](https://github.com/arnans/iot-training/releases/download/vm-1.3/Farm-Workshop-arm64-1.3.ova) (~2.1 GB) |
 
 ติดตั้ง VirtualBox ตามค่าที่ตั้งไว้ กด Next หรือ Yes จนจบ
 
@@ -48,7 +48,10 @@
 
 ## 4. ปิดเครื่องและเตรียมมาอบรม
 
-กดปิดหน้าต่างของเครื่องเสมือน → **Send the shutdown signal** → OK **อย่าเลือก Power off** (ข้อมูลอาจเสีย) และไม่ต้อง Save state
+- **Windows และ Mac ชิป Intel** กดปิดหน้าต่างของเครื่องเสมือน → **Send the shutdown signal** → OK
+- **Mac ชิป Apple** ใช้ Send the shutdown signal ไม่ได้ (กดแล้วเครื่องไม่ปิด) ให้คลิกในหน้าต่างดำ พิมพ์ `host shutdown` ต่อจาก `ha >` แล้วกด Enter รอราว 15 วินาทีจนเครื่องปิดเอง
+
+ทั้งสองแบบ **อย่าเลือก Power off** (ข้อมูลอาจเสีย) และไม่ต้อง Save state
 
 **วันอบรม** นำแล็ปท็อป สายชาร์จ และโทรศัพท์มา อย่าลบเครื่อง Farm Workshop ออกจาก VirtualBox
 
@@ -59,7 +62,7 @@
 | อาการ | วิธีแก้ |
 |-------|---------|
 | ขึ้นข้อความเรื่อง **VT-x**, **AMD-V** หรือ **virtualization** (Windows และ Mac ชิป Intel) | ต้องเปิด virtualization ใน BIOS ของเครื่อง ค้นหา "ยี่ห้อเครื่อง enable virtualization" หรือแจ้งผู้สอน |
-| **นำเข้าไฟล์ไม่ได้** หรือขึ้นว่าไฟล์ไม่รองรับ | ใช้ไฟล์ผิดชนิด Mac ชิป Apple ใช้ `Farm-Workshop-arm64-1.2.ova` เท่านั้น · Windows และ Mac ชิป Intel ใช้ `Farm-Workshop-win-1.2.ova` เท่านั้น สองไฟล์นี้ใช้สลับกันไม่ได้ |
+| **นำเข้าไฟล์ไม่ได้** หรือขึ้นว่าไฟล์ไม่รองรับ | ใช้ไฟล์ผิดชนิด Mac ชิป Apple ใช้ `Farm-Workshop-arm64-1.3.ova` เท่านั้น · Windows และ Mac ชิป Intel ใช้ `Farm-Workshop-win-1.3.ova` เท่านั้น สองไฟล์นี้ใช้สลับกันไม่ได้ |
 | Mac ชิป Apple นำเข้าไฟล์ `arm64` ไม่ได้ | ดูรุ่น VirtualBox ที่เมนู **VirtualBox → About VirtualBox** ถ้าต่ำกว่า 7.2 ให้ดาวน์โหลดรุ่นใหม่แล้วติดตั้งทับ |
 | ติดตั้ง VirtualBox แล้วขึ้นว่าต้องมี **Visual C++ Redistributable** | ติดตั้ง [vc_redist.x64.exe](https://aka.ms/vs/17/release/vc_redist.x64.exe) แล้วติดตั้ง VirtualBox ใหม่ |
 | Mac ขึ้นว่า **System Extension Blocked** | System Settings → Privacy & Security → **Allow** → รีสตาร์ต |

@@ -67,6 +67,78 @@ participant even opens VirtualBox. See
 17. **Test-import** on a second machine of the same architecture before trusting it.
 18. **Write the team card**: VM user/password, zone colour, laptop SSID and password.
 
+### The 1.3 images (21 Oct 2026): PR #6 applied to both architectures
+
+| File | Bytes | SHA-256 |
+|---|---|---|
+| `Farm-Workshop-win-1.3.ova` | 2,086,696,960 (~1.9 GiB) | `faeb6edfe0372115026d23c05bd60d6b21b4b1a48c65f1e5548d760f05521e32` |
+| `Farm-Workshop-arm64-1.3.ova` | 2,069,125,120 (~1.9 GB) | `3d10b1942de12311c9e8d8e9d6ab93ad20515d9e59fe506c112b70d943d46225` |
+
+Both were made from the 1.2 images, not from scratch. Each 1.2 disk was booted under QEMU on a
+Windows x86-64 host: WHPX for x86-64, TCG emulation for ARM64. The NIC sat at PCI slot 3 or 8,
+so the guest kept the `enp0s3`/`enp0s8` names. The changes went in through the root console.
+The disk was then trimmed and converted back with
+`VBoxManage clonemedium --format VMDK --variant Stream`, and packed with the 1.2 OVF and NVRAM
+left as they were (only the OVF file name changed). The NIC type, MAC handling and Bridged
+Adapter 1 are therefore exactly as in 1.2.
+
+Applied to both images:
+
+- `configuration.yaml` is this directory's copy from the mDNS-off change (`zeroconf:` removed),
+  SHA-256 `4a820d20…cb4f4`, byte-equal to `git show HEAD:hass/configuration.yaml`. That is LF,
+  so hash the git blob, not a Windows CRLF checkout.
+- **Settings → System → Network**: IPv6 `disabled` on the one interface. Supervisor stores this
+  as NetworkManager `ipv6.method=link-local`, so an `fe80::` address remains and nothing else.
+  HA's adapter selection is pinned to the one NIC: `.storage/core.network` has
+  `configured_adapters` set to `["enp0s3"]` on x86-64 and `["enp0s8"]` on ARM64.
+- Supervisor 2026.09.2 → **2026.10.2**. Core updates are refused while Supervisor is behind, and
+  2026.09.2 already showed as `unsupported: supervisor_version`. `auto_update` stays `false`.
+- The workshop user's browser login tokens, the recorder database and the archived host journal
+  were deleted, so the images ship no build-time sessions or history.
+
+The x86-64 1.2 image was a leftover bench build, so it also needed bringing level with ARM64.
+Core 2026.9.1 → **2026.9.3**. These were removed:
+
+- the `thread` entry, discovered on the builder's home LAN. `thread` *depends on* `zeroconf`, so
+  with it in place zeroconf still started ("Starting Zeroconf broadcast") even after the YAML
+  change.
+- `met`, and the ignored discoveries: Hue, Cast, three Android TVs, a Canon printer, and ESPHome
+  `gogo-relay-red-b97c54`.
+- the sample automation, the Terminal & SSH add-on, `configuration.yaml.bak`, `.cache`, and
+  143 MB of journal that held home-LAN device names and IPs.
+- the old OS in the inactive boot slot. The bench image had been updated from HAOS 18.2, so it
+  boots from slot B (18.3) and slot A still held 18.2: 226 MiB of incompressible squashfs. Slot
+  A is marked bad (`rauc status mark-bad other`) and its partitions discarded. That leaves the
+  x86-64 image in the same state as a fresh install, and as ARM64, whose slot B was never written.
+  Without this the OVA was 2,331,156,480 bytes, over GitHub's 2 GiB per-asset limit.
+
+These were added: Radio Browser (the ARM64 image already had it from onboarding), File editor
+*shown in sidebar*, and display name and person `Farmer`. The x86-64 areas keep their
+onboarding ids (`kitchen` = Flower Farm etc.). No worksheet uses area or person ids.
+
+Checked, on both unless stated:
+
+| Check | Result |
+|---|---|
+| Login | the workshop user, real `/auth/login_flow` round trip |
+| `get_config` | Core 2026.9.3, `Farm Workshop`, `Asia/Bangkok`, `TH`, `en`; `zeroconf` and `thread` **not** in `components` |
+| Config entries | identical domain set: hassio, sun, analytics, backup, shopping_list, radio_browser, google_translate |
+| `ha core check` | passes |
+| Repairs | none in HA. Supervisor lists only `no_current_backup`, which the 1.2 images had too |
+| mDNS on the wire | 0 packets to or from UDP 5353 leaving the NIC in 120–180 s after startup (AF_PACKET count inside the VM) |
+| x86-64 OVA | imported into VirtualBox 7.2.22 on Windows. Boots in ~40 s, banner shows `enp0s3` with only an `fe80::` IPv6 address, `ha os info` shows slot B 18.3 booted and slot A `bad`, login works, `zeroconf` not loaded |
+| ARM64 OVA | `VBoxManage import -n` parses it (OS type `Oracle_arm64`, VirtioSCSI). It was **not** booted in VirtualBox, because there is no Apple Silicon host here. Test-import on an M-series Mac before sending it out |
+
+HA core still opens a socket on UDP 5353. `helpers/aiohttp_client.py` creates a zeroconf
+instance so it can resolve `.local` names, even when the zeroconf integration is absent. It does
+not browse or announce, and the packet count above is 0.
+
+**Hosting:** both files and `SHA256.txt` are assets of the GitHub **pre-release**
+[`vm-1.3`](https://github.com/arnans/iot-training/releases/tag/vm-1.3). Each asset must be under
+2 GiB, and release downloads have no bandwidth quota. While the repository is private, the
+download links work only for a signed-in GitHub account with access to it. **Participants need the
+repository public** (only an admin can change that) before the guide's links work for them.
+
 ### The built ARM64 image (21 Sep 2026)
 
 `Farm-Workshop-arm64-1.2.ova` — 1,981,466,112 bytes (~1.9 GB), SHA-256
@@ -97,13 +169,14 @@ Two things the "deliberately absent" list below does not actually achieve on HAO
 - **Sidebar still shows Map, Media and To-do lists.** Those panels come from the frontend, not
   from the integrations the config omits. Nothing behind them is loaded.
 
-**Download:** [Google Drive folder](https://drive.google.com/drive/folders/1XiTigV52XVenZ8DhMZ6351dHOZvRHgMD) (added 21 Sep 2026; the `.ova` is inside the folder).
-The link appears in **three** files; if it ever changes, update all three and re-render:
+**Download:** 1.2 was distributed from a Google Drive folder. The current images are on the
+GitHub release `vm-1.3`, described above. The download links appear in **three** files; if they
+ever change, update all three and re-render:
 
 ```sh
-# 1. docs/install.md            - the Apple Silicon row
-# 2. docs/resources.md          - the same row in the file-and-link table
-# 3. planning/INSTRUCTOR-RESOURCES.md - the VM table row
+# 1. docs/install.md            - the three laptop rows, plus the "wrong file" troubleshooting row
+# 2. docs/resources.md          - the same rows in the file-and-link table
+# 3. planning/INSTRUCTOR-RESOURCES.md - the VM table rows
 python scripts/render-worksheets.py && python scripts/render-network-doc.py
 ```
 
@@ -210,8 +283,8 @@ The participant guide is [docs/install.md](../docs/install.md). It is written ag
 facts; change one here and the guide (and session 1's ก่อนเริ่ม) must change with it:
 
 - **VM name `Farm Workshop`** — the guide and session 1 tell participants to press Start on it.
-- **File names** as actually distributed: `Farm-Workshop-win-1.2.ova` (Windows + Intel Mac —
-  the `win` in the name is historical, Intel Macs use it too) and `Farm-Workshop-arm64-1.2.ova`
+- **File names** as actually distributed: `Farm-Workshop-win-1.3.ova` (Windows + Intel Mac —
+  the `win` in the name is historical, Intel Macs use it too) and `Farm-Workshop-arm64-1.3.ova`
   (Apple Silicon). Both guide tables (`docs/install.md`, `docs/resources.md`) and the instructor
   handbook name and link them; the workshop user/password is the only placeholder left.
 - **Adapter 1 is Bridged.** The host NIC name inside the OVA is the build machine's, so
@@ -238,13 +311,14 @@ facts; change one here and the guide (and session 1's ก่อนเริ่�
 - **`zeroconf`** — removed once the boards dropped mDNS (`mdns: disabled: true`, added in HA by
   IP; see `firmware/README.md`). It browsed every service type in HA's generated discovery list
   and announced `_home-assistant._tcp`, ×100 instances, and each ESPHome browse made every board
-  in the zone answer. ESPHome lists it only as an after_dependency, so it should no longer load —
-  **verify on one VM** (Integration startup list; `tcpdump -i any udp port 5353`) before baking the
-  image, and again after an HA upgrade.
+  in the zone answer. ESPHome lists it only as an after_dependency, so it no longer loads.
+  Verified on the 1.3 images: it is absent from `get_config` `components`. A config entry whose
+  integration *depends* on zeroconf still pulls it in, though (`thread`, `homekit_controller`,
+  `apple_tv`, …), so check again after an HA upgrade or after accepting a discovered integration.
 
 What it does **not** remove: HA OS itself still answers for `homeassistant.local` (systemd-resolved
-and the multicast plugin), outside `configuration.yaml`. Small, but not zero. In the image, also set
-**Settings → System → Network** to the one adapter and IPv6 off, so nothing goes out twice.
+and the multicast plugin), outside `configuration.yaml`. Small, but not zero. The 1.3 images also
+have **Settings → System → Network** set to the one adapter with IPv6 off, so nothing goes out twice.
 
 ## The instructor recorder problem
 

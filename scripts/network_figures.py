@@ -265,6 +265,7 @@ SETUP_LABELS = {
         "in24b": "~67 ตัว",
         "in5a": "แล็ปท็อป HA",
         "in5b": "โทรศัพท์ 1 เครื่อง",
+        "sees": "ติดต่อกันได้ · ด้วย IP",
     },
     "en": {
         "caption": "Three routers we bring, one per zone, each on its own subnet · "
@@ -279,6 +280,7 @@ SETUP_LABELS = {
         "in24b": "~67",
         "in5a": "HA laptop",
         "in5b": "1 phone per team",
+        "sees": "see each other · by IP",
     },
 }
 
@@ -349,7 +351,7 @@ def setup_svg(lang: str) -> str:
         out.append(f'  <path d="M{cx - 66},{iy + 48} Q{cx},{iy + 82} {cx + 66},{iy + 48}" '
                    f'fill="none" stroke="{GOOD}" stroke-width="1.8" '
                    'marker-start="url(#arrow-good)" marker-end="url(#arrow-good)"/>')
-        out.append(_t(cx, iy + 100, Z["sees"], 11, GOOD, "600"))
+        out.append(_t(cx, iy + 100, L["sees"], 11, GOOD, "600"))
 
         for j, (band, ssid) in enumerate(((Z["band24"], ssid24), (Z["band5"], ssid5))):
             y = top + 265 + j * 22

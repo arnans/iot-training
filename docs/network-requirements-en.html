@@ -293,7 +293,7 @@ figcaption {
   <header class="doc-head">
     <p class="kicker">Vendor specification (deprecated)</p>
     <h1>Workshop Network Requirements</h1>
-    <p class="meta">IoT in Smart Farming workshop · Last updated 2026-09-22</p>
+    <p class="meta">IoT in Smart Farming workshop · Last updated 2026-10-21</p>
     <p class="disclosure">This document was compiled with Claude AI. Its content was designed and reviewed by those responsible, who certify that it reflects the intent of the preparing team in every respect.</p>
   </header>
   <blockquote>
@@ -302,7 +302,9 @@ figcaption {
   bring and configure ourselves, one per zone, with NT providing 5 GHz internet WiFi and three
   wired ports. The current document is <strong><a href="network-setup.html">NETWORK-SETUP.md</a></strong>. This file is
   kept for reference only: the SSID names, password and zone colours are unchanged, everything
-  about VLANs, controllers and provider-side multicast settings no longer applies.</p>
+  about VLANs, controllers and provider-side multicast settings no longer applies.
+  Since 21 Oct 2026 the boards also run with mDNS off and are added to Home Assistant by IP, so
+  the mDNS requirements below no longer apply either.</p>
   </blockquote>
   <p>For the network provider. A hands-on IoT workshop needs one thing from the wireless network
   that default enterprise configurations do not give: <strong>devices must find and talk to each other

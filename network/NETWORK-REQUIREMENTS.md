@@ -8,6 +8,8 @@
 > wired ports. The current document is **[NETWORK-SETUP.md](NETWORK-SETUP.md)**. This file is
 > kept for reference only: the SSID names, password and zone colours are unchanged, everything
 > about VLANs, controllers and provider-side multicast settings no longer applies.
+> Since 21 Oct 2026 the boards also run with mDNS off and are added to Home Assistant by IP, so
+> the mDNS requirements below no longer apply either.
 
 For the network provider. A hands-on IoT workshop needs one thing from the wireless network
 that default enterprise configurations do not give: **devices must find and talk to each other

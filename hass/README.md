@@ -235,11 +235,16 @@ facts; change one here and the guide (and session 1's ก่อนเริ่�
 - **bluetooth, usb, cloud, stream, media, assist, energy, backup, my, alerts** — unused, and
   several attempt outbound internet at startup on a network that has none. Removed.
 
-What it does **not** remove: zeroconf's browse breadth. Home Assistant browses every service type
-in its generated discovery list so it can show "Discovered" cards, and that list does not shrink
-when integrations are left out. The ESPHome integration also depends on zeroconf, so it stays.
-The residual mDNS cost is therefore the **startup burst** when 100 instances come up and each
-queries, and 200 boards answer — see the zoning discussion in `network/NETWORK-SETUP.md`.
+- **`zeroconf`** — removed once the boards dropped mDNS (`mdns: disabled: true`, added in HA by
+  IP; see `firmware/README.md`). It browsed every service type in HA's generated discovery list
+  and announced `_home-assistant._tcp`, ×100 instances, and each ESPHome browse made every board
+  in the zone answer. ESPHome lists it only as an after_dependency, so it should no longer load —
+  **verify on one VM** (Integration startup list; `tcpdump -i any udp port 5353`) before baking the
+  image, and again after an HA upgrade.
+
+What it does **not** remove: HA OS itself still answers for `homeassistant.local` (systemd-resolved
+and the multicast plugin), outside `configuration.yaml`. Small, but not zero. In the image, also set
+**Settings → System → Network** to the one adapter and IPv6 off, so nothing goes out twice.
 
 ## The instructor recorder problem
 

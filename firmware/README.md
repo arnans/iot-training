@@ -52,7 +52,7 @@ For a single bench board without the script:
 ```bash
 esphome -s zone red -s wifi_ssid farm-iot-red -s wifi_password <pw> run gogo-iot-workshop.yaml
 # over the air, no cable, once the board is on WiFi:
-esphome -s zone red -s wifi_ssid farm-iot-red -s wifi_password <pw> run gogo-iot-workshop.yaml --device gogo-iot-red-6749a4.local
+esphome -s zone red -s wifi_ssid farm-iot-red -s wifi_password <pw> run gogo-iot-workshop.yaml --device 192.168.10.57   # the board's IP; mDNS is off, so no .local
 ```
 
 A plain `esphome compile` without the `-s` values builds with the placeholder credentials from the
@@ -92,33 +92,34 @@ reveals it at the name-reading step.
 3. Press **Reset device** *in the browser window*. **Not the button on the board** — these chips
    use native USB, so a hardware reset kills the browser's serial session and the boot output is
    lost. An already-running board otherwise shows a blank log and looks broken.
-4. Read the device name from the banner — `gogo-iot-red-6749a4`. **Write down the last six
-   characters** (`6749a4`); that is what the next step matches against. The board's IP prints a
-   couple of seconds later, when WiFi connects.
-5. In Home Assistant: **Settings → Devices & services**. The board is already there as a
-   discovered card — **find the one carrying your six characters** and add it. No encryption key,
-   nothing to type. Same path for both boards.
-6. Rename the device to the team's name.
+4. Read the device name from the banner — `gogo-iot-red-6749a4` — and check the zone colour. A
+   couple of seconds later, when WiFi connects, `=====  IP ADDRESS: 192.168.10.57  =====` prints.
+   **Write down both.**
+5. In Home Assistant: **Settings → Devices & services → + Add integration** → type **ESPHome**
+   (not "ESP-NOW" — different Espressif protocol) → **Setup another instance of ESPHome** (or
+   **Add device** first, depending on the HA version) → type the **IP**, port 6053. No encryption
+   key. Same path for every board.
+6. Check the device name HA shows matches the one written down, then rename the device to the
+   team's name.
 
-**Decided: pick the discovered card, with manual entry as the fallback.** Boards appear on the
-Devices & services page on their own, before any ESPHome integration exists, so there is nothing
-to set up first and no difference between adding the first board and the second.
+**Decided: add by IP, typed by hand. mDNS is disabled on every image** (`mdns: disabled: true`).
+With it on, each of ~100 Home Assistant instances browsing for `_esphomelib._tcp` made every board
+in the zone answer by multicast, and multicast goes out at the lowest basic rate — the query ×
+answer storm was enough to take the room's WiFi down. Turning it off removes the board side of
+that entirely. What it costs:
 
-The fallback, for a board that does not appear, is four levels deep — worth writing out because a
-participant will not find it by guessing:
-
-1. **+ Add integration** → type **ESPHome** (not "ESP-NOW" — different Espressif protocol).
-2. ESPHome's page opens, listing discovered devices again. Still missing? **Add device**.
-3. The popup lists discovered devices once more — or choose **"Setup another instance of ESPHome"**.
-4. Type the node name **without `.local`** — `gogo-iot-red-6749a4`. Bench-verified; the bare name
-   resolves, and it is one less thing to type. Port 6053.
-
-The risk this trades into, and the mitigation: clicking the *wrong* card fails **silently** — a
-team adopting a neighbour's board sees entities appear and graphs populate, and nothing looks
-wrong. Typing the name was self-verifying; picking is not. So the six-character suffix is what
-makes the pick safe, and the zone colour in the name (`gogo-iot-**red**-…`) is a second free
-check: a red-zone team seeing `green` in the name knows immediately. Both belong in the worksheet
-wording, not just here.
+- **No "Discovered" cards and no `<name>.local`.** The IP from the boot banner is the only way in —
+  for HA, for the board's web page, and for OTA (`esphome run --device <ip>`).
+- **HA cannot follow an address change.** Normally HA re-finds a moved board over mDNS; now it just
+  shows it unavailable. **Set the zone AP's DHCP lease longer than the whole workshop** (e.g. 7
+  days) so a board that reboots or reconnects gets its old address back. No per-MAC reservations
+  needed. If an address does move: read the new IP at web.esphome.io and re-add the device (that
+  discards the team's rename).
+- **Typing is self-verifying again.** Picking a card from a list of neighbours could adopt the
+  wrong board silently; a typed IP is the team's own. And if an IP later lands on a different
+  board, HA refuses to connect (the device name no longer matches) instead of quietly controlling
+  someone else's relay. The name check in step 6 is still worth the five seconds — a typo in the
+  last octet lands on a neighbour's board.
 
 ## Settings that are load-bearing
 
@@ -156,8 +157,10 @@ Do not change these without reading the reasoning:
   explicit interval gives a symmetric 0.8 s blink on WiFi loss and steady lit on WiFi. The API is
   deliberately not part of it: the board is meant to run overnight with no Home Assistant, and
   `status_led:` would have blinked all night. See planning/TEST-PLAN.md test H.
-- **`power_save_mode: none`** on the sensor node and the receiver — first for mDNS, now also for
-  ESP-NOW: a radio dozing between beacons misses broadcast frames on both ends.
+- **`mdns: disabled: true`** on every image — see "What participants do". Turning it back on
+  restores the multicast storm; do not, unless the room is down to a handful of boards.
+- **`power_save_mode: none`** on the sensor node and the receiver — for ESP-NOW: a radio dozing
+  between beacons misses broadcast frames on both ends.
 - **`gogo-iot-espnow-workshop.yaml` includes the base file; it never copies it.** Anything the
   sensor node needs goes in `gogo-iot-workshop.yaml` and reaches both images; only the ESP-NOW
   block lives in the variant. Its `device_base_name` must stay `gogo-iot` (same hostname).

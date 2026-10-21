@@ -293,7 +293,7 @@ figcaption {
   <header class="doc-head">
     <p class="kicker">Instructor & TA handbook</p>
     <h1>Instructor & TA resources</h1>
-    <p class="meta">IoT in Smart Farming workshop · Last updated 2026-09-22</p>
+    <p class="meta">IoT in Smart Farming workshop · Last updated 2026-10-21</p>
     <p class="disclosure">This document was compiled with Claude AI. Its content was designed and reviewed by those responsible, who certify that it reflects the intent of the preparing team in every respect.</p>
   </header>
   <p>Every file and link needed to prepare for and run the workshop, in one place.
@@ -619,13 +619,14 @@ figcaption {
   goes straight from threshold to rule sentences to the two automations.</p>
   <h4>3.1 Add both boards</h4>
   <p><strong>Done when</strong> the representative's laptop is logged in with the credentials you project now, and both
-  boards are added from the discovered cards with the last six characters matching the names written
-  down. Renaming the devices is optional.</p>
+  boards are added by IP (<em>+ Add integration → ESPHome → Setup another instance of ESPHome</em>, port
+  6053), with the name HA shows matching the names written down. Renaming the devices is optional.</p>
   <p><strong>If stuck</strong> The Login page no longer loads: the VM's IP changed, so read it again from the VM
-  window. Every team in the zone sees every card. <strong>Adding a neighbour's card looks like success</strong>, but
-  the team then watches the neighbour's sensors and its automation drives the neighbour's lamp. Check
-  the six characters before adding. No card at all: <em>+ Add integration → ESPHome → Add device → Setup
-  another instance of ESPHome</em>, then type the board name without <code>.local</code>.</p>
+  window. Boards have mDNS disabled (it flooded the room's WiFi), so <strong>there are no discovered cards
+  and <code>.local</code> names do not resolve</strong> — the IP is the only way. <strong>A mistyped IP that lands on a
+  neighbour's board looks like success</strong>, but the team then watches the neighbour's sensors and its
+  automation drives the neighbour's lamp. Check the name HA shows before adding. Cannot connect: the
+  board's IP moved, so read it again at web.esphome.io (Reset device, <code>IP ADDRESS</code> line).</p>
   <h4>3.2 Test the boards in Home Assistant</h4>
   <p><strong>Done when</strong> the GoGo-IoT device page shows the same entities as the board's web page and the light
   value drops under a cupped hand, and the lamp toggles from the laptop and from a phone, with both
@@ -778,7 +779,7 @@ figcaption {
   (two triggers, one condition, two actions) stops the pump within about a second, with a notification,
   whether started from the button or the device page, and lifting the float mid-run stops it too.</p>
   <p><strong>If stuck</strong> The first trigger is <em>float → Dry</em> (state, not numeric). The second trigger must be <em>pump switch → On</em> with the condition <em>float → Dry</em>. The watering
-  rule's condition is <em>float → </em><em>Wet</em>**, not "not Dry": a cut wire reads Dry and an offline board reads
+  rule's condition is <em>float → <strong>Wet</strong></em>, not "not Dry": a cut wire reads Dry and an offline board reads
   unavailable, and neither is Wet.</p>
   <h4>5.2 Problem 2 — commanded but not running (Fail-safe 4)</h4>
   <p><strong>Done when</strong> with the pump lead unscrewed from NO, the relay clicks and the screen says On but the pump is
@@ -1120,7 +1121,7 @@ figcaption {
   and might add that a shared channel also carries the neighbour's traffic load.</p>
   <h3>Session 4 · Activity 11 — The far plot in Home Assistant (45 min)</h3>
   <h4>11.1 Adopt the receiver</h4>
-  <p><strong>Done when</strong> the receiver is added from its discovered card by suffix (same as Activity 3) and the
+  <p><strong>Done when</strong> the receiver is added by its IP with the name checked (same as Activity 3) and the
   team has found its three entity groups: the ESP-NOW sensors plus the link (Connected /
   Disconnected), the <code>sender name</code> text under Configuration, the link diagnostics.</p>
   <h4>11.2 Two paths, one sensor</h4>

@@ -2,7 +2,7 @@
 #
 # Same provisioning strategy as the sensor node: one source file built once per
 # zone by build-zones.py, zone colour in the hostname (gogo-relay-red-a1b2c3),
-# adopted in Home Assistant as <name>.local.
+# adopted in Home Assistant by the IP in its boot banner (mDNS is disabled).
 #
 # Pin assignments confirmed from the vendor datasheet — see ESP32-C6-RELAY-X1.md.
 #
@@ -56,6 +56,10 @@ api:
   # Assistant connected. At the 15min default it would reboot all night.
   reboot_timeout: 0s
 
+# WORKSHOP: mDNS off — see gogo-iot-workshop.yaml. Added in HA by IP.
+mdns:
+  disabled: true
+
 ota:
   - platform: esphome
     password: !secret ota_password
@@ -65,10 +69,8 @@ wifi:
   password: ${wifi_password}
   # WORKSHOP: ESPHome defaults ESP32 to power_save_mode: light, where the radio
   # sleeps between beacons and only wakes on DTIM to collect buffered broadcast
-  # and multicast. mDNS is multicast, so in a room with 200 boards and heavy
-  # broadcast that is exactly the traffic most likely to be missed — and missing
-  # it means `<name>.local` intermittently fails to resolve. These boards run on
-  # mains power via the charge controller, so there is nothing to save.
+  # and multicast, which also delays unicast to a dozing client. These boards run
+  # on mains power via the charge controller, so there is nothing to save.
   power_save_mode: none
   reboot_timeout: 0s
   ap:

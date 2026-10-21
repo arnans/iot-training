@@ -1591,7 +1591,7 @@ a.ws-brand:hover { opacity: 0.82; }
 <div class="ws-tasks">
 <p>คลิกหัวข้อเพื่อดูวิธีทำ ทำเสร็จแล้วทำเครื่องหมายและบันทึกผล กรอกที่นี่หรือในขั้นตอนด้านล่างก็ได้</p>
 <ul class="task-list">
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> <strong><a href="#a11-1">11.1 เพิ่มบอร์ดตัวรับเข้า Home Assistant</a></strong> หาการ์ดที่ชื่อลงท้ายด้วยรหัสของบอร์ดตัวรับ แล้วกดเพิ่ม</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> <strong><a href="#a11-1">11.1 เพิ่มบอร์ดตัวรับเข้า Home Assistant</a></strong> พิมพ์ IP ของบอร์ดตัวรับ ตรวจชื่อที่ขึ้น แล้วกดเพิ่ม</li>
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox"/><span class="task-list-indicator"></span></label> <strong><a href="#a11-2">11.2 เทียบค่าที่มาสองทาง</a></strong> ค่าเดียวกันจากบอร์ด GoGo-IoT โดยตรง และผ่านตัวรับ<ul>
 <li>ความชื้นอากาศ โดยตรง <input class="fld" type="text" data-k="s4.ha.hum.direct" data-size="4" size="4" inputmode="decimal" autocomplete="off" spellcheck="false"> % · ผ่าน ESP-NOW <input class="fld" type="text" data-k="s4.ha.hum.espnow" data-size="4" size="4" inputmode="decimal" autocomplete="off" spellcheck="false"> %</li>
 <li>ความสว่าง โดยตรง <input class="fld" type="text" data-k="s4.ha.light.direct" data-size="5" size="5" inputmode="decimal" autocomplete="off" spellcheck="false"> · ผ่าน ESP-NOW <input class="fld" type="text" data-k="s4.ha.light.espnow" data-size="5" size="5" inputmode="decimal" autocomplete="off" spellcheck="false"></li>
@@ -1606,7 +1606,7 @@ a.ws-brand:hover { opacity: 0.82; }
 <h3 id="a11-1"><span class="sub-num">11.1</span>เพิ่มบอร์ดตัวรับเข้า Home Assistant</h3>
 <p class="ws-phase"><strong>เพิ่มและตั้งชื่อ</strong></p>
 <ol>
-<li>ไปที่ <strong>Settings → Devices &amp; services</strong> จะเห็นการ์ดของบอร์ดตัวรับที่ระบบค้นพบเอง ปนกับของกลุ่มอื่นในโซน <strong>หาการ์ดที่ชื่อลงท้ายด้วยรหัสหกตัวของบอร์ดตัวรับ</strong> ที่จดไว้ (<input class="fld" type="text" data-k="board.rx.name" data-size="26" size="26" autocomplete="off" spellcheck="false">) ตรวจสีในชื่อ แล้วกดเพิ่ม ไม่ต้องพิมพ์อะไร เหมือนกิจกรรมที่ 3</li>
+<li>ไปที่ <strong>Settings → Devices &amp; services → + Add integration → ESPHome → Setup another instance of ESPHome</strong> แล้วพิมพ์ <strong>IP ของบอร์ดตัวรับ</strong> ที่จดไว้ในกิจกรรมที่ 10 (<input class="fld" type="text" data-k="board.rx.ip" data-size="15" size="15" autocomplete="off" spellcheck="false">) Port <code>6053</code> เหมือนกิจกรรมที่ 3 ตรวจว่าชื่อที่ขึ้นตรงกับชื่อบอร์ดตัวรับ (<input class="fld" type="text" data-k="board.rx.name" data-size="26" size="26" autocomplete="off" spellcheck="false">) ทั้งสีและรหัสหกตัวท้าย แล้วกดเพิ่ม</li>
 <li>เปลี่ยนชื่ออุปกรณ์เป็น เช่น <code>ตัวรับที่บ้าน</code> (ไม่บังคับทำ)</li>
 </ol>
 <p class="ws-phase"><strong>ดูรายการที่ได้</strong></p>
@@ -1614,7 +1614,7 @@ a.ws-brand:hover { opacity: 0.82; }
 <li>เปิดหน้าอุปกรณ์ของตัวรับ จะเห็นสามกลุ่ม: <strong>Sensors</strong> คือค่าจากแปลงที่ต่อท้ายว่า ESP-NOW และ <strong>รับข้อมูลจากแปลง (link)</strong> ซึ่งแสดงเป็น Connected / Disconnected · <strong>Configuration</strong> มีช่อง <strong>ชื่อบอร์ดที่แปลง (sender name)</strong> ที่เราพิมพ์ไว้บนหน้าเว็บของบอร์ด แก้จากที่นี่ก็ได้ · <strong>Diagnostic</strong> มีสัญญาณ จำนวนแพ็กเก็ต และแพ็กเก็ตล่าสุด</li>
 </ol>
 <blockquote>
-<p><strong>ถ้าไม่เห็นการ์ดของเรา</strong> กด <strong>+ Add integration</strong> → <strong>ESPHome</strong> → <strong>Add device</strong> → <strong>Setup another instance of ESPHome</strong> → พิมพ์ชื่อบอร์ดตัวรับโดยไม่ต้องมี <code>.local</code> แล้ว Submit</p>
+<p><strong>ถ้ากด Submit แล้วต่อไม่ได้</strong> อ่าน IP ใหม่จาก <a href="https://web.esphome.io">web.esphome.io</a> (Reset device แล้วดูบรรทัด <code>IP ADDRESS</code>) เลขอาจเปลี่ยนไปแล้ว</p>
 </blockquote>
 <p><a class="ws-back" href="#a11">↑ กลับไปที่ใบงาน</a></p>
 <p><img alt="" class="activity-divider" decoding="async" height="96" loading="lazy" src="../images/activity-dividers/sprinklers.webp" width="1200" /></p>

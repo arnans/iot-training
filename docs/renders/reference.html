@@ -1607,7 +1607,7 @@ a.ws-brand:hover { opacity: 0.82; }
 </tr>
 <tr>
 <td>เพิ่มบอร์ด ESPHome</td>
-<td>Settings → Devices &amp; services → กดการ์ดของบอร์ดที่ลงท้ายด้วยหกตัวที่จดไว้ · ถ้าไม่มีการ์ด: + Add integration → ESPHome → Add device → Setup another instance of ESPHome → พิมพ์ชื่อบอร์ด (ไม่ต้องมี <code>.local</code>)</td>
+<td>Settings → Devices &amp; services → + Add integration → ESPHome → Setup another instance of ESPHome → พิมพ์ <strong>IP ของบอร์ด</strong> ที่จดไว้ Port <code>6053</code> → ตรวจชื่อที่ขึ้นให้ตรงกับที่จดไว้ (บอร์ดไม่ขึ้นเป็นการ์ดเอง และใช้ชื่อ <code>.local</code> ไม่ได้)</td>
 </tr>
 <tr>
 <td>ดู entity ของบอร์ด</td>
@@ -1615,7 +1615,7 @@ a.ws-brand:hover { opacity: 0.82; }
 </tr>
 <tr>
 <td>ดูค่าจากบอร์ดโดยตรง ไม่ผ่าน Home Assistant</td>
-<td>เบราว์เซอร์เปิด <code>http://</code> ตามด้วย IP ของบอร์ดที่จดไว้ · หรือใช้ชื่อ <code>http://&lt;ชื่อบอร์ด&gt;/</code> (ต้องมี <code>/</code> ปิดท้าย ไม่อย่างนั้นเบราว์เซอร์จะเอาไปค้นหาเว็บแทน) หรือ <code>&lt;ชื่อบอร์ด&gt;.local</code></td>
+<td>เบราว์เซอร์เปิด <code>http://</code> ตามด้วย IP ของบอร์ดที่จดไว้ (ใช้ชื่อบอร์ดแทน IP ไม่ได้)</td>
 </tr>
 <tr>
 <td>แก้แดชบอร์ด</td>
@@ -1777,15 +1777,15 @@ a.ws-brand:hover { opacity: 0.82; }
 <tbody>
 <tr>
 <td>เพิ่มบอร์ดไม่สำเร็จ</td>
-<td><strong>สีในชื่อบอร์ดตรงกับสีโซนของกลุ่มหรือไม่</strong> · แล็ปท็อปอยู่บน <code>farm-laptop-สีเดียวกัน</code> หรือไม่ · ไฟบนบอร์ดติดหรือไม่ · ถ้าพิมพ์ชื่อเอง พิมพ์ครบหกตัวท้ายหรือไม่ (ไม่ต้องมี <code>.local</code>)</td>
+<td><strong>สีในชื่อบอร์ดตรงกับสีโซนของกลุ่มหรือไม่</strong> · แล็ปท็อปอยู่บน <code>farm-laptop-สีเดียวกัน</code> หรือไม่ · ไฟบนบอร์ดติดหรือไม่ · IP ที่พิมพ์ตรงกับที่จดไว้หรือไม่ ไม่มี <code>http://</code> นำหน้า และ Port เป็น <code>6053</code></td>
 </tr>
 <tr>
 <td>หน้าต่าง log ใน <a href="https://web.esphome.io">web.esphome.io</a> ว่างเปล่า</td>
 <td>บอร์ดทำงานอยู่แล้วจึงไม่พิมพ์อะไรใหม่ กด <strong>Reset device</strong> ในหน้าเว็บ อย่าถอดสายหรือกดปุ่มบนบอร์ด</td>
 </tr>
 <tr>
-<td>พิมพ์ชื่อบอร์ดแล้วไม่เจอ</td>
-<td>เปิด <a href="https://web.esphome.io">web.esphome.io</a> → Reset device → อ่านบรรทัด <code>IP ADDRESS</code> ที่ขึ้นหลังต่อ WiFi แล้วพิมพ์ IP นั้นแทนชื่อ</td>
+<td>พิมพ์ IP แล้วต่อไม่ได้ หรือบอร์ดที่เคยเพิ่มแล้วกลายเป็น Unavailable</td>
+<td>IP อาจเปลี่ยน เปิด <a href="https://web.esphome.io">web.esphome.io</a> → Reset device → อ่านบรรทัด <code>IP ADDRESS</code> ที่ขึ้นหลังต่อ WiFi · ถ้าเลขเปลี่ยนจริง ลบอุปกรณ์เดิมแล้วเพิ่มใหม่ด้วย IP ใหม่</td>
 </tr>
 <tr>
 <td>entity เป็น unavailable</td>

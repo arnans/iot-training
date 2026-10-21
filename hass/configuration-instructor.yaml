@@ -30,7 +30,7 @@ api:
 websocket_api:
 lovelace:
   mode: storage
-zeroconf:
+# zeroconf: deliberately absent — boards are added by IP. See configuration.yaml.
 
 automation: !include automations.yaml
 script: !include scripts.yaml

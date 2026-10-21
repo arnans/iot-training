@@ -7,15 +7,16 @@
 # a long tail of integrations. Each discovery integration adds service types that
 # Home Assistant browses for over mDNS, and `ssdp` adds periodic UPnP M-SEARCH
 # multicast on top. With 100 instances in one room that is the dominant source of
-# multicast noise — far more than the 200 ESP32 boards, which are quiet.
+# multicast noise.
 #
-# Be precise about what this buys. Home Assistant's zeroconf component browses
-# EVERY service type in its generated discovery list (so it can offer "Discovered"
-# cards), regardless of which integrations are configured -- the diet does NOT
-# shrink that browse list. What it does remove: ssdp's periodic UPnP M-SEARCH
-# multicast, the dhcp sniffer, and the long tail of integrations that each add
-# their own startup traffic. Real, but the biggest lever on mDNS load is
-# elsewhere: the three-zone network -- see network/NETWORK-SETUP.md.
+# The boards run with mDNS disabled and are added by IP (firmware/README.md), so
+# this instance no longer needs zeroconf either -- see below. That removes the
+# largest remaining source: zeroconf browses EVERY service type in HA's generated
+# discovery list (so it can offer "Discovered" cards) and announces
+# `_home-assistant._tcp`, x100 instances. On top of that the diet removes ssdp's
+# periodic UPnP M-SEARCH multicast, the dhcp sniffer, and the long tail of
+# integrations that each add their own startup traffic. The other lever is the
+# three-zone network -- see network/NETWORK-SETUP.md.
 # (Phones cannot stay on mobile data: the dashboard lives in this VM, so they
 # join the zone's laptop SSID.)
 
@@ -37,11 +38,17 @@ websocket_api:
 lovelace:
   mode: storage        # dashboards edited in the UI, as the worksheet assumes
 
-# --- Zeroconf: KEEP THIS. ---
-# The ESPHome integration depends on it to resolve `<name>.local`, which is the
-# whole provisioning strategy. It loads automatically as a dependency even if
-# removed from here, so removing it gains nothing.
-zeroconf:
+# --- Zeroconf: deliberately absent. ---
+# It was here so the ESPHome integration could resolve `<name>.local`. Boards now
+# have mDNS disabled and are added by IP, so nothing in this file needs it. ESPHome
+# lists it only as an after_dependency (load order), not a dependency.
+# VERIFY after an HA upgrade that nothing pulls it back in: Settings > System >
+# Repairs > (menu) > Integration startup must not list zeroconf, and
+# `tcpdump -i any udp port 5353` on the VM should be near-silent. HA OS itself
+# still answers for `homeassistant.local` (systemd-resolved, multicast plugin);
+# that is outside this file and small.
+# Also set Settings > System > Network: one adapter (enp0s3), IPv6 off unless
+# used -- otherwise any remaining multicast goes out twice.
 
 # --- What the worksheet actually uses ---
 automation: !include automations.yaml
@@ -61,6 +68,7 @@ recorder:
 
 # --- Deliberately ABSENT (do not add) ---
 #   default_config  — would undo everything above
+#   zeroconf        — mDNS browse + announce; boards are added by IP instead
 #   ssdp            — periodic UPnP multicast to 239.255.255.250; pure noise here
 #   dhcp            — passive DHCP sniffing for device discovery; nothing to find
 #   bluetooth, usb  — no such hardware in the VM

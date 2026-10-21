@@ -10,8 +10,9 @@
 #     gogo-iot-red  ->  gogo-iot-red-a1b2c3
 #
 # Participants read that name over USB at web.esphome.io, check the colour matches
-# their table, then add the device in Home Assistant as <name>.local — no static
-# IPs, no MAC reservations, no stickers.
+# their table, then add the device in Home Assistant by the IP printed under it
+# (mDNS is disabled — see the `mdns:` block). No static IPs, no MAC reservations,
+# no stickers; DHCP hands out the address.
 #
 # Derived from gogo-iot-node.github/gogo-iot-node/firmware/gogo-iot-node.yaml
 # (bring-up config). Differences from that file are marked  # WORKSHOP:
@@ -113,6 +114,16 @@ api:
   # board would reboot every 15 minutes, punching gaps in the session-2 history.
   reboot_timeout: 0s
 
+# WORKSHOP: mDNS off. With it on, every Home Assistant in the zone browsing for
+# `_esphomelib._tcp` made every board in the zone answer by multicast, and that
+# query x answer storm saturated the room's WiFi. Teams add the board in Home
+# Assistant by the IP printed in the boot banner (IP ADDRESS) instead, so the
+# AP's DHCP lease must outlast the workshop or the address can move (see
+# firmware/README.md). Side effects: no `<name>.local`, no "Discovered" card in
+# HA, and `esphome run --device` needs the IP.
+mdns:
+  disabled: true
+
 ota:
   - platform: esphome
     password: !secret ota_password
@@ -124,10 +135,10 @@ wifi:
   password: ${wifi_password}
   # WORKSHOP: ESPHome defaults ESP32 to power_save_mode: light, where the radio
   # sleeps between beacons and only wakes on DTIM to collect buffered broadcast
-  # and multicast. mDNS is multicast, so in a room with 200 boards and heavy
-  # broadcast that is exactly the traffic most likely to be missed — and missing
-  # it means `<name>.local` intermittently fails to resolve. These boards run on
-  # mains power via the charge controller, so there is nothing to save.
+  # and multicast. mDNS is off now, but the session-4 image sends and the
+  # receiver listens for ESP-NOW broadcasts, which a dozing radio misses. These
+  # boards run on mains power via the charge controller, so there is nothing to
+  # save.
   power_save_mode: none
   # WORKSHOP: default is 15min; same reasoning as api.reboot_timeout. If the AP
   # blips at 03:00 we want a retry, not a reboot loop.
@@ -333,8 +344,8 @@ motion:
 # as variance. Do not read the RMS figure as a calibrated vibration measurement.
 # ============================================================================
 
-# WORKSHOP: the board's own IP, visible in Home Assistant. Useful to the
-# instructor when a team's `.local` lookup fails and they need the fallback.
+# WORKSHOP: the board's own IP. With mDNS disabled this is THE address teams
+# type into Home Assistant, so it is printed in the boot banner below.
 text_sensor:
   - platform: wifi_info
     ip_address:

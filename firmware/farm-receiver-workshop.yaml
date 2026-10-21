@@ -9,8 +9,8 @@
 #
 # Same provisioning strategy as the other two images: built once per zone by
 # build-zones.py, zone colour in the hostname (farm-receiver-red-a1b2c3), read
-# over USB at web.esphome.io, adopted in Home Assistant by its six-character
-# suffix. Which board a receiver LISTENS TO is not baked in: the team types
+# over USB at web.esphome.io, adopted in Home Assistant by the IP in its boot
+# banner (mDNS is disabled). Which board a receiver LISTENS TO is not baked in: the team types
 # their GoGo-IoT board's name (or just its suffix) into the `sender name` text
 # box on the receiver's own web page or in Home Assistant, and the receiver
 # filters the broadcasts it hears by that name. Nothing to pair, nothing to
@@ -74,6 +74,10 @@ api:
   # No encryption key — see gogo-iot-workshop.yaml and firmware/README.md.
   reboot_timeout: 0s
 
+# WORKSHOP: mDNS off — see gogo-iot-workshop.yaml. Added in HA by IP.
+mdns:
+  disabled: true
+
 ota:
   - platform: esphome
     password: !secret ota_password
@@ -81,7 +85,7 @@ ota:
 wifi:
   ssid: ${wifi_ssid}
   password: ${wifi_password}
-  # Load-bearing for ESP-NOW even more than for mDNS: a radio dozing between
+  # Load-bearing for ESP-NOW: a radio dozing between
   # beacons misses broadcast frames, and ESP-NOW packets are exactly that.
   power_save_mode: none
   reboot_timeout: 0s

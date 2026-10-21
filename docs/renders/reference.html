@@ -1607,7 +1607,7 @@ a.ws-brand:hover { opacity: 0.82; }
 </tr>
 <tr>
 <td>เพิ่มบอร์ด ESPHome</td>
-<td>Settings → Devices &amp; services → + Add integration → ESPHome → Setup another instance of ESPHome → พิมพ์ <strong>IP ของบอร์ด</strong> ที่จดไว้ Port <code>6053</code> → ตรวจชื่อที่ขึ้นให้ตรงกับที่จดไว้ (บอร์ดไม่ขึ้นเป็นการ์ดเอง และใช้ชื่อ <code>.local</code> ไม่ได้)</td>
+<td>Settings → Devices &amp; services → + Add integration → ESPHome → พิมพ์ <strong>IP ของบอร์ด</strong> ที่จดไว้ในช่อง Host, Port <code>6053</code> → Submit (ถ้าขึ้นรายการให้เลือก Setup another instance of ESPHome) → ตรวจช่อง <strong>Device name</strong> ในหน้า Name and assign ให้ตรงกับชื่อที่จดไว้ (HA แสดงตัวพิมพ์ใหญ่ต้นคำ เช่น <code>Gogo-Iot-Red-6749A4</code> ตรงกับ <code>gogo-iot-red-6749a4</code>) (บอร์ดไม่ขึ้นเป็นการ์ดเอง และใช้ชื่อ <code>.local</code> ไม่ได้)</td>
 </tr>
 <tr>
 <td>ดู entity ของบอร์ด</td>
@@ -1785,7 +1785,7 @@ a.ws-brand:hover { opacity: 0.82; }
 </tr>
 <tr>
 <td>พิมพ์ IP แล้วต่อไม่ได้ หรือบอร์ดที่เคยเพิ่มแล้วกลายเป็น Unavailable</td>
-<td>IP อาจเปลี่ยน เปิด <a href="https://web.esphome.io">web.esphome.io</a> → Reset device → อ่านบรรทัด <code>IP ADDRESS</code> ที่ขึ้นหลังต่อ WiFi · ถ้าเลขเปลี่ยนจริง ลบอุปกรณ์เดิมแล้วเพิ่มใหม่ด้วย IP ใหม่</td>
+<td>IP อาจเปลี่ยน เปิด <a href="https://web.esphome.io">web.esphome.io</a> → Reset device → อ่านบรรทัด <code>IP ADDRESS</code> ที่ขึ้นหลังต่อ WiFi · ถ้าเลขเปลี่ยนจริง กด ⋮ ที่แถวบอร์ดใน Settings → Devices &amp; services → ESPHome → <strong>Reconfigure</strong> แล้วพิมพ์ IP ใหม่ในช่อง Host (ชื่อและ entity เดิมยังอยู่) · ถ้า HA ปฏิเสธ แปลว่า IP นั้นเป็นบอร์ดอื่น (HA เช็กจาก MAC address ของบอร์ด)</td>
 </tr>
 <tr>
 <td>entity เป็น unavailable</td>

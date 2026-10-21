@@ -29,14 +29,14 @@
 
 **เพิ่มและตั้งชื่อ**
 
-1. ไปที่ **Settings → Devices & services → + Add integration → ESPHome → Setup another instance of ESPHome** แล้วพิมพ์ **IP ของบอร์ดตัวรับ** ที่จดไว้ในกิจกรรมที่ 10 ({{f:board.rx.ip|15}}) Port `6053` เหมือนกิจกรรมที่ 3 ตรวจว่าชื่อที่ขึ้นตรงกับชื่อบอร์ดตัวรับ ({{f:board.rx.name|26}}) ทั้งสีและรหัสหกตัวท้าย แล้วกดเพิ่ม
-2. เปลี่ยนชื่ออุปกรณ์เป็น เช่น `ตัวรับที่บ้าน` (ไม่บังคับทำ)
+1. ไปที่ **Settings → Devices & services → + Add integration → ESPHome** แล้วพิมพ์ **IP ของบอร์ดตัวรับ** ที่จดไว้ในกิจกรรมที่ 10 ({{f:board.rx.ip|15}}) ในช่อง Host Port `6053` เหมือนกิจกรรมที่ 3 แล้วกด **Submit** (ถ้าขึ้นรายการให้เลือก **Setup another instance of ESPHome** ก่อน) จะขึ้นหน้า **Name and assign** ให้ดูช่อง **Device name** ว่าตรงกับชื่อบอร์ดตัวรับ ({{f:board.rx.name|26}}) ทั้งสีและรหัสหกตัวท้าย HA แสดงเป็นตัวพิมพ์ใหญ่ต้นคำ เช่น `Gogo-Iot-Red-6749A4` ตรงกับ `gogo-iot-red-6749a4`
+2. ในช่อง **Device name** เดิม จะพิมพ์ชื่อใหม่เป็น เช่น `ตัวรับที่บ้าน` ก็ได้ (ไม่บังคับทำ) แล้วกด **Skip and finish**
 
 **ดูรายการที่ได้**
 
 3. เปิดหน้าอุปกรณ์ของตัวรับ จะเห็นสามกลุ่ม: **Sensors** คือค่าจากแปลงที่ต่อท้ายว่า ESP-NOW และ **รับข้อมูลจากแปลง (link)** ซึ่งแสดงเป็น Connected / Disconnected · **Configuration** มีช่อง **ชื่อบอร์ดที่แปลง (sender name)** ที่เราพิมพ์ไว้บนหน้าเว็บของบอร์ด แก้จากที่นี่ก็ได้ · **Diagnostic** มีสัญญาณ จำนวนแพ็กเก็ต และแพ็กเก็ตล่าสุด
 
-> **ถ้ากด Submit แล้วต่อไม่ได้** อ่าน IP ใหม่จาก [web.esphome.io](https://web.esphome.io) (Reset device แล้วดูบรรทัด `IP ADDRESS`) เลขอาจเปลี่ยนไปแล้ว
+> **ถ้ากด Submit แล้วต่อไม่ได้** อ่าน IP ใหม่จาก [web.esphome.io](https://web.esphome.io) (Reset device แล้วดูบรรทัด `IP ADDRESS`) เลขอาจเปลี่ยนไปแล้ว ถ้าเพิ่มบอร์ดไว้แล้ว ให้กด ⋮ ที่แถวของบอร์ดใน Settings → Devices & services → ESPHome → **Reconfigure** แล้วพิมพ์ IP ใหม่ในช่อง Host ชื่อและ entity เดิมยังอยู่ ไม่ต้องลบแล้วเพิ่มใหม่
 
 [↑ กลับไปที่ใบงาน](#a11){ .ws-back }
 

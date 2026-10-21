@@ -1635,14 +1635,15 @@ a.ws-brand:hover { opacity: 0.82; }
 </ol>
 <p class="ws-phase"><strong>เพิ่มและตั้งชื่อบอร์ด</strong></p>
 <ol start="2" style="counter-reset: step 1">
-<li>ไปที่ <strong>Settings → Devices &amp; services</strong> กด <strong>+ Add integration</strong> มุมล่างขวา → ค้นหา <strong>ESPHome</strong> (ไม่ใช่ ESP-NOW)</li>
-<li>เลือก <strong>Setup another instance of ESPHome</strong> (บางรุ่นต้องกด <strong>Add device</strong> ก่อน) → ช่อง Host พิมพ์ <strong>หมายเลข IP ของบอร์ด GoGo-IoT</strong> ตามตารางด้านบน เช่น <code>192.168.10.57</code> (ไม่ต้องใส่ http://) ช่อง Port คงไว้ <code>6053</code> แล้วกด Submit ไม่มีรหัสให้ใส่</li>
-<li><strong>ตรวจชื่อบอร์ดที่ Home Assistant แสดง</strong> ให้ตรงกับชื่อในตาราง ทั้งสีและรหัสหกตัวท้าย แล้วเพิ่ม <strong>บอร์ดรีเลย์</strong> ด้วยวิธีเดียวกัน โดยใช้ IP ของบอร์ดรีเลย์</li>
+<li>ไปที่ <strong>Settings → Devices &amp; services</strong> กด <strong>+ Add integration</strong> มุมล่างขวา → ค้นหา <strong>ESPHome</strong> (ไม่ใช่ ESP-NOW) แล้วกดเลือก</li>
+<li>หน้าต่าง ESPHome ขึ้นช่อง <strong>Host</strong> และ <strong>Port</strong> (ถ้าขึ้นเป็นรายการให้เลือกก่อน ให้เลือก <strong>Setup another instance of ESPHome</strong>) → ช่อง Host พิมพ์ <strong>หมายเลข IP ของบอร์ด GoGo-IoT</strong> ตามตารางด้านบน เช่น <code>192.168.10.57</code> (ไม่ต้องใส่ http://) ช่อง Port คงไว้ <code>6053</code> แล้วกด <strong>Submit</strong> ไม่มีรหัสให้ใส่</li>
+<li>หน้าต่าง <strong>Name and assign</strong> ขึ้นมา <strong>ตรวจชื่อในช่อง Device name</strong> ให้ตรงกับชื่อในตาราง ทั้งสีและรหัสหกตัวท้าย Home Assistant เขียนตัวแรกของแต่ละคำเป็นตัวพิมพ์ใหญ่ เช่น <code>Gogo-Iot-Red-6749A4</code> ถือว่าตรงกับ <code>gogo-iot-red-6749a4</code> แล้วกด <strong>Skip and finish</strong> จากนั้นเพิ่ม <strong>บอร์ดรีเลย์</strong> ด้วยวิธีเดียวกัน โดยใช้ IP ของบอร์ดรีเลย์</li>
 <li>เปลี่ยนชื่ออุปกรณ์ทั้งสองเป็นชื่อกลุ่มของเรา (ไม่บังคับทำ) เพื่อให้หาเจอง่าย</li>
 </ol>
+<p><img alt="ขั้นตอนเพิ่มบอร์ดด้วยหมายเลข IP: กด + Add integration ค้นหา ESPHome พิมพ์ IP ในช่อง Host กด Submit แล้วตรวจชื่อในช่อง Device name" src="../images/activity1/a3-add-esphome-by-ip.webp" width="85%" /></p>
 <blockquote>
 <p><strong>ทำไมต้องพิมพ์ IP เอง</strong> บอร์ดในห้องนี้ปิดการประกาศชื่อตัวเองบนเครือข่าย (mDNS) เพราะบอร์ดหลายร้อยตัวประกาศพร้อมกันจน WiFi ใช้งานไม่ได้ Home Assistant จึงไม่เห็นบอร์ดเอง และใช้ชื่อแบบ <code>.local</code> ไม่ได้</p>
-<p><strong>ตรวจชื่อบอร์ดให้ตรงกับที่จดไว้ทั้งชื่อ</strong> ถ้าพิมพ์ IP ผิดแม้แต่ตัวเดียว อาจไปเพิ่มบอร์ดของกลุ่มอื่น แล้วดูค่าหรือสั่งงานอุปกรณ์ผิดกลุ่มได้ · ถ้ากด Submit แล้วต่อไม่ได้ ให้อ่าน IP ใหม่จาก <a href="https://web.esphome.io">web.esphome.io</a> (Reset device แล้วดูบรรทัด <code>IP ADDRESS</code>) เลขอาจเปลี่ยนไปแล้ว</p>
+<p><strong>ตรวจชื่อบอร์ดให้ตรงกับที่จดไว้ทั้งชื่อ</strong> ถ้าพิมพ์ IP ผิดแม้แต่ตัวเดียว อาจไปเพิ่มบอร์ดของกลุ่มอื่น แล้วดูค่าหรือสั่งงานอุปกรณ์ผิดกลุ่มได้ ถ้าชื่อไม่ตรง ให้กด Skip and finish แล้วลบรายการนั้นทิ้ง (หน้า ESPHome → ⋮ ท้ายแถวของบอร์ด → <strong>Delete</strong>) แล้วเพิ่มใหม่ด้วย IP ที่ถูกต้อง · ถ้ากด Submit แล้วต่อไม่ได้ ให้อ่าน IP ใหม่จาก <a href="https://web.esphome.io">web.esphome.io</a> (Reset device แล้วดูบรรทัด <code>IP ADDRESS</code>) เลขอาจเปลี่ยนไปแล้ว</p>
 </blockquote>
 <p><a class="ws-back" href="#a3">↑ กลับไปที่ใบงาน</a></p>
 <p><img alt="" class="activity-divider" decoding="async" height="79" loading="lazy" src="../images/activity-dividers/flower-led.webp" width="1200" /></p>

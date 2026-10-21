@@ -259,15 +259,18 @@ goes straight from threshold to rule sentences to the two automations.
 #### 3.1 Add both boards
 
 **Done when** the representative's laptop is logged in with the credentials you project now, and both
-boards are added by IP (*+ Add integration → ESPHome → Setup another instance of ESPHome*, port
-6053), with the name HA shows matching the names written down. Renaming the devices is optional.
+boards are added by IP (*+ Add integration → ESPHome → Host = IP, port 6053 → Submit*; if a list
+appears, choose *Setup another instance of ESPHome*), with the Device name in the Name and assign
+dialog matching the names written down (HA shows it title-cased). Renaming the devices is optional.
 
 **If stuck** The Login page no longer loads: the VM's IP changed, so read it again from the VM
 window. Boards have mDNS disabled (it flooded the room's WiFi), so **there are no discovered cards
 and `.local` names do not resolve** — the IP is the only way. **A mistyped IP that lands on a
 neighbour's board looks like success**, but the team then watches the neighbour's sensors and its
 automation drives the neighbour's lamp. Check the name HA shows before adding. Cannot connect: the
-board's IP moved, so read it again at web.esphome.io (Reset device, `IP ADDRESS` line).
+board's IP moved, so read it again at web.esphome.io (Reset device, `IP ADDRESS` line). For a board
+already added, use ⋮ → Reconfigure → new IP in Host; the rename and entities are kept. HA refuses
+another board's address by MAC.
 
 #### 3.2 Test the boards in Home Assistant
 
@@ -878,7 +881,7 @@ and might add that a shared channel also carries the neighbour's traffic load.
 
 #### 11.1 Adopt the receiver
 
-**Done when** the receiver is added by its IP with the name checked (same as Activity 3) and the
+**Done when** the receiver is added by its IP with the Device name checked (same as Activity 3) and the
 team has found its three entity groups: the ESP-NOW sensors plus the link (Connected /
 Disconnected), the `sender name` text under Configuration, the link diagnostics.
 
@@ -921,7 +924,7 @@ should be collected directly from teams using paper.
 
 **Timed rehearsal:** run Activities 4, 5 and 7 with a novice-paced team before delivery. Record actual
 durations, allow for fault recovery, and agree where TAs provide a prepared working setup to keep a
-team moving. Check the real venue's zone WiFi, board discovery, VM/phone access, vibration detection,
+team moving. Check the real venue's zone WiFi, adding boards by IP, VM/phone access, vibration detection,
 and progress reporting. Prepare an instructor history graph for teams with insufficient data. Pump
 run times must follow the verified limit of the actual model; see the
 [readiness action plan](https://github.com/arnans/iot-training/blob/main/planning/WORKSHOP-READINESS-ACTIONS.md).

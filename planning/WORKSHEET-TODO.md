@@ -62,10 +62,11 @@ bench session (adoption flow, overnight, sabotage cards, instructor machines, in
    - **Session 3** ("open the network box"), where "your board *is* a web server, here is its
      address" is far more concrete than a diagram.
 
-   **Address forms differ between the two boxes teams will type into — say so explicitly, or one
-   will break.** Browser: needs a dot or a trailing slash (`gogo-iot-red-6749a4/` or
-   `…-6749a4.local`); the bare name becomes a *web search*. Home Assistant's manual-entry Host
-   field: needs **neither** — the bare name is what works.
+   **Both boxes teams type into take the IP (2026-10-21).** Boards have mDNS off, so `.local` names
+   do not resolve and the worksheets give the IP only: the browser opens `http://<IP>/` and Home
+   Assistant's Host field takes the same IP. (Before that, the browser needed a dot or trailing
+   slash — the bare name became a *web search* — while HA took the bare name. Both rules are
+   history; see TEST-PLAN test J.)
 3. **Relay node exposes one `switch`.** The relay's own hard-wired indicator follows the relay, so
    the "lamp" is visible — that is what session 2's garden-lamp framing points at. The board's
    *programmable* LED (GPIO2) is **not** the lamp: it is a **WiFi**-status light — steady lit when
@@ -145,33 +146,49 @@ bench session (adoption flow, overnight, sabotage cards, instructor machines, in
   encryption key. `homeassistant.local` is now **resolved**: the worksheets use the VM's own IP,
   read off its boot screen and written on the record sheet, because ~34 identically-named VMs per
   zone make the hostname point at a neighbour's machine (see TEST-PLAN).
+  **Superseded 2026-10-21:** the discovered card and the bare-name fallback no longer exist.
+- ~~**Worksheets still describe discovered cards and `.local`**~~ **Done 2026-10-21 (PR #6).** All
+  four images set `mdns: disabled: true` and `zeroconf:` is out of both HA configs. Teams add each
+  board by the IP from the `IP ADDRESS` boot-log line (read in activities 1, 2 and 10) through
+  *+ Add integration → ESPHome → Host = IP → Submit*, then check the Device name HA shows.
+  Reason, and the IP-change procedure: `firmware/README.md`. Planning docs brought in line the
+  same day; the add-by-IP checks are in TEST-PLAN test C.
 
 ## Network and device provisioning
 
 Resolved: **no static IPs, no MAC reservations, no per-board configuration.** One identical
-firmware image for all boards, with `name_add_mac_suffix: true` so each advertises a unique
-mDNS hostname. Workshop SSID baked in; `improv_serial:` and `captive_portal:` included so WiFi
+firmware image for all boards, with `name_add_mac_suffix: true` so each has a unique
+device name (mDNS is disabled, see below). Workshop SSID baked in; `improv_serial:` and `captive_portal:` included so WiFi
 can be set over USB or from a phone at a future delivery.
 
 Adoption flow per board: plug into the laptop over USB → web.esphome.io → Connect → **press
 "Reset device" in the browser** (bench-critical: *not* the board's own reset button — native USB
 means a hardware reset kills the browser session and the log comes up blank, which looks like a
 dead board) → read the board's name from the boot banner and **write down the last six
-characters** → in HA, go to
-**Settings → Devices & services** and **click the discovered card carrying those six characters**
-→ rename the device to the team's name. No encryption key (the API is unencrypted). The
-six-character match and the zone colour in the name are what stop a team adopting a neighbour's
-board, which otherwise fails silently.
+characters** → read the board's IP from the `IP ADDRESS` banner that follows and **write it down with the
+name** → in HA, **Settings → Devices & services → + Add integration** → type **ESPHome** (not
+"ESP-NOW") → click **ESPHome** (it opens on the Host/Port form; if a list appears instead, choose
+**"Setup another instance of ESPHome"**) → Host = the IP, Port `6053`, no encryption key → Submit
+→ in the **Name and assign** dialog check that the Device name matches the name written down,
+colour and six characters (HA shows it title-cased, `Gogo-Iot-Red-6749A4` for
+`gogo-iot-red-6749a4`) → type the team's name there if wanted → Skip and finish. The API is
+unencrypted. The name check is what stops a team adding a neighbour's board: a mistyped IP that
+lands on another board shows the wrong name, and Reconfigure or an existing entry pointed at
+another board is refused by HA (by MAC address).
 
-**Fallback, if the card is not there** (bench-walked, and four levels deep — write it out
-step by step or teams will not find it): **+ Add integration** → type **ESPHome** (not
-"ESP-NOW") → **Add device** → **"Setup another instance of ESPHome"** → type the node name
-**without `.local`** (`gogo-iot-red-6749a4`). The bare name resolves; no suffix needed.
+**Changed 2026-10-21 (PR #6).** Until then adoption was "click the discovered card", with a
+four-level fallback typing the bare node name. Every board and every HA VM in a zone browsed and
+answered `_esphomelib._tcp` by multicast, which goes out at the lowest basic rate; the
+query × answer storm took the room's WiFi down. So mDNS is disabled on the boards and there are no
+discovered cards and no `<name>.local`. OTA needs `esphome run --device <ip>`. HA cannot follow an
+IP change; the Flint routers' 72 h lease (NETWORK-SETUP.md 2.2) covers the workshop, and if an IP
+moves the team reads the new one and uses ⋮ → Reconfigure on the device (rename and entities are
+kept).
 
 Requirements this places on the network are written up in
 [NETWORK-SETUP.md](../network/NETWORK-SETUP.md). Since 21 Sep 2026 the zones are three GL.iNet
 Flint routers we configure ourselves rather than provider VLANs, so the two settings that most
-often failed by default on managed WiFi (**mDNS forwarded between wireless clients**, **two MAC
+often failed by default on managed WiFi (**forwarding between wireless clients**, **two MAC
 addresses per laptop** for the bridged VM) are ours to get right, and an OpenWrt bridge gives
 both without configuration. The provider-facing VLAN spec
 [NETWORK-REQUIREMENTS.md](../network/NETWORK-REQUIREMENTS.md) is deprecated.
@@ -179,14 +196,13 @@ both without configuration. The provider-facing VLAN spec
 Consequences for the install guide (drafted 11 Sep 2026 as `docs/install.md`):
 
 - **VirtualBox network adapter must be Bridged, not NAT.** With NAT the VM cannot receive
-  multicast, `.local` will not resolve, and phones cannot reach it. This is the single decision
-  the whole addressing scheme rests on.
-- **Docker Desktop on Windows cannot be offered as a path** — no host networking, so no mDNS.
+  phones cannot reach it. This is the single decision the VM's reachability rests on.
+- **Docker Desktop on Windows cannot be offered as a path** — no host networking.
 - The phone step reads the address from the **VM's boot console** (or HA Settings → System →
   Network) — the VM's IP, not the laptop's IP. Port 80, so no port number to type.
-- Fallback if a laptop cannot resolve a board by name: the board prints its IP in the USB boot
-  log (`=====  IP ADDRESS: ...  =====`) and serves its own page there. Leases are 12–24 h, so
-  re-read it after an overnight.
+- Boards are reached by IP only (mDNS is off). The board prints its IP in the USB boot log
+  (`=====  IP ADDRESS: ...  =====`) and serves its own page there. Leases are 72 h on the Flint
+  routers, which covers the workshop; if a board's IP moves, re-read it and use ⋮ → Reconfigure on the device.
 
 `reboot_timeout: 0s` is set on both `api:` and `wifi:` in both images (the 15-minute default
 would reboot boards overnight with no Home Assistant connected). TEST-PLAN test F verifies it
@@ -310,6 +326,9 @@ The network document may already be with the provider.
 
 ## WiFi power save disabled on both boards
 
+> **Note 2026-10-21:** mDNS is now disabled on the boards, so the `<name>.local` symptom below no
+> longer applies. `power_save_mode: none` was left as is.
+
 ESPHome defaults ESP32 to `power_save_mode: light`: the radio sleeps between beacons and wakes
 only at DTIM to collect buffered broadcast and multicast. **mDNS is multicast.** In a room with
 200 boards, 100 chatty Home Assistant instances and heavy broadcast, that is precisely the
@@ -321,6 +340,13 @@ controller, so there is nothing to save. Confirm during the bench test that this
 board temperature noticeably.
 
 ## Multicast noise: what we control and what the network must
+
+> **Note 2026-10-21 (PR #6): the biggest lever was to stop the multicast.** All four images set
+> `mdns: disabled: true` and `zeroconf:` is removed from `hass/configuration.yaml` and
+> `hass/configuration-instructor.yaml`, because every HA VM browsing `_esphomelib._tcp` made every
+> board in the zone answer by multicast, at the lowest basic rate, and the query × answer storm
+> took the room's WiFi down. Teams add boards by IP; see `firmware/README.md`. The three levers
+> below are the earlier analysis, kept as the record; zoning and phones on mobile data still stand.
 
 Three levers, in order of leverage:
 
@@ -342,7 +368,8 @@ Three levers, in order of leverage:
    smaller than it looks: HA's zeroconf browses its entire generated service-type list regardless,
    for "Discovered" cards, and the ESPHome integration needs zeroconf anyway. The residual cost is
    the startup burst when 100 instances query and 200 boards answer — which is what zoning
-   addresses.
+   addresses. *(Superseded 2026-10-21: the burst took the WiFi down anyway, so zeroconf is removed
+   from the HA configs and mDNS is off on the boards.)*
 
 **Delivery recommendation that falls out of (3): ship a pre-built VirtualBox OVA**, not an
 install guide. The config only helps if it is on 100 laptops; a from-scratch install by 100
@@ -377,7 +404,7 @@ devices.esphome.io, a different board.
 
 All other images are `placeholder.png` with alt text describing the shot. Three alt texts were
 rewritten after the bench (web.esphome.io with the Reset device button and the DEVICE NAME
-banner; the discovered card on Devices & services; the YAML `api:` block with no encryption).
+banner; the discovered card on Devices & services (obsolete since 2026-10-21, no discovered cards); the YAML `api:` block with no encryption).
 Shot list still to write — parked until the worksheet text settles. Bench screenshots exist but
 carry bench-specific state (SSID `Annie`, `192.168.8.x`, browser extensions): reference only,
 retake on a clean profile once the config is frozen.

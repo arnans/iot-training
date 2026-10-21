@@ -1589,7 +1589,7 @@ a.ws-brand:hover { opacity: 0.82; }
 <h1 id="เตรยมแลปทอปกอนวนอบรม">เตรียมแล็ปท็อปก่อนวันอบรม</h1>
 <p>ในการอบรม Home Assistant จะทำงานบนแล็ปท็อปของเรา ผ่านเครื่องเสมือนชื่อ <strong>Farm Workshop</strong> ที่ทีมผู้สอนตั้งค่าไว้ให้แล้ว เราแค่ติดตั้ง VirtualBox นำเข้าไฟล์ แล้วกด Start</p>
 <blockquote>
-<p><strong>ทำให้เสร็จที่บ้านก่อนมาอบรม</strong> ใช้เวลาราว 20 นาที ไม่รวมเวลาดาวน์โหลด ไฟล์มีขนาดประมาณ 2.6 GB <strong>ห้ามรอมาดาวน์โหลดที่สถานที่อบรม</strong> เพราะทุกกลุ่มดาวน์โหลดพร้อมกันไม่ทันแน่นอน</p>
+<p><strong>ทำให้เสร็จที่บ้านก่อนมาอบรม</strong> ใช้เวลาราว 20 นาที ไม่รวมเวลาดาวน์โหลด ไฟล์มีขนาดประมาณ 2.1 GB <strong>ห้ามรอมาดาวน์โหลดที่สถานที่อบรม</strong> เพราะทุกกลุ่มดาวน์โหลดพร้อมกันไม่ทันแน่นอน</p>
 </blockquote>
 <hr />
 <h2 id="1-ตดตง-virtualbox">1. ติดตั้ง VirtualBox</h2>
@@ -1648,7 +1648,11 @@ a.ws-brand:hover { opacity: 0.82; }
 </blockquote>
 <hr />
 <h2 id="4-ปดเครองและเตรยมมาอบรม">4. ปิดเครื่องและเตรียมมาอบรม</h2>
-<p>กดปิดหน้าต่างของเครื่องเสมือน → <strong>Send the shutdown signal</strong> → OK <strong>อย่าเลือก Power off</strong> (ข้อมูลอาจเสีย) และไม่ต้อง Save state</p>
+<ul>
+<li><strong>Windows และ Mac ชิป Intel</strong> กดปิดหน้าต่างของเครื่องเสมือน → <strong>Send the shutdown signal</strong> → OK</li>
+<li><strong>Mac ชิป Apple</strong> ใช้ Send the shutdown signal ไม่ได้ (กดแล้วเครื่องไม่ปิด) ให้คลิกในหน้าต่างดำ พิมพ์ <code>host shutdown</code> ต่อจาก <code>ha &gt;</code> แล้วกด Enter รอราว 15 วินาทีจนเครื่องปิดเอง</li>
+</ul>
+<p>ทั้งสองแบบ <strong>อย่าเลือก Power off</strong> (ข้อมูลอาจเสีย) และไม่ต้อง Save state</p>
 <p><strong>วันอบรม</strong> นำแล็ปท็อป สายชาร์จ และโทรศัพท์มา อย่าลบเครื่อง Farm Workshop ออกจาก VirtualBox</p>
 <hr />
 <h2 id="ถาตดปญหา">ถ้าติดปัญหา</h2>

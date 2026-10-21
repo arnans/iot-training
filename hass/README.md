@@ -72,7 +72,7 @@ participant even opens VirtualBox. See
 | File | Bytes | SHA-256 |
 |---|---|---|
 | `Farm-Workshop-win-1.3.ova` | 2,086,696,960 (~1.9 GiB) | `faeb6edfe0372115026d23c05bd60d6b21b4b1a48c65f1e5548d760f05521e32` |
-| `Farm-Workshop-arm64-1.3.ova` | 2,069,125,120 (~1.9 GB) | `3d10b1942de12311c9e8d8e9d6ab93ad20515d9e59fe506c112b70d943d46225` |
+| `Farm-Workshop-arm64-1.3.ova` | 2,069,125,120 (~1.9 GiB) | `3d10b1942de12311c9e8d8e9d6ab93ad20515d9e59fe506c112b70d943d46225` |
 
 Both were made from the 1.2 images, not from scratch. Each 1.2 disk was booted under QEMU on a
 Windows x86-64 host: WHPX for x86-64, TCG emulation for ARM64. The NIC sat at PCI slot 3 or 8,
@@ -127,17 +127,27 @@ Checked, on both unless stated:
 | Repairs | none in HA. Supervisor lists only `no_current_backup`, which the 1.2 images had too |
 | mDNS on the wire | 0 packets to or from UDP 5353 leaving the NIC in 120–180 s after startup (AF_PACKET count inside the VM) |
 | x86-64 OVA | imported into VirtualBox 7.2.22 on Windows. Boots in ~40 s, banner shows `enp0s3` with only an `fe80::` IPv6 address, `ha os info` shows slot B 18.3 booted and slot A `bad`, login works, `zeroconf` not loaded |
-| ARM64 OVA | `VBoxManage import -n` parses it (OS type `Oracle_arm64`, VirtioSCSI). It was **not** booted in VirtualBox, because there is no Apple Silicon host here. Test-import on an M-series Mac before sending it out |
+| ARM64 OVA | release download verified against SHA-256, then a plain import on an Apple Silicon Mac in VirtualBox 7.2.22: Bridged to `en0: Wi-Fi`, new MAC, Start needed no changes. Ready in under 80 s, banner `enp0s8` with only an `fe80::` IPv6 address. HAOS 18.3, Core 2026.9.3, Supervisor 2026.10.2. `farmer` logs in through the browser and the API. File editor is in the sidebar. No repairs, no Discovered cards, no build-time tokens. An ESPHome test device added by IP per Activity 3 reported live values, and `zeroconf` stayed unloaded. 0 mDNS packets sent in 2 min idle and in 4 min across a Core restart |
+
+**Shutdown on Apple Silicon:** VirtualBox's *Send the shutdown signal* does nothing on the ARM64
+image. The guest got no power-button event, and the VM was still running 2 minutes later. Typing
+`host shutdown` at the console's `ha >` prompt shuts it down cleanly in about 13 s, and
+`docs/install.md` step 4 now says to do that on Apple Silicon. 1.2 runs the same HAOS 18.3, so it
+probably had the same problem; this was not checked.
+
+**Update offer:** Settings shows "1 update: Home Assistant Core 2026.10.2". Supervisor
+`auto_update` is off, but nothing stops a participant from tapping it and pulling a large image
+over the venue WiFi.
 
 HA core still opens a socket on UDP 5353. `helpers/aiohttp_client.py` creates a zeroconf
 instance so it can resolve `.local` names, even when the zeroconf integration is absent. It does
 not browse or announce, and the packet count above is 0.
 
-**Hosting:** both files and `SHA256.txt` are assets of the GitHub **pre-release**
+**Hosting:** both files and `SHA256.txt` are assets of the GitHub release
 [`vm-1.3`](https://github.com/arnans/iot-training/releases/tag/vm-1.3). Each asset must be under
-2 GiB, and release downloads have no bandwidth quota. While the repository is private, the
-download links work only for a signed-in GitHub account with access to it. **Participants need the
-repository public** (only an admin can change that) before the guide's links work for them.
+2 GiB, and release downloads have no bandwidth quota. The repository is public, so the links work
+without signing in. Visibility can only be changed by a repository admin; making the repo private
+again would break every download link in the guide.
 
 ### The built ARM64 image (21 Sep 2026)
 

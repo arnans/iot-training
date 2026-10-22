@@ -41,7 +41,7 @@ follow later if time runs short.
 - [x] Laptop with Chrome or Edge (Web Serial needs one of those; Firefox will not work)
 - [x] Copy `zones.example.yaml` to `zones.yaml` and fill in your bench network's SSID/password
 - [x] A WiFi network you control. **Not** a corporate/university SSID — those usually block
-      client-to-client traffic and mDNS, which would make tests C and D fail for the wrong reason
+      client-to-client traffic, which would make tests C and D fail for the wrong reason
 - [x] Home Assistant reachable from the laptop. If it is a VM, **bridged adapter, not NAT**
 
 Record results in the table at the bottom.
@@ -160,40 +160,63 @@ name appearing on line 4 and a blank screen.
 
 ---
 
-## C. Adopt in Home Assistant
+## C. Add to Home Assistant by IP
 
-Decided on the bench: **pick the board's discovered card**, matching the six-character suffix from
-the USB banner. Manual entry is the fallback. No encryption key either way.
+**Changed 2026-10-21 (PR #6).** All four images ship with `mdns: disabled: true`, so there are
+**no discovered cards and no `<name>.local`**. A team adds each board by the IP it wrote down in
+test B. Why mDNS is off, and what follows from it: [firmware/README.md](../firmware/README.md).
+No encryption key.
 
-**The exact click path, as walked on the bench** — a worksheet author needs this verbatim, because
-the fallback is four levels deep:
+**The click path** — a worksheet author needs this verbatim:
 
-1. **Settings → Devices & services.** Discovered boards appear here as cards. **If yours is
-   listed, click it and you are done** — this is the path essentially every team will take.
-2. Not there? **+ Add integration** → type **ESPHome** (not "ESP-NOW", which is a different
-   Espressif protocol and will find nothing).
-3. ESPHome's own page opens, listing discovered devices again. Still not there? **Add device**.
-4. A popup shows the discovered list once more — pick from it, or choose **"Setup another
-   instance of ESPHome"**.
-5. That opens a dialog: type the node name, **without `.local`** (`gogo-iot-red-6749a4`). Added.
+1. **Settings → Devices & services → + Add integration** → type **ESPHome** (not "ESP-NOW", which
+   is a different Espressif protocol and will find nothing).
+2. Click **ESPHome**. The dialog opens on the Host/Port form. If a list appears instead, choose
+   **Setup another instance of ESPHome**.
+3. **Host** = the board's IP from the `=====  IP ADDRESS: … =====` line (test B). **Port**
+   `6053`. No encryption key. Submit.
+4. In the **Name and assign** dialog, **check the Device name** against the name written down:
+   colour plus six-character suffix. HA shows it title-cased (`Gogo-Iot-Red-6749A4` for
+   `gogo-iot-red-6749a4`). The team name may be typed there; the button then reads **Finish**,
+   and **Skip and finish** when the name is left as is. A
+   typed IP is self-verifying: if it lands on another board, the name differs, and later
+   Reconfigure or reconnect attempts against a different board are refused by MAC address.
 
-- [x] The board appears in the discovered picker, named clearly enough to match the suffix —
-      **both boards appeared on their own**, no hunting required
-- [x] Adopting from the picker works with no key prompt — confirmed, encryption removal is clean
-- [x] Manual entry works too — **verified, and the name resolves without the `.local` suffix**.
-      Typing the bare `gogo-iot-red-6749a4` adds the board successfully. Since every team's VM is
-      a clone of this same image — same OS, same resolver — the bare name is safe to put in the
-      worksheet, and it is one less thing for a participant to type.
-      (An earlier note here claimed `<name>.local` would not resolve from the Windows browser.
-      **That was a wrong diagnosis** — at the time nothing was listening on port 80 because
-      `web_server` had not been added yet. Windows resolves these names fine; see test J.)
-- [x] Device is added, entities appear with Thai names — 10 entities on the sensor board,
+- [ ] Add the sensor board by IP: no key prompt, the name HA shows matches the banner
+- [ ] Add the relay board the same way; the two names differ and both show the zone colour
+- [ ] **Settings → Devices & services** shows **no Discovered cards** for either board while both
+      are powered and on WiFi
+- [ ] On the HA VM's bridged interface, `udp port 5353` shows no `_esphomelib._tcp` queries and no
+      answers from the boards. Capture from the laptop host, e.g. Wireshark filter
+      `udp.port == 5353 && ip.addr == <VM IP>`
+- [ ] Open the added device's **Reconfigure** and enter the *other* board's IP: HA refuses
+      because the MAC address differs (`reconfigure_unique_id_changed`) (seen on HA 2026.9.3 with
+      ESPHome host-platform test devices, 2026-10-21)
+- [ ] Rename the device to a team name; entity IDs stay stable
+- [ ] Unplug the board, wait 1 min, plug back in: it returns to available on its own at the same
+      IP (the Flint routers' 72 h lease, NETWORK-SETUP.md 2.2) and resumes streaming
+- [ ] Change the board's IP on purpose (new lease, or another router): HA shows it unavailable and
+      does not follow. Read the new IP from the banner, then ⋮ → **Reconfigure** → new IP in
+      Host → Submit; the device, its rename and its entities come back (seen on HA 2026.9.3 with
+      ESPHome host-platform test devices, 2026-10-21)
+
+### Bench results from before mDNS was disabled (historical)
+
+> **Note 2026-10-21:** everything in this subsection was walked while the boards still announced
+> over mDNS, so adoption was from the discovered card and manual entry took the bare name. Both
+> are gone: mDNS is disabled and boards are added by IP, see above and
+> [firmware/README.md](../firmware/README.md). Kept as the record of what was measured.
+
+- [x] The board appeared in the discovered picker, named clearly enough to match the suffix —
+      both boards appeared on their own
+- [x] Adopting from the picker worked with no key prompt — encryption removal is clean
+- [x] Manual entry worked too, with the bare node name, no `.local`
+- [x] Device added, entities appear with Thai names — 10 entities on the sensor board,
       5 on the relay, matching the config exactly at the time (the sensor board is **11** since
       the pump-sensitivity select was added in test I)
 - [x] Rename the device to a team name; entity IDs stay stable — renaming from the UI works
-- [x] Unplug the board, wait 1 min, plug back in → returns to available on its own — **confirmed**:
-      rejoined by itself and resumed streaming values, no intervention. This is the DHCP-plus-mDNS
-      reconnect the whole no-static-IP design rests on, and it is a preview of test F
+- [x] Unplug the board, wait 1 min, plug back in → returns to available on its own, resumed
+      streaming values with no intervention (measured while boards still announced over mDNS)
 
 > **Watch the rename dialog when writing the worksheet.** Renaming a device in HA can offer to
 > rename the *entity IDs* to match. Which button a team presses was not recorded here, and it
@@ -202,14 +225,15 @@ the fallback is four levels deep:
 > (`sensor.*humidity*`) so they survive either way — but any worksheet step that names an
 > entity_id does not. Pick one answer and put it in the worksheet.
 
-> **If `.local` does not resolve** the problem is almost always the network or the VM's
-> adapter mode, not the firmware. Try the IP — it is now in the USB log (see test B) and on the
-> board's own web page; if that works, mDNS is being blocked. On the workshop's own Flint routers
-> that means the client is on the guest network or a wrong zone (NETWORK-SETUP.md section 2);
-> on the office WiFi it is the usual enterprise multicast filtering.
+> **If HA cannot connect by IP**, check the network or the VM's adapter mode before the firmware.
+> Open `http://<board-ip>/` from the laptop: if the board's own page loads, the path is fine and
+> the cause is the name (wrong board) or the port. If it does not load, the laptop is on the
+> wrong zone or the guest network (NETWORK-SETUP.md section 2) or the IP has moved: reset the
+> board at web.esphome.io and read the banner again. On the office WiFi, client isolation is the
+> usual cause.
 
-**Question this answers:** does hostname adoption work end to end, and does it survive a
-reboot the way DHCP-with-mDNS is supposed to?
+**Question this answers:** does add-by-IP work end to end, does a wrong IP fail visibly, and does
+the board come back at the same IP after a reboot?
 
 ---
 
@@ -222,24 +246,22 @@ board is not ready, flash the sensor image to any second ESP32 you have.
       (sensor, C3) and `gogo-relay-red-9d8b28` (relay, C6). Suffixes are distinct and the zone
       colour is in both names
 - [x] Both adopt into Home Assistant simultaneously — 2 devices, 15 entities (16 now), both stable
-- [x] In **Settings → Devices & services**, note what the *discovered* card list looks like with
-      two boards on the network. On the day a team sees **only its own zone's** boards, since
-      zones are isolated VLANs: 200 boards ÷ 3 ≈ **~67 cards**, not the whole room
-- [x] **Is that list searchable/filterable?** **Settled by workflow rather than by measurement.**
-      The adopted-devices page has a search box (confirmed); whether it also filters *discovered*
-      cards was not measured, and no longer gates anything. The participant flow is: look on
-      Devices & services for your card and click it; if you cannot find it, **+ Add integration →
-      ESPHome**, which ends in a manual-entry box for the name. Either way a team gets there
+- [ ] Add both by IP, as in test C. Each IP reaches its own board's page and HA shows each board's
+      own name. **No Discovered cards** appear for either
 
-**Question this answers:** is the MAC suffix genuinely unique, and how hard is it to find your
-own board among a zone's worth of discovered cards? (The pick-vs-type question is settled: pick
-from the list, manual entry as fallback — see test C.)
+> **Note 2026-10-21:** this test used to check how a crowded *discovered* list reads (~67 cards
+> per zone) and whether it was searchable. With mDNS disabled there is no list; a team types one
+> IP and checks one name, so the question is gone. The earlier results (both boards adopted at
+> once from their cards, 15 entities) stand as history.
 
-> **Still worth doing at the venue, not on the bench:** the ~67-card case cannot be reproduced
-> with two boards. The first real look at a crowded discovered list will be the acceptance test.
+**Question this answers:** is the MAC suffix genuinely unique, and does each board's IP reach
+that board and no other? (Add by IP, not pick from a list: see test C.)
+
+> **Still worth doing at the venue, not on the bench:** two boards cannot show a zone's worth of
+> IPs. At the venue, add one board per zone by IP and confirm the name HA shows matches.
 
 > **If you have two networks on the bench**, also build `--zone green` pointed at the second
-> network and confirm a green board does **not** appear on a laptop joined to the red network.
+> network and confirm a green board's IP does **not** answer from a laptop joined to the red network.
 > That is the zone-isolation property the whole network design rests on. Not required tomorrow;
 > the venue acceptance test covers it.
 
@@ -630,13 +652,13 @@ when a team's HA is broken; and session 3's "open the network box" gets a concre
       This also explains why the binaries did not grow: the whole local bundle is ~13 kB, not the
       hundreds of kB assumed. The "suspicious" sizes were never a problem.
 
-### Addressing it — three forms work, and one has a trap
+### Addressing it — the IP is the form to give teams, and one form has a trap
 
 | What you type | Works? |
 |---|---|
 | `192.168.8.102` | ✅ |
 | `gogo-relay-red-9d8b28/` | ✅ — **the trailing slash is mandatory** |
-| `gogo-relay-red-9d8b28.local` | ✅ |
+| `gogo-relay-red-9d8b28.local` | ✅ when measured; **❌ since 2026-10-21** (mDNS disabled) |
 | `gogo-relay-red-9d8b28` | ❌ — becomes a **web search** |
 
 The trap is the last row, and it will hit every participant who does the obvious thing. A string
@@ -644,9 +666,10 @@ with no dot and no slash is treated by Chrome/Edge as a search query, not a host
 lands on a search results page rather than their board. `http://gogo-relay-red-9d8b28` also works,
 for the same reason the slash does: it forces URL interpretation.
 
-> **Two different forms for two different boxes — call this out in the worksheet.** The browser
-> needs a dot or a slash. Home Assistant's manual-entry Host field needs **neither** — the bare
-> name is what works there (test C). Teaching one form for both boxes will break one of them.
+> **Note 2026-10-21:** the table was measured while boards announced over mDNS. The `.local` row no
+> longer works, and the name rows were not re-measured with mDNS off. The worksheets give the IP
+> only, and the same IP goes in Home Assistant's Host field (test C). The bare-name trap above
+> still applies to anything typed without a dot or slash.
 
 ---
 
@@ -702,7 +725,8 @@ for the kit, both on the same zone SSID, a laptop with Home Assistant.
 2. Flash `farm-receiver-*.factory.bin` onto the devkit the same way. Reset, read the log.
 3. Open `http://<receiver-ip>/`, type the GoGo board's six-character suffix into
    `ชื่อบอร์ดที่แปลง (sender name)`.
-4. Adopt the receiver in Home Assistant from its discovered card. Build the Activity 11.4
+4. Add the receiver in Home Assistant by the IP from its `IP ADDRESS` banner (Host = IP, port
+   6053, no key; check the name matches). Build the Activity 11.4
    automation (link → Disconnected for 30 s → persistent notification).
 
 - [ ] Step 1: the reflash keeps the hostname; Home Assistant shows the board back online with its
@@ -784,14 +808,15 @@ No port is needed — the OVA deliberately serves on **port 80, not 8123**
 |---|---|---|
 | A build & flash | ✅ | device name observed: `gogo-iot-red-6749a4` |
 | B USB name lookup | ✅ | name is line 4 of the boot log, via the `on_boot` banner added for this. seconds to complete: |
-| C adopt | ✅ | adopted from the **discovered card**, no key prompt, entities correct. Manual-entry fallback verified — **bare node name works, no `.local` needed**. Rename OK. Power-cycled 1 min → rejoined and resumed streaming unaided |
-| D two boards unique | ✅ | `gogo-iot-red-6749a4` + `gogo-relay-red-9d8b28`, both adopted at once, 15 entities. Crowded-list behaviour deferred to the venue |
+| C adopt (historical) | ✅ | adopted from the **discovered card**, no key prompt, entities correct. Manual-entry fallback verified — **bare node name works, no `.local` needed**. Rename OK. Power-cycled 1 min → rejoined and resumed streaming unaided. **2026-10-21:** discovered cards and bare-name entry no longer exist (mDNS off) |
+| C add by IP | | open: the add-by-IP checks in test C |
+| D two boards unique | ✅ | `gogo-iot-red-6749a4` + `gogo-relay-red-9d8b28`, both adopted at once, 15 entities. Crowded-list question dropped 2026-10-21: no discovered list with mDNS off |
 | E chattering visible | | clicks/min before hysteresis: |
 | F overnight | | relay board reboots overnight: |
 | G float switch | ✅ | pin: **GPIO0** · ON = **Wet** = water present (`inverted: true`, `device_class: moisture`) · float cylinder **flipped at kit prep** so the switch closes when UP/wet · internal pull-up only, **no external resistor needed** — 500 ms filters absorb surface jiggle entirely · broken wire / unplugged switch reads **Dry**, fails safe · Wet / Dry and **unplugged switch → Dry** confirmed after the flip · board's own page says **ON/OFF** (ON = wet), HA says Wet/Dry · pulled wire → **Dry** confirmed; all second-pass checks pass (8 Sep 2026) |
 | H relay board | ✅ | pins GPIO19/2/9 bench-confirmed · relay + button + LEDs OK · button works with HA down · `restore_mode: ALWAYS_OFF` ✅ · relay markings match `10A 250VAC` / `10A 30VDC` ✅ · **status LED: first version failed** — stayed lit out of range, because `inverted:` also inverts `status_led`'s 250/1250 ms blink; re-driven from an `interval:` as a symmetric 0.8 s blink on `wifi.connected` — **re-flashed and re-walked, works** · blink onset lags going out of range by several seconds (beacon timeout, accepted)  · **12 V-only boot ✅** — runs and connects on the screw terminal with USB unplugged, the day-of configuration · `restore_mode` re-confirmed on **both** supplies · **USB + 12 V together is harmless** — rails measured 5.04 V (USB) vs 5.12 V (12 V), 80 mV apart; board and serial port both fine, so the mistake costs nothing and a helper may plug in a laptop without unwiring the table |
 | I vibration calibration | ✅ | **signal is separable — verdict follows the real pump** · floor **3-8 mg**, running **~20-25 mg**, but measured on a deliberately soft mount · 25 / 12 kept as the **MEDIUM default** of a new three-level **sensitivity select** (high 15/10 · medium 25/12 · low 40/20), chosen in HA or on the board's web page · **re-flashed, selector works, choice survives a power cycle** |
-| J board web page | ✅ | live values ✅, relay control ✅, name-as-URL ✅ (trailing slash or `.local` required — bare name becomes a web search). `local: true` verified: 2 requests, both to the board, 13.2 kB page + SSE stream, no CDN — **works with no internet** |
+| J board web page | ✅ | live values ✅, relay control ✅, name-as-URL ✅ at the time (trailing slash or `.local` required — bare name becomes a web search; `.local` no longer resolves since 2026-10-21, teams use the IP). `local: true` verified: 2 requests, both to the board, 13.2 kB page + SSE stream, no CDN — **works with no internet** |
 | K temp/humidity at 1 s | | seconds to first rise: · updates in a still room every: · pump restart time: |
 | M ESP-NOW sender → receiver | | receiver devkit model and console setting: · RSSI same table / far end: · seconds to link down: · lost packets across the room: · Install-dialog wording at web.esphome.io: |
 
@@ -809,8 +834,9 @@ settle:
 - **E — still open.** If chattering will not show at 1 s, session 2's hysteresis ladder needs a
   different input or a different demonstration.
 
-Also settled along the way, and feeding the worksheet rewrite: adoption is **pick the discovered
-card, manual entry as fallback** (C/D); the float switch reads **Wet = water present** (float flipped, `inverted: true`) with the
+Also settled along the way, and feeding the worksheet rewrite: adoption was **pick the discovered
+card, manual entry as fallback** (C/D) — **superseded 2026-10-21: boards are added by IP, see test
+C**; the float switch reads **Wet = water present** (float flipped, `inverted: true`) with the
 wiring recorded in G; the relay board's programmable LED is now a **WiFi-status light**
 (steady lit = on WiFi, blinking = not), not a relay mirror (H); the pump's vibration **is**
 distinguishable from stillness, so the two reporter entities stay in the image (I); USB and 12 V
@@ -819,8 +845,10 @@ and lets a helper plug into a wired board without dismantling the table (H); and
 serves its own page at `http://<board-ip>/`, which gives teams live sensor values before any Home
 Assistant exists.
 
-The worksheet adoption steps have now been rewritten to the bench-verified flow (Reset device in
+The worksheet adoption steps were rewritten to the bench-verified flow (Reset device in
 the browser → discovered card → bare-name fallback, no key) across `session-1.md`, `reference.md`,
-`index.md`, `record-sheet.md` and `session-3.md`. **`homeassistant.local` is now resolved too** —
+`index.md`, `record-sheet.md` and `session-3.md`. **Note 2026-10-21:** that flow has since been
+replaced: mDNS is disabled on the boards and teams add them by IP (read from the same boot log),
+see [firmware/README.md](../firmware/README.md). **`homeassistant.local` is now resolved too** —
 the worksheets use the VM's own IP, read off its screen and written on the record sheet. See the
 section above.

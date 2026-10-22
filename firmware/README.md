@@ -58,7 +58,7 @@ esphome -s zone red -s wifi_ssid farm-iot-red -s wifi_password <pw> run gogo-iot
 A plain `esphome compile` without the `-s` values builds with the placeholder credentials from the
 `substitutions:` block — it validates the YAML but the image will never join a network. After a
 re-flash, Home Assistant picks up new entities on its own when the board reconnects; do not
-remove and re-add the device (that discards the team's rename).
+remove and re-add the device (that would lose the team's rename).
 
 **Production run:** flash ~34 sensor + ~34 relay boards per zone from `dist/`, and colour-code
 each board (tape or sticker) as you go. The receiver boards need no pre-flash — flashing them is
@@ -96,11 +96,14 @@ reveals it at the name-reading step.
    couple of seconds later, when WiFi connects, `=====  IP ADDRESS: 192.168.10.57  =====` prints.
    **Write down both.**
 5. In Home Assistant: **Settings → Devices & services → + Add integration** → type **ESPHome**
-   (not "ESP-NOW" — different Espressif protocol) → **Setup another instance of ESPHome** (or
-   **Add device** first, depending on the HA version) → type the **IP**, port 6053. No encryption
-   key. Same path for every board.
-6. Check the device name HA shows matches the one written down, then rename the device to the
-   team's name.
+   (not "ESP-NOW" — different Espressif protocol) → click **ESPHome**. The dialog opens on the
+   Host/Port form: type the **IP**, port 6053, Submit. No encryption key. (If a list shows
+   instead, choose **Setup another instance of ESPHome**.) Same path for every board.
+6. In the **Name and assign** dialog, check the **Device name** field matches the one written
+   down, ignoring letter case: HA title-cases it, so `Gogo-Iot-Red-6749A4` is `gogo-iot-red-6749a4`.
+   Type the team's name there if wanted, then press the bottom-right button. It reads **Finish**
+   once the name is edited and **Skip and finish** otherwise. The entry already exists at this
+   point.
 
 **Decided: add by IP, typed by hand. mDNS is disabled on every image** (`mdns: disabled: true`).
 With it on, each of ~100 Home Assistant instances browsing for `_esphomelib._tcp` made every board
@@ -113,13 +116,17 @@ that entirely. What it costs:
 - **HA cannot follow an address change.** Normally HA re-finds a moved board over mDNS; now it just
   shows it unavailable. **Set the zone AP's DHCP lease longer than the whole workshop** (e.g. 7
   days) so a board that reboots or reconnects gets its old address back. No per-MAC reservations
-  needed. If an address does move: read the new IP at web.esphome.io and re-add the device (that
-  discards the team's rename).
+  needed. If an address does move: read the new IP at web.esphome.io, then **Settings → Devices &
+  services → ESPHome → ⋮ on the board's row → Reconfigure** → new IP in Host → Submit
+  ("Reconfiguration was successful"). The device, its rename and its entities are kept; do not
+  delete and re-add.
 - **Typing is self-verifying again.** Picking a card from a list of neighbours could adopt the
   wrong board silently; a typed IP is the team's own. And if an IP later lands on a different
-  board, HA refuses to connect (the device name no longer matches) instead of quietly controlling
-  someone else's relay. The name check in step 6 is still worth the five seconds — a typo in the
-  last octet lands on a neighbour's board.
+  board, HA refuses it, by the board's MAC address rather than its name: Reconfigure with another
+  board's IP aborts (`reconfigure_unique_id_changed`), and an existing entry whose address now
+  answers with a different board stays unavailable (HA logs "Unexpected device found at <ip>").
+  It does not quietly control someone else's relay. The name check in step 6 is still worth the
+  five seconds — a typo in the last octet lands on a neighbour's board.
 
 ## Settings that are load-bearing
 

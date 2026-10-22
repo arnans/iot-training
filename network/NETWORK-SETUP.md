@@ -8,7 +8,8 @@ The workshop runs **two separate wireless networks in one room**:
 1. **The workshop LAN** — three GL.iNet Flint routers we bring and configure ourselves, one per
    zone (red / green / blue). Each carries that zone's boards on 2.4 GHz and that zone's Home
    Assistant laptop and one phone per team on 5 GHz. This is where boards, Home Assistant and
-   dashboards find each other by hostname (mDNS). No VLANs, no controller, no coordination with
+   dashboards reach each other, by IP address. The boards run with mDNS off (see
+   `firmware/README.md`). No VLANs, no controller, no coordination with
    anyone: each Flint is its own subnet, so zone isolation is a property of the hardware.
 2. **The internet WiFi** — provided by NT, 5 GHz only, for every other laptop and phone in the
    room. Its job is internet access for the worksheet site and web.esphome.io. **Devices on it
@@ -130,12 +131,15 @@ Settings**).
 
 - [ ] LAN IP and mask per the table.
 - [ ] DHCP pool: the whole /22 minus the first 20 addresses. **Lease time 72 hours**, covering both
-      days plus the setup window. Reservations are not needed; everything is addressed by hostname.
+      days plus the setup window. **This is load-bearing.** Teams add their boards to Home
+      Assistant by the IP address the board prints at boot, and Home Assistant cannot follow a
+      board whose address moves. A long lease means a board that reboots or rejoins gets its old
+      address back. Reservations are not needed.
 - [ ] Confirm in LuCI that **IGMP snooping is off** on `br-lan` (OpenWrt default; check it stayed
       that way).
 - [ ] The router's DNS resolves DHCP client hostnames, so `http://gogo-iot-red-6749a4/` works from
-      any client of that router **without mDNS**. Leave that on (default) and note it as the
-      fallback if `.local` ever fails.
+      any client of that router **without mDNS**. Leave that on (default). Participants are
+      taught the IP address; the name is a shortcut for instructors, checked by test #7.
 
 **WAN**
 
@@ -181,7 +185,7 @@ This goes on the team card and is said aloud at the start of Session 1.
 
 | Device | Joins | Why |
 |---|---|---|
-| The team's **Home Assistant laptop** (the one running the VM) | The team's zone 5 GHz SSID, `farm-laptop-<colour>` — **and nothing else** | It must find the team's boards by hostname; that only works on the zone network |
+| The team's **Home Assistant laptop** (the one running the VM) | The team's zone 5 GHz SSID, `farm-laptop-<colour>` — **and nothing else** | It must reach the team's boards by IP address; those addresses exist only on the zone network |
 | **One phone per team** (for the dashboard) | The team's zone 5 GHz SSID | Same reason; the dashboard is on the laptop, not on the internet |
 | Every **other laptop and phone** | NT's internet WiFi | Worksheet site and web.esphome.io are online; nothing else is needed |
 | The two boards | Nothing to do: the zone 2.4 GHz SSID is compiled in | |
@@ -211,16 +215,17 @@ to be live; the rest need our routers in position. All must pass.
 | 2 | Laptop on `farm-laptop-red` opens <https://web.esphome.io> and the worksheet site | Both load — internet through the router |
 | 3 | Laptop on NT's WiFi opens the same two sites | Both load — NT WiFi works for the other three members |
 | 4 | WiFi scanner on a laptop in each zone area | NT's 5 GHz radios are **not** on 36, 44 or 149; **no 2.4 GHz** network other than our three (1.2, 1.3) |
-| 5 | Board on `farm-iot-red`, laptop on `farm-laptop-red`: `ping <boardname>.local` | Resolves and replies — cross-band mDNS inside a zone |
-| 6 | Same ping from inside the laptop's bridged VM | Resolves and replies — multicast reaches the VM, two MACs behind one client |
-| 7 | Same laptop: `http://<boardname>/` (no `.local`) | Loads — the router's DNS fallback works |
+| 5 | Board on `farm-iot-red`, laptop on `farm-laptop-red`: `ping <board IP>`, the IP read from the boot log at web.esphome.io | Replies — cross-band traffic inside a zone |
+| 6 | Same ping from inside the laptop's bridged VM, then add the board in that VM's Home Assistant by IP, port 6053 | Replies; Home Assistant connects and shows the board's name — two MACs behind one client |
+| 7 | Same laptop: `http://<boardname>/` (no `.local`) | Loads — the router's DNS resolves DHCP hostnames (instructor shortcut, 2.2) |
 | 8 | Phone on `farm-laptop-red` opens `http://<VM-ip>` | Dashboard loads — client-to-client, port 80 |
-| 9 | Laptop on `farm-laptop-green` pings the red board by name; then `dns-sd -B _esphome._tcp` | **Fails**; only green boards listed — zones isolated (should be true by construction; proves nothing is bridged by mistake) |
+| 9 | Laptop on `farm-laptop-green` pings the red board's IP | **Fails** — zones isolated (should be true by construction; proves nothing is bridged by mistake) |
 | 10 | Laptop on NT's WiFi opens `http://<VM-ip>` | **Fails** — documents the rule in section 3 for anyone who doubts it |
 | 11 | Laptop connected to a board, idle 30 minutes | Connection still live |
-| 12 | **20–30 boards** on one router, then power-cycle that router | All associate and get leases; all rejoin within two minutes of the restart |
-| 13 | **Spare swap drill**: unplug the red router, plug the spare in, restore the red export | Boards and laptop reconnect; under five minutes end to end |
+| 12 | **20–30 boards** on one router, note five boards' IPs, then power-cycle that router | All associate and get leases; all rejoin within two minutes of the restart; **the five keep their IPs** |
+| 13 | **Spare swap drill**: unplug the red router, plug the spare in, restore the red export | Boards and laptop reconnect; under five minutes end to end; boards added in Home Assistant come back without being re-added |
 | 14 | Laptop with both `farm-laptop-red` and NT's WiFi saved, walk to the far side of the room | Note what it does. This is the failure the team-card rule prevents; the point is to have seen it |
+| 15 | Laptop on `farm-laptop-red`, boards from the handout batch powered: `dns-sd -B _esphomelib._tcp` for 10 seconds | **Lists nothing** — the boards run with mDNS off. A board listed here still has old firmware; re-flash it |
 
 > **What this cannot test.** 20–30 boards is about a third of one router's 2.4 GHz load and none
 > of its 5 GHz load. It validates configuration. Router capacity at ~140 clients is the one open
@@ -239,6 +244,7 @@ to be live; the rest need our routers in position. All must pass.
 | HA laptop hops to NT's WiFi mid-session | Team-card rule and test #14. Symptom to teach the TAs: entities go `unavailable` on a laptop that still has internet |
 | 5 GHz channel overlap with NT, or a DFS event | Fixed non-DFS channels (2.1); NT told which ones (1.3); test #4 |
 | DHCP pool exhaustion | /22 per zone, 72 h lease |
+| A board's IP moves, so Home Assistant shows it `unavailable` | 72 h lease (2.2); tests #12 and #13 check addresses survive a router restart and a spare swap. If one moves anyway, the team reads the new IP at web.esphome.io and enters it under the board's **Reconfigure** in Home Assistant, which keeps the device and its name |
 | A team sits in the wrong colour area | Works anyway, weaker signal. Move them if the TAs notice; not an emergency |
 | Router firmware auto-updates or reboots overnight | Both off in the checklist (2.2). Boards rejoin on their own regardless (`reboot_timeout` is disabled in the firmware), so even an unplanned reboot costs a minute |
 | NT has 2.4 GHz on after all | Test #4. Ask for it off; if NT cannot, our three channels 1/6/11 still work, with more retries |
@@ -260,7 +266,9 @@ With three routers we own:
 - **The 2.4 GHz plan is exactly the ideal one**: three radios on 1 / 6 / 11, one per zone, and
   with NT's 2.4 GHz off they are alone in the band.
 - **mDNS across bands works by default** on an OpenWrt bridge; there is no controller feature to
-  turn off.
+  turn off. (Since 21 Oct 2026 the boards run with mDNS off and are added to Home Assistant by
+  IP, because ~100 Home Assistant instances browsing for boards made every board answer by
+  multicast and the storm took the WiFi down. Cross-band unicast still relies on the same bridge.)
 - **NT's job shrinks to the thing enterprise WiFi is good at**: internet for 600 laptops and
   phones, plus three cable ports.
 - **The firmware does not change.** Same SSIDs, same password, same zone build.

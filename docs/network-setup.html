@@ -293,7 +293,7 @@ figcaption {
   <header class="doc-head">
     <p class="kicker">Network setup</p>
     <h1>Workshop Network Setup</h1>
-    <p class="meta">IoT in Smart Farming workshop · Last updated 2026-09-22</p>
+    <p class="meta">IoT in Smart Farming workshop · Last updated 2026-10-21</p>
     <p class="disclosure">This document was compiled with Claude AI. Its content was designed and reviewed by those responsible, who certify that it reflects the intent of the preparing team in every respect.</p>
   </header>
   <p><em>Supersedes <a href="network-requirements-en.html">NETWORK-REQUIREMENTS.md</a> (the per-SSID VLAN design), retired
@@ -303,7 +303,8 @@ figcaption {
   <li><strong>The workshop LAN</strong> — three GL.iNet Flint routers we bring and configure ourselves, one per
      zone (red / green / blue). Each carries that zone's boards on 2.4 GHz and that zone's Home
      Assistant laptop and one phone per team on 5 GHz. This is where boards, Home Assistant and
-     dashboards find each other by hostname (mDNS). No VLANs, no controller, no coordination with
+     dashboards reach each other, by IP address. The boards run with mDNS off (see
+     <code>firmware/README.md</code>). No VLANs, no controller, no coordination with
      anyone: each Flint is its own subnet, so zone isolation is a property of the hardware.</li>
   <li><strong>The internet WiFi</strong> — provided by NT, 5 GHz only, for every other laptop and phone in the
      room. Its job is internet access for the worksheet site and web.esphome.io. <strong>Devices on it
@@ -342,7 +343,7 @@ figcaption {
       <text x="226" y="274" text-anchor="middle" font-family="Sarabun, 'Leelawadee UI', 'Noto Sans Thai', -apple-system, 'Segoe UI', system-ui, sans-serif" font-size="10.5" font-weight="400" fill="#5b6570">HA laptop</text>
       <text x="226" y="289" text-anchor="middle" font-family="Sarabun, 'Leelawadee UI', 'Noto Sans Thai', -apple-system, 'Segoe UI', system-ui, sans-serif" font-size="10.5" font-weight="400" fill="#5b6570">1 phone per team</text>
         <path d="M94,313 Q160,347 226,313" fill="none" stroke="#0f6b63" stroke-width="1.8" marker-start="url(#arrow-good)" marker-end="url(#arrow-good)"/>
-      <text x="160" y="365" text-anchor="middle" font-family="Sarabun, 'Leelawadee UI', 'Noto Sans Thai', -apple-system, 'Segoe UI', system-ui, sans-serif" font-size="11" font-weight="600" fill="#0f6b63">see each other · mDNS</text>
+      <text x="160" y="365" text-anchor="middle" font-family="Sarabun, 'Leelawadee UI', 'Noto Sans Thai', -apple-system, 'Segoe UI', system-ui, sans-serif" font-size="11" font-weight="600" fill="#0f6b63">see each other · by IP</text>
         <text x="160" y="415" text-anchor="middle" font-family="Sarabun, 'Leelawadee UI', 'Noto Sans Thai', -apple-system, 'Segoe UI', system-ui, sans-serif" font-size="10.5" fill="#5b6570">2.4 GHz&#160;&#160;<tspan font-family="'IBM Plex Mono', ui-monospace, Consolas, monospace" font-size="12" font-weight="600" fill="#14181d">farm-iot-red</tspan></text>
         <text x="160" y="437" text-anchor="middle" font-family="Sarabun, 'Leelawadee UI', 'Noto Sans Thai', -apple-system, 'Segoe UI', system-ui, sans-serif" font-size="10.5" fill="#5b6570">5 GHz&#160;&#160;<tspan font-family="'IBM Plex Mono', ui-monospace, Consolas, monospace" font-size="12" font-weight="600" fill="#14181d">farm-laptop-red</tspan></text>
         <line x1="480" y1="108" x2="480" y2="150" stroke="#14181d" stroke-width="1.8"/>
@@ -358,7 +359,7 @@ figcaption {
       <text x="546" y="274" text-anchor="middle" font-family="Sarabun, 'Leelawadee UI', 'Noto Sans Thai', -apple-system, 'Segoe UI', system-ui, sans-serif" font-size="10.5" font-weight="400" fill="#5b6570">HA laptop</text>
       <text x="546" y="289" text-anchor="middle" font-family="Sarabun, 'Leelawadee UI', 'Noto Sans Thai', -apple-system, 'Segoe UI', system-ui, sans-serif" font-size="10.5" font-weight="400" fill="#5b6570">1 phone per team</text>
         <path d="M414,313 Q480,347 546,313" fill="none" stroke="#0f6b63" stroke-width="1.8" marker-start="url(#arrow-good)" marker-end="url(#arrow-good)"/>
-      <text x="480" y="365" text-anchor="middle" font-family="Sarabun, 'Leelawadee UI', 'Noto Sans Thai', -apple-system, 'Segoe UI', system-ui, sans-serif" font-size="11" font-weight="600" fill="#0f6b63">see each other · mDNS</text>
+      <text x="480" y="365" text-anchor="middle" font-family="Sarabun, 'Leelawadee UI', 'Noto Sans Thai', -apple-system, 'Segoe UI', system-ui, sans-serif" font-size="11" font-weight="600" fill="#0f6b63">see each other · by IP</text>
         <text x="480" y="415" text-anchor="middle" font-family="Sarabun, 'Leelawadee UI', 'Noto Sans Thai', -apple-system, 'Segoe UI', system-ui, sans-serif" font-size="10.5" fill="#5b6570">2.4 GHz&#160;&#160;<tspan font-family="'IBM Plex Mono', ui-monospace, Consolas, monospace" font-size="12" font-weight="600" fill="#14181d">farm-iot-green</tspan></text>
         <text x="480" y="437" text-anchor="middle" font-family="Sarabun, 'Leelawadee UI', 'Noto Sans Thai', -apple-system, 'Segoe UI', system-ui, sans-serif" font-size="10.5" fill="#5b6570">5 GHz&#160;&#160;<tspan font-family="'IBM Plex Mono', ui-monospace, Consolas, monospace" font-size="12" font-weight="600" fill="#14181d">farm-laptop-green</tspan></text>
         <line x1="800" y1="108" x2="800" y2="150" stroke="#14181d" stroke-width="1.8"/>
@@ -374,7 +375,7 @@ figcaption {
       <text x="866" y="274" text-anchor="middle" font-family="Sarabun, 'Leelawadee UI', 'Noto Sans Thai', -apple-system, 'Segoe UI', system-ui, sans-serif" font-size="10.5" font-weight="400" fill="#5b6570">HA laptop</text>
       <text x="866" y="289" text-anchor="middle" font-family="Sarabun, 'Leelawadee UI', 'Noto Sans Thai', -apple-system, 'Segoe UI', system-ui, sans-serif" font-size="10.5" font-weight="400" fill="#5b6570">1 phone per team</text>
         <path d="M734,313 Q800,347 866,313" fill="none" stroke="#0f6b63" stroke-width="1.8" marker-start="url(#arrow-good)" marker-end="url(#arrow-good)"/>
-      <text x="800" y="365" text-anchor="middle" font-family="Sarabun, 'Leelawadee UI', 'Noto Sans Thai', -apple-system, 'Segoe UI', system-ui, sans-serif" font-size="11" font-weight="600" fill="#0f6b63">see each other · mDNS</text>
+      <text x="800" y="365" text-anchor="middle" font-family="Sarabun, 'Leelawadee UI', 'Noto Sans Thai', -apple-system, 'Segoe UI', system-ui, sans-serif" font-size="11" font-weight="600" fill="#0f6b63">see each other · by IP</text>
         <text x="800" y="415" text-anchor="middle" font-family="Sarabun, 'Leelawadee UI', 'Noto Sans Thai', -apple-system, 'Segoe UI', system-ui, sans-serif" font-size="10.5" fill="#5b6570">2.4 GHz&#160;&#160;<tspan font-family="'IBM Plex Mono', ui-monospace, Consolas, monospace" font-size="12" font-weight="600" fill="#14181d">farm-iot-blue</tspan></text>
         <text x="800" y="437" text-anchor="middle" font-family="Sarabun, 'Leelawadee UI', 'Noto Sans Thai', -apple-system, 'Segoe UI', system-ui, sans-serif" font-size="10.5" fill="#5b6570">5 GHz&#160;&#160;<tspan font-family="'IBM Plex Mono', ui-monospace, Consolas, monospace" font-size="12" font-weight="600" fill="#14181d">farm-laptop-blue</tspan></text>
         <circle cx="320" cy="261" r="13" fill="#ffffff" stroke="#b03a2e" stroke-width="1.8"/>
@@ -516,12 +517,15 @@ figcaption {
   <ul>
   <li>[ ] LAN IP and mask per the table.</li>
   <li>[ ] DHCP pool: the whole /22 minus the first 20 addresses. <strong>Lease time 72 hours</strong>, covering both
-        days plus the setup window. Reservations are not needed; everything is addressed by hostname.</li>
+        days plus the setup window. <strong>This is load-bearing.</strong> Teams add their boards to Home
+        Assistant by the IP address the board prints at boot, and Home Assistant cannot follow a
+        board whose address moves. A long lease means a board that reboots or rejoins gets its old
+        address back. Reservations are not needed.</li>
   <li>[ ] Confirm in LuCI that <strong>IGMP snooping is off</strong> on <code>br-lan</code> (OpenWrt default; check it stayed
         that way).</li>
   <li>[ ] The router's DNS resolves DHCP client hostnames, so <code>http://gogo-iot-red-6749a4/</code> works from
-        any client of that router <strong>without mDNS</strong>. Leave that on (default) and note it as the
-        fallback if <code>.local</code> ever fails.</li>
+        any client of that router <strong>without mDNS</strong>. Leave that on (default). Participants are
+        taught the IP address; the name is a shortcut for instructors, checked by test #7.</li>
   </ul>
   <p><strong>WAN</strong></p>
   <ul>
@@ -573,7 +577,7 @@ figcaption {
   <tr>
   <td>The team's <strong>Home Assistant laptop</strong> (the one running the VM)</td>
   <td>The team's zone 5 GHz SSID, <code>farm-laptop-&lt;colour&gt;</code> — <strong>and nothing else</strong></td>
-  <td>It must find the team's boards by hostname; that only works on the zone network</td>
+  <td>It must reach the team's boards by IP address; those addresses exist only on the zone network</td>
   </tr>
   <tr>
   <td><strong>One phone per team</strong> (for the dashboard)</td>
@@ -638,18 +642,18 @@ figcaption {
   </tr>
   <tr>
   <td>5</td>
-  <td>Board on <code>farm-iot-red</code>, laptop on <code>farm-laptop-red</code>: <code>ping &lt;boardname&gt;.local</code></td>
-  <td>Resolves and replies — cross-band mDNS inside a zone</td>
+  <td>Board on <code>farm-iot-red</code>, laptop on <code>farm-laptop-red</code>: <code>ping &lt;board IP&gt;</code>, the IP read from the boot log at web.esphome.io</td>
+  <td>Replies — cross-band traffic inside a zone</td>
   </tr>
   <tr>
   <td>6</td>
-  <td>Same ping from inside the laptop's bridged VM</td>
-  <td>Resolves and replies — multicast reaches the VM, two MACs behind one client</td>
+  <td>Same ping from inside the laptop's bridged VM, then add the board in that VM's Home Assistant by IP, port 6053</td>
+  <td>Replies; Home Assistant connects and shows the board's name — two MACs behind one client</td>
   </tr>
   <tr>
   <td>7</td>
   <td>Same laptop: <code>http://&lt;boardname&gt;/</code> (no <code>.local</code>)</td>
-  <td>Loads — the router's DNS fallback works</td>
+  <td>Loads — the router's DNS resolves DHCP hostnames (instructor shortcut, 2.2)</td>
   </tr>
   <tr>
   <td>8</td>
@@ -658,8 +662,8 @@ figcaption {
   </tr>
   <tr>
   <td>9</td>
-  <td>Laptop on <code>farm-laptop-green</code> pings the red board by name; then <code>dns-sd -B _esphome._tcp</code></td>
-  <td><strong>Fails</strong>; only green boards listed — zones isolated (should be true by construction; proves nothing is bridged by mistake)</td>
+  <td>Laptop on <code>farm-laptop-green</code> pings the red board's IP</td>
+  <td><strong>Fails</strong> — zones isolated (should be true by construction; proves nothing is bridged by mistake)</td>
   </tr>
   <tr>
   <td>10</td>
@@ -673,18 +677,23 @@ figcaption {
   </tr>
   <tr>
   <td>12</td>
-  <td><strong>20–30 boards</strong> on one router, then power-cycle that router</td>
-  <td>All associate and get leases; all rejoin within two minutes of the restart</td>
+  <td><strong>20–30 boards</strong> on one router, note five boards' IPs, then power-cycle that router</td>
+  <td>All associate and get leases; all rejoin within two minutes of the restart; <strong>the five keep their IPs</strong></td>
   </tr>
   <tr>
   <td>13</td>
   <td><strong>Spare swap drill</strong>: unplug the red router, plug the spare in, restore the red export</td>
-  <td>Boards and laptop reconnect; under five minutes end to end</td>
+  <td>Boards and laptop reconnect; under five minutes end to end; boards added in Home Assistant come back without being re-added</td>
   </tr>
   <tr>
   <td>14</td>
   <td>Laptop with both <code>farm-laptop-red</code> and NT's WiFi saved, walk to the far side of the room</td>
   <td>Note what it does. This is the failure the team-card rule prevents; the point is to have seen it</td>
+  </tr>
+  <tr>
+  <td>15</td>
+  <td>Laptop on <code>farm-laptop-red</code>, boards from the handout batch powered: <code>dns-sd -B _esphomelib._tcp</code> for 10 seconds</td>
+  <td><strong>Lists nothing</strong> — the boards run with mDNS off. A board listed here still has old firmware; re-flash it</td>
   </tr>
   </tbody>
   </table></div>
@@ -729,6 +738,10 @@ figcaption {
   <td>/22 per zone, 72 h lease</td>
   </tr>
   <tr>
+  <td>A board's IP moves, so Home Assistant shows it <code>unavailable</code></td>
+  <td>72 h lease (2.2); tests #12 and #13 check addresses survive a router restart and a spare swap. If one moves anyway, the team reads the new IP at web.esphome.io and enters it under the board's <strong>Reconfigure</strong> in Home Assistant, which keeps the device and its name</td>
+  </tr>
+  <tr>
   <td>A team sits in the wrong colour area</td>
   <td>Works anyway, weaker signal. Move them if the TAs notice; not an emergency</td>
   </tr>
@@ -756,7 +769,9 @@ figcaption {
   <li><strong>The 2.4 GHz plan is exactly the ideal one</strong>: three radios on 1 / 6 / 11, one per zone, and
     with NT's 2.4 GHz off they are alone in the band.</li>
   <li><strong>mDNS across bands works by default</strong> on an OpenWrt bridge; there is no controller feature to
-    turn off.</li>
+    turn off. (Since 21 Oct 2026 the boards run with mDNS off and are added to Home Assistant by
+    IP, because ~100 Home Assistant instances browsing for boards made every board answer by
+    multicast and the storm took the WiFi down. Cross-band unicast still relies on the same bridge.)</li>
   <li><strong>NT's job shrinks to the thing enterprise WiFi is good at</strong>: internet for 600 laptops and
     phones, plus three cable ports.</li>
   <li><strong>The firmware does not change.</strong> Same SSIDs, same password, same zone build.</li>

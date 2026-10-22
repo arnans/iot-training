@@ -151,8 +151,8 @@ bench session (adoption flow, overnight, sabotage cards, instructor machines, in
   four images set `mdns: disabled: true` and `zeroconf:` is out of both HA configs. Teams add each
   board by the IP from the `IP ADDRESS` boot-log line (read in activities 1, 2 and 10) through
   *+ Add integration → ESPHome → Host = IP → Submit*, then check the Device name HA shows.
-  Reason, and the IP-change procedure: `firmware/README.md`. Planning docs brought in line the
-  same day; the add-by-IP checks are in TEST-PLAN test C.
+  Reason, and the IP-change procedure: `firmware/README.md`. Planning docs brought in line in
+  PR #7; the add-by-IP checks are in TEST-PLAN test C.
 
 ## Network and device provisioning
 
@@ -171,7 +171,8 @@ name** → in HA, **Settings → Devices & services → + Add integration** → 
 **"Setup another instance of ESPHome"**) → Host = the IP, Port `6053`, no encryption key → Submit
 → in the **Name and assign** dialog check that the Device name matches the name written down,
 colour and six characters (HA shows it title-cased, `Gogo-Iot-Red-6749A4` for
-`gogo-iot-red-6749a4`) → type the team's name there if wanted → Skip and finish. The API is
+`gogo-iot-red-6749a4`) → type the team's name there if wanted → **Finish** (it reads **Skip and
+finish** when the name is left as is). The API is
 unencrypted. The name check is what stops a team adding a neighbour's board: a mistyped IP that
 lands on another board shows the wrong name, and Reconfigure or an existing entry pointed at
 another board is refused by HA (by MAC address).

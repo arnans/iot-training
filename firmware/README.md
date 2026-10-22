@@ -100,8 +100,10 @@ reveals it at the name-reading step.
    Host/Port form: type the **IP**, port 6053, Submit. No encryption key. (If a list shows
    instead, choose **Setup another instance of ESPHome**.) Same path for every board.
 6. In the **Name and assign** dialog, check the **Device name** field matches the one written
-   down. HA shows it title-cased: `Gogo-Iot-Red-6749A4` is `gogo-iot-red-6749a4`. Type the team's
-   name there if wanted, then **Skip and finish**. The entry already exists at this point.
+   down, ignoring letter case: HA title-cases it, so `Gogo-Iot-Red-6749A4` is `gogo-iot-red-6749a4`.
+   Type the team's name there if wanted, then press the bottom-right button. It reads **Finish**
+   once the name is edited and **Skip and finish** otherwise. The entry already exists at this
+   point.
 
 **Decided: add by IP, typed by hand. mDNS is disabled on every image** (`mdns: disabled: true`).
 With it on, each of ~100 Home Assistant instances browsing for `_esphomelib._tcp` made every board

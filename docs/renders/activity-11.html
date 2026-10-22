@@ -1606,15 +1606,16 @@ a.ws-brand:hover { opacity: 0.82; }
 <h3 id="a11-1"><span class="sub-num">11.1</span>เพิ่มบอร์ดตัวรับเข้า Home Assistant</h3>
 <p class="ws-phase"><strong>เพิ่มและตั้งชื่อ</strong></p>
 <ol>
-<li>ไปที่ <strong>Settings → Devices &amp; services → + Add integration → ESPHome</strong> แล้วพิมพ์ <strong>IP ของบอร์ดตัวรับ</strong> ที่จดไว้ในกิจกรรมที่ 10 (<input class="fld" type="text" data-k="board.rx.ip" data-size="15" size="15" autocomplete="off" spellcheck="false">) ในช่อง Host Port <code>6053</code> เหมือนกิจกรรมที่ 3 แล้วกด <strong>Submit</strong> (ถ้าขึ้นรายการให้เลือก <strong>Setup another instance of ESPHome</strong> ก่อน) จะขึ้นหน้า <strong>Name and assign</strong> ให้ดูช่อง <strong>Device name</strong> ว่าตรงกับชื่อบอร์ดตัวรับ (<input class="fld" type="text" data-k="board.rx.name" data-size="26" size="26" autocomplete="off" spellcheck="false">) ทั้งสีและรหัสหกตัวท้าย HA แสดงเป็นตัวพิมพ์ใหญ่ต้นคำ เช่น <code>Gogo-Iot-Red-6749A4</code> ตรงกับ <code>gogo-iot-red-6749a4</code></li>
-<li>ในช่อง <strong>Device name</strong> เดิม จะพิมพ์ชื่อใหม่เป็น เช่น <code>ตัวรับที่บ้าน</code> ก็ได้ (ไม่บังคับทำ) แล้วกด <strong>Skip and finish</strong></li>
+<li>ไปที่ <strong>Settings → Devices &amp; services → + Add integration → ESPHome</strong> (ถ้าขึ้นรายการให้เลือก <strong>Setup another instance of ESPHome</strong> ก่อน) ในช่อง Host พิมพ์ <strong>IP ของบอร์ดตัวรับ</strong> ที่จดไว้ในกิจกรรมที่ 10 (<input class="fld" type="text" data-k="board.rx.ip" data-size="15" size="15" autocomplete="off" spellcheck="false">) คงช่อง Port ไว้ที่ <code>6053</code> เหมือนกิจกรรมที่ 3 แล้วกด <strong>Submit</strong> จะขึ้นหน้า <strong>Name and assign</strong> ให้ดูช่อง <strong>Device name</strong> ว่าตรงกับชื่อบอร์ดตัวรับ (<input class="fld" type="text" data-k="board.rx.name" data-size="26" size="26" autocomplete="off" spellcheck="false">) ทั้งสีและรหัสหกตัวท้าย ตัวพิมพ์เล็กหรือใหญ่ไม่ต้องสนใจ เช่น <code>Gogo-Iot-Red-6749A4</code> ถือว่าตรงกับ <code>gogo-iot-red-6749a4</code></li>
+<li>ในช่อง <strong>Device name</strong> เดิม จะพิมพ์ชื่อใหม่เป็น เช่น <code>ตัวรับที่บ้าน</code> ก็ได้ (ไม่บังคับทำ) แล้วกดปุ่มมุมขวาล่าง ปุ่มนี้ขึ้นว่า <strong>Finish</strong> ถ้าแก้ชื่อ หรือ <strong>Skip and finish</strong> ถ้าไม่ได้แก้</li>
 </ol>
 <p class="ws-phase"><strong>ดูรายการที่ได้</strong></p>
 <ol start="3" style="counter-reset: step 2">
 <li>เปิดหน้าอุปกรณ์ของตัวรับ จะเห็นสามกลุ่ม: <strong>Sensors</strong> คือค่าจากแปลงที่ต่อท้ายว่า ESP-NOW และ <strong>รับข้อมูลจากแปลง (link)</strong> ซึ่งแสดงเป็น Connected / Disconnected · <strong>Configuration</strong> มีช่อง <strong>ชื่อบอร์ดที่แปลง (sender name)</strong> ที่เราพิมพ์ไว้บนหน้าเว็บของบอร์ด แก้จากที่นี่ก็ได้ · <strong>Diagnostic</strong> มีสัญญาณ จำนวนแพ็กเก็ต และแพ็กเก็ตล่าสุด</li>
 </ol>
 <blockquote>
-<p><strong>ถ้ากด Submit แล้วต่อไม่ได้</strong> อ่าน IP ใหม่จาก <a href="https://web.esphome.io">web.esphome.io</a> (Reset device แล้วดูบรรทัด <code>IP ADDRESS</code>) เลขอาจเปลี่ยนไปแล้ว ถ้าเพิ่มบอร์ดไว้แล้ว ให้กด ⋮ ที่แถวของบอร์ดใน Settings → Devices &amp; services → ESPHome → <strong>Reconfigure</strong> แล้วพิมพ์ IP ใหม่ในช่อง Host ชื่อและ entity เดิมยังอยู่ ไม่ต้องลบแล้วเพิ่มใหม่</p>
+<p><strong>ถ้ากด Submit แล้วต่อไม่ได้</strong> อ่าน IP ใหม่จาก <a href="https://web.esphome.io">web.esphome.io</a> (Reset device แล้วดูบรรทัด <code>IP ADDRESS</code>) เลขอาจเปลี่ยนไปแล้ว</p>
+<p><strong>ตัวรับที่เพิ่มแล้วกลายเป็น Unavailable</strong> IP ของบอร์ดอาจเปลี่ยน อ่าน IP ใหม่จาก web.esphome.io แล้วกด ⋮ ท้ายแถวของบอร์ดใน Settings → Devices &amp; services → ESPHome → <strong>Reconfigure</strong> → พิมพ์ IP ใหม่ในช่อง Host ชื่อและ entity เดิมยังอยู่ ไม่ต้องลบแล้วเพิ่มใหม่</p>
 </blockquote>
 <p><a class="ws-back" href="#a11">↑ กลับไปที่ใบงาน</a></p>
 <p><img alt="" class="activity-divider" decoding="async" height="96" loading="lazy" src="../images/activity-dividers/sprinklers.webp" width="1200" /></p>

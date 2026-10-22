@@ -267,7 +267,9 @@ dialog matching the names written down (HA shows it title-cased). Renaming the d
 window. Boards have mDNS disabled (it flooded the room's WiFi), so **there are no discovered cards
 and `.local` names do not resolve** — the IP is the only way. **A mistyped IP that lands on a
 neighbour's board looks like success**, but the team then watches the neighbour's sensors and its
-automation drives the neighbour's lamp. Check the name HA shows before adding. Cannot connect: the
+automation drives the neighbour's lamp. The entry already exists when Name and assign shows the
+Device name, so a wrong name means: close the dialog, ⋮ → Delete on that board's row, add again with
+the right IP. Cannot connect: the
 board's IP moved, so read it again at web.esphome.io (Reset device, `IP ADDRESS` line). For a board
 already added, use ⋮ → Reconfigure → new IP in Host; the rename and entities are kept. HA refuses
 another board's address by MAC.

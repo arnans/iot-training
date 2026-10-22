@@ -177,7 +177,8 @@ No encryption key.
    `6053`. No encryption key. Submit.
 4. In the **Name and assign** dialog, **check the Device name** against the name written down:
    colour plus six-character suffix. HA shows it title-cased (`Gogo-Iot-Red-6749A4` for
-   `gogo-iot-red-6749a4`). The team name may be typed there; **Skip and finish** keeps it as is. A
+   `gogo-iot-red-6749a4`). The team name may be typed there; the button then reads **Finish**,
+   and **Skip and finish** when the name is left as is. A
    typed IP is self-verifying: if it lands on another board, the name differs, and later
    Reconfigure or reconnect attempts against a different board are refused by MAC address.
 
@@ -215,8 +216,7 @@ No encryption key.
       the pump-sensitivity select was added in test I)
 - [x] Rename the device to a team name; entity IDs stay stable — renaming from the UI works
 - [x] Unplug the board, wait 1 min, plug back in → returns to available on its own, resumed
-      streaming values with no intervention (this was DHCP plus mDNS reconnect; it is now DHCP
-      plus the board keeping its leased IP)
+      streaming values with no intervention (measured while boards still announced over mDNS)
 
 > **Watch the rename dialog when writing the worksheet.** Renaming a device in HA can offer to
 > rename the *entity IDs* to match. Which button a team presses was not recorded here, and it
@@ -668,8 +668,8 @@ for the same reason the slash does: it forces URL interpretation.
 
 > **Note 2026-10-21:** the table was measured while boards announced over mDNS. The `.local` row no
 > longer works, and the name rows were not re-measured with mDNS off. The worksheets give the IP
-> only, and the same IP goes in Home Assistant's Host field (test C). The bare-name trap below
-> above still applies to anything typed without a dot or slash.
+> only, and the same IP goes in Home Assistant's Host field (test C). The bare-name trap above
+> still applies to anything typed without a dot or slash.
 
 ---
 
@@ -808,7 +808,8 @@ No port is needed — the OVA deliberately serves on **port 80, not 8123**
 |---|---|---|
 | A build & flash | ✅ | device name observed: `gogo-iot-red-6749a4` |
 | B USB name lookup | ✅ | name is line 4 of the boot log, via the `on_boot` banner added for this. seconds to complete: |
-| C add by IP | ✅ (before mDNS was disabled) | adopted from the **discovered card**, no key prompt, entities correct. Manual-entry fallback verified — **bare node name works, no `.local` needed**. Rename OK. Power-cycled 1 min → rejoined and resumed streaming unaided. **2026-10-21:** discovered cards and bare-name entry no longer exist (mDNS off); add-by-IP checks in test C are open |
+| C adopt (historical) | ✅ | adopted from the **discovered card**, no key prompt, entities correct. Manual-entry fallback verified — **bare node name works, no `.local` needed**. Rename OK. Power-cycled 1 min → rejoined and resumed streaming unaided. **2026-10-21:** discovered cards and bare-name entry no longer exist (mDNS off) |
+| C add by IP | | open: the add-by-IP checks in test C |
 | D two boards unique | ✅ | `gogo-iot-red-6749a4` + `gogo-relay-red-9d8b28`, both adopted at once, 15 entities. Crowded-list question dropped 2026-10-21: no discovered list with mDNS off |
 | E chattering visible | | clicks/min before hysteresis: |
 | F overnight | | relay board reboots overnight: |
